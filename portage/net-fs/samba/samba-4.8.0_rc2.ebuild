@@ -82,6 +82,7 @@ DEPEND="${CDEPEND}
 	${PYTHON_DEPS}
 	app-text/docbook-xsl-stylesheets
 	dev-libs/libxslt
+	net-libs/libtirpc[${MULTILIB_USEDEP}]
 	virtual/pkgconfig
 	|| (
 		net-libs/rpcsvc-proto

@@ -154,11 +154,6 @@ mips            default/linux/mips/13.0/mipsel/multilib/o32     dev
 mips            default/linux/mips/13.0/mipsel/multilib/n32     dev
 mips            default/linux/mips/13.0/mipsel/multilib/n64     exp
 
-# Nios II Profiles
-# @MAINTAINER: ?
-nios2           default/linux/nios2/13.0                        exp
-nios2           default/linux/nios2/17.0                        exp
-
 # PPC32 Profiles
 # @MAINTAINER: ppc@gentoo.org
 ppc             default/linux/powerpc/ppc32/13.0                       stable
@@ -198,11 +193,6 @@ ppc64           default/linux/powerpc/ppc64/17.0/64bit-userland/desktop/gnome/sy
 ppc64           default/linux/powerpc/ppc64/17.0/64bit-userland/developer               stable
 ppc64		default/linux/powerpc/ppc64/17.0/64bit-userland/little-endian		exp
 ppc64		default/linux/powerpc/ppc64/17.0/64bit-userland/little-endian/systemd	exp
-
-# RISC-V Profiles
-# @MAINTAINER: ?
-riscv           default/linux/riscv/13.0                        exp
-riscv           default/linux/riscv/17.0                        exp
 
 # S390 Profiles
 # @MAINTAINER: s390@gentoo.org
@@ -248,6 +238,7 @@ x86             default/linux/x86/13.0/developer                stable
 x86		default/linux/x86/13.0/systemd			stable
 x86             default/linux/x86/17.0                          stable
 x86             default/linux/x86/17.0/selinux                  dev
+x86             default/linux/x86/17.0/hardened                 dev
 x86             default/linux/x86/17.0/desktop                  stable
 x86             default/linux/x86/17.0/desktop/gnome            stable
 x86             default/linux/x86/17.0/desktop/gnome/systemd    stable
@@ -295,8 +286,12 @@ amd64		default/linux/musl/amd64				exp
 amd64		hardened/linux/musl/amd64				exp
 amd64		default/linux/musl/amd64/x32				exp
 amd64		hardened/linux/musl/amd64/x32				exp
+amd64		default/linux/amd64/17.0/musl				exp
+amd64		default/linux/amd64/17.0/musl/hardened			exp
 arm		default/linux/musl/arm/armv7a				exp
 arm		hardened/linux/musl/arm/armv7a				exp
+arm		default/linux/arm/17.0/musl/armv7a			exp
+arm		default/linux/arm/17.0/musl/armv7a/hardened		exp
 arm64		default/linux/musl/arm64 				exp
 arm64		hardened/linux/musl/arm64 				exp
 mips		default/linux/musl/mips					exp
@@ -307,6 +302,7 @@ ppc		default/linux/musl/ppc					exp
 ppc		hardened/linux/musl/ppc					exp
 x86		default/linux/musl/x86					exp
 x86		hardened/linux/musl/x86					exp
+x86		default/linux/x86/17.0/musl				exp
 
 # Non-embedded uclibc profiles
 # @MAINTAINER: uclibc@gentoo.org
@@ -344,6 +340,7 @@ x86-linux		default/linux/x86/17.0/prefix/kernel-3.2+	exp
 x86-linux		default/linux/x86/17.0/prefix/kernel-2.6.32+	exp
 x86-linux		default/linux/x86/17.0/prefix/kernel-2.6.16+	exp
 arm-linux		prefix/linux-standalone/arm/armv7a		exp
+arm64-linux		default/linux/arm64/17.0/prefix/kernel-3.2+	exp
 arm64-linux		prefix/linux-standalone/arm64			exp
 ppc64-linux		prefix/linux-standalone/ppc64			exp
 

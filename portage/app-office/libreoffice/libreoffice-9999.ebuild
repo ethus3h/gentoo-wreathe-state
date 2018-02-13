@@ -96,7 +96,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	=dev-cpp/libcmis-0.5*
 	dev-db/unixODBC
 	dev-lang/perl
-	dev-libs/boost:=
+	dev-libs/boost:=[nls]
 	dev-libs/expat
 	dev-libs/hyphen
 	dev-libs/icu:=
@@ -243,6 +243,8 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 "
 
 PATCHES=(
+	# "${WORKDIR}"/${PATCHSET/.tar.xz/}
+
 	# not upstreamable stuff
 	"${FILESDIR}/${PN}-5.4-system-pyuno.patch"
 	"${FILESDIR}/${PN}-5.3.4.2-kioclient5.patch"
@@ -256,8 +258,8 @@ pkg_pretend() {
 		ewarn "If you plan to use Base application you should enable java or you will get various crashes."
 
 	if has_version "<app-office/libreoffice-5.3.0[firebird]"; then
-		ewarn "Firebird has been upgraded to version 3.0.0. It is unable to read back Firebird 2.5 data,"
-		ewarn "so embedded firebird odb files created in LibreOffice pre-5.3 cannot be opened with LibreOffice 5.3."
+		ewarn "Firebird has been upgraded to version 3. It is unable to read back Firebird 2.5 data, so"
+		ewarn "embedded firebird odb files created in LibreOffice pre-5.3 can't be opened with this version."
 		ewarn "See also: https://wiki.documentfoundation.org/ReleaseNotes/5.3#Base"
 	fi
 
@@ -289,13 +291,9 @@ pkg_setup() {
 }
 
 src_unpack() {
-	[[ -n ${PATCHSET} ]] && unpack ${PATCHSET}
-	use branding && unpack "${BRANDING}"
+	default
 
-	if [[ ${PV} != *9999* ]]; then
-		unpack "${P}.tar.xz"
-		unpack "${PN}-help-${PV}.tar.xz"
-	else
+	if [[ ${PV} = *9999* ]]; then
 		local base_uri branch mypv
 		base_uri="https://anongit.freedesktop.org/git"
 		branch="master"
@@ -310,7 +308,6 @@ src_unpack() {
 }
 
 src_prepare() {
-	[[ -n ${PATCHSET} ]] && eapply "${WORKDIR}/${PATCHSET/.tar.xz/}"
 	default
 
 	AT_M4DIR="m4" eautoreconf
@@ -425,8 +422,8 @@ src_configure() {
 		$(use_enable bluetooth sdremote-bluetooth)
 		$(use_enable coinmp)
 		$(use_enable cups)
-		$(use_enable debug)
 		$(use_enable dbus)
+		$(use_enable debug)
 		$(use_enable eds evolution2)
 		$(use_enable firebird firebird-sdbc)
 		$(use_enable gstreamer gstreamer-1-0)
