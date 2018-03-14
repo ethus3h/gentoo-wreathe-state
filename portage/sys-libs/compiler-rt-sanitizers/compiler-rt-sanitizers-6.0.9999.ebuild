@@ -8,7 +8,8 @@ EAPI=6
 CMAKE_MIN_VERSION=3.7.0-r1
 PYTHON_COMPAT=( python2_7 )
 
-inherit check-reqs cmake-utils flag-o-matic git-r3 llvm python-any-r1
+inherit check-reqs cmake-utils flag-o-matic git-r3 llvm \
+	multiprocessing python-any-r1
 
 DESCRIPTION="Compiler runtime libraries for clang (sanitizers & xray)"
 HOMEPAGE="https://llvm.org/"
@@ -30,7 +31,7 @@ DEPEND="
 	>=sys-devel/llvm-6
 	clang? ( sys-devel/clang )
 	test? (
-		app-portage/unsandbox
+		!<sys-apps/sandbox-2.13
 		$(python_gen_any_dep "~dev-python/lit-${PV}[\${PYTHON_USEDEP}]")
 		=sys-devel/clang-${PV%_*}*:${LLVM_SLOT}
 		sys-libs/compiler-rt:${SLOT} )
@@ -96,15 +97,10 @@ src_configure() {
 		-DCOMPILER_RT_BUILD_XRAY=ON
 	)
 	if use test; then
-		cat > "${T}"/unsandbox-lit.py <<-EOF || die
-			import os, sys
-			os.execlp("unsandbox", sys.argv[0], "lit", *sys.argv[1:])
-		EOF
-
 		mycmakeargs+=(
 			-DLLVM_MAIN_SRC_DIR="${WORKDIR}/llvm"
-			-DLLVM_EXTERNAL_LIT="${T}/unsandbox-lit.py"
-			-DLLVM_LIT_ARGS="-vv"
+			-DLLVM_EXTERNAL_LIT="${EPREFIX}/usr/bin/lit"
+			-DLLVM_LIT_ARGS="-vv;-j;${LIT_JOBS:-$(makeopts_jobs "${MAKEOPTS}" "$(get_nproc)")}"
 
 			# they are created during src_test()
 			-DCOMPILER_RT_TEST_COMPILER="${BUILD_DIR}/lib/llvm/${LLVM_SLOT}/bin/clang"
@@ -152,6 +148,10 @@ src_configure() {
 src_test() {
 	# respect TMPDIR!
 	local -x LIT_PRESERVES_TMP=1
+	# disable sandbox to have it stop clobbering LD_PRELOAD
+	local -x SANDBOX_ON=0
+	# wipe LD_PRELOAD to make ASAN happy
+	local -x LD_PRELOAD=
 
 	cmake-utils_src_make check-all
 }

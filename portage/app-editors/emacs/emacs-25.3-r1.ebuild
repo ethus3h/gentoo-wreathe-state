@@ -67,7 +67,6 @@ RDEPEND="sys-libs/ncurses:0=
 		!gtk? (
 			motif? (
 				>=x11-libs/motif-2.3:0
-				x11-libs/libXp
 				x11-libs/libXpm
 				x11-libs/libXmu
 				x11-libs/libXt
@@ -284,7 +283,7 @@ src_install () {
 		cdir="/usr/src/debug/${CATEGORY}/${PF}/${S#"${WORKDIR}/"}/src"
 	fi
 
-	sed -e "${cdir:+#}/^Y/d" -e "s/^[XY]//" >"${T}/${SITEFILE}" <<-EOF
+	sed -e "${cdir:+#}/^Y/d" -e "s/^[XY]//" >"${T}/${SITEFILE}" <<-EOF || die
 	X
 	;;; ${PN}-${SLOT} site-lisp configuration
 	X

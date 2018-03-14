@@ -27,8 +27,6 @@ RDEPEND="sys-libs/ncurses:0=
 	gpm? ( sys-libs/gpm )
 	dbus? ( sys-apps/dbus )
 	X? (
-		media-libs/fontconfig
-		media-libs/freetype
 		x11-libs/libICE
 		x11-libs/libSM
 		x11-libs/libX11
@@ -41,6 +39,8 @@ RDEPEND="sys-libs/ncurses:0=
 		tiff? ( media-libs/tiff:0 )
 		xpm? ( x11-libs/libXpm )
 		xft? (
+			media-libs/fontconfig
+			media-libs/freetype
 			x11-libs/libXft
 			x11-libs/libXrender
 			m17n-lib? (
@@ -52,7 +52,6 @@ RDEPEND="sys-libs/ncurses:0=
 		!gtk? (
 			motif? (
 				>=x11-libs/motif-2.3:0
-				x11-libs/libXp
 				x11-libs/libXpm
 				x11-libs/libXext
 				x11-libs/libXmu
@@ -224,10 +223,11 @@ src_configure() {
 }
 
 src_compile() {
-	export SANDBOX_ON=0			# for the unbelievers, see Bug #131505
+	# Disable sandbox when dumping. For the unbelievers, see bug #131505
 	emake CC="$(tc-getCC)" \
 		AR="$(tc-getAR) cq" \
-		RANLIB="$(tc-getRANLIB)"
+		RANLIB="$(tc-getRANLIB)" \
+		RUN_TEMACS="env SANDBOX_ON=0 LD_PRELOAD= ./temacs"
 }
 
 src_install () {
@@ -278,7 +278,7 @@ src_install () {
 		cdir="/usr/src/debug/${CATEGORY}/${PF}/${S#"${WORKDIR}/"}/src"
 	fi
 
-	sed -e "${cdir:+#}/^Y/d" -e "s/^[XY]//" >"${T}/${SITEFILE}" <<-EOF
+	sed -e "${cdir:+#}/^Y/d" -e "s/^[XY]//" >"${T}/${SITEFILE}" <<-EOF || die
 	X
 	;;; ${PN}-${SLOT} site-lisp configuration
 	X

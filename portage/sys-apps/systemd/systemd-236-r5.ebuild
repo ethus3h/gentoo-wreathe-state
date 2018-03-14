@@ -9,7 +9,7 @@ if [[ ${PV} == 9999 ]]; then
 else
 	SRC_URI="https://github.com/systemd/systemd/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://dev.gentoo.org/~floppym/dist/${P}-patches-2.tar.gz"
-	KEYWORDS="~alpha amd64 ~arm ~arm64 ia64 ~ppc ~ppc64 x86"
+	KEYWORDS="alpha amd64 ~arm ~arm64 ia64 ppc ~ppc64 x86"
 fi
 
 PYTHON_COMPAT=( python{3_4,3_5,3_6} )
@@ -237,7 +237,7 @@ multilib_src_configure() {
 		-Ddbus=$(meson_multilib_native_use test)
 		-Dxkbcommon=$(meson_multilib_native_use xkb)
 		# hardcode a few paths to spare some deps
-		-Dpath-kill=/bin/kill
+		-Dkill-path=/bin/kill
 		-Dntp-servers="0.gentoo.pool.ntp.org 1.gentoo.pool.ntp.org 2.gentoo.pool.ntp.org 3.gentoo.pool.ntp.org"
 		# Breaks screen, tmux, etc.
 		-Ddefault-kill-user-processes=false

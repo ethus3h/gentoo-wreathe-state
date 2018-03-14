@@ -16,7 +16,7 @@ fi
 inherit enlightenment
 
 DESCRIPTION="Enlightenment DR17 window manager"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~x64-solaris ~x86-solaris"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~x64-solaris ~x86-solaris"
 
 LICENSE="BSD-2"
 SLOT="0.17/${PV%%_*}"
@@ -33,7 +33,7 @@ __NORM_MODS=(
 	fileman fileman-opinfo gadman geolocation
 	ibar ibox lokker
 	mixer msgbus music-control notification
-	pager packagekit pager-plain policy-mobile quickaccess
+	pager packagekit pager-plain quickaccess
 	shot start syscon systray tasks teamwork temperature tiling
 	winlist wizard wl-desktop-shell wl-drm wl-text-input
 	wl-weekeyboard wl-wl wl-x11 xkbswitch xwayland

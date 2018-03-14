@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -9,7 +9,7 @@ inherit linux-info xorg-2 flag-o-matic
 
 DESCRIPTION="X.Org driver for Intel cards"
 
-KEYWORDS="~amd64 ~x86 ~amd64-fbsd ~x86-fbsd"
+KEYWORDS="~amd64 ~x86"
 IUSE="debug dri3 +sna tools +udev uxa xvmc"
 COMMIT_ID="4798e18b2b2c8b0a05dc967e6140fd9962bc1a73"
 SRC_URI="https://cgit.freedesktop.org/xorg/driver/xf86-video-intel/snapshot/${COMMIT_ID}.tar.xz -> ${P}.tar.xz"
@@ -61,6 +61,7 @@ DEPEND="${RDEPEND}
 src_configure() {
 	replace-flags -Os -O2
 	XORG_CONFIGURE_OPTIONS=(
+		--disable-dri1
 		$(use_enable debug)
 		$(use_enable dri)
 		$(use_enable dri dri3)

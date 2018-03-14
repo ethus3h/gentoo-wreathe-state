@@ -7,6 +7,40 @@
 # This file is only for generic masks. For arch-specific masks (i.e.
 # mask everywhere, unmask on arch/*) use arch/base.
 
+# Jan Ziak <0xe2.0x9a.0x9b@gmail.com> (14 Mar 2018)
+# Mask local USE flag to satisfy repoman
+app-emulation/fuse backend-svga
+
+# Pacho Ramos <pacho@gentoo.org> (13 Mar 2018)
+# libewf is going to be removed, bug #547418
+app-admin/testdisk ewf
+app-forensics/sleuthkit ewf
+
+# Patrick McLean <chutzpah@gentoo.org> (6 Mar 2018)
+# Requires dev-libs/boost-1.66 that is unkeyworded/masked
+>=sys-cluster/ceph-12.2.4 system-boost
+
+# Brian Evans <grknight@gentoo.org> (5 Mar 2018)
+# Mask embedded USE on virtual/mysql to transition it to be obsolete
+>=virtual/mysql-5.6-r11 embedded
+
+# Brian Evans <grknight@gentoo.org> (28 Feb 2018)
+# Mask client-libs USE to force users to install alternative standard pacakges
+>=dev-db/mariadb-10.2.13 client-libs
+>=dev-db/mysql-5.7 client-libs
+>=dev-db/percona-server-5.7 client-libs
+
+# Andreas Sturmlechner <asturm@gentoo.org> (25 Feb 2018)
+# Depends on obsolete media-libs/phonon[qt4]
+dev-qt/designer:4 phonon
+dev-qt/qtdemo:4 phonon
+dev-python/PyQt4 phonon
+dev-python/pyside:0 phonon
+
+# Brian Evans <grknight@gentoo.org> (22 Feb 2018)
+# Depends on vulnerable dev-php/ZendFramework which is masked for removal
+www-apps/postfixadmin xmlrpc
+
 # Andreas Sturmlechner <asturm@gentoo.org> (10 Feb 2018)
 # Depends on unreleased media-libs/libaom, and 9999 is currently broken
 media-video/vlc aom
@@ -62,10 +96,6 @@ dev-java/oracle-jre-bin:9 gentoo-vm
 # Andreas K. Hüttel <dilfridge@gentoo.org> (04 Nov 2017)
 # Requires audacious, which is masked. Bug 632513
 =media-libs/freeverb3-3.1.2_pre20151102-r1 jack
-
-# Andreas Sturmlechner <asturm@gentoo.org> (29 Oct 2017)
-# Depends on deprecated x11-libs/qscintilla[qt4]/qt4, bug #634972
-net-analyzer/linkchecker X
 
 # Andreas Sturmlechner <asturm@gentoo.org> (16 Oct 2017)
 # USE=qt4 depends on masked dev-qt/qtwebkit:4, bug #620754
@@ -152,12 +182,6 @@ media-video/mpv libav
 # Mask due to bug #621810
 dev-games/simgear gdal
 games-simulation/flightgear gdal
-
-# Michał Górny <mgorny@gentoo.org> (05 Jun 2017)
-# (on behalf of Treecleaner project)
-# dev-cpp/libgnomeuimm is masked for removal, mask flags that require
-# it.
-app-cdr/cdrdao gcdmaster
 
 # Michał Górny <mgorny@gentoo.org> (05 Jun 2017)
 # (on behalf of Treecleaner project)

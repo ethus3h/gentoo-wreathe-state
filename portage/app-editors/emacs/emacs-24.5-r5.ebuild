@@ -32,8 +32,6 @@ RDEPEND="sys-libs/ncurses:0=
 	ssl? ( net-libs/gnutls:0= )
 	zlib? ( sys-libs/zlib )
 	X? (
-		media-libs/fontconfig
-		media-libs/freetype
 		x11-libs/libICE
 		x11-libs/libSM
 		x11-libs/libX11
@@ -51,6 +49,8 @@ RDEPEND="sys-libs/ncurses:0=
 		xpm? ( x11-libs/libXpm )
 		imagemagick? ( >=media-gfx/imagemagick-6.6.2:0= )
 		xft? (
+			media-libs/fontconfig
+			media-libs/freetype
 			x11-libs/libXft
 			x11-libs/libXrender
 			m17n-lib? (
@@ -65,7 +65,6 @@ RDEPEND="sys-libs/ncurses:0=
 		!gtk? (
 			motif? (
 				>=x11-libs/motif-2.3:0
-				x11-libs/libXp
 				x11-libs/libXpm
 				x11-libs/libXmu
 				x11-libs/libXt
@@ -225,8 +224,8 @@ src_configure() {
 }
 
 src_compile() {
-	export SANDBOX_ON=0			# for the unbelievers, see Bug #131505
-	emake
+	# Disable sandbox when dumping. For the unbelievers, see bug #131505
+	emake RUN_TEMACS="env SANDBOX_ON=0 LD_PRELOAD= ./temacs"
 }
 
 src_install () {
@@ -272,7 +271,7 @@ src_install () {
 		cdir="/usr/src/debug/${CATEGORY}/${PF}/${S#"${WORKDIR}/"}/src"
 	fi
 
-	sed -e "${cdir:+#}/^Y/d" -e "s/^[XY]//" >"${T}/${SITEFILE}" <<-EOF
+	sed -e "${cdir:+#}/^Y/d" -e "s/^[XY]//" >"${T}/${SITEFILE}" <<-EOF || die
 	X
 	;;; ${PN}-${SLOT} site-lisp configuration
 	X
@@ -339,11 +338,6 @@ pkg_preinst() {
 
 pkg_postinst() {
 	elisp-site-regen
-
-	local pvr
-	for pvr in ${REPLACING_VERSIONS}; do
-		[[ ${pvr%%[-_]*} = 24.[12] ]] && FORCE_PRINT_ELOG=1
-	done
 	readme.gentoo_print_elog
 
 	if use livecd; then

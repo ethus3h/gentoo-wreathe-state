@@ -56,7 +56,7 @@ COMMON_DEPEND=">=sys-apps/util-linux-2.30:0=[${MULTILIB_USEDEP}]
 	pam? ( virtual/pam:=[${MULTILIB_USEDEP}] )
 	pcre? ( dev-libs/libpcre2 )
 	qrcode? ( media-gfx/qrencode:0= )
-	seccomp? ( >=sys-libs/libseccomp-2.3.1:0= )
+	seccomp? ( >=sys-libs/libseccomp-2.3.3:0= )
 	selinux? ( sys-libs/libselinux:0= )
 	xkb? ( >=x11-libs/libxkbcommon-0.4.1:0= )
 	abi_x86_32? ( !<=app-emulation/emul-linux-x86-baselibs-20130224-r9
@@ -238,7 +238,7 @@ multilib_src_configure() {
 		-Ddbus=$(meson_multilib_native_use test)
 		-Dxkbcommon=$(meson_multilib_native_use xkb)
 		# hardcode a few paths to spare some deps
-		-Dpath-kill=/bin/kill
+		-Dkill-path=/bin/kill
 		-Dntp-servers="0.gentoo.pool.ntp.org 1.gentoo.pool.ntp.org 2.gentoo.pool.ntp.org 3.gentoo.pool.ntp.org"
 		# Breaks screen, tmux, etc.
 		-Ddefault-kill-user-processes=false
@@ -300,17 +300,12 @@ multilib_src_install_all() {
 	einstalldocs
 	dodoc "${FILESDIR}"/nsswitch.conf
 
-	if use sysv-utils; then
-		local app
-		for app in halt poweroff reboot runlevel shutdown telinit; do
-			dosym ../bin/systemctl /sbin/${app}
-		done
-		dosym ../lib/systemd/systemd /sbin/init
-	else
-		# we just keep sysvinit tools, so no need for the mans
-		rm "${ED%/}"/usr/share/man/man8/{halt,poweroff,reboot,runlevel,shutdown,telinit}.8 \
-			|| die
+	if ! use sysv-utils; then
+		local rootprefix=$(usex usrmerge /usr '')
+		rm "${ED%/}${rootprefix}"/sbin/{halt,init,poweroff,reboot,runlevel,shutdown,telinit} || die
+		rmdir "${ED%/}${rootprefix}"/sbin || die
 		rm "${ED%/}"/usr/share/man/man1/init.1 || die
+		rm "${ED%/}"/usr/share/man/man8/{halt,poweroff,reboot,runlevel,shutdown,telinit}.8 || die
 	fi
 
 	# Preserve empty dirs in /etc & /var, bug #437008

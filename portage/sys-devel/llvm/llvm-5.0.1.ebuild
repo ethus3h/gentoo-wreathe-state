@@ -35,7 +35,7 @@ LICENSE="UoI-NCSA rc BSD public-domain
 SLOT="$(ver_cut 1)"
 KEYWORDS="amd64 ~arm ~arm64 x86 ~amd64-linux ~ppc-macos ~x64-macos ~x86-macos"
 IUSE="debug doc gold libedit +libffi ncurses test
-	kernel_Darwin ${ALL_LLVM_TARGETS[*]}"
+	kernel_Darwin kernel_linux ${ALL_LLVM_TARGETS[*]}"
 
 RDEPEND="
 	sys-libs/zlib:0=
@@ -145,6 +145,7 @@ multilib_src_configure() {
 			-DLLVM_INSTALL_UTILS=ON
 		)
 		use doc && mycmakeargs+=(
+			-DCMAKE_INSTALL_MANDIR="${EPREFIX}/usr/lib/llvm/${SLOT}/share/man"
 			-DLLVM_INSTALL_SPHINX_HTML_DIR="${EPREFIX}/usr/share/doc/${PF}/html"
 			-DSPHINX_WARNINGS_AS_ERRORS=OFF
 		)
@@ -211,10 +212,12 @@ multilib_src_install() {
 	rm -rf "${ED%/}"/usr/include || die
 	mv "${ED%/}"/usr/lib/llvm/${SLOT}/include "${ED%/}"/usr/include || die
 
-	# install fuzzer libraries for clang (cmake rules were added in 6)
-	# https://bugs.gentoo.org/636840
-	into "/usr/lib/llvm/${SLOT}"
-	dolib.a "$(get_libdir)"/libLLVMFuzzer*.a
+	if use kernel_linux || use kernel_Darwin; then
+		# install fuzzer libraries for clang (cmake rules were added in 6)
+		# https://bugs.gentoo.org/636840
+		into "/usr/lib/llvm/${SLOT}"
+		dolib.a "$(get_libdir)"/libLLVMFuzzer*.a
+	fi
 
 	LLVM_LDPATHS+=( "${EPREFIX}/usr/lib/llvm/${SLOT}/$(get_libdir)" )
 }
