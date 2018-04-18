@@ -15,7 +15,7 @@ SRC_URI="https://downloadmirror.intel.com/${NUM}/eng/microcode-${PV}.tgz"
 
 LICENSE="intel-ucode"
 SLOT="0"
-KEYWORDS="-* ~amd64 ~x86"
+KEYWORDS="-* amd64 x86"
 IUSE="initramfs +split-ucode"
 REQUIRED_USE="|| ( initramfs split-ucode )"
 
@@ -24,7 +24,7 @@ RDEPEND="!<sys-apps/microcode-ctl-1.17-r2" #268586
 
 S=${WORKDIR}
 
-# TODO: 
+# TODO:
 # Blacklist bad microcode here.
 DEFAULT_MICROCODE_SIGNATURES=""
 

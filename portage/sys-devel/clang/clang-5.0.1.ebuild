@@ -30,7 +30,7 @@ LLVM_TARGET_USEDEPS=${ALL_LLVM_TARGETS[@]/%/?}
 
 LICENSE="UoI-NCSA"
 SLOT="$(ver_cut 1)"
-KEYWORDS="amd64 ~arm64 x86 ~amd64-linux ~ppc-macos ~x64-macos ~x86-macos"
+KEYWORDS="amd64 ~arm64 x86 ~amd64-fbsd ~amd64-linux ~ppc-macos ~x64-macos ~x86-macos"
 IUSE="debug default-compiler-rt default-libcxx doc +static-analyzer
 	test xml z3 kernel_FreeBSD ${ALL_LLVM_TARGETS[*]}"
 
@@ -64,13 +64,6 @@ S=${WORKDIR}/x/y/${MY_P}
 
 # least intrusive of all
 CMAKE_BUILD_TYPE=RelWithDebInfo
-
-PATCHES=(
-	# fix finding compiler-rt libs
-	"${FILESDIR}"/5.0.1/0001-Driver-Use-arch-type-to-find-compiler-rt-libraries-o.patch
-	# add Prefix include paths for Darwin
-	"${FILESDIR}"/5.0.1/darwin_prefix-include-paths.patch
-)
 
 # Multilib notes:
 # 1. ABI_* flags control ABIs libclang* is built for only.
@@ -113,6 +106,18 @@ src_unpack() {
 }
 
 src_prepare() {
+	# fix finding compiler-rt libs
+	eapply "${FILESDIR}"/5.0.1/0001-Driver-Use-arch-type-to-find-compiler-rt-libraries-o.patch
+	# fix setting LD_LIBRARY_PATH for tests on *BSD
+	eapply "${FILESDIR}"/5.0.1/0002-test-Fix-clang-test-for-FreeBSD-and-NetBSD.patch
+	# add Prefix include paths for Darwin
+	eapply "${FILESDIR}"/5.0.1/darwin_prefix-include-paths.patch
+
+	cd tools/extra || die
+	# fix setting LD_LIBRARY_PATH for tests on *BSD (extra part)
+	eapply "${FILESDIR}"/5.0.1/extra/0001-Assume-the-shared-library-path-variable-is-LD_LIBRAR.patch
+	cd ../.. || die
+
 	cmake-utils_src_prepare
 	eprefixify lib/Frontend/InitHeaderSearch.cpp
 }
@@ -175,6 +180,12 @@ multilib_src_configure() {
 	else
 		mycmakeargs+=(
 			-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF
+		)
+	fi
+
+	if [[ -n ${EPREFIX} ]]; then
+		mycmakeargs+=(
+			-DGCC_INSTALL_PREFIX="${EPREFIX}/usr"
 		)
 	fi
 
@@ -298,6 +309,11 @@ pkg_postinst() {
 	if [[ ${ROOT} == / && -f ${EPREFIX}/usr/share/eselect/modules/compiler-shadow.eselect ]] ; then
 		eselect compiler-shadow update all
 	fi
+
+	elog "You can find additional utility scripts in:"
+	elog "  ${EROOT}/usr/lib/llvm/${SLOT}/share/clang"
+	elog "To use these scripts, you will need Python 2.7. Some of them are vim"
+	elog "integration scripts (with instructions inside)."
 }
 
 pkg_postrm() {

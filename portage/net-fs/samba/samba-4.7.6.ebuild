@@ -15,7 +15,7 @@ SRC_PATH="stable"
 
 SRC_URI="mirror://samba/${SRC_PATH}/${MY_P}.tar.gz"
 [[ ${PV} = *_rc* ]] || \
-KEYWORDS="~amd64 ~arm64 ~x86"
+KEYWORDS="~amd64 ~arm64 ~hppa ~x86"
 
 DESCRIPTION="Samba Suite Version 4"
 HOMEPAGE="http://www.samba.org/"
@@ -77,7 +77,12 @@ CDEPEND="
 	ldap? ( net-nds/openldap[${MULTILIB_USEDEP}] )
 	system-heimdal? ( >=app-crypt/heimdal-1.5[-ssl,${MULTILIB_USEDEP}] )
 	system-mitkrb5? ( >=app-crypt/mit-krb5-1.15.1[${MULTILIB_USEDEP}] )
-	systemd? ( sys-apps/systemd:0= )"
+	systemd? ( sys-apps/systemd:0= )
+	|| (
+		net-libs/libnsl
+		<sys-libs/glibc-2.26[rpc(+)]
+	)
+"
 DEPEND="${CDEPEND}
 	${PYTHON_DEPS}
 	app-text/docbook-xsl-stylesheets
@@ -103,13 +108,16 @@ RDEPEND="${CDEPEND}
 	!dev-perl/Parse-Yapp
 "
 
-REQUIRED_USE="addc? ( python gnutls )
-	test? ( python )
+REQUIRED_USE="
+	addc? ( python gnutls )
 	addns? ( python )
 	ads? ( acl gnutls ldap )
+	cluster? ( ads )
 	gpg? ( addc )
+	test? ( python )
 	?? ( system-heimdal system-mitkrb5 )
-	${PYTHON_REQUIRED_USE}"
+	${PYTHON_REQUIRED_USE}
+"
 
 # the test suite is messed, it uses system-installed samba
 # bits instead of what was built, tests things disabled via use
@@ -164,7 +172,7 @@ src_prepare() {
 }
 
 multilib_src_configure() {
-	# when specifying libs for samba build you must append NONE to the end to 
+	# when specifying libs for samba build you must append NONE to the end to
 	# stop it automatically including things
 	local bundled_libs="NONE"
 	if ! use system-heimdal && ! use system-mitkrb5 ; then

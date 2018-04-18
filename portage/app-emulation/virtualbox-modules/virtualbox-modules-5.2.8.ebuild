@@ -10,7 +10,7 @@ inherit eutils linux-mod user
 
 MY_P=vbox-kernel-module-src-${PV}
 DESCRIPTION="Kernel Modules for Virtualbox"
-HOMEPAGE="http://www.virtualbox.org/"
+HOMEPAGE="https://www.virtualbox.org/"
 SRC_URI="https://dev.gentoo.org/~polynomial-c/virtualbox/${MY_P}.tar.xz"
 
 LICENSE="GPL-2"
@@ -39,7 +39,7 @@ pkg_setup() {
 
 src_prepare() {
 	if use pax_kernel && kernel_is -ge 3 0 0 ; then
-		eapply "${FILESDIR}"/${PN}-4.1.4-pax-const.patch
+		eapply -p0 "${FILESDIR}"/${PN}-5.2.8-pax-const.patch
 	fi
 
 	default

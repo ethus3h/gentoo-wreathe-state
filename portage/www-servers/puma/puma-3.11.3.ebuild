@@ -3,7 +3,7 @@
 
 EAPI=6
 
-USE_RUBY="ruby22 ruby23 ruby24"
+USE_RUBY="ruby22 ruby23 ruby24 ruby25"
 
 RUBY_FAKEGEM_RECIPE_DOC="rdoc"
 
@@ -15,7 +15,7 @@ SRC_URI="https://github.com/puma/puma/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="3"
-KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~x86"
 IUSE=""
 
 DEPEND+=" dev-libs/openssl:0 test? ( net-misc/curl )"

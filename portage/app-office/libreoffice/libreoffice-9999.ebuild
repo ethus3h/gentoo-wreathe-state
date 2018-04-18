@@ -142,7 +142,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 		gnome-base/dconf
 		gnome-extra/evolution-data-server
 	)
-	firebird? ( >=dev-db/firebird-3.0.2.32703.0-r1 )
+	firebird? ( >=dev-db/firebird-3.0.2.32703.0-r1[server] )
 	gstreamer? (
 		media-libs/gstreamer:1.0
 		media-libs/gst-plugins-base:1.0
@@ -184,7 +184,7 @@ RDEPEND="${COMMON_DEPEND}
 	media-fonts/libertine
 	|| ( x11-misc/xdg-utils kde-plasma/kde-cli-tools )
 	java? ( >=virtual/jre-1.6 )
-	kde? ( kde-frameworks/oxygen-icons:* )
+	kde? ( kde-frameworks/breeze-icons:* )
 	vlc? ( media-video/vlc )
 "
 
@@ -481,6 +481,8 @@ src_configure() {
 		use libreoffice_extensions_scripting-javascript && \
 			myeconfargs+=( --with-rhino-jar=$(java-pkg_getjar rhino-1.6 js.jar) )
 	fi
+
+	is-flagq "-flto*" && myeconfargs+=( --enable-lto )
 
 	econf "${myeconfargs[@]}"
 }

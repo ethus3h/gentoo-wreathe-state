@@ -7,12 +7,12 @@ EAPI=6
 inherit eutils autotools systemd
 
 DESCRIPTION="LXDE Display Manager"
-HOMEPAGE="http://lxde.org"
+HOMEPAGE="https://wiki.lxde.org/en/LXDM"
 SRC_URI="mirror://sourceforge/lxde/${P}.tar.xz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~ppc ~x86"
+KEYWORDS="amd64 ~arm ~ppc x86"
 
 IUSE="consolekit debug gtk3 nls pam"
 

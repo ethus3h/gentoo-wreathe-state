@@ -3,7 +3,7 @@
 
 EAPI="2"
 
-inherit flag-o-matic eutils toolchain-funcs multilib
+inherit flag-o-matic eutils toolchain-funcs multilib xdg-utils
 
 DESCRIPTION="A portable, bytecode-compiled implementation of Common Lisp"
 HOMEPAGE="http://clisp.sourceforge.net/"
@@ -61,6 +61,7 @@ src_prepare() {
 	if use alpha || use ia64; then
 		sed -i -e 's/-O2//g' src/makemake.in || die
 	fi
+	xdg_environment_reset
 }
 
 src_configure() {
@@ -144,9 +145,6 @@ src_install() {
 	doman clisp.1 || die
 	dodoc SUMMARY README* NEWS MAGIC.add ANNOUNCE || die
 	fperms a+x /usr/$(get_libdir)/clisp-${PV/_*/}/clisp-link || die
-	# stripping them removes common symbols (defined but uninitialised variables)
-	# which are then needed to build modules...
-	export STRIP_MASK="*/usr/$(get_libdir)/clisp-${PV}/*/*"
 	popd
 	dohtml doc/impnotes.{css,html} doc/regexp.html doc/clisp.png || die
 	dodoc doc/{CLOS-guide,LISP-tutorial}.txt || die

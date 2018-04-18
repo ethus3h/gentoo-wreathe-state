@@ -51,6 +51,7 @@ RDEPEND="${RDEPEND}
 	!<sys-devel/llvm-4.0.0_rc:0
 	!sys-devel/clang:0"
 PDEPEND="
+	sys-devel/clang-common
 	~sys-devel/clang-runtime-${PV}
 	default-compiler-rt? ( =sys-libs/compiler-rt-${PV%_*}* )
 	default-libcxx? ( >=sys-libs/libcxx-${PV} )"
@@ -98,7 +99,8 @@ src_unpack() {
 		"${S}"/tools/extra
 	if use test; then
 		git-r3_checkout https://llvm.org/git/llvm.git \
-			"${WORKDIR}"/llvm '' utils/{lit,llvm-lit,unittest}
+			"${WORKDIR}"/llvm '' \
+			lib/Testing/Support utils/{lit,llvm-lit,unittest}
 	fi
 	git-r3_checkout "${EGIT_REPO_URI}" "${S}"
 }
@@ -165,6 +167,12 @@ multilib_src_configure() {
 		)
 	fi
 
+	if [[ -n ${EPREFIX} ]]; then
+		mycmakeargs+=(
+			-DGCC_INSTALL_PREFIX="${EPREFIX}/usr"
+		)
+	fi
+
 	if tc-is-cross-compiler; then
 		[[ -x "/usr/bin/clang-tblgen" ]] \
 			|| die "/usr/bin/clang-tblgen not found or usable"
@@ -211,19 +219,19 @@ src_install() {
 	# Apply CHOST and version suffix to clang tools
 	# note: we use two version components here (vs 3 in runtime path)
 	local llvm_version=$(llvm-config --version) || die
-	local clang_version=$(ver_cut 1-2 "${llvm_version}")
+	local clang_version=$(ver_cut 1 "${llvm_version}")
 	local clang_full_version=$(ver_cut 1-3 "${llvm_version}")
 	local clang_tools=( clang clang++ clang-cl clang-cpp )
 	local abi i
 
 	# cmake gives us:
-	# - clang-X.Y
-	# - clang -> clang-X.Y
+	# - clang-X
+	# - clang -> clang-X
 	# - clang++, clang-cl, clang-cpp -> clang
 	# we want to have:
-	# - clang-X.Y
-	# - clang++-X.Y, clang-cl-X.Y, clang-cpp-X.Y -> clang-X.Y
-	# - clang, clang++, clang-cl, clang-cpp -> clang*-X.Y
+	# - clang-X
+	# - clang++-X, clang-cl-X, clang-cpp-X -> clang-X
+	# - clang, clang++, clang-cl, clang-cpp -> clang*-X
 	# also in CHOST variant
 	for i in "${clang_tools[@]:1}"; do
 		rm "${ED%/}/usr/lib/llvm/${SLOT}/bin/${i}" || die
@@ -275,6 +283,13 @@ pkg_postinst() {
 	if [[ ${ROOT} == / && -f ${EPREFIX}/usr/share/eselect/modules/compiler-shadow.eselect ]] ; then
 		eselect compiler-shadow update all
 	fi
+
+	elog "You can find additional utility scripts in:"
+	elog "  ${EROOT}/usr/lib/llvm/${SLOT}/share/clang"
+	elog "To use these scripts, you will need Python 2.7. Some of them are vim"
+	elog "integration scripts (with instructions inside). The run-clang-tidy.py"
+	elog "scripts requires the following additional package:"
+	elog "  dev-python/pyyaml"
 }
 
 pkg_postrm() {

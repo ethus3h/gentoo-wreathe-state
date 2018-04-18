@@ -1,5 +1,22 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+
+# Michał Górny <mgorny@gentoo.org> (15 Apr 2018)
+# Unkeyworded deps.
+net-misc/curl curl_ssl_axtls
+
+# Michał Górny <mgorny@gentoo.org> (15 Apr 2018)
+# Unkeyworded dep masks moved from default/linux/ia64 tree.
+mail-client/mutt notmuch
+mail-mta/exim redis
+
+# Sergei Trofimovich <slyfox@gentoo.org> (18 Mar 2018)
+# Many unkeyworded rails deps, bug #650642
+net-analyzer/wireshark doc
+
+# Sergei Trofimovich <slyfox@gentoo.org> (18 Mar 2018)
+# unkeyworded deps, bug #552330
+app-portage/g-sorcery bson
 
 # Mart Raudsepp <leio@gentoo.org> (08 Jan 2018)
 # mail-client/evolution[ytnef] requires net-mail/ytnef which is not keyworded

@@ -1,8 +1,8 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-inherit eutils flag-o-matic multilib toolchain-funcs
+inherit eutils flag-o-matic multilib toolchain-funcs xdg-utils
 
 DESCRIPTION="A portable, bytecode-compiled implementation of Common Lisp"
 HOMEPAGE="http://clisp.sourceforge.net/"
@@ -61,6 +61,8 @@ src_prepare() {
 	epatch "${FILESDIR}"/${P}-bits_ipctypes_to_sys_ipc.patch
 	epatch "${FILESDIR}"/${P}-get_hostname.patch
 	epatch "${FILESDIR}"/${P}-tinfo.patch
+
+	xdg_environment_reset
 }
 
 src_configure() {
@@ -138,9 +140,6 @@ src_install() {
 	make DESTDIR="${D}" prefix=/usr install-bin || die "Installation failed"
 	doman clisp.1
 	dodoc ../SUMMARY README* ../src/NEWS ../unix/MAGIC.add ../ANNOUNCE
-	# stripping them removes common symbols (defined but uninitialised variables)
-	# which are then needed to build modules...
-	export STRIP_MASK="*/usr/$(get_libdir)/clisp-${PV}/*/*"
 	popd
 	dohtml doc/impnotes.{css,html} doc/regexp.html doc/clisp.png
 	dodoc doc/{CLOS-guide,LISP-tutorial}.txt

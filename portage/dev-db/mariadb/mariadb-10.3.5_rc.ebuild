@@ -44,7 +44,7 @@ REQUIRED_USE="jdbc? ( extraengine server !static )
 	static? ( yassl !pam )"
 
 # REMEMBER: also update eclass/mysql*.eclass before committing!
-KEYWORDS="~amd64 ~arm ~hppa ~ia64 ~ppc64 ~sparc ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc64 ~sparc ~x86"
 
 # Shorten the path because the socket path length must be shorter than 107 chars
 # and we will run a mysql server during test phase
@@ -853,11 +853,11 @@ pkg_config() {
 
 		unset tmp_mysqld_password_source
 	fi
-	MYSQL_TMPDIR="$(_getoptval '--mysqld' tmpdir)"
+	MYSQL_TMPDIR="$(_getoptval mysqld tmpdir)"
 	# These are dir+prefix
-	MYSQL_RELAY_LOG="$(_getoptval '--mysqld' relay-log)"
+	MYSQL_RELAY_LOG="$(_getoptval mysqld relay-log)"
 	MYSQL_RELAY_LOG=${MYSQL_RELAY_LOG%/*}
-	MYSQL_LOG_BIN="$(_getoptval '--mysqld' log-bin)"
+	MYSQL_LOG_BIN="$(_getoptval mysqld log-bin)"
 	MYSQL_LOG_BIN=${MYSQL_LOG_BIN%/*}
 
 	if [[ ! -d "${ROOT}/$MYSQL_TMPDIR" ]]; then

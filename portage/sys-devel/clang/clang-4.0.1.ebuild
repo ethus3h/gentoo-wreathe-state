@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -101,7 +101,7 @@ src_prepare() {
 	cd tools/extra || die
 	# fix stand-alone test build for extra tools
 	eapply "${FILESDIR}"/4.0.1/extra/0001-test-Fix-test-dependencies-when-using-installed-tool.patch
-	eapply "${FILESDIR}"/5.0.1/extra/0002-test-Fix-clang-library-dir-in-LD_LIBRARY_PATH-For-st.patch
+	eapply "${FILESDIR}"/4.0.1/extra/0002-test-Fix-clang-library-dir-in-LD_LIBRARY_PATH-For-st.patch
 	cd - >/dev/null || die
 
 	# User patches
@@ -161,6 +161,12 @@ multilib_src_configure() {
 	else
 		mycmakeargs+=(
 			-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF
+		)
+	fi
+
+	if [[ -n ${EPREFIX} ]]; then
+		mycmakeargs+=(
+			-DGCC_INSTALL_PREFIX="${EPREFIX}/usr"
 		)
 	fi
 

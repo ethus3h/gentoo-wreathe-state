@@ -38,6 +38,11 @@
       <role>Lead</role>
     </member>
     <member>
+      <email>bman@gentoo.org</email>
+      <name>Aaron Bauman</name>
+      <role>Developer</role>
+    </member>
+    <member>
       <email>chainsaw@gentoo.org</email>
       <name>Tony Vroon</name>
       <role>Developer</role>
@@ -372,6 +377,10 @@
       <role>base-system team lead</role>
     </member>
     <member>
+      <email>radhermit@gentoo.org</email>
+      <name>Tim Harder</name>
+    </member>
+    <member>
       <email>robbat2@gentoo.org</email>
       <name>Robin Johnson</name>
       <role>Specialized block devices and lots of other miscellaneous stuff</role>
@@ -640,14 +649,6 @@
       <name>Jorge Manuel B. S. Vicetto</name>
     </member>
     <member>
-      <email>kensington@gentoo.org</email>
-      <name>Michael Palimaka</name>
-    </member>
-    <member>
-      <email>keytoaster@gentoo.org</email>
-      <name>Tobias Heinlein</name>
-    </member>
-    <member>
       <email>k_f@gentoo.org</email>
       <name>Kristian Fiskerstrand</name>
     </member>
@@ -658,10 +659,6 @@
     <member>
       <email>pacho@gentoo.org</email>
       <name>Pacho Ramos</name>
-    </member>
-    <member>
-      <email>tommy@gentoo.org</email>
-      <name>Thomas Sachau</name>
     </member>
     <member>
       <email>zlogene@gentoo.org</email>
@@ -1018,22 +1015,6 @@
     </member>
   </project>
   <project>
-    <email>enlightenment@gentoo.org</email>
-    <name>Project Enlightenment</name>
-    <url>https://wiki.gentoo.org/wiki/Project:Enlightenment</url>
-    <description>Project Enlightenment maintains efl packages including e17</description>
-    <member is-lead="1">
-      <email>tommy@gentoo.org</email>
-      <name>Thomas Sachau</name>
-      <role>Lead</role>
-    </member>
-    <member>
-      <email>vapier@gentoo.org</email>
-      <name>Mike Frysinger</name>
-      <role>Member</role>
-    </member>
-  </project>
-  <project>
     <email>eselect@gentoo.org</email>
     <name>eselect configuration and management tool</name>
     <url>https://wiki.gentoo.org/wiki/Project:Eselect</url>
@@ -1210,10 +1191,6 @@
     <member>
       <email>eva@gentoo.org</email>
       <name>Gilles Dartiguelongue</name>
-    </member>
-    <member>
-      <email>kensington@gentoo.org</email>
-      <name>Michael Palimaka</name>
     </member>
     <member>
       <email>mrueg@gentoo.org</email>
@@ -1433,10 +1410,6 @@
       <name>Göktürk Yüksek</name>
       <role>Lead</role>
     </member>
-    <member>
-      <email>kensington@gentoo.org</email>
-      <name>Michael Palimaka</name>
-    </member>
   </project>
   <project>
     <email>sci-geosciences@gentoo.org</email>
@@ -1467,7 +1440,7 @@
     <member>
       <email>kensington@gentoo.org</email>
       <name>Michael Palimaka</name>
-      <role>Member</role>
+      <role>Administrator</role>
     </member>
     <member>
       <email>mgorny@gentoo.org</email>
@@ -1563,6 +1536,11 @@
       <role>Hardened sources</role>
     </member>
     <member>
+      <email>chutzpah@gentoo.org</email>
+      <name>Patrick McLean</name>
+      <role>PaX markings</role>
+    </member>
+    <member>
       <email>klondike@gentoo.org</email>
       <name>Francisco Blas Izquierdo Riera</name>
       <role>Documentation, PR</role>
@@ -1586,6 +1564,16 @@
       <email>swift@gentoo.org</email>
       <name>Sven Vermeulen</name>
       <role>Integrity, SELinux</role>
+    </member>
+    <member>
+      <email>williamh@gentoo.org</email>
+      <name>William Hubbs</name>
+      <role>PaX markings</role>
+    </member>
+    <member>
+      <email>wizardedit@gentoo.org</email>
+      <name>Austin English</name>
+      <role>PaX markings</role>
     </member>
     <member is-lead="1">
       <email>zorry@gentoo.org</email>
@@ -2021,10 +2009,6 @@
       <name>Johannes Huber</name>
     </member>
     <member>
-      <email>kensington@gentoo.org</email>
-      <name>Michael Palimaka</name>
-    </member>
-    <member>
       <email>mrueg@gentoo.org</email>
       <name>Manuel Rüger</name>
     </member>
@@ -2062,6 +2046,11 @@
     <member is-lead="1">
       <email>blueness@gentoo.org</email>
       <name>Anthony G. Basile</name>
+      <role>Developer</role>
+    </member>
+    <member>
+      <email>bman@gentoo.org</email>
+      <name>Aaron Bauman</name>
       <role>Developer</role>
     </member>
     <member>
@@ -2117,6 +2106,11 @@
     <member>
       <email>nimiux@gentoo.org</email>
       <name>Chema Alonso Josa</name>
+      <role>Developer</role>
+    </member>
+    <member>
+      <email>ulm@gentoo.org</email>
+      <name>Ulrich Müller</name>
       <role>Developer</role>
     </member>
   </project>
@@ -2504,6 +2498,7 @@ developers and volunteer mentors.</description>
     <member>
       <email>kensington@gentoo.org</email>
       <name>Michael Palimaka</name>
+      <role>Git</role>
     </member>
     <member is-lead="1">
       <email>mgorny@gentoo.org</email>
@@ -2932,11 +2927,6 @@ developers and volunteer mentors.</description>
       <role>Deputy lead</role>
     </member>
     <member>
-      <email>kensington@gentoo.org</email>
-      <name>Michael Palimaka</name>
-      <role>Member</role>
-    </member>
-    <member>
       <email>k_f@gentoo.org</email>
       <name>Kristian Fiskerstrand</name>
       <role>Member</role>
@@ -3101,6 +3091,11 @@ developers and volunteer mentors.</description>
     <member>
       <email>prometheanfire@gentoo.org</email>
       <name>Matthew Thode</name>
+      <role>Member</role>
+    </member>
+    <member>
+      <email>radhermit@gentoo.org</email>
+      <name>Tim Harder</name>
       <role>Member</role>
     </member>
     <member>
@@ -3542,12 +3537,6 @@ developers and volunteer mentors.</description>
     </member>
   </project>
   <project>
-    <email>suse@gentoo.org</email>
-    <name>SUSE</name>
-    <url>https://wiki.gentoo.org/wiki/Project:SUSE</url>
-    <description>This project manages all various rpm based tools for working with OBS and rpmbuild</description>
-  </project>
-  <project>
     <email>samba@gentoo.org</email>
     <name>Samba</name>
     <url>https://wiki.gentoo.org/wiki/Project:Samba</url>
@@ -3675,30 +3664,30 @@ developers and volunteer mentors.</description>
       <name>Sean Amoss</name>
       <role>GLSA Coordinator</role>
     </member>
-    <member is-lead="1">
+    <member>
       <email>blueknight@gentoo.org</email>
       <name>Yury German</name>
-      <role>Team lead</role>
+      <role>GLSA Coordinator</role>
     </member>
     <member>
       <email>bman@gentoo.org</email>
       <name>Aaron Bauman</name>
       <role>GLSA Coordinator</role>
     </member>
-    <member>
+    <member is-lead="1">
       <email>chrisadr@gentoo.org</email>
       <name>Christopher Díaz Riveros</name>
-      <role>GLSA Coordinator</role>
+      <role>Team lead</role>
     </member>
     <member>
       <email>creffett@gentoo.org</email>
       <name>Chris Reffett</name>
       <role>GLSA Coordinator</role>
     </member>
-    <member>
+    <member is-lead="1">
       <email>k_f@gentoo.org</email>
       <name>Kristian Fiskerstrand</name>
-      <role>GLSA Coordinator</role>
+      <role>Team lead</role>
     </member>
     <member>
       <email>pinkbyte@gentoo.org</email>
@@ -3972,11 +3961,6 @@ developers and volunteer mentors.</description>
       <role>Member</role>
     </member>
     <member>
-      <email>kensington@gentoo.org</email>
-      <name>Michael Palimaka</name>
-      <role>Member</role>
-    </member>
-    <member>
       <email>mgorny@gentoo.org</email>
       <name>Michał Górny</name>
       <role>Member</role>
@@ -4074,6 +4058,11 @@ developers and volunteer mentors.</description>
       <email>lu_zero@gentoo.org</email>
       <name>Luca Barbato</name>
       <role>Lead ( Gentoo/PPC work, mplayer, ffmpeg )</role>
+    </member>
+    <member>
+      <email>radhermit@gentoo.org</email>
+      <name>Tim Harder</name>
+      <role>Member</role>
     </member>
   </project>
   <project>

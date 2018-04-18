@@ -2,8 +2,16 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>tomboy64@sina.cn</email>
-		<name>M.B.</name>
+		<email>commendsarnex@gmail.com</email>
+		<name>Nick Sarnie</name>
+	</maintainer>
+	<maintainer type="person">
+		<email>eva@gentoo.org</email>
+		<name>Gilles Dartiguelongue</name>
+	</maintainer>
+	<maintainer type="project">
+		<email>proxy-maint@gentoo.org</email>
+		<name>Proxy Maintainers</name>
 	</maintainer>
 	<upstream>
 		<remote-id type="launchpad">~albertomilone</remote-id>

@@ -15,7 +15,7 @@ SRC_URI="${MY_URI}/${MY_SRC}.tar.gz"
 
 LICENSE="|| ( IBM EPL-2.0 )"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd"
 IUSE="+berkdb cdb doc dovecot-sasl +eai hardened ldap ldap-bind libressl lmdb memcached mbox mysql nis pam postgres sasl selinux sqlite ssl"
 
 DEPEND=">=dev-libs/libpcre-3.4
@@ -284,7 +284,7 @@ pkg_postinst() {
 		ewarn
 	fi
 
-	# check and fix file permissions 
+	# check and fix file permissions
 	"${EROOT}"/usr/sbin/postfix set-permissions 2>/dev/null
 
 	# configure tls

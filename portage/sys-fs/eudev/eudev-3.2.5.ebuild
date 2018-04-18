@@ -12,7 +12,7 @@ if [[ ${PV} = 9999* ]]; then
 	inherit git-r3
 else
 	SRC_URI="https://dev.gentoo.org/~blueness/${PN}/${P}.tar.gz"
-	KEYWORDS="alpha amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 sparc x86"
+	KEYWORDS="alpha amd64 arm arm64 ~hppa ~ia64 ~mips ppc ~ppc64 sparc x86"
 fi
 
 DESCRIPTION="Linux dynamic and persistent device naming support (aka userspace devfs)"
@@ -170,7 +170,7 @@ multilib_src_test() {
 }
 
 multilib_src_install_all() {
-	prune_libtool_files --all
+	find "${D}" -name '*.la' -delete || die
 
 	insinto /lib/udev/rules.d
 	doins "${FILESDIR}"/40-gentoo.rules

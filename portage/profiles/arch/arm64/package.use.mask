@@ -1,13 +1,31 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+# Michał Górny <mgorny@gentoo.org> (15 Apr 2018)
+# Unkeyworded dependencies.
+app-admin/syslog-ng mongodb
+
+# Mart Raudsepp <leio@gentoo.org> (08 Apr 2018)
+# Tests fail for bundled luajit, USE=luajit is globally
+# masked too (no-one has tested it yet).
+app-text/texlive-core luajittex
+dev-texlive/texlive-basic luajittex
+
+# Michał Górny <mgorny@gentoo.org> (03 Apr 2018)
+# Requires unported sys-libs/netbsd-csu.
+sys-devel/clang-runtime crt
+
+# Mart Raudsepp <leio@gentoo.org> (31 Mar 2018)
+# Boost.Context can be built on arm64
+dev-libs/boost -context
+
 # Michał Górny <mgorny@gentoo.org> (12 Mar 2018)
 # Requires masked net-misc/curl with libressl.
 dev-libs/libgit2 libressl
 
 # Michał Górny <mgorny@gentoo.org> (03 Mar 2018)
 # Requires masked dependent flags.
-net-fs/samba ads
+net-fs/samba addc addns ads cluster python test
 
 # Michał Górny <mgorny@gentoo.org> (03 Mar 2018)
 # Some more unkeyworded dependencies.
@@ -248,7 +266,7 @@ app-portage/g-sorcery bson
 
 # Thomas Deutschmann <whissi@gentoo.org> (01 Mar 2017)
 # Unkeyworded depedencies
-app-admin/rsyslog grok kafka mongodb normalize rabbitmq
+app-admin/rsyslog grok kafka kubernetes mongodb normalize rabbitmq
 
 # Michael Weber <xmw@gentoo.org> (01 Mar 2017)
 # untested dependencies
@@ -293,6 +311,7 @@ net-misc/tlsdate seccomp
 # Mike Frysinger <vapier@gentoo.org> (20 Jul 2015)
 # Mart Raudsepp <leio@gentoo.org> (04 Feb 2017)
 # Needs deps tested.
+dev-python/pycurl curl_ssl_libressl
 net-misc/curl curl_ssl_axtls curl_ssl_libressl metalink
 
 # Mike Frysinger <vapier@gentoo.org> (16 Mar 2015)
@@ -413,8 +432,8 @@ app-accessibility/speech-dispatcher flite
 # mask kde-apps/* flags due to unkeyworded dependencies
 kde-apps/kalzium editor solver
 kde-apps/okular chm
-kde-apps/kstars indi
 kde-apps/kdeutils-meta floppy
+sci-astronomy/kstars indi
 
 # Markus Meier <maekke@gentoo.org> (08 Dec 2012)
 # mask app-office/libreoffice java extensions

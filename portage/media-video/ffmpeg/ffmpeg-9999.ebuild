@@ -64,7 +64,7 @@ fi
 # foo is added to IUSE.
 FFMPEG_FLAG_MAP=(
 		+bzip2:bzlib cpudetection:runtime-cpudetect debug gcrypt gnutls gmp
-		+gpl +hardcoded-tables +iconv lzma +network openssl +postproc
+		+gpl +hardcoded-tables +iconv lzma +network opencl openssl +postproc
 		samba:libsmbclient sdl:ffplay sdl:sdl2 vaapi vdpau X:xlib xcb:libxcb
 		xcb:libxcb-shm xcb:libxcb-xfixes +zlib
 		# libavdevice options
@@ -92,7 +92,7 @@ FFMPEG_FLAG_MAP=(
 # Same as above but for encoders, i.e. they do something only with USE=encode.
 FFMPEG_ENCODER_FLAG_MAP=(
 	amrenc:libvo-amrwbenc mp3:libmp3lame
-	kvazaar:libkvazaar nvenc:nvenc
+	kvazaar:libkvazaar libaom nvenc:nvenc
 	openh264:libopenh264 snappy:libsnappy theora:libtheora twolame:libtwolame
 	wavpack:libwavpack webp:libwebp x264:libx264 x265:libx265 xvid:libxvid
 )
@@ -210,6 +210,7 @@ RDEPEND="
 	)
 	jack? ( virtual/jack[${MULTILIB_USEDEP}] )
 	jpeg2k? ( >=media-libs/openjpeg-2:2[${MULTILIB_USEDEP}] )
+	libaom? ( media-libs/libaom[${MULTILIB_USEDEP}] )
 	libass? ( >=media-libs/libass-0.10.2:=[${MULTILIB_USEDEP}] )
 	libcaca? ( >=media-libs/libcaca-0.99_beta18-r1[${MULTILIB_USEDEP}] )
 	libdrm? ( x11-libs/libdrm[${MULTILIB_USEDEP}] )
@@ -220,6 +221,7 @@ RDEPEND="
 	mmal? ( media-libs/raspberrypi-userland )
 	modplug? ( >=media-libs/libmodplug-0.8.8.4-r1[${MULTILIB_USEDEP}] )
 	openal? ( >=media-libs/openal-1.15.1[${MULTILIB_USEDEP}] )
+	opencl? ( virtual/opencl[${MULTILIB_USEDEP}] )
 	opengl? ( >=virtual/opengl-7.0-r1[${MULTILIB_USEDEP}] )
 	openssl? ( >=dev-libs/openssl-1.0.1h-r2:0[${MULTILIB_USEDEP}] )
 	opus? ( >=media-libs/opus-1.0.2-r2[${MULTILIB_USEDEP}] )

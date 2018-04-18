@@ -13,7 +13,7 @@ SRC_URI="http://thomasokken.com/free42/upstream/${MY_PV}.tgz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="alsa"
 
 DEPEND="dev-libs/atk
@@ -32,8 +32,8 @@ S="${WORKDIR}/${MY_PV}"
 src_prepare() {
 	sed -i -e 's/print_gif_name\[FILENAMELEN\]/print_gif_name\[1000\]/' \
 		"${S}/gtk/shell_main.cc" || die
-	epatch "${FILESDIR}"/${P}-fix-makefile.patch
-	epatch "${FILESDIR}"/${P}-fix-build-intel-lib.patch
+	epatch "${FILESDIR}/${PN}-2.0.10-fix-makefile.patch"
+	epatch "${FILESDIR}/${PN}-2.0.10-fix-build-intel-lib.patch"
 	eapply_user
 }
 
