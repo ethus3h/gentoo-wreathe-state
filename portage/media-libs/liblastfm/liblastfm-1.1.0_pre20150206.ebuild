@@ -11,7 +11,7 @@ HOMEPAGE="https://github.com/lastfm/liblastfm"
 SRC_URI="https://github.com/lastfm/liblastfm/archive/${COMMIT}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-3"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ~ppc ~ppc64 x86 ~amd64-linux ~x86-linux"
 SLOT="0/0"
 IUSE="fingerprint test"
 
@@ -33,10 +33,7 @@ DEPEND="${RDEPEND}
 # 1 of 2 (UrlBuilderTest) is failing, last checked version 1.0.9
 RESTRICT="test"
 
-PATCHES=(
-	"${FILESDIR}/${P}-cmake.patch"
-	"${FILESDIR}/${P}-qt-5.11b3.patch"
-)
+PATCHES=( "${FILESDIR}/${P}-qt-5.11b3.patch" )
 
 src_configure() {
 	# demos not working
