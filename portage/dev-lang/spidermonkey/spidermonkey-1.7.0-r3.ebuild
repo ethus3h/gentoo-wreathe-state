@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -8,9 +8,7 @@ inherit eutils toolchain-funcs multilib flag-o-matic
 MY_P="js-${PV}"
 DESCRIPTION="Stand-alone JavaScript C library"
 HOMEPAGE="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey"
-SRC_URI="http://archive.mozilla.org/pub/js/${MY_P}.tar.gz
-	https://dev.gentoo.org/~axs/distfiles/${PN}-slot0-patches-01.tar.xz
-	"
+SRC_URI="ftp://ftp.mozilla.org/pub/mozilla.org/js/${MY_P}.tar.gz"
 
 LICENSE="NPL-1.1"
 SLOT="0/js"
@@ -23,10 +21,10 @@ RDEPEND="threadsafe? ( dev-libs/nspr )"
 DEPEND="${RDEPEND}"
 
 src_prepare() {
-	epatch "${WORKDIR}"/sm0/${PN}-1.5-build.patch \
-		"${WORKDIR}"/sm0/${PN}-1.6-header.patch \
-		"${WORKDIR}"/sm0/${P}-threadsafe.diff \
-		"${WORKDIR}"/sm0/${P}-ldflags.patch
+	epatch "${FILESDIR}/${PN}-1.5-build.patch"
+	epatch "${FILESDIR}/${PN}-1.6-header.patch"
+	epatch "${FILESDIR}/${P}-threadsafe.diff" \
+		"${FILESDIR}"/${P}-ldflags.patch
 
 	# don't force owner for Prefix
 	sed -i -e '/^INSTALL :=/s/-g 0 -o root//' Makefile.ref || die

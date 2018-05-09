@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -106,7 +106,7 @@ CDEPEND="virtual/jdk:1.8
 	dev-java/rhino:1.6
 	dev-java/saxon:9
 	dev-java/smack:2.2
-	<=dev-java/sun-jaf-1.1.1:0
+	dev-java/sun-jaf:0
 	dev-java/tomcat-servlet-api:2.2
 	dev-java/ws-commons-util:0
 	dev-java/xerces:2"
@@ -228,7 +228,7 @@ src_prepare() {
 	einfo "Deleting bundled class files..."
 	find -name "*.class" -type f | xargs rm -vf
 
-	eapply netbeans-8.2-build.xml.patch
+	epatch netbeans-8.2-build.xml.patch
 
 	einfo "Symlinking external libraries..."
 	java-pkg_jar-from --into c.jcraft.jsch/external jsch jsch.jar jsch-0.1.53.jar

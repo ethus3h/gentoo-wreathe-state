@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -11,9 +11,9 @@ if [[ "${PV}" == "9999" ]]; then
 	EGIT_REPO_URI="https://github.com/libpinyin/libpinyin"
 fi
 
-LIBPINYIN_MODEL_VERSION="15"
+LIBPINYIN_MODEL_VERSION="14"
 
-DESCRIPTION="Libraries for handling of Hanyu Pinyin and Zhuyin Fuhao"
+DESCRIPTION="Library to deal with pinyin"
 HOMEPAGE="https://github.com/libpinyin/libpinyin https://sourceforge.net/projects/libpinyin/"
 if [[ "${PV}" == "9999" ]]; then
 	SRC_URI=""
@@ -45,16 +45,14 @@ src_unpack() {
 src_prepare() {
 	default
 
-	sed -e "/^\twget .*\/model${LIBPINYIN_MODEL_VERSION}\.text\.tar\.gz$/d" -i data/Makefile.am || die
 	ln -s "${DISTDIR}/${PN}-model${LIBPINYIN_MODEL_VERSION}.text.tar.gz" "data/model${LIBPINYIN_MODEL_VERSION}.text.tar.gz" || die
+	sed -e "/^\twget .*\/model${LIBPINYIN_MODEL_VERSION}\.text\.tar\.gz$/d" -i data/Makefile.am || die
 
 	eautoreconf
 }
 
 src_configure() {
-	econf \
-		--enable-libzhuyin \
-		--disable-static
+	econf --disable-static
 }
 
 src_install() {

@@ -1,41 +1,44 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=4
 
-inherit autotools git-r3
+EGIT_REPO_URI="git://gitorious.org/os-autoinst/os-autoinst.git"
+
+inherit git-2 autotools eutils
 
 DESCRIPTION="automated testing of Operating Systems"
 HOMEPAGE="http://os-autoinst.org/"
-EGIT_REPO_URI="https://github.com/os-autoinst/os-autoinst.git"
+SRC_URI=""
 
 LICENSE="GPL-2"
 SLOT="0"
+KEYWORDS=""
+IUSE=""
 
 DEPEND="
-	media-libs/libogg:=
-	media-libs/libsndfile:=
-	media-libs/libtheora:=
-	>=media-libs/opencv-2.4:=
-	sci-libs/fftw:3.0="
+	>=media-libs/opencv-2.4
+"
 RDEPEND="${DEPEND}
 	dev-lang/perl[ithreads]
 	dev-perl/JSON
 	app-emulation/qemu
 	app-text/gocr
 	media-gfx/imagemagick
-	media-video/ffmpeg2theora"
+	media-video/ffmpeg2theora
+"
 
 src_prepare() {
-	default
 	eautoreconf
 }
 
 src_configure() {
-	econf --disable-static
+	econf \
+		--docdir="${EPREFIX}/usr/share/doc/${PF}" \
+		--disable-static
 }
 
 src_install() {
 	default
-	find "${D}" -name '*.la' -delete || die
+	prune_libtool_files --all
 }

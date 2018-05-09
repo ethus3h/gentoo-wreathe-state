@@ -1,22 +1,21 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit ltprune multilib-minimal
+inherit eutils multilib-minimal
 
 DESCRIPTION="Free version of the SSL/TLS protocol forked from OpenSSL"
-HOMEPAGE="https://www.libressl.org/"
-SRC_URI="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/${P}.tar.gz"
+HOMEPAGE="http://www.libressl.org/"
+SRC_URI="http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/${P}.tar.gz"
 
 LICENSE="ISC openssl"
 # Reflects ABI of libcrypto.so and libssl.so.  Since these can differ,
 # we'll try to use the max of either.  However, if either change between
 # versions, we have to change the subslot to trigger rebuild of consumers.
 SLOT="0/43"
-KEYWORDS="~alpha amd64 arm ~arm64 hppa ~ia64 ~mips ppc ppc64 sparc x86"
-IUSE="+asm static-libs test"
-REQUIRED_USE="test? ( static-libs )"
+KEYWORDS="~alpha amd64 ~arm ~arm64 hppa ~ia64 ~mips ppc ppc64 ~x86"
+IUSE="+asm static-libs"
 
 RDEPEND="!dev-libs/openssl:0"
 DEPEND="${RDEPEND}"

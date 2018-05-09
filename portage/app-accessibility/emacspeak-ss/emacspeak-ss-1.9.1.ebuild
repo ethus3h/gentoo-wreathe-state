@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=4
 
-inherit toolchain-funcs
+inherit eutils
 
 DESCRIPTION="adds support for several speech synthesizers to emacspeak"
 HOMEPAGE="http://leb.net/blinux/"
@@ -17,12 +17,8 @@ IUSE=""
 DEPEND=""
 RDEPEND=">=app-accessibility/emacspeak-18"
 
-PATCHES=(
-	"${FILESDIR}"/gentoo-apollo-fix.patch
-)
-
 src_prepare() {
-	default
+	epatch "${FILESDIR}"/gentoo-apollo-fix.patch
 	tc-export CC
 }
 

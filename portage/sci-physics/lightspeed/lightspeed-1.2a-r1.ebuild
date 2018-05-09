@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
@@ -20,7 +20,7 @@ KEYWORDS="amd64 ppc x86 ~amd64-linux ~x86-linux"
 IUSE="nls truetype"
 LANGS="es"
 for i in ${LANGS}; do
-	IUSE="${IUSE} l10n_${i}"
+	IUSE="${IUSE} linguas_${i}"
 done
 
 RDEPEND="
@@ -57,7 +57,7 @@ src_compile() {
 	emake
 	local i
 	for i in ${LANGS}; do
-		use l10n_${i} && emake ${i}.gmo
+		use linguas_${i} && emake ${i}.gmo
 	done
 }
 

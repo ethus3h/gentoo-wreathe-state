@@ -2,7 +2,6 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-
 inherit eutils gnome2-utils
 
 DESCRIPTION="Fast-paced 3D lightcycle game based on Tron"
@@ -17,12 +16,15 @@ IUSE="dedicated sound"
 RDEPEND="
 	dev-libs/libxml2
 	!dedicated? (
-		media-libs/libpng:0=
-		media-libs/libsdl[X,opengl,video,sound?]
+		media-libs/libpng:0
+		media-libs/libsdl[X,opengl,video]
 		media-libs/sdl-image[jpeg,png]
 		virtual/glu
 		virtual/opengl
-		sound? ( media-libs/sdl-mixer )
+		sound? (
+			media-libs/libsdl[sound]
+			media-libs/sdl-mixer
+		)
 	)"
 DEPEND=${RDEPEND}
 
@@ -36,6 +38,7 @@ src_prepare() {
 src_configure() {
 	# --enable-games just messes up paths
 	econf \
+		--docdir=/usr/share/doc/${PF} \
 		$(use_enable dedicated) \
 		$(use_enable sound music) \
 		--disable-sysinstall \
@@ -45,10 +48,12 @@ src_configure() {
 }
 
 src_install() {
-	default
+	# FIXME: is the -j1 needed? https://bugs.gentoo.org/588104
+	emake -j1 DESTDIR="${D}" install
+	einstalldocs
 
 	# misplaced desktop-file/icons
-	rm -r "${ED%/}"/usr/share/${PN}/desktop || die
+	rm -rf "${ED%/}${GAMES_DATADIR}"/armagetronad/desktop
 	doicon -s 48 desktop/icons/large/armagetronad.png
 	make_desktop_entry ${PN}
 }

@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -16,24 +16,25 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="app-admin/gkrellm:2[X]"
-RDEPEND="
-	${DEPEND}
-	app-admin/sudo
-	sys-power/cpupower"
+S="${WORKDIR}/${MY_P}"
 
-S=${WORKDIR}/${MY_P}
+RDEPEND="
+	app-admin/gkrellm[X]
+	app-admin/sudo
+	sys-power/cpupower
+"
+
+PLUGIN_SO="cpupower.so"
 
 src_install() {
-	local PLUGIN_SO=( cpupower$(get_modname) )
 	gkrellm-plugin_src_install
 	emake DESTDIR="${D}" install-sudo
 }
 
 pkg_postinst() {
-	einfo
+	echo
 	einfo "For changing the governor and CPU frequencies as a user, create the \"trusted\""
 	einfo "group, and add those users to that group who should be allowed to perform"
 	einfo "these changes."
-	einfo
+	echo
 }

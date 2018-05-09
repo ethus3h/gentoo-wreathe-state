@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer type="person">
-		<email>ck+gentoo@bl4ckb0x.de</email>
-		<name>Conrad Kostecki</name>
-	</maintainer>
 	<maintainer type="project">
-		<email>proxy-maint@gentoo.org</email>
-		<name>Proxy Maintainers</name>
+		<email>dotnet@gentoo.org</email>
+		<name>Gentoo Dotnet Project</name>
 	</maintainer>
+	<longdescription lang="en">
+		Visual Basic .NET compiler and runtime
+	</longdescription>
 </pkgmetadata>

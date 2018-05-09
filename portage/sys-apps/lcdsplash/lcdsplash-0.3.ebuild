@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+inherit multilib
 
 DESCRIPTION="splash Gentoo boot information on LCD's"
 HOMEPAGE="https://www.gentoo.org/"
@@ -13,19 +13,18 @@ SLOT="0"
 KEYWORDS="hppa ~mips x86"
 IUSE=""
 
-RDEPEND="mips? ( sys-apps/lcdutils )"
+DEPEND="mips? ( sys-apps/lcdutils )"
 
 S=${WORKDIR}/${PN}
 
 src_install() {
 	insinto /sbin
-	doins splash-functions.sh
-
+	doins splash-functions.sh || die "splash"
 	insinto /$(get_libdir)/rcscripts/lcdsplash
-	doins -r modules/.
+	doins -r modules/* || die "modules"
 
 	insinto /etc
-	doins lcdsplash.conf
+	doins lcdsplash.conf || die "conf"
 
-	einstalldocs
+	dodoc README
 }

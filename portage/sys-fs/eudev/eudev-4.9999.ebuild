@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -29,7 +29,11 @@ COMMON_DEPEND=">=sys-apps/util-linux-2.20
 	selinux? ( >=sys-libs/libselinux-2.1.9 )
 	!<sys-libs/glibc-2.11
 	!sys-apps/gentoo-systemd-integration
-	!sys-apps/systemd"
+	!sys-apps/systemd
+	abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-baselibs-20130224-r7
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)]
+	)"
 DEPEND="${COMMON_DEPEND}
 	dev-util/gperf
 	virtual/os-headers
@@ -162,7 +166,7 @@ multilib_src_test() {
 }
 
 multilib_src_install_all() {
-	find "${D}" -name '*.la' -delete || die
+	prune_libtool_files --all
 
 	insinto /lib/udev/rules.d
 	doins "${FILESDIR}"/40-gentoo.rules

@@ -4,6 +4,7 @@
 	<maintainer type="person">
 		<email>julien@thebault.co</email>
 		<name>Lujeni</name>
+		<description>Proxy-Maintainer, assign bugs</description>
 	</maintainer>
 	<maintainer type="person">
 		<email>ultrabug@gentoo.org</email>

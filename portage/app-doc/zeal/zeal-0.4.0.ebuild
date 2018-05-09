@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit gnome2-utils qmake-utils xdg-utils
+inherit qmake-utils gnome2-utils fdo-mime
 
 DESCRIPTION="Offline documentation browser inspired by Dash"
 HOMEPAGE="https://zealdocs.org/"
@@ -44,10 +44,10 @@ pkg_preinst() {
 
 pkg_postinst() {
 	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
 	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

@@ -1,16 +1,16 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit cmake-utils versionator
+inherit scons-utils toolchain-funcs versionator
 
 DESCRIPTION="Wayland C++ bindings"
 HOMEPAGE="https://github.com/NilsBrause/waylandpp"
 
 LICENSE="MIT"
 IUSE="doc"
-SLOT="0/$(get_version_component_range 1-2)"
+SLOT="0/$(get_major_version)"
 
 if [[ ${PV} == *9999 ]] ; then
 	EGIT_REPO_URI="https://github.com/NilsBrause/waylandpp.git"
@@ -31,11 +31,19 @@ DEPEND="${RDEPEND}
 	)
 	"
 
-src_configure() {
-	local mycmakeargs=(
-		-DBUILD_DOCUMENTATION=$(usex doc)
-		-DCMAKE_INSTALL_DOCDIR="${EPREFIX}/usr/share/doc/${PF}"
-	)
+src_compile() {
+	CC="$(tc-getCXX)" PKG_CONFIG="$(tc-getPKG_CONFIG)" ROOT="${D%/}/" PREFIX="/usr" LIBDIR="$(get_libdir)" escons
+	if use doc; then
+		doxygen || die "error making docs"
+	fi
+}
 
-	cmake-utils_src_configure
+src_install() {
+	CC="$(tc-getCXX)" PKG_CONFIG="$(tc-getPKG_CONFIG)" ROOT="${D%/}/" PREFIX="/usr" LIBDIR="$(get_libdir)" escons install
+	# fix multilib-strict QA failures
+	if use doc; then
+		doman doc/man/man3/*.3
+		local HTML_DOCS=( doc/html )
+		einstalldocs
+	fi
 }

@@ -1,9 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-
-inherit eutils flag-o-matic versionator
+inherit eutils versionator
 
 DESCRIPTION="A library for the sidplay2 fork with resid-fp"
 HOMEPAGE="https://sourceforge.net/projects/sidplay-residfp/"
@@ -14,16 +13,14 @@ SLOT="0"
 KEYWORDS="~amd64 ~hppa ~x86"
 IUSE="cpu_flags_x86_mmx static-libs"
 
+DOCS=( AUTHORS NEWS README TODO )
+
 src_prepare() {
 	# fix automagic. warning: modifying .ac triggers maintainer mode.
 	sed -i -e 's:doxygen:dIsAbLe&:' configure || die
 }
 
 src_configure() {
-	# relies on undocumented "uint" type in libstdc++
-	# bug 649832
-	append-cxxflags -std=c++14
-
 	econf \
 		$(use_enable static-libs static) \
 		$(use_enable cpu_flags_x86_mmx mmx)

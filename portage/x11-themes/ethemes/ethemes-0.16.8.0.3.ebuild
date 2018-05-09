@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=6
 
 MY_P="e16-themes-${PV}"
 DESCRIPTION="all the official Enlightenment themes"
@@ -18,4 +16,9 @@ RDEPEND="!x11-themes/etheme-BlueSteel
 	!x11-themes/etheme-Ganymede
 	!x11-themes/etheme-ShinyMetal"
 
-S="${WORKDIR}/${MY_P}"
+S=${WORKDIR}/${MY_P}
+
+src_install() {
+	emake install DESTDIR="${D}" || die
+	dodoc AUTHORS ChangeLog
+}

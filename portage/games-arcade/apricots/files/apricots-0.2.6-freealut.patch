@@ -1,5 +1,5 @@
---- a/apricots/apricots.cpp
-+++ b/apricots/apricots.cpp
+--- apricots/apricots.cpp
++++ apricots/apricots.cpp
 @@ -16,6 +16,7 @@
  int main(int, char**){
  #endif
@@ -9,8 +9,8 @@
    gamedata g;
    init_data(g);
 
---- a/apricots/sampleio.cpp
-+++ b/apricots/sampleio.cpp
+--- apricots/sampleio.cpp
++++ apricots/sampleio.cpp
 @@ -74,12 +74,9 @@
    alListenerfv(AL_ORIENTATION, front );
  
@@ -51,8 +51,8 @@
  }
  
 
---- a/configure.in
-+++ b/configure.in
+--- configure.in
++++ configure.in
 @@ -100,7 +100,8 @@
  
  dnl Check for OpenAL

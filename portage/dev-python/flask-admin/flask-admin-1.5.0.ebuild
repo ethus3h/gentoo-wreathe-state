@@ -12,7 +12,7 @@ MY_PN="Flask-Admin"
 MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Simple and extensible admin interface framework for Flask"
-HOMEPAGE="https://pypi.org/project/Flask-Admin"
+HOMEPAGE="https://pypi.python.org/pypi/Flask-Admin"
 SRC_URI="mirror://pypi/${MY_P:0:1}/${MY_PN}/${MY_P}.tar.gz"
 
 LICENSE="BSD"
@@ -36,7 +36,7 @@ DEPEND="${RDEPEND}
 		dev-python/flask-babelex[${PYTHON_USEDEP}]
 		sci-libs/Shapely[${PYTHON_USEDEP}]
 		dev-python/geoalchemy2[${PYTHON_USEDEP}]
-		>=dev-python/pillow-2.9[${PYTHON_USEDEP},jpeg(+)]
+		>=dev-python/pillow-2.9[${PYTHON_USEDEP},jpeg]
 	)"
 
 S="${WORKDIR}/${MY_P}"

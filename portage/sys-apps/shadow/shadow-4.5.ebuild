@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -11,10 +11,11 @@ SRC_URI="https://github.com/shadow-maint/shadow/releases/download/${PV}/${P}.tar
 
 LICENSE="BSD GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 arm arm64 hppa ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh sparc x86"
-IUSE="acl audit +cracklib nls pam selinux skey xattr"
+KEYWORDS="alpha amd64 arm ~arm64 ~hppa ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh ~sparc x86"
+IUSE="acl audit cracklib nls pam selinux skey xattr"
 # Taken from the man/Makefile.am file.
 LANGS=( cs da de es fi fr hu id it ja ko pl pt_BR ru sv tr zh_CN zh_TW )
+IUSE+=" $(printf 'linguas_%s ' ${LANGS[*]})"
 
 RDEPEND="acl? ( sys-apps/acl:0= )
 	audit? ( >=sys-process/audit-2.6:0= )
@@ -64,7 +65,7 @@ src_configure() {
 	if use nls ; then
 		local l langs="po" # These are the pot files.
 		for l in ${LANGS[*]} ; do
-			has ${l} ${LINGUAS-${l}} && langs+=" ${l}"
+			use linguas_${l} && langs+=" ${l}"
 		done
 		sed -i "/^SUBDIRS = /s:=.*:= ${langs}:" man/Makefile || die
 	fi

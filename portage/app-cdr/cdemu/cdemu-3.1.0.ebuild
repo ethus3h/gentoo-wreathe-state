@@ -27,12 +27,10 @@ DEPEND="${RDEPEND}
 
 S=${WORKDIR}/cdemu-client-${PV}
 
-PATCHES=( "${FILESDIR}/${PN}-3.0.0-bash-completion-dir.patch" )
-
 src_prepare() {
-	cmake-utils_src_prepare
-
 	python_fix_shebang src/cdemu
+	eapply -p2 "${FILESDIR}/${PN}-3.0.0-bash-completion-dir.patch"
+	eapply_user
 }
 
 src_configure() {

@@ -22,6 +22,5 @@
     <remote-id type="cpan-module">Mail::Builder::List</remote-id>
     <remote-id type="cpan-module">Mail::Builder::Role::File</remote-id>
     <remote-id type="cpan-module">Mail::Builder::TypeConstraints</remote-id>
-    <remote-id type="cpan-module">Mail::Builder::Utils</remote-id>
   </upstream>
 </pkgmetadata>

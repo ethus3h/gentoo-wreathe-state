@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-PYTHON_COMPAT=( python2_7 python3_{4,5,6} )
+PYTHON_COMPAT=( python2_7 python3_{4,5} )
 DISTUTILS_OPTIONAL=1
 inherit autotools distutils-r1 eutils git-r3 libtool multilib multilib-minimal
 
@@ -18,6 +18,10 @@ IUSE="static-libs python utils"
 
 RDEPEND="
 	python? ( ${PYTHON_DEPS} )
+	abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-baselibs-20140508-r5
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)]
+	)
 "
 DEPEND="
 	${RDEPEND}

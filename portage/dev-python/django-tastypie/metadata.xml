@@ -14,5 +14,4 @@
   <upstream>
     <remote-id type="github">toastdriven/django-tastypie</remote-id>
   </upstream>
-  <stabilize-allarches/>
 </pkgmetadata>

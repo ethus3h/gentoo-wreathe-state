@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License, v2 or later
 
 # @ECLASS: ant-tasks.eclass
@@ -23,13 +23,13 @@ EXPORT_FUNCTIONS src_unpack src_compile src_install
 # @ECLASS-VARIABLE: ANT_TASK_JDKVER
 # @DESCRIPTION:
 # Affects the >=virtual/jdk version set in DEPEND string. Defaults to 1.5, can
-# be overridden from ebuild BEFORE inheriting this eclass.
+# be overriden from ebuild BEFORE inheriting this eclass.
 ANT_TASK_JDKVER=${ANT_TASK_JDKVER-1.5}
 
 # @ECLASS-VARIABLE: ANT_TASK_JREVER
 # @DESCRIPTION:
 # Affects the >=virtual/jre version set in DEPEND string. Defaults to 1.5, can
-# be overridden from ebuild BEFORE inheriting this eclass.
+# be overriden from ebuild BEFORE inheriting this eclass.
 ANT_TASK_JREVER=${ANT_TASK_JREVER-1.5}
 
 # @ECLASS-VARIABLE: ANT_TASK_NAME
@@ -69,13 +69,15 @@ elif [[ ${PV} == *_rc* ]]; then
 else
 	# default for final releases
 	MY_PV=${PV}
+	UPSTREAM_PREFIX="mirror://apache/ant/source"
 	case ${PV} in
 	1.9.*)
-		UPSTREAM_PREFIX="https://archive.apache.org/dist/ant/source"
 		GENTOO_PREFIX="https://dev.gentoo.org/~tomwij/files/dist"
 		;;
+	1.8.4)
+		GENTOO_PREFIX="https://dev.gentoo.org/~sera/distfiles"
+		;;
 	*)
-		UPSTREAM_PREFIX="mirror://apache/ant/source"
 		GENTOO_PREFIX="https://dev.gentoo.org/~caster/distfiles"
 		;;
 	esac
@@ -84,7 +86,7 @@ fi
 # source/workdir name
 MY_P="apache-ant-${MY_PV}"
 
-# Default values for standard ebuild variables, can be overridden from ebuild.
+# Default values for standard ebuild variables, can be overriden from ebuild.
 DESCRIPTION="Apache Ant's optional tasks depending on ${ANT_TASK_DEPNAME}"
 HOMEPAGE="http://ant.apache.org/"
 SRC_URI="${UPSTREAM_PREFIX}/${MY_P}-src.tar.bz2

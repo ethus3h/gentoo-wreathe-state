@@ -6,7 +6,7 @@ DIST_AUTHOR=PETDANCE
 inherit perl-module
 
 DESCRIPTION="ack is a tool like grep, optimized for programmers"
-HOMEPAGE="https://beyondgrep.com/ ${HOMEPAGE}"
+HOMEPAGE="http://betterthangrep.com/ ${HOMEPAGE}"
 
 LICENSE="Artistic-2"
 SLOT="0"

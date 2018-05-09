@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: freedict.eclass
@@ -21,23 +21,21 @@
 # @DESCRIPTION:
 # Please see above for a description.
 
-case ${EAPI:-0} in
-	6) ;;
-	*) die "${ECLASS}.eclass is banned in EAPI=${EAPI}" ;;
-esac
+inherit eutils multilib
+
+IUSE=""
 
 MY_P=${PN/freedict-/}
 
+S="${WORKDIR}"
 DESCRIPTION="Freedict for language translation from ${FORLANG} to ${TOLANG}"
-HOMEPAGE="http://freedict.sourceforge.net/"
+HOMEPAGE="http://www.freedict.de"
 SRC_URI="http://freedict.sourceforge.net/download/linux/${MY_P}.tar.gz"
 
-LICENSE="GPL-2+"
 SLOT="0"
+LICENSE="GPL-2"
 
-RDEPEND="app-text/dictd"
-
-S="${WORKDIR}"
+DEPEND="app-text/dictd"
 
 # @FUNCTION: freedict_src_install
 # @DESCRIPTION:

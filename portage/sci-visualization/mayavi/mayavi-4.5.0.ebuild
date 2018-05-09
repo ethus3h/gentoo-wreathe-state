@@ -10,7 +10,7 @@ inherit distutils-r1 virtualx
 DESCRIPTION="Enthought Tool Suite: Scientific data 3-dimensional visualizer"
 HOMEPAGE="
 	http://code.enthought.com/projects/mayavi/
-	http://pypi.org/project/mayavi/"
+	http://pypi.python.org/pypi/mayavi/"
 SRC_URI="https://github.com/enthought/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="BSD"

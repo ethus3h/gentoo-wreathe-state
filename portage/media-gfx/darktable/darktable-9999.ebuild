@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit cmake-utils eutils flag-o-matic git-r3 gnome2-utils pax-utils toolchain-funcs versionator xdg-utils
+inherit cmake-utils flag-o-matic toolchain-funcs gnome2-utils fdo-mime git-r3 pax-utils eutils versionator
 
 EGIT_REPO_URI="https://github.com/darktable-org/${PN}.git"
 
@@ -15,7 +15,7 @@ SLOT="0"
 #KEYWORDS="~amd64 ~x86"
 LANGS=" ca cs da de es fr he hu it ja nl pl ru sk sl sv uk"
 # TODO add lua once dev-lang/lua-5.2 is unmasked
-IUSE="colord cups cpu_flags_x86_sse3 doc flickr geolocation gnome-keyring gphoto2 graphicsmagick jpeg2k kwallet
+IUSE="colord cups cpu_flags_x86_sse3 doc flickr geo gphoto2 graphicsmagick jpeg2k kwallet libsecret
 nls opencl openmp openexr pax_kernel webp
 ${LANGS// / l10n_}"
 
@@ -35,32 +35,32 @@ CDEPEND="
 	media-libs/tiff:0
 	net-libs/libsoup:2.4
 	net-misc/curl
-	sys-libs/zlib:=
 	virtual/jpeg:0
+	virtual/glu
+	virtual/opengl
 	x11-libs/cairo
 	>=x11-libs/gtk+-3.14:3
 	x11-libs/pango
 	colord? ( x11-libs/colord-gtk:0= )
 	cups? ( net-print/cups )
 	flickr? ( media-libs/flickcurl )
-	geolocation? ( >=sci-geosciences/osm-gps-map-1.1.0 )
-	gnome-keyring? ( >=app-crypt/libsecret-0.18 )
+	geo? ( >=sci-geosciences/osm-gps-map-1.1.0 )
 	gphoto2? ( media-libs/libgphoto2:= )
 	graphicsmagick? ( media-gfx/graphicsmagick )
-	jpeg2k? ( media-libs/openjpeg:2= )
+	jpeg2k? ( media-libs/openjpeg:0 )
+	libsecret? ( >=app-crypt/libsecret-0.18 )
 	opencl? ( virtual/opencl )
 	openexr? ( media-libs/openexr:0= )
 	webp? ( media-libs/libwebp:0= )"
 RDEPEND="${CDEPEND}
-	kwallet? ( >=kde-frameworks/kwallet-5.34.0-r1 )"
+	kwallet? ( || (
+		>=kde-frameworks/kwallet-5.34.0-r1
+		kde-apps/kwalletd:4
+	) )"
 DEPEND="${CDEPEND}
 	dev-util/intltool
 	virtual/pkgconfig
-	nls? ( sys-devel/gettext )
-	opencl? (
-		>=sys-devel/clang-4
-		>=sys-devel/llvm-4
-	)"
+	nls? ( sys-devel/gettext )"
 
 pkg_pretend() {
 	if use openmp ; then
@@ -84,9 +84,9 @@ src_configure() {
 		-DUSE_FLICKR=$(usex flickr)
 		-DUSE_GRAPHICSMAGICK=$(usex graphicsmagick)
 		-DUSE_KWALLET=$(usex kwallet)
-		-DUSE_LIBSECRET=$(usex gnome-keyring)
+		-DUSE_LIBSECRET=$(usex libsecret)
 		-DUSE_LUA=OFF
-		-DUSE_MAP=$(usex geolocation)
+		-DUSE_MAP=$(usex geo)
 		-DUSE_NLS=$(usex nls)
 		-DUSE_OPENCL=$(usex opencl)
 		-DUSE_OPENEXR=$(usex openexr)
@@ -94,13 +94,11 @@ src_configure() {
 		-DUSE_OPENMP=$(usex openmp)
 		-DUSE_WEBP=$(usex webp)
 	)
-	CMAKE_BUILD_TYPE="RELWITHDEBINFO"
 	cmake-utils_src_configure
 }
 
 src_install() {
 	cmake-utils_src_install
-	use doc && dodoc "${DISTDIR}"/${PN}-usermanual-${DOC_PV}.pdf
 
 	for lang in ${LANGS} ; do
 		use l10n_${lang} || rm -r "${ED}"/usr/share/locale/${lang/-/_}
@@ -122,10 +120,10 @@ pkg_preinst() {
 
 pkg_postinst() {
 	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
 	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

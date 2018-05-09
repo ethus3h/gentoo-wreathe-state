@@ -21,8 +21,7 @@ PATCHES=(
 )
 
 src_prepare() {
-	cmake-utils_src_prepare
-
+	default
 	sed -i -e 's:-Werror::' CMakeLists.txt || die
 	# make sure these libs aren't used
 	rm -rf lzma zlib*

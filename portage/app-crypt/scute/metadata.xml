@@ -4,6 +4,7 @@
   <maintainer type="person">
     <email>lucas.yamanishi@gmail.com</email>
     <name>Lucas Yamanishi</name>
+    <description>Proxy maintainer.</description>
   </maintainer>
   <maintainer type="project">
     <email>crypto@gentoo.org</email>

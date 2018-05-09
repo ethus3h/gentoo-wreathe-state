@@ -26,6 +26,7 @@ dvdr
 # emacs USE flag is masked because of missing implementation for unexec()
 emacs
 fbcon
+fmod
 ggi
 glut
 gpm
@@ -34,6 +35,7 @@ hardened
 hddtemp
 ibm
 ieee1394
+ifc
 ipod
 ipv6
 lm_sensors

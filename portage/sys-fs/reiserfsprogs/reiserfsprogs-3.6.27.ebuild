@@ -38,12 +38,12 @@ src_configure() {
 src_install() {
 	default
 	dodir /usr/$(get_libdir)
-	mv "${ED}"/$(get_libdir)/pkgconfig "${ED}"/usr/$(get_libdir) || die
+	mv "${D}"/$(get_libdir)/pkgconfig "${D}"/usr/$(get_libdir) || die
 
 	if use static-libs ; then
-		mv "${ED}"/$(get_libdir)/*a "${ED}"/usr/$(get_libdir) || die
+		mv "${D}"/$(get_libdir)/*a "${D}"/usr/$(get_libdir) || die
 		gen_usr_ldscript libreiserfscore.so
 	else
-		find "${ED}" -type f \( -name "*.a" -o -name "*.la" \) -delete
+		find "${D}" -type f \( -name "*.a" -o -name "*.la" \) -delete
 	fi
 }

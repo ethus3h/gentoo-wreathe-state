@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python{2_7,3_{4,5,6}} )
 inherit distutils-r1
 
 DESCRIPTION="Python NTP library"
-HOMEPAGE="https://pypi.org/project/ntplib/"
+HOMEPAGE="https://pypi.python.org/pypi/ntplib/"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
 LICENSE="MIT"

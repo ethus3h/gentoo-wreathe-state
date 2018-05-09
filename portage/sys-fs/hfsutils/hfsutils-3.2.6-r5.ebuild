@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -41,9 +41,9 @@ src_compile() {
 src_install() {
 	dodir /usr/bin /usr/lib /usr/share/man/man1
 	emake \
-		prefix="${ED}"/usr \
-		MANDEST="${ED}"/usr/share/man \
-		infodir="${ED}"/usr/share/info \
+		prefix="${D}"/usr \
+		MANDEST="${D}"/usr/share/man \
+		infodir="${D}"/usr/share/info \
 		install
 	dobin hfsck/hfsck
 	dodoc BLURB CHANGES README TODO doc/*.txt

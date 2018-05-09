@@ -1,6 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
 EAPI="6"
 
 if [[ ${PV} == 9999* ]]; then
@@ -19,15 +18,15 @@ fi
 IUSE="doc +open_perms +peer_perms systemd +ubac +unconfined"
 
 DESCRIPTION="Gentoo base policy for SELinux"
-HOMEPAGE="https://wiki.gentoo.org/wiki/Project:SELinux"
+HOMEPAGE="https://www.gentoo.org/proj/en/hardened/selinux/"
 LICENSE="GPL-2"
 SLOT="0"
 
-RDEPEND=">=sys-apps/policycoreutils-2.7
+RDEPEND=">=sys-apps/policycoreutils-2.3
 	virtual/udev"
 DEPEND="${RDEPEND}
 	sys-devel/m4
-	>=sys-apps/checkpolicy-2.7"
+	>=sys-apps/checkpolicy-2.3"
 
 S=${WORKDIR}/
 

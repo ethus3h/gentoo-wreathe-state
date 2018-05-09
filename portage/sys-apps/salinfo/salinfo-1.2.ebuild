@@ -1,9 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="4"
 
-inherit toolchain-funcs
+inherit toolchain-funcs eutils
 
 DESCRIPTION="decode Itanium SAL records (e.g. various hardware errors)"
 HOMEPAGE="https://www.kernel.org/pub/linux/kernel/people/helgaas/"
@@ -14,7 +14,9 @@ SLOT="0"
 KEYWORDS="~ia64"
 IUSE=""
 
-PATCHES=( "${FILESDIR}"/${P}-build.patch )
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-build.patch
+}
 
 src_configure() {
 	tc-export CC

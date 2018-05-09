@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit autotools
+inherit autotools eutils
 
 DESCRIPTION="The Yate AV Suite"
 HOMEPAGE="http://yate.null.ro/"
@@ -13,34 +13,33 @@ if [[ ${PV} == 9999 ]] ; then
 	inherit subversion
 	KEYWORDS=""
 else
-	SRC_URI="http://voip.null.ro/tarballs/${PN}6/${P}-1.tar.gz"
+	SRC_URI="http://voip.null.ro/tarballs/${PN}5/${P}-1.tar.gz"
 	KEYWORDS="~amd64 ~arm ~x86"
 	S="${WORKDIR}/${PN}"
 fi
 
 LICENSE="GPL-2"
 SLOT="0/${PV}"
-IUSE="doc cpu_flags_x86_sse2 sctp dahdi zaptel wpcard tdmcard wanpipe +ilbc +ilbc-webrtc +isac-float isac-fixed postgres mysql +gsm +speex spandsp +ssl +zlib amrnb"
+IUSE="doc cpu_flags_x86_sse2 sctp dahdi zaptel wpcard tdmcard wanpipe +ilbc +ilbc-webrtc +isac-float isac-fixed postgres mysql +gsm +speex h323 spandsp +ssl qt4 +zlib amrnb"
 
 RDEPEND="
-	postgres? ( dev-db/postgresql:* )
+	postgres? ( dev-db/postgresql )
 	mysql? ( virtual/mysql )
 	gsm? ( media-sound/gsm )
 	speex? ( media-libs/speex )
-	ssl? ( dev-libs/openssl:0 )
+	ssl? ( dev-libs/openssl )
+	h323? ( net-libs/h323plus )
 	zlib? ( sys-libs/zlib )
+	qt4? ( dev-qt/qtgui:4 dev-qt/designer:4 )
 	ilbc? ( dev-libs/ilbc-rfc3951 )
 	spandsp? ( >=media-libs/spandsp-0.0.3 )
 	dahdi? ( net-misc/dahdi )
 "
-DEPEND="doc? ( app-doc/doxygen )
+DEPEND="doc? ( || ( app-doc/doxygen dev-util/kdoc ) )
 	virtual/pkgconfig
 	${RDEPEND}"
 
-PATCHES=( "${FILESDIR}"/${P}-dont-mess-with-cflags.patch )
-
 src_prepare() {
-	default_src_prepare
 	eautoreconf
 	./yate-config.sh || die
 }
@@ -54,7 +53,6 @@ src_prepare() {
 src_configure() {
 	econf \
 		--with-archlib=$(get_libdir) \
-		--without-libqt4
 		$(use_enable cpu_flags_x86_sse2 sse2) \
 		$(use_enable sctp) \
 		$(use_enable dahdi) \
@@ -72,7 +70,10 @@ src_configure() {
 		$(use_with speex libspeex) \
 		$(use_with amrnb) \
 		$(use_with spandsp) \
-		$(use_with ssl openssl)
+		$(use_with h323 openh323 /usr) \
+		$(use_with h323 pwlib /usr) \
+		$(use_with ssl openssl) \
+		$(use_with qt4 libqt4)
 }
 
 src_compile() {
@@ -85,6 +86,4 @@ src_install() {
 	else
 		emake DESTDIR="${ED}" install-noapi
 	fi
-	newinitd "${FILESDIR}"/yate.initd yate
-	newconfd "${FILESDIR}"/yate.confd yate
 }

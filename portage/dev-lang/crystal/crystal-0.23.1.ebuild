@@ -12,7 +12,6 @@ BV_X86=${BV}-linux-i686
 DESCRIPTION="The Crystal Programming Language"
 HOMEPAGE="https://crystal-lang.org"
 SRC_URI="https://github.com/crystal-lang/crystal/archive/${PV}.tar.gz -> ${P}.tar.gz
-	https://dev.gentoo.org/~mgorny/dist/${P}-patchset.tar.bz2
 	amd64? ( https://github.com/crystal-lang/crystal/releases/download/${PV}/crystal-${BV_AMD64}.tar.gz )
 	x86? ( https://github.com/crystal-lang/crystal/releases/download/${PV}/crystal-${BV_X86}.tar.gz )"
 
@@ -23,7 +22,7 @@ IUSE="doc debug examples blocking-stdio-hack +xml +yaml"
 
 # dev-libs/boehm-gc[static-libs] dependency problem,  check the issue: https://github.com/manastech/crystal/issues/1382
 DEPEND="
-	>=sys-devel/llvm-3.9.0:*
+	>=sys-devel/llvm-3.9.0
 	dev-libs/boehm-gc[static-libs,threads]
 	dev-libs/libatomic_ops
 	dev-libs/libevent
@@ -39,7 +38,7 @@ RDEPEND="${DEPEND}
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-0.23.0-verbose-LDFLAGS.patch
-	"${WORKDIR}"/${P}-patchset/${PN}-0.23.1-llvm-5.patch
+	"${FILESDIR}"/${PN}-0.23.1-llvm-5.patch
 )
 
 src_prepare() {

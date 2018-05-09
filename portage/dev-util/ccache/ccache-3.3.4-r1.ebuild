@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,12 +6,12 @@ EAPI=6
 inherit readme.gentoo-r1
 
 DESCRIPTION="fast compiler cache"
-HOMEPAGE="https://ccache.samba.org/"
-SRC_URI="https://www.samba.org/ftp/ccache/${P}.tar.xz"
+HOMEPAGE="http://ccache.samba.org/"
+SRC_URI="https://samba.org/ftp/ccache/${P}.tar.xz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ~hppa ia64 ~mips ~ppc ~ppc64 sparc x86 ~amd64-fbsd"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="app-arch/xz-utils

@@ -1,25 +1,24 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI=4
 
-DESCRIPTION="Library for hangul input method logic, hanja dictionary"
-HOMEPAGE="https://github.com/choehwanjin/libhangul"
+DESCRIPTION="libhangul is a generalized and portable library for processing hangul"
+HOMEPAGE="https://code.google.com/p/libhangul/"
 SRC_URI="https://libhangul.googlecode.com/files/${P}.tar.gz"
 
-LICENSE="LGPL-2.1+"
-SLOT="0/1"
+LICENSE="LGPL-2.1"
+SLOT="0"
 KEYWORDS="amd64 ppc ppc64 x86"
 IUSE="nls static-libs test"
 
-RDEPEND="virtual/libiconv
-	nls? ( virtual/libintl )"
+RDEPEND="nls? ( virtual/libintl )"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	nls? ( sys-devel/gettext )
 	test? ( dev-libs/check )"
 
-DOCS=(AUTHORS ChangeLog NEWS)
+DOCS="AUTHORS ChangeLog NEWS README"
 
 src_configure() {
 	econf \
@@ -27,11 +26,7 @@ src_configure() {
 		$(use_enable static-libs static)
 }
 
-src_test() {
-	emake -C test check
-}
-
 src_install() {
 	default
-	find "${D}" -name "*.la" -delete || die
+	rm -f "${ED}"/usr/lib*/libhangul.la
 }

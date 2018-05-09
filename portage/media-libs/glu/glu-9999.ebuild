@@ -30,7 +30,8 @@ IUSE="static-libs"
 
 DEPEND=">=virtual/opengl-7.0-r1[${MULTILIB_USEDEP}]"
 RDEPEND="${DEPEND}
-	!<media-libs/mesa-9"
+	!<media-libs/mesa-9
+	abi_x86_32? ( !app-emulation/emul-linux-x86-opengl[-abi_x86_32(-)] )"
 
 src_unpack() {
 	default

@@ -1,5 +1,5 @@
---- a/Configuration.cpp
-+++ b/Configuration.cpp
+--- Configuration.cpp
++++ Configuration.cpp
 @@ -25,6 +25,7 @@
  #include <stdlib.h>
  #include <string>

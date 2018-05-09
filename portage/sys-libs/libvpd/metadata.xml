@@ -5,6 +5,8 @@
 		<email>ppc@gentoo.org</email>
 		<name>Gentoo Linux PowerPC Development</name>
 	</maintainer>
+	<longdescription lang="en">
+	</longdescription>
 	<upstream>
 		<remote-id type="sourceforge">linux-diag</remote-id>
 	</upstream>

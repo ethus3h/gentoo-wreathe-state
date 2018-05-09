@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -27,10 +27,7 @@ DOCS=(
 	doc/{AddingOrModifyingComponents,UsingLibical}.txt
 )
 
-PATCHES=(
-	"${FILESDIR}/fix-libdir-location.patch"
-	"${FILESDIR}/${P}-tests.patch" #bug 532296
-)
+PATCHES=( "${FILESDIR}/fix-libdir-location.patch" )
 
 src_configure() {
 	# See above, introspection is disabled for v2.0.0 at least.
@@ -39,11 +36,6 @@ src_configure() {
 	#)
 	use static-libs || mycmakeargs+=( -DSHARED_ONLY=ON )
 	cmake-utils_src_configure
-}
-
-src_test() {
-	local myctestargs=( -j1 )
-	cmake-utils_src_test
 }
 
 src_install() {

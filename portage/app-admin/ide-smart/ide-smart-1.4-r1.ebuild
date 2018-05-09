@@ -1,7 +1,5 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=6
 
 inherit toolchain-funcs
 
@@ -14,22 +12,12 @@ SLOT="0"
 KEYWORDS="amd64 ppc sparc x86"
 IUSE=""
 
-PATCHES=( "${FILESDIR}"/${PN}-1.4-fix-build-system.patch )
-
-src_prepare() {
-	default
-
-	# yes, the tarball includes pre-compiled
-	# object files and binaries
-	rm ${PN}{,.o} || die
-}
-
-src_configure() {
-	tc-export CC
+src_compile() {
+	$(tc-getCC) ${CFLAGS} -Wall ${LDFLAGS} -o ${PN} ${PN}.c || die "compile"
 }
 
 src_install() {
-	dobin ide-smart
+	dobin ide-smart || die
 	doman ide-smart.8
-	einstalldocs
+	dodoc README
 }

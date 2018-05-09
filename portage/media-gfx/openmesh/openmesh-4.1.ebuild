@@ -25,8 +25,6 @@ DEPEND="${RDEPEND}
 	test? ( dev-cpp/gtest )"
 
 src_prepare() {
-	cmake-utils_src_prepare
-
 	# Fix libdir and remove rpath.
 	sed -i \
 		-e "s|\(set (ACG_PROJECT_LIBDIR \"\).*|\1$(get_libdir)/\")|" \

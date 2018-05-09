@@ -15,7 +15,7 @@ SRC_URI="mirror://debian/pool/main/s/spider/${MY_P}.orig.tar.gz
 
 LICENSE="HPND"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="athena"
 
 RDEPEND="x11-libs/libXext
@@ -38,10 +38,12 @@ src_prepare() {
 }
 
 src_configure() {
-	xmkmf \
+	imake \
+		-DUseInstalled \
 		-DSmallCards=NO \
 		-DRoundCards \
 		$(use athena && echo "-DCompileXAW=YES" || echo "-DCompileXlibOnly=YES") \
+		-I/usr/lib/X11/config \
 		|| die "imake failed"
 	sed -i \
 		-e '/CC = /d' \

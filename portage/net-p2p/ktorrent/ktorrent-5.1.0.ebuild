@@ -1,11 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 KDE_HANDBOOK="forceoptional"
 KDE_TEST="optional"
-VIRTUALX_REQUIRED="test"
 inherit kde5
 
 DESCRIPTION="Powerful BitTorrent client based on KDE Frameworks"
@@ -13,7 +12,7 @@ HOMEPAGE="https://www.kde.org/applications/internet/ktorrent/"
 SRC_URI="mirror://kde/stable/${PN}/${PV/%.0}/${P}.tar.xz"
 
 LICENSE="GPL-2"
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="+bwscheduler +downloadorder +infowidget +ipfilter +kross +logviewer +magnetgenerator
 +mediaplayer rss +scanfolder +search +shutdown +stats +upnp +zeroconf"
 
@@ -77,11 +76,6 @@ RDEPEND="${COMMON_DEPEND}
 	)
 	!net-p2p/ktorrent:4
 "
-
-PATCHES=(
-	"${FILESDIR}/${P}-qt-5.11.patch"
-	"${FILESDIR}/${P}-cmake-3.11.patch" #650808
-)
 
 src_configure() {
 	local mycmakeargs=(

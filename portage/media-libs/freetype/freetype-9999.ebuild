@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -11,7 +11,7 @@ unset SCM
 INFINALITY_PATCH="03-infinality-2.6.3-2016.03.26.patch"
 
 DESCRIPTION="A high-quality and portable font engine"
-HOMEPAGE="https://www.freetype.org/"
+HOMEPAGE="http://www.freetype.org/"
 IUSE="X +adobe-cff bindist bzip2 +cleartype_hinting debug fontforge harfbuzz
 	infinality png static-libs utils"
 
@@ -22,7 +22,7 @@ if [[ "${PV}" != 9999 ]] ; then
 			mirror://nongnu/freetype/ft2demos-${PV}.tar.bz2 )
 		doc?	( mirror://sourceforge/freetype/${PN}-doc-${PV}.tar.bz2
 			mirror://nongnu/freetype/${PN}-doc-${PV}.tar.bz2 )"
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris ~x86-winnt"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris ~x86-winnt"
 	IUSE+="doc"
 fi
 
@@ -30,7 +30,7 @@ LICENSE="|| ( FTL GPL-2+ )"
 SLOT="2"
 RESTRICT="!bindist? ( bindist )" # bug 541408
 
-RDEPEND=">=sys-libs/zlib-1.2.8-r1[${MULTILIB_USEDEP}]
+CDEPEND=">=sys-libs/zlib-1.2.8-r1[${MULTILIB_USEDEP}]
 	bzip2? ( >=app-arch/bzip2-1.0.6-r4[${MULTILIB_USEDEP}] )
 	harfbuzz? ( >=media-libs/harfbuzz-0.9.19[truetype,${MULTILIB_USEDEP}] )
 	png? ( >=media-libs/libpng-1.2.51:0=[${MULTILIB_USEDEP}] )
@@ -41,8 +41,9 @@ RDEPEND=">=sys-libs/zlib-1.2.8-r1[${MULTILIB_USEDEP}]
 			>=x11-libs/libXdmcp-1.1.1-r1[${MULTILIB_USEDEP}]
 		)
 	)"
-DEPEND="${RDEPEND}
+DEPEND="${CDEPEND}
 	virtual/pkgconfig"
+RDEPEND="${CDEPEND}"
 PDEPEND="infinality? ( media-libs/fontconfig-infinality )"
 
 PATCHES=(

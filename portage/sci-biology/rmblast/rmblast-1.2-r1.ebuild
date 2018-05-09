@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -9,8 +9,7 @@ MY_NCBI_BLAST_V=2.2.23+
 
 DESCRIPTION="RepeatMasker compatible version of NCBI BLAST+"
 HOMEPAGE="http://www.repeatmasker.org/RMBlast.html"
-SRC_URI="http://www.repeatmasker.org/rmblast-${PV}-ncbi-blast-${MY_NCBI_BLAST_V}-src.tar.gz
-	https://dev.gentoo.org/~mgorny/dist/${P}-gcc47.patch.bz2"
+SRC_URI="http://www.repeatmasker.org/rmblast-${PV}-ncbi-blast-${MY_NCBI_BLAST_V}-src.tar.gz"
 
 LICENSE="OSL-2.1"
 SLOT="0"
@@ -31,7 +30,7 @@ src_prepare() {
 		-e "/DEF_FAST_FLAGS=/s:=\".*\":=\"${CFLAGS}\":g" \
 		-e 's/2.95\* | 2.96\* | 3\.\* | 4\.\* )/2.95\* | 2.96\* | \[3-9\]\.\* )/g' \
 		-i src/build-system/configure || die
-	epatch "${WORKDIR}"/${P}-gcc47.patch
+	epatch "${FILESDIR}"/${P}-gcc47.patch
 }
 
 src_configure() {

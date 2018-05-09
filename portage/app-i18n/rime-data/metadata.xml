@@ -14,6 +14,7 @@
       <email>chen.sst@gmail.com</email>
       <name>Gong Chen</name>
     </maintainer>
-    <remote-id type="github">rime/brise</remote-id>
+    <bugs-to>https://code.google.com/p/rimeime/issues/list</bugs-to>
+    <remote-id type="google-code">rimeime</remote-id>
   </upstream>
 </pkgmetadata>

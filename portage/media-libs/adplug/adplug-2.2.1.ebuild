@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=4
 
 DESCRIPTION="A free, cross-platform, hardware independent AdLib sound player library"
 HOMEPAGE="http://adplug.sourceforge.net"
@@ -16,6 +16,8 @@ RDEPEND=">=dev-cpp/libbinio-1.4"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
+DOCS=( AUTHORS BUGS ChangeLog NEWS README TODO )
+
 src_configure() {
 	econf \
 		$(use_enable static-libs static) \
@@ -24,5 +26,5 @@ src_configure() {
 
 src_install() {
 	default
-	find "${D}" -name '*.la' -delete || die
+	rm -f "${ED}"usr/lib*/lib${PN}.la
 }

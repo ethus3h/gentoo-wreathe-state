@@ -1,9 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-
-inherit qmake-utils virtualx
+PLOCALES="en fi sv da uk"
+PLOCALE_BACKUP="en"
+inherit qmake-utils virtualx l10n
 
 DESCRIPTION="Program for displaying classified advertisement items"
 HOMEPAGE="http://katiska.org/classified-ads/"

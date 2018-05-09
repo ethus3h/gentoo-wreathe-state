@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -12,11 +12,11 @@ LICENSE="GPL-2"
 SLOT="0/${PV}"
 KEYWORDS=""
 IUSE="
-	adns androiddump bcg729 +capinfos +caps +captype ciscodump
-	cpu_flags_x86_sse4_2 +dftest doc doc-pdf +dumpcap +editcap geoip gtk
-	kerberos libssh libxml2 lua lz4 +mergecap +netlink nghttp2 +pcap portaudio
-	+qt5 +randpkt +randpktdump +reordercap sbc selinux +sharkd smi snappy
-	spandsp sshdump ssl +text2pcap tfshark +tshark +udpdump zlib
+	adns androiddump +capinfos +caps +captype ciscodump cpu_flags_x86_sse4_2
+	+dftest doc doc-pdf +dumpcap +editcap geoip gtk kerberos libssh libxml2 lua
+	+mergecap +netlink nghttp2 +pcap portaudio +qt5 +randpkt +randpktdump
+	+reordercap sbc selinux +sharkd smi snappy spandsp sshdump ssl +text2pcap
+	tfshark +tshark +udpdump zlib
 "
 REQUIRED_USE="
 	ciscodump? ( libssh )
@@ -30,7 +30,6 @@ CDEPEND="
 	dev-libs/libgcrypt:0
 	netlink? ( dev-libs/libnl:3 )
 	adns? ( >=net-dns/c-ares-1.5 )
-	bcg729? ( media-libs/bcg729 )
 	caps? ( sys-libs/libcap )
 	geoip? ( dev-libs/geoip )
 	gtk? (
@@ -43,7 +42,6 @@ CDEPEND="
 	libssh? ( >=net-libs/libssh-0.6 )
 	libxml2? ( dev-libs/libxml2 )
 	lua? ( >=dev-lang/lua-5.1:* )
-	lz4? ( app-arch/lz4 )
 	nghttp2? ( net-libs/nghttp2 )
 	pcap? ( net-libs/libpcap )
 	portaudio? ( media-libs/portaudio )
@@ -53,10 +51,7 @@ CDEPEND="
 		dev-qt/qtmultimedia:5
 		dev-qt/qtprintsupport:5
 		dev-qt/qtwidgets:5
-		|| (
-			media-libs/speexdsp
-			<media-libs/speex-1.2.0
-		)
+		media-libs/speex
 		x11-misc/xdg-utils
 	)
 	sbc? ( media-libs/sbc )
@@ -151,6 +146,8 @@ src_configure() {
 	use doc || export ac_cv_prog_HAVE_DOXYGEN=false
 	use doc-pdf || export ac_cv_prog_HAVE_FOP=false
 
+	# dumpcap requires libcap
+	# --disable-profile-build bugs #215806, #292991, #479602
 	econf \
 		$(use androiddump && use pcap && echo --enable-androiddump-use-libpcap=yes) \
 		$(use dumpcap && use_with pcap dumpcap-group wireshark) \
@@ -172,15 +169,13 @@ src_configure() {
 		$(use_enable tshark) \
 		$(use_enable udpdump) \
 		$(use_with adns c-ares) \
-		$(use_with bcg729) \
 		$(use_with caps libcap) \
 		$(use_with geoip) \
 		$(use_with gtk gtk 3) \
 		$(use_with kerberos krb5) \
-		$(use_with libssh) \
+		$(use_with libssh ssh) \
 		$(use_with libxml2) \
 		$(use_with lua) \
-		$(use_with lz4) \
 		$(use_with nghttp2) \
 		$(use_with pcap) \
 		$(use_with portaudio) \
@@ -197,6 +192,7 @@ src_configure() {
 		$(usex qt5 MOC=$(qt5_get_bindir)/moc '') \
 		$(usex qt5 RCC=$(qt5_get_bindir)/rcc '') \
 		$(usex qt5 UIC=$(qt5_get_bindir)/uic '') \
+		--disable-profile-build \
 		--disable-warnings-as-errors \
 		--sysconfdir="${EPREFIX}"/etc/wireshark \
 		${myconf[@]}
@@ -218,11 +214,16 @@ src_install() {
 	default
 
 	# FAQ is not required as is installed from help/faq.txt
-	dodoc AUTHORS ChangeLog NEWS README* doc/randpkt.txt doc/README*
+	dodoc AUTHORS ChangeLog NEWS README.* \
+		doc/{randpkt.txt,README*}
 
-	if use doc-pdf; then
-		docinto /usr/share/doc/${PF}/pdf/
-		dodoc docbook/{developer,user}-guide.pdf
+	if use doc; then
+		docinto /usr/share/doc/${PF}/html
+		dodoc -r docbook/{release-notes.html,ws{d,u}g_html{,_chunked}}
+		if use doc-pdf; then
+			docinto /usr/share/doc/${PF}/pdf/
+			dodoc docbook/{developer,user}-guide-{a4,us}.pdf docbook/release-notes.pdf
+		fi
 	fi
 
 	# install headers
@@ -235,6 +236,7 @@ src_install() {
 		epan/dissectors/*.h \
 		epan/ftypes/*.h \
 		epan/wmem/*.h \
+		register.h \
 		wiretap/*.h \
 		ws_diag_control.h \
 		ws_symbol_export.h \
@@ -249,14 +251,16 @@ src_install() {
 	doins wiretap/wtap.h
 
 	if use gtk || use qt5; then
-		local s
-		for s in 16 32 48 64 128 256 512 1024; do
-			insinto /usr/share/icons/hicolor/${s}x${s}/apps
-			newins image/wsicon${s}.png wireshark.png
+		local c d
+		for c in hi lo; do
+			for d in 16 32 48; do
+				insinto /usr/share/icons/${c}color/${d}x${d}/apps
+				newins image/${c}${d}-app-wireshark.png wireshark.png
+			done
 		done
-		for s in 16 24 32 48 64 128 256 ; do
-			insinto /usr/share/icons/hicolor/${s}x${s}/mimetypes
-			newins image/WiresharkDoc-${s}.png application-vnd.tcpdump.pcap.png
+		for d in 16 24 32 48 64 128 256 ; do
+			insinto /usr/share/icons/hicolor/${d}x${d}/mimetypes
+			newins image/WiresharkDoc-${d}.png application-vnd.tcpdump.pcap.png
 		done
 	fi
 
@@ -265,13 +269,12 @@ src_install() {
 
 pkg_postinst() {
 	gnome2_icon_cache_update
-	xdg_desktop_database_update
 	xdg_mimeinfo_database_update
 
 	# Add group for users allowed to sniff.
 	enewgroup wireshark
 
-	if use dumpcap && use pcap; then
+	if use pcap; then
 		fcaps -o 0 -g wireshark -m 4710 -M 0710 \
 			cap_dac_read_search,cap_net_raw,cap_net_admin \
 			"${EROOT}"/usr/bin/dumpcap
@@ -284,6 +287,5 @@ pkg_postinst() {
 
 pkg_postrm() {
 	gnome2_icon_cache_update
-	xdg_desktop_database_update
 	xdg_mimeinfo_database_update
 }

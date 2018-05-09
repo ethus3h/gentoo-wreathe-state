@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit gkrellm-plugin toolchain-funcs
+inherit gkrellm-plugin
 
 DESCRIPTION="XKB keyboard switcher for gkrellm2"
 HOMEPAGE="http://tripie.sweb.cz/gkrellm/xkb/"
@@ -14,12 +14,13 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE=""
 
-RDEPEND="app-admin/gkrellm:2[X]"
-DEPEND="${RDEPEND}"
+COMMON_DEPEND="app-admin/gkrellm[X]"
+RDEPEND+=" ${COMMON_DEPEND}"
+DEPEND+=" ${COMMON_DEPEND}"
 
-PATCHES=( "${FILESDIR}"/${PN}-makefile.patch )
+PLUGIN_SO=xkb.so
 
-PLUGIN_SO=( xkb$(get_modname) )
+PATCHES=( "${FILESDIR}/${PN}-makefile.patch" )
 
 src_compile() {
 	emake CC="$(tc-getCC)" LDFLAGS="${LDFLAGS}"

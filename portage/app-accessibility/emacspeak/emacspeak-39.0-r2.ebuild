@@ -1,16 +1,16 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
 NEED_EMACS=24
 FORCE_PRINT_ELOG=1
 DISABLE_AUTOFORMATTING=1
-inherit elisp readme.gentoo-r1
+inherit eutils readme.gentoo elisp
 
 if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://github.com/tvraman/emacspeak.git"
-	inherit git-r3
+	ESVN_REPO_URI="https://${PN}.googlecode.com/svn/trunk"
+	inherit subversion
 else
 	SRC_URI="https://${PN}.googlecode.com/files/${P}.tar.bz2"
 	KEYWORDS="amd64 ppc x86"
@@ -22,7 +22,7 @@ LICENSE="BSD GPL-2"
 SLOT="0"
 IUSE="+espeak"
 
-DEPEND="espeak? ( app-accessibility/espeak )"
+	DEPEND="espeak? ( app-accessibility/espeak )"
 
 RDEPEND="${DEPEND}
 	>=dev-tcltk/tclx-8.4"
@@ -35,7 +35,10 @@ by adding the following to your ~/.emacs file:
 (load "/usr/share/emacs/site-lisp/emacspeak/lisp/emacspeak-setup.el")
 '
 
-HTML_DOCS=( install-guide user-guide )
+src_prepare() {
+	# Allow user patches to be applied without modifying the ebuild
+	epatch_user
+}
 
 src_configure() {
 	emake config
@@ -48,7 +51,7 @@ src_compile() {
 		if [[ -z $tcl_version ]]; then
 			die 'Unable to detect the installed version of dev-lang/tcl.'
 		fi
-		cd servers/linux-espeak || die
+		cd servers/linux-espeak
 		emake TCL_VERSION="${tcl_version}"
 	fi
 }
@@ -69,8 +72,8 @@ src_install() {
 		popd > /dev/null || die
 	fi
 	dodoc README etc/NEWS* etc/FAQ etc/COPYRIGHT
-	einstalldocs
-	cd "${D}/usr/share/emacs/site-lisp/${PN}" || die
+	dohtml -r install-guide user-guide
+	cd "${D}/usr/share/emacs/site-lisp/${PN}"
 	rm -rf README etc/NEWS* etc/FAQ etc/COPYRIGHT install-guide \
 		user-guide || die
 	readme.gentoo_create_doc

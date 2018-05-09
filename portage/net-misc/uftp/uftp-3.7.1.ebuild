@@ -1,9 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit toolchain-funcs
+inherit eutils toolchain-funcs
 
 DESCRIPTION="Encrypted UDP based FTP with multicast"
 HOMEPAGE="http://www.tcnj.edu/~bush/uftp.html"
@@ -14,12 +14,12 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="+server ssl"
 
-DEPEND="ssl? ( dev-libs/openssl:0= )"
+DEPEND="ssl? ( dev-libs/openssl )"
 RDEPEND="${DEPEND}"
 
-PATCHES=(
-	"${FILESDIR}/${PN}-3.7_makefile.patch"
-)
+src_prepare() {
+	epatch "${FILESDIR}/${PN}-3.7_makefile.patch"
+}
 
 src_compile() {
 	use ssl || local opt="NO_ENCRYPTION=1"

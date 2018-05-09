@@ -8,8 +8,8 @@ inherit cmake-utils python-single-r1
 
 MY_P="${PN}1-${PV}"
 if [[ ${PV} == 9999* ]] ; then
-	inherit git-r3
 	EGIT_REPO_URI="git://developer.intra2net.com/${PN}"
+	inherit git-2
 else
 	SRC_URI="http://www.intra2net.com/en/developer/${PN}/download/${MY_P}.tar.bz2"
 	KEYWORDS="amd64 arm arm64 ~mips ppc ppc64 sparc x86"
@@ -21,7 +21,6 @@ HOMEPAGE="http://www.intra2net.com/en/developer/libftdi/"
 LICENSE="LGPL-2"
 SLOT="1"
 IUSE="cxx doc examples python static-libs test tools"
-REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 RDEPEND="virtual/libusb:1
 	cxx? ( dev-libs/boost )
@@ -34,6 +33,8 @@ DEPEND="${RDEPEND}
 	python? ( dev-lang/swig )
 	doc? ( app-doc/doxygen )"
 
+REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
+
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
 }
@@ -41,7 +42,7 @@ pkg_setup() {
 S=${WORKDIR}/${MY_P}
 
 src_configure() {
-	local mycmakeargs=(
+	mycmakeargs=(
 		-DFTDIPP=$(usex cxx)
 		-DDOCUMENTATION=$(usex doc)
 		-DEXAMPLES=$(usex examples)

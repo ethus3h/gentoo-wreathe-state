@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -6,7 +6,7 @@ EAPI=5
 inherit base eutils multilib autotools
 
 DESCRIPTION="Gentoo Linux USE flags editor"
-HOMEPAGE="https://wiki.gentoo.org/wiki/Ufed"
+HOMEPAGE="https://www.gentoo.org/"
 SRC_URI="mirror://gentoo/${P}.tar.bz2
 	https://dev.gentoo.org/~fuzzyray/distfiles/${P}.tar.bz2"
 

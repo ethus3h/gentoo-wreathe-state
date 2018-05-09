@@ -3,7 +3,9 @@
 #
 
 # selinux - Enable SELinux support
-USE="selinux"
+# unconfined - Enable unconfined domains, needed due to 'targeted' policy type
+# open_perms - Enable open permission in SELinux subsystem
+USE="selinux unconfined open_perms"
 
 FEATURES="selinux sesandbox sfperms"
 

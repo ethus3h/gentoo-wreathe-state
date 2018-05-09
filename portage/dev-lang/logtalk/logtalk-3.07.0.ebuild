@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
-inherit eutils xdg-utils
+inherit eutils fdo-mime
 
 DESCRIPTION="Open source object-oriented logic programming language"
 HOMEPAGE="http://logtalk.org"
@@ -21,7 +21,7 @@ RDEPEND="
 	${DEPEND}"
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-3.03.0-no-user-docs.patch
+	epatch "${FILESDIR}"/${P}-no-user-docs.patch
 }
 
 src_install() {
@@ -100,7 +100,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 
 	ewarn "The following integration scripts are installed"
 	ewarn "for running logtalk with selected Prolog compilers:"
@@ -126,5 +126,5 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

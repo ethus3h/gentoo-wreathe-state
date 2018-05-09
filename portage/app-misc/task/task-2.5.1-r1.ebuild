@@ -22,7 +22,7 @@ RDEPEND="${DEPEND}"
 PATCHES=( "${FILESDIR}"/0001-TW-1778-Unicode-strings-are-truncated-in-task-descri.patch )
 
 src_prepare() {
-	cmake-utils_src_prepare
+	default
 
 	# don't automatically install scripts
 	sed -i '/scripts/d' CMakeLists.txt || die

@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -21,7 +21,6 @@ IUSE+=" cpu_flags_x86_sse4_1"
 IUSE+=" cpu_flags_x86_sse4_2"
 IUSE+=" cpu_flags_x86_ssse3"
 #IUSE+=" cpu_flags_x86_x87"
-RESTRICT="!test? ( test )"
 
 RDEPEND="!dev-cpp/eigen:0"
 DEPEND="
@@ -39,6 +38,7 @@ DEPEND="
 		sci-libs/scotch
 		sci-libs/spqr
 		sci-libs/superlu
+		dev-qt/qtcore:4
 		virtual/opengl
 		virtual/pkgconfig
 	)
@@ -86,7 +86,6 @@ src_compile() {
 src_test() {
 	local mycmakeargs=(
 		-DEIGEN_BUILD_TESTS=ON
-		-DEIGEN_TEST_NOQT=ON
 		-DEIGEN_TEST_ALTIVEC="$(usex altivec)"
 		-DEIGEN_TEST_OPENMP="$(usex openmp)"
 		-DEIGEN_TEST_SSE2="$(usex cpu_flags_x86_sse2)"

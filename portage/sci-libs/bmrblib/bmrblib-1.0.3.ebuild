@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python2_7 python3_{4,5,6} pypy )
 
 inherit distutils-r1
 
-DESCRIPTION="API abstracting the BioMagResBank (BMRB) NMR-STAR format"
+DESCRIPTION="API abstracting the BioMagResBank (BMRB) NMR-STAR format (http://www.bmrb.wisc.edu/)"
 HOMEPAGE="http://gna.org/projects/bmrblib/"
 SRC_URI="http://download.gna.org/${PN}/${P}.tar.bz2"
 

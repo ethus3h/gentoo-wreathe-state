@@ -8,12 +8,14 @@ inherit toolchain-funcs
 MY_P="${P/-/_}"
 
 DESCRIPTION="Attach/detach from interactive processes across the network"
-HOMEPAGE="https://packages.debian.org/unstable/admin/detachtty"
+HOMEPAGE="http://packages.debian.org/unstable/admin/detachtty"
 SRC_URI="mirror://debian/pool/main/d/${PN}/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ppc sparc x86"
+KEYWORDS="~amd64 ~ppc ~sparc ~x86"
+
+DOCS=( INSTALL README )
 
 src_compile() {
 	emake CC="$(tc-getCC)" CFLAGS="${CFLAGS}"

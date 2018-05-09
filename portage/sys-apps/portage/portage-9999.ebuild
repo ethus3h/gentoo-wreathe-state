@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -10,7 +10,7 @@ PYTHON_COMPAT=(
 )
 PYTHON_REQ_USE='bzip2(+),threads(+)'
 
-inherit distutils-r1 git-r3 systemd
+inherit distutils-r1 git-r3
 
 DESCRIPTION="Portage is the package management and distribution system for Gentoo"
 HOMEPAGE="https://wiki.gentoo.org/wiki/Project:Portage"
@@ -18,7 +18,7 @@ HOMEPAGE="https://wiki.gentoo.org/wiki/Project:Portage"
 LICENSE="GPL-2"
 KEYWORDS=""
 SLOT="0"
-IUSE="build doc epydoc gentoo-dev +ipc +native-extensions +rsync-verify selinux xattr"
+IUSE="build doc epydoc +ipc linguas_ru +native-extensions selinux xattr"
 
 DEPEND="!build? ( $(python_gen_impl_dep 'ssl(+)') )
 	>=app-arch/tar-1.27
@@ -33,8 +33,6 @@ DEPEND="!build? ( $(python_gen_impl_dep 'ssl(+)') )
 # for now, don't pull in xattr deps for other kernels.
 # For whirlpool hash, require python[ssl] (bug #425046).
 # For compgen, require bash[readline] (bug #445576).
-# app-portage/gemato goes without PYTHON_USEDEP since we're calling
-# the executable.
 RDEPEND="
 	>=app-arch/tar-1.27
 	dev-lang/python-exec:2
@@ -42,13 +40,6 @@ RDEPEND="
 		>=sys-apps/sed-4.0.5
 		app-shells/bash:0[readline]
 		>=app-admin/eselect-1.2
-		$(python_gen_cond_dep 'dev-python/pyblake2[${PYTHON_USEDEP}]' \
-			python{2_7,3_4,3_5} pypy)
-		rsync-verify? (
-			>=app-portage/gemato-10
-			app-crypt/gentoo-keys
-			>=app-crypt/gnupg-2.2.4-r2[ssl(-)]
-		)
 	)
 	elibc_FreeBSD? ( sys-freebsd/freebsd-bin )
 	elibc_glibc? ( >=sys-apps/sandbox-2.2 )
@@ -93,17 +84,6 @@ pkg_setup() {
 python_prepare_all() {
 	distutils-r1_python_prepare_all
 
-	if use gentoo-dev; then
-		einfo "Disabling --dynamic-deps by default for gentoo-dev..."
-		sed -e 's:\("--dynamic-deps", \)\("y"\):\1"n":' \
-			-i pym/_emerge/create_depgraph_params.py || \
-			die "failed to patch create_depgraph_params.py"
-
-		einfo "Enabling additional FEATURES for gentoo-dev..."
-		echo 'FEATURES="${FEATURES} ipc-sandbox network-sandbox strict-keepdir"' \
-			>> cnf/make.globals || die
-	fi
-
 	if use native-extensions; then
 		printf "[build_ext]\nportage-ext-modules=true\n" >> \
 			setup.cfg || die
@@ -120,11 +100,6 @@ python_prepare_all() {
 		einfo "Adding FEATURES=xattr to make.globals ..."
 		echo -e '\nFEATURES="${FEATURES} xattr"' >> cnf/make.globals \
 			|| die "failed to append to make.globals"
-	fi
-
-	if use build || ! use rsync-verify; then
-		sed -e '/^sync-rsync-verify-metamanifest/s|yes|no|' \
-			-i cnf/repos.conf || die "sed failed"
 	fi
 
 	if [[ -n ${EPREFIX} ]] ; then
@@ -154,7 +129,6 @@ python_prepare_all() {
 
 		einfo "Adjusting repos.conf ..."
 		sed -e "s|^\(location = \)\(/usr/portage\)|\\1${EPREFIX}\\2|" \
-			-e "s|^\(sync-openpgp-key-path = \)\(.*\)|\\1${EPREFIX}\\2|" \
 			-i cnf/repos.conf || die "sed failed"
 		if prefix-guest ; then
 			sed -e "s|^\(main-repo = \).*|\\1gentoo_prefix|" \
@@ -212,21 +186,13 @@ python_install_all() {
 	distutils-r1_python_install_all
 
 	local targets=()
-	use doc && targets+=(
-		install_docbook
-		--htmldir="${EPREFIX}/usr/share/doc/${PF}/html"
-	)
-	use epydoc && targets+=(
-		install_epydoc
-		--htmldir="${EPREFIX}/usr/share/doc/${PF}/html"
-	)
+	use doc && targets+=( install_docbook )
+	use epydoc && targets+=( install_epydoc )
 
 	# install docs
 	if [[ ${targets[@]} ]]; then
 		esetup.py "${targets[@]}"
 	fi
-
-	systemd_dotmpfilesd "${FILESDIR}"/portage-ccache.conf
 
 	# Due to distutils/python-exec limitations
 	# they must be installed to /usr/bin.

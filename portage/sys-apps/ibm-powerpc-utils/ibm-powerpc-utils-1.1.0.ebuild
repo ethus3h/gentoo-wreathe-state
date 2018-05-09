@@ -5,7 +5,8 @@ inherit eutils
 
 MY_P="powerpc-utils-${PV}"
 
-DESCRIPTION="Utilities for the maintainance of the IBM and Apple PowerPC platforms"
+DESCRIPTION="This package provides utilities for the maintainance
+of the IBM and Apple powerpc platforms."
 SRC_URI="http://powerpc-utils.ozlabs.org/releases/${MY_P}.tar.gz"
 HOMEPAGE="http://powerpc-utils.ozlabs.org/"
 

@@ -5,7 +5,7 @@ EAPI=4
 
 inherit eutils multilib
 
-DESCRIPTION="Portable Implementation of the Linpack Benchmark for Distributed-Memory Clusters"
+DESCRIPTION="A Portable Implementation of the High-Performance Linpack Benchmark for Distributed-Memory Computers"
 HOMEPAGE="http://www.netlib.org/benchmark/hpl/"
 SRC_URI="http://www.netlib.org/benchmark/hpl/hpl-${PV}.tar.gz"
 

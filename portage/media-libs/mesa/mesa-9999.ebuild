@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -33,7 +33,7 @@ SLOT="0"
 RESTRICT="!bindist? ( bindist )"
 
 RADEON_CARDS="r100 r200 r300 r600 radeon radeonsi"
-VIDEO_CARDS="${RADEON_CARDS} freedreno i915 i965 imx intel nouveau vc4 virgl vivante vmware"
+VIDEO_CARDS="${RADEON_CARDS} freedreno i915 i965 imx intel nouveau vc4 vivante vmware"
 for card in ${VIDEO_CARDS}; do
 	IUSE_VIDEO_CARDS+=" video_cards_${card}"
 done
@@ -53,14 +53,14 @@ REQUIRED_USE="
 	vaapi? ( gallium )
 	vdpau? ( gallium )
 	vulkan? ( || ( video_cards_i965 video_cards_radeonsi )
-			  video_cards_radeonsi? ( llvm ) )
+	          video_cards_radeonsi? ( llvm ) )
 	wayland? ( egl gbm )
 	xa?  ( gallium )
 	video_cards_freedreno?  ( gallium )
 	video_cards_intel?  ( classic )
 	video_cards_i915?   ( || ( classic gallium ) )
 	video_cards_i965?   ( classic )
-	video_cards_imx?    ( gallium video_cards_vivante )
+	video_cards_imx?    ( gallium )
 	video_cards_nouveau? ( || ( classic gallium ) )
 	video_cards_radeon? ( || ( classic gallium )
 						  gallium? ( x86? ( llvm ) amd64? ( llvm ) ) )
@@ -70,17 +70,17 @@ REQUIRED_USE="
 	video_cards_r600?   ( gallium )
 	video_cards_radeonsi?   ( gallium llvm )
 	video_cards_vc4? ( gallium )
-	video_cards_virgl? ( gallium )
 	video_cards_vivante? ( gallium gbm )
 	video_cards_vmware? ( gallium )
 "
 
-LIBDRM_DEPSTRING=">=x11-libs/libdrm-2.4.91"
+LIBDRM_DEPSTRING=">=x11-libs/libdrm-2.4.82"
 # keep correct libdrm and dri2proto dep
 # keep blocks in rdepend for binpkg
 RDEPEND="
 	!<x11-base/xorg-server-1.7
 	!<=x11-proto/xf86driproto-2.0.3
+	abi_x86_32? ( !app-emulation/emul-linux-x86-opengl[-abi_x86_32(-)] )
 	classic? ( app-eselect/eselect-mesa )
 	gallium? ( app-eselect/eselect-mesa )
 	>=app-eselect/eselect-opengl-1.3.0
@@ -91,7 +91,7 @@ RDEPEND="
 	>=x11-libs/libXdamage-1.1.4-r1:=[${MULTILIB_USEDEP}]
 	>=x11-libs/libXext-1.3.2:=[${MULTILIB_USEDEP}]
 	>=x11-libs/libXxf86vm-1.1.3:=[${MULTILIB_USEDEP}]
-	>=x11-libs/libxcb-1.13:=[${MULTILIB_USEDEP}]
+	>=x11-libs/libxcb-1.9.3:=[${MULTILIB_USEDEP}]
 	x11-libs/libXfixes:=[${MULTILIB_USEDEP}]
 	unwind? ( sys-libs/libunwind[${MULTILIB_USEDEP}] )
 	llvm? (
@@ -110,10 +110,7 @@ RDEPEND="
 				dev-libs/libclc
 				virtual/libelf:0=[${MULTILIB_USEDEP}]
 			)
-	openmax? (
-		>=media-libs/libomxil-bellagio-0.9.3:=[${MULTILIB_USEDEP}]
-		x11-misc/xdg-utils
-	)
+	openmax? ( >=media-libs/libomxil-bellagio-0.9.3:=[${MULTILIB_USEDEP}] )
 	vaapi? (
 		>=x11-libs/libva-1.7.3:=[${MULTILIB_USEDEP}]
 		video_cards_nouveau? ( !<=x11-libs/libva-vdpau-driver-0.7.4-r3 )
@@ -150,7 +147,6 @@ RDEPEND="${RDEPEND}
 # 3. Specify LLVM_MAX_SLOT, e.g. 6.
 LLVM_DEPSTR="
 	|| (
-		sys-devel/llvm:7[${MULTILIB_USEDEP}]
 		sys-devel/llvm:6[${MULTILIB_USEDEP}]
 		sys-devel/llvm:5[${MULTILIB_USEDEP}]
 		sys-devel/llvm:4[${MULTILIB_USEDEP}]
@@ -232,9 +228,6 @@ DEPEND="${RDEPEND}
 	>=x11-proto/xextproto-7.2.1-r1:=[${MULTILIB_USEDEP}]
 	>=x11-proto/xf86driproto-2.1.1-r1:=[${MULTILIB_USEDEP}]
 	>=x11-proto/xf86vidmodeproto-2.3.1-r1:=[${MULTILIB_USEDEP}]
-	vulkan? (
-		$(python_gen_any_dep ">=dev-python/mako-0.7.3[\${PYTHON_USEDEP}]")
-	)
 "
 [[ ${PV} == 9999 ]] && DEPEND+="
 	sys-devel/bison
@@ -283,8 +276,8 @@ pkg_setup() {
 }
 
 src_prepare() {
-	eapply_user
 	[[ ${PV} == 9999 ]] && eautoreconf
+	eapply_user
 }
 
 multilib_src_configure() {
@@ -358,8 +351,6 @@ multilib_src_configure() {
 				--with-clang-libdir="${EPREFIX}/usr/lib"
 				"
 		fi
-
-		gallium_enable video_cards_virgl virgl
 	fi
 
 	if use vulkan; then
@@ -403,7 +394,6 @@ multilib_src_configure() {
 		$(use_enable unwind libunwind) \
 		--enable-valgrind=$(usex valgrind auto no) \
 		--enable-llvm-shared-libs \
-		--disable-opencl-icd \
 		--with-dri-drivers=${DRI_DRIVERS} \
 		--with-gallium-drivers=${GALLIUM_DRIVERS} \
 		--with-vulkan-drivers=${VULKAN_DRIVERS} \
@@ -518,8 +508,13 @@ pkg_postinst() {
 	# warn about patent encumbered texture-float
 	if use !bindist; then
 		elog "USE=\"bindist\" was not set. Potentially patent encumbered code was"
-		elog "enabled. Please see /usr/share/doc/${P}/patents.txt.bz2 for an"
-		elog "explanation."
+		elog "enabled. Please see patents.txt for an explanation."
+	fi
+
+	if ! has_version media-libs/libtxc_dxtn; then
+		elog "Note that in order to have full S3TC support, it is necessary to install"
+		elog "media-libs/libtxc_dxtn as well. This may be necessary to get nice"
+		elog "textures in some apps, and some others even require this to run."
 	fi
 }
 

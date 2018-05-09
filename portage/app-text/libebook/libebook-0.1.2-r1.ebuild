@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,7 +6,7 @@ EAPI=6
 MY_PN="libe-book"
 MY_P="${MY_PN}-${PV}"
 
-inherit autotools flag-o-matic
+inherit autotools
 
 DESCRIPTION="Library parsing various ebook formats"
 HOMEPAGE="http://www.sourceforge.net/projects/libebook/"
@@ -45,9 +45,6 @@ src_prepare() {
 }
 
 src_configure() {
-	# bug 618854
-	append-cxxflags -std=c++14
-
 	econf \
 		--disable-static \
 		--disable-werror \

@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -33,6 +33,11 @@ SLOT="0"
 IUSE="acl dbus debug java kerberos lprng-compat pam
 	python selinux +ssl static-libs systemd +threads usb X xinetd zeroconf"
 
+LANGS="ca cs de es fr it ja ru"
+for X in ${LANGS} ; do
+	IUSE="${IUSE} +linguas_${X}"
+done
+
 CDEPEND="
 	app-text/libpaper
 	sys-libs/zlib
@@ -57,6 +62,10 @@ CDEPEND="
 	X? ( x11-misc/xdg-utils )
 	xinetd? ( sys-apps/xinetd )
 	zeroconf? ( >=net-dns/avahi-0.6.31-r2[${MULTILIB_USEDEP}] )
+	abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-baselibs-20140508
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)]
+	)
 "
 
 DEPEND="${CDEPEND}
@@ -157,6 +166,7 @@ src_prepare() {
 multilib_src_configure() {
 	export DSOFLAGS="${LDFLAGS}"
 
+	einfo LANGS=\"${LANGS}\"
 	einfo LINGUAS=\"${LINGUAS}\"
 
 	local myconf=()

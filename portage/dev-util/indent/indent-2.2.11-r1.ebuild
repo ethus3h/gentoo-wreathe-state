@@ -1,12 +1,13 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
+
 inherit autotools eutils
 
 DESCRIPTION="Indent program source files"
-HOMEPAGE="https://www.gentoo.org/"
-SRC_URI="https://dev.gentoo.org/~jer/${P}.tar.gz"
+HOMEPAGE="http://indent.isidore-it.eu/beautify.html https://www.gnu.org/software/indent/"
+SRC_URI="http://${PN}.isidore-it.eu/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -21,6 +22,14 @@ RDEPEND="
 	nls? ( virtual/libintl )
 "
 
+INDENT_LINGUAS="
+	ca da de eo et fi fr gl hu it ja ko nl pl pt_BR ru sk sv tr zh_TW
+"
+
+for indent_lingua in ${INDENT_LINGUAS}; do
+	IUSE+=" linguas_${indent_lingua}"
+done
+
 src_prepare() {
 	# Fix bug #94837
 	local pofile
@@ -30,11 +39,10 @@ src_prepare() {
 	sed -i po/LINGUAS -e 's|zh_TW\.Big5|zh_TW|g' || die
 
 	epatch \
-		"${FILESDIR}"/${P}-segfault.patch \
-		"${FILESDIR}"/${P}-texi2html-5.patch
+		"${FILESDIR}"/${PV}-segfault.patch \
+		"${FILESDIR}"/${PV}-texi2html-5.patch
 	sed -e "s/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/" -i configure.ac || die
-
-	eautoreconf
+	eautomake
 }
 
 src_configure() {

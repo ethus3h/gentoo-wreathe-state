@@ -38,16 +38,6 @@ case ${EAPI:-0} in
 	*) die "EAPI=${EAPI} is not supported" ;;
 esac
 
-if [[ ${__MESON_AUTO_DEPEND+set} == "set" ]] ; then
-	# See if we were included already, but someone changed the value
-	# of MESON_AUTO_DEPEND on us.  We could reload the entire
-	# eclass at that point, but that adds overhead, and it's trivial
-	# to re-order inherit in eclasses/ebuilds instead.  #409611
-	if [[ ${__MESON_AUTO_DEPEND} != ${MESON_AUTO_DEPEND} ]] ; then
-		die "MESON_AUTO_DEPEND changed value between inherits; please inherit meson.eclass first! ${__MESON_AUTO_DEPEND} -> ${MESON_AUTO_DEPEND}"
-	fi
-fi
-
 if [[ -z ${_MESON_ECLASS} ]]; then
 
 inherit ninja-utils python-utils-r1 toolchain-funcs
@@ -59,19 +49,8 @@ EXPORT_FUNCTIONS src_configure src_compile src_test src_install
 if [[ -z ${_MESON_ECLASS} ]]; then
 _MESON_ECLASS=1
 
-MESON_DEPEND=">=dev-util/meson-0.40.0
+DEPEND=">=dev-util/meson-0.40.0
 	>=dev-util/ninja-1.7.2"
-
-# @ECLASS-VARIABLE: MESON_AUTO_DEPEND
-# @DESCRIPTION:
-# Set to 'no' to disable automatically adding to DEPEND.  This lets
-# ebuilds form conditional depends by using ${MESON_DEPEND} in
-# their own DEPEND string.
-: ${MESON_AUTO_DEPEND:=yes}
-if [[ ${MESON_AUTO_DEPEND} != "no" ]] ; then
-	DEPEND=${MESON_DEPEND}
-fi
-__MESON_AUTO_DEPEND=${MESON_AUTO_DEPEND} # See top of eclass
 
 # @ECLASS-VARIABLE: BUILD_DIR
 # @DEFAULT_UNSET
@@ -103,13 +82,12 @@ _meson_create_cross_file() {
 	# system roughly corresponds to uname -s (lowercase)
 	local system=unknown
 	case ${CHOST} in
-		*-aix*)          system=aix ;;
-		*-cygwin*)       system=cygwin ;;
-		*-darwin*)       system=darwin ;;
-		*-freebsd*)      system=freebsd ;;
-		*-linux*)        system=linux ;;
-		mingw*|*-mingw*) system=windows ;;
-		*-solaris*)      system=sunos ;;
+		*-aix*)     system=aix ;;
+		*-cygwin*)  system=cygwin ;;
+		*-darwin*)  system=darwin ;;
+		*-freebsd*) system=freebsd ;;
+		*-linux*)   system=linux ;;
+		*-solaris*) system=sunos ;;
 	esac
 
 	local cpu_family=$(tc-arch)
@@ -126,7 +104,6 @@ _meson_create_cross_file() {
 	ar = '${AR}'
 	c = '${CC}'
 	cpp = '${CXX}'
-	pkgconfig = '${PKG_CONFIG}'
 	strip = '${STRIP}'
 
 	[host_machine]
@@ -135,19 +112,6 @@ _meson_create_cross_file() {
 	cpu = '${cpu}'
 	endian = '$(tc-endian)'
 	EOF
-}
-
-# @FUNCTION: meson_use
-# @USAGE: <USE flag> [option name]
-# @DESCRIPTION:
-# Given a USE flag and meson project option, outputs a string like:
-#
-#   -Doption=true
-#   -Doption=false
-#
-# If the project option is unspecified, it defaults to the USE flag.
-meson_use() {
-	usex "$1" "-D${2-$1}=true" "-D${2-$1}=false"
 }
 
 # @FUNCTION: meson_src_configure
@@ -170,7 +134,6 @@ meson_src_configure() {
 	local -x AR=$(tc-getAR)
 	local -x CC=$(tc-getCC)
 	local -x CXX=$(tc-getCXX)
-	local -x PKG_CONFIG=$(tc-getPKG_CONFIG)
 	local -x STRIP=$(tc-getSTRIP)
 
 	if tc-is-cross-compiler; then
@@ -182,7 +145,6 @@ meson_src_configure() {
 		AR=$(tc-getBUILD_AR)
 		CC=$(tc-getBUILD_CC)
 		CXX=$(tc-getBUILD_CXX)
-		PKG_CONFIG=$(tc-getBUILD_PKG_CONFIG)
 		STRIP=$(tc-getBUILD_STRIP)
 	fi
 

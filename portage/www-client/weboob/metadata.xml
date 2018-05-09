@@ -6,8 +6,7 @@
 		<name>Patrick Lauer</name>
 	</maintainer>
 	<use>
-		<flag name="deprecated">Enable <pkg>dev-python/mechanize</pkg> support (deprecated in favor of <pkg>dev-python/requests</pkg></flag>
-		<flag name="fast-libs">Enable fast libs</flag>
 		<flag name="secure-updates">Enable secure updates</flag>
+		<flag name="fast-libs">Enable fast libs</flag>
 	</use>
 </pkgmetadata>

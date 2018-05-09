@@ -254,6 +254,10 @@ DEPEND="${RDEPEND}
 	v4l? ( sys-kernel/linux-headers )
 "
 
+RDEPEND="${RDEPEND}
+	abi_x86_32? ( !<=app-emulation/emul-linux-x86-medialibs-20140508-r3
+		!app-emulation/emul-linux-x86-medialibs[-abi_x86_32(-)] )"
+
 # Code requiring FFmpeg to be built under gpl license
 GPL_REQUIRED_USE="
 	postproc? ( gpl )
@@ -429,7 +433,7 @@ multilib_src_compile() {
 	if multilib_is_native_abi; then
 		for i in "${FFTOOLS[@]}" ; do
 			if use fftools_${i} ; then
-				emake V=1 tools/${i}$(get_exeext)
+				emake V=1 tools/${i}
 			fi
 		done
 	fi
@@ -441,7 +445,7 @@ multilib_src_install() {
 	if multilib_is_native_abi; then
 		for i in "${FFTOOLS[@]}" ; do
 			if use fftools_${i} ; then
-				dobin tools/${i}$(get_exeext)
+				dobin tools/${i}
 			fi
 		done
 	fi

@@ -18,6 +18,8 @@ IUSE=""
 
 RDEPEND=">=media-libs/libcuefile-${PV}[${MULTILIB_USEDEP}]
 	>=media-libs/libreplaygain-${PV}[${MULTILIB_USEDEP}]
+	abi_x86_32? ( !<=app-emulation/emul-linux-x86-soundlibs-20130224-r5
+					!app-emulation/emul-linux-x86-soundlibs[-abi_x86_32(-)] )
 	!media-libs/libmpcdec
 	!media-libs/libmpcdecsv7"
 DEPEND="${RDEPEND}"

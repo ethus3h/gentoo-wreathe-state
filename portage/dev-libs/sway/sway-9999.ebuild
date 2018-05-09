@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -8,38 +8,37 @@ inherit git-r3 eutils cmake-utils
 DESCRIPTION="i3-compatible Wayland window manager"
 HOMEPAGE="http://swaywm.org/"
 
-EGIT_REPO_URI="https://github.com/swaywm/sway.git"
-EGIT_BRANCH="0.15"
+EGIT_REPO_URI="https://github.com/SirCmpwn/sway.git"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS=""
-IUSE="+gdk-pixbuf +swaybar +swaybg swaygrab swaylock +swaymsg systemd +tray wallpapers zsh-completion"
+IUSE="+swaybg +swaybar +swaymsg swaygrab swaylock +gdk-pixbuf zsh-completion wallpapers systemd +tray"
 
 REQUIRED_USE="tray? ( swaybar )"
 
 RDEPEND="=dev-libs/wlc-9999[systemd=]
-	dev-libs/json-c:0=
+	dev-libs/json-c
 	dev-libs/libpcre
 	dev-libs/libinput
+	x11-libs/libxkbcommon
 	dev-libs/wayland
 	sys-libs/libcap
-	x11-libs/libxkbcommon
-	x11-libs/cairo
 	x11-libs/pango
-	gdk-pixbuf? ( x11-libs/gdk-pixbuf[jpeg] )
+	x11-libs/cairo
 	swaylock? ( virtual/pam )
-	tray? ( sys-apps/dbus )"
+	tray? ( sys-apps/dbus )
+	gdk-pixbuf? ( x11-libs/gdk-pixbuf[jpeg] )"
 
 DEPEND="${RDEPEND}
-	app-text/asciidoc
-	virtual/pkgconfig"
+	virtual/pkgconfig
+	app-text/asciidoc"
 
 src_prepare() {
 	cmake-utils_src_prepare
 
 	# remove bad CFLAGS that upstream is trying to add
-	sed -i -e '/add_compile_options/s/-Werror//' CMakeLists.txt || die
+	sed -i -e '/FLAGS.*-Werror/d' CMakeLists.txt || die
 }
 
 src_configure() {

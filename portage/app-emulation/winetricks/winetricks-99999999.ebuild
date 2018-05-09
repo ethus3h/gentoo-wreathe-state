@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -25,32 +25,27 @@ HOMEPAGE="https://github.com/Winetricks/winetricks https://wiki.winehq.org/Winet
 
 LICENSE="LGPL-2.1+"
 SLOT="0"
-IUSE="gtk kde rar test"
+IUSE="gtk kde rar"
 
-DEPEND="test? (
-		dev-python/bashate
-		dev-util/checkbashisms
-		dev-util/shellcheck
-	)"
-
+DEPEND=""
 RDEPEND="app-arch/cabextract
 	app-arch/p7zip
 	app-arch/unzip
 	net-misc/wget
-	virtual/wine
 	x11-misc/xdg-utils
+	|| (
+		app-emulation/wine
+		virtual/wine
+	)
 	gtk? ( gnome-extra/zenity )
 	kde? ( kde-apps/kdialog )
 	rar? ( app-arch/unrar )"
 
-# Test targets include syntax checks only, not the "heavy duty" tests
-# that would require a lot of disk space, as well as network access.
-
-# This uses a non-standard "Wine" category, which is provided by
-# '/etc/xdg/menus/applications-merged/wine.menu' from the
-# 'app-emulation/wine-desktop-common' package.
-# https://bugs.gentoo.org/451552
+# Uses non-standard "Wine" category, which is provided by app-emulation/wine; #451552
 QA_DESKTOP_FILE="usr/share/applications/winetricks.desktop"
+
+# Tests require network access and run Wine, which is unreliable from a portage environment.
+RESTRICT="test"
 
 src_unpack() {
 	if [[ ${PV} == "99999999" ]] ; then
@@ -61,10 +56,6 @@ src_unpack() {
 	else
 		default
 	fi
-}
-
-src_test() {
-	./tests/shell-checks || die "Test(s) failed."
 }
 
 src_install() {

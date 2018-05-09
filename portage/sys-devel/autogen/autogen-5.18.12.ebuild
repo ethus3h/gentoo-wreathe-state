@@ -1,9 +1,9 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="5"
 
-inherit ltprune toolchain-funcs
+inherit eutils toolchain-funcs
 
 DESCRIPTION="Program and text file generation"
 HOMEPAGE="https://www.gnu.org/software/autogen/"
@@ -20,13 +20,7 @@ RDEPEND=">=dev-scheme/guile-2.0:=
 	dev-libs/libxml2"
 DEPEND="${RDEPEND}"
 
-PATCHES=(
-	"${FILESDIR}/${PN}-guile-2.2.patch"
-)
-
 src_prepare() {
-	default
-
 	# https://savannah.gnu.org/support/index.php?109050
 	sed -i \
 		-e "/--cflags-only-I/s:pkg-config:$(tc-getPKG_CONFIG):" \

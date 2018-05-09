@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
 
 DESCRIPTION="An in-depth exploration of the art of shell scripting"
-HOMEPAGE="https://www.tldp.org/LDP/abs/html"
+HOMEPAGE="http://www.tldp.org/LDP/abs/html"
 
 SRC_URI="http://bash.deta.in/abs-guide-final.tar.bz2
 	pdf? ( http://bash.deta.in/abs-guide.pdf )"

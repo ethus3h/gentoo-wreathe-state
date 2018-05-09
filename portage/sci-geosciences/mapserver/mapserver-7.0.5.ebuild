@@ -83,10 +83,12 @@ pkg_setup() {
 }
 
 src_unpack() {
-	default
-	# HACK: Make symlinks for php targets
+	# unpack A and then copy the php thingies into workdir/php-slot
+	php-ext-source-r3_src_unpack
+	# HACK: and then remove it and replace by symlink
 	local slot
 	for slot in $(php_get_slots); do
+		rm -rf "${WORKDIR}/${slot}" || die
 		ln -s "${PHP_EXT_S}" "${WORKDIR}/${slot}" || die
 	done
 }

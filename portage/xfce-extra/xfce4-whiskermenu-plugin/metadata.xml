@@ -4,6 +4,7 @@
 	<maintainer type="person">
 		<email>christian.tietz@mailbox.org</email>
 		<name>Christian Tietz</name>
+		<description>Proxy Maintainer</description>
 	</maintainer>
 	<maintainer type="project">
 		<email>proxy-maint@gentoo.org</email>

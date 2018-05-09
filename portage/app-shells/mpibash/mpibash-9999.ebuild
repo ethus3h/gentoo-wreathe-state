@@ -3,12 +3,13 @@
 
 EAPI=5
 
-inherit autotools multilib
+inherit autotools-utils multilib
 
 if [[ ${PV} = 9999 ]]; then
 	EGIT_REPO_URI="https://github.com/lanl/MPI-Bash.git"
 	inherit git-r3
 	KEYWORDS=""
+	AUTOTOOLS_AUTORECONF=1
 else
 	SRC_URI="https://github.com/lanl/MPI-Bash/releases/download/v${PV}/${P}.tar.gz"
 	KEYWORDS="~amd64"
@@ -26,18 +27,16 @@ DEPEND="virtual/mpi
 	sys-cluster/libcircle"
 RDEPEND="${DEPEND}"
 
-src_prepare() {
-	default
-	[[ ${PV} != 9999 ]] || eautoreconf
-}
-
 src_configure() {
-	econf --with-plugindir="${EPREFIX}"/usr/$(get_libdir)/bash \
+	local myeconfargs=(
 		--with-bashdir="${EPREFIX}"/usr/include/bash-plugins
+		--with-plugindir="${EPREFIX}"/usr/$(get_libdir)/bash
+	)
+	autotools-utils_src_configure
 }
 
 src_install() {
-	default
+	autotools-utils_src_install
 	sed -i '/^export LD_LIBRARY_PATH/d' "${ED}/usr/bin/${PN}" || die
 	use examples || rm -r "${ED}/usr/share/doc/${PF}/examples" || die
 }

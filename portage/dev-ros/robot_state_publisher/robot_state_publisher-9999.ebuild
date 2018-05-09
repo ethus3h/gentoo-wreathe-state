@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -16,7 +16,7 @@ IUSE=""
 RDEPEND="
 	dev-ros/kdl_parser
 	dev-cpp/eigen:3
-	sci-libs/orocos_kdl:=
+	sci-libs/orocos_kdl
 	dev-ros/roscpp
 	dev-ros/rosconsole
 	dev-ros/rostime
@@ -29,5 +29,6 @@ RDEPEND="
 	dev-libs/boost:=
 "
 DEPEND="${RDEPEND}
-	test? ( dev-cpp/gtest dev-ros/rostest[${PYTHON_USEDEP}] )
+	dev-ros/rostest[${PYTHON_USEDEP}]
+	test? ( dev-cpp/gtest )
 "

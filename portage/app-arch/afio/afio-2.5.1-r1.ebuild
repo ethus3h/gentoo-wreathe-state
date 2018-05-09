@@ -1,21 +1,22 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 inherit toolchain-funcs
 
-DESCRIPTION="Afio creates cpio-format archives."
-HOMEPAGE="http://members.chello.nl/k.holtman/afio.html https://github.com/kholtman/afio"
+DESCRIPTION="cpio-format archives"
+HOMEPAGE="http://members.chello.nl/k.holtman/afio.html"
 SRC_URI="http://members.chello.nl/k.holtman/${P}.tgz"
 
 LICENSE="Artistic LGPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 ~hppa ppc sparc x86"
+KEYWORDS="~alpha ~amd64 ~hppa ~ppc ~sparc ~x86"
 
-PATCHES=( "${FILESDIR}"/${PN}-2.5.1-fix-build-system.patch )
+PATCHES=( "${FILESDIR}"/Makefile-r1.patch )
 
-src_configure() {
+src_prepare() {
+	default
 	tc-export CC
 }
 
@@ -26,7 +27,7 @@ src_install() {
 
 	local i
 	for i in {1..4}; do
-		docinto "script${i}"
-		dodoc -r "script${i}"/.
+		docinto "script$i"
+		dodoc "script$i"/*
 	done
 }

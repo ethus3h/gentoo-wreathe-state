@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -16,10 +16,10 @@ SRC_PATH="stable"
 SRC_URI="mirror://samba/${SRC_PATH}/${MY_P}.tar.gz
 	https://dev.gentoo.org/~polynomial-c/samba-disable-python-patches-4.2.12.tar.xz"
 [[ ${PV} = *_rc* ]] || \
-KEYWORDS="arm hppa"
+KEYWORDS="alpha amd64 arm hppa ~ia64 ppc ppc64 ~sparc ~x86"
 
 DESCRIPTION="Samba Suite Version 4"
-HOMEPAGE="https://www.samba.org/"
+HOMEPAGE="http://www.samba.org/"
 LICENSE="GPL-3"
 
 SLOT="0"
@@ -91,7 +91,6 @@ S="${WORKDIR}/${MY_P}"
 PATCHES=(
 	"${FILESDIR}/${PN}-4.2.3-heimdal_compilefix.patch"
 	"${FILESDIR}/${PN}-4.2.7-pam.patch"
-	"${FILESDIR}/${PN}-glibc-2.26-no_rpc.patch" #637320
 )
 
 CONFDIR="${FILESDIR}/$(get_version_component_range 1-2)"
@@ -252,7 +251,7 @@ pkg_postinst() {
 	ewarn "controller work previously known as 'samba4'."
 
 	elog "For further information and migration steps make sure to read "
-	elog "https://www.samba.org/samba/history/${P}.html "
-	elog "https://www.samba.org/samba/history/${PN}-4.2.0.html and"
-	elog "https://wiki.samba.org/index.php/Samba4/HOWTO "
+	elog "http://samba.org/samba/history/${P}.html "
+	elog "http://samba.org/samba/history/${PN}-4.2.0.html and"
+	elog "http://wiki.samba.org/index.php/Samba4/HOWTO "
 }

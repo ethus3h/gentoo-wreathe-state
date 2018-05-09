@@ -5,6 +5,8 @@
     <email>zerochaos@gentoo.org</email>
     <name>Rick Farina</name>
   </maintainer>
+  <longdescription lang="en">
+  </longdescription>
   <upstream>
     <remote-id type="github">rapid7/rex-zip</remote-id>
     <remote-id type="rubygems">rex-zip</remote-id>

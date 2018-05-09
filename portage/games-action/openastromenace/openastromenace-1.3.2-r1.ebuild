@@ -28,7 +28,7 @@ RDEPEND=${DEPEND}
 S=${WORKDIR}/AstroMenace
 
 src_prepare() {
-	cmake-utils_src_prepare
+	default
 
 	# no messing with CXXFLAGS please.
 	sed -i -e '/-Os/d' CMakeLists.txt || die

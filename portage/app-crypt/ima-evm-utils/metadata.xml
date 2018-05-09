@@ -4,6 +4,7 @@
 	<maintainer type="person">
 		<email>swift@gentoo.org</email>
 		<name>Sven Vermeulen</name>
+		<description>Maintainer</description>
 	</maintainer>
 	<maintainer type="project">
 		<email>hardened@gentoo.org</email>

@@ -1,10 +1,8 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
 DESCRIPTION="Random password generator"
-HOMEPAGE="https://packages.debian.org/stable/admin/makepasswd"
+HOMEPAGE="http://packages.debian.org/stable/admin/makepasswd"
 SRC_URI="mirror://debian/dists/potato/main/source/admin/${P/-/_}.orig.tar.gz"
 
 LICENSE="GPL-2"
@@ -15,7 +13,7 @@ IUSE=""
 RDEPEND="dev-lang/perl"
 
 src_install() {
-	dobin makepasswd
+	dobin makepasswd || die
 	doman makepasswd.1
-	einstalldocs
+	dodoc README CHANGES
 }

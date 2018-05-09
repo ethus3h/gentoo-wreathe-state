@@ -18,7 +18,6 @@ IUSE=""
 
 RDEPEND="${PYTHON_DEPS}
 	app-admin/eselect
-	dev-python/lxml[${PYTHON_USEDEP}]
 	net-misc/wget"
 
 src_compile() {

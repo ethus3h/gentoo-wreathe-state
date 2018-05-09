@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
 WX_GTK_VER="3.0-gtk3"
 
-inherit wxwidgets xdg-utils
+inherit fdo-mime wxwidgets
 
 DESCRIPTION="Utility for viewing Compiled HTML Help (CHM) files"
 HOMEPAGE="http://xchm.sourceforge.net/"
@@ -41,11 +41,11 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 }

@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -13,8 +13,7 @@ RUBY_FAKEGEM_RECIPE_TEST="rspec"
 inherit ruby-fakegem
 
 DESCRIPTION="Runs HTTP requests in parallel while cleanly encapsulating handling logic"
-HOMEPAGE="https://rubygems.org/gems/typhoeus/
-	https://github.com/typhoeus/typhoeus"
+HOMEPAGE="http://rubygems.org/gems/typhoeus/"
 
 LICENSE="Ruby"
 SLOT="0"

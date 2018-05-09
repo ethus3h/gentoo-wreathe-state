@@ -38,13 +38,9 @@ DEPEND="${RDEPEND}
 	x11-proto/xproto"
 PDEPEND="branding? ( >=x11-themes/slim-themes-1.2.3a-r3 )"
 
-PATCHES=(
-	# Our Gentoo-specific config changes
-	"${FILESDIR}"/${P}-config.diff
-)
-
 src_prepare() {
-	cmake-utils_src_prepare
+	# Our Gentoo-specific config changes
+	epatch "${FILESDIR}"/${P}-config.diff
 
 	if use elibc_FreeBSD; then
 		sed -i -e 's/"-DHAVE_SHADOW"/"-DNEEDS_BASENAME"/' CMakeLists.txt \
@@ -58,7 +54,7 @@ src_prepare() {
 }
 
 src_configure() {
-	local mycmakeargs=(
+	mycmakeargs=(
 		$(cmake-utils_use pam USE_PAM)
 		$(cmake-utils_use consolekit USE_CONSOLEKIT)
 	)

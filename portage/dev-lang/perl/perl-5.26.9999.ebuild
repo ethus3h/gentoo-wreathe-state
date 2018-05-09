@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,17 +6,17 @@ EAPI=6
 inherit eutils alternatives flag-o-matic toolchain-funcs multilib multiprocessing
 
 PATCH_VER=1
-CROSS_VER=1.1.9
-PATCH_BASE="perl-5.26.2-patches-${PATCH_VER}"
+CROSS_VER=1.1.6
+PATCH_BASE="perl-5.25.11-patches-${PATCH_VER}"
 
 DIST_AUTHOR=SHAY
 
 # Greatest first, don't include yourself
 # Devel point-releases are not ABI-intercompatible, but stable point releases are
 # BIN_OLDVERSEN is contains only C-ABI-intercompatible versions
-PERL_BIN_OLDVERSEN="5.26.1 5.26.0"
+PERL_BIN_OLDVERSEN="5.26.0"
 if [[ "${PV##*.}" == "9999" ]]; then
-	DIST_VERSION=5.26.2
+	DIST_VERSION=5.26.1-RC1
 else
 	DIST_VERSION="${PV/_rc/-RC}"
 fi
@@ -43,7 +43,7 @@ SRC_URI="
 	https://dev.gentoo.org/~kentnl/distfiles/${PATCH_BASE}.tar.xz
 	https://github.com/arsv/perl-cross/releases/download/${CROSS_VER}/perl-cross-${CROSS_VER}.tar.gz
 "
-HOMEPAGE="https://www.perl.org/"
+HOMEPAGE="http://www.perl.org/"
 
 LICENSE="|| ( Artistic GPL-1+ )"
 SLOT="0/${SUBSLOT}"
@@ -83,7 +83,7 @@ dual_scripts() {
 	src_remove_dual      perl-core/ExtUtils-ParseXS   3.340.0       xsubpp
 	src_remove_dual      perl-core/IO-Compress        2.74.0        zipdetails
 	src_remove_dual      perl-core/JSON-PP            2.274.0.200_rc   json_pp
-	src_remove_dual      perl-core/Module-CoreList    5.201.804.142.600_rc corelist
+	src_remove_dual      perl-core/Module-CoreList    5.201.709.220 corelist
 	src_remove_dual      perl-core/Pod-Parser         1.630.0       pod2usage podchecker podselect
 	src_remove_dual      perl-core/Pod-Perldoc        3.280.0       perldoc
 	src_remove_dual      perl-core/Test-Harness       3.380.0       prove
@@ -118,9 +118,9 @@ check_rebuild() {
 
 	# Reinstall w/ USE Change
 	elif (   use ithreads && ! has_version dev-lang/perl[ithreads] ) || \
-		 ( ! use ithreads &&   has_version dev-lang/perl[ithreads] ) || \
-		 (   use debug    && ! has_version dev-lang/perl[debug]    ) || \
-		 ( ! use debug    &&   has_version dev-lang/perl[debug]    ) ; then
+	     ( ! use ithreads &&   has_version dev-lang/perl[ithreads] ) || \
+	     (   use debug    && ! has_version dev-lang/perl[debug]    ) || \
+	     ( ! use debug    &&   has_version dev-lang/perl[debug]    ) ; then
 		echo ""
 		ewarn "TOGGLED USE-FLAGS WARNING:"
 		ewarn "You changed one of the use-flags ithreads or debug."
@@ -286,6 +286,10 @@ src_prepare_perlcross() {
 	cp -a ../perl-cross-${CROSS_VER}/* . || die
 
 	sed -i \
+		-e 's/(15 + $CLEANUP)/(13 + $CLEANUP)/' \
+		cnf/diffs/perl5-${PV}/makemaker-test.patch || die
+
+	sed -i \
 		-e 's/MakeMaker\.pm .*/MakeMaker.pm bf9174c70a0e50ff2fee4552c7df89b37d292da1/' \
 		-e 's/MM_Unix\.pm .*/MM_Unix.pm b0ec308fe2d7dcfcef5732880db0fae1f4ea80fa/' \
 		cnf/diffs/perl5-${PV}/customized.patch || die
@@ -306,13 +310,6 @@ src_prepare_dynamic() {
 src_prepare() {
 	local patch
 	EPATCH_OPTS+=" -p1"
-
-	if [[ ${CHOST} == *-solaris* ]] ; then
-		# do NOT mess with nsl, on Solaris this is always necessary,
-		# when -lsocket is used e.g. to get h_errno
-		sed -i '/gentoo\/no-nsl\.patch/d' "${WORKDIR}/patches/series" || die "Can't exclude libnsl patch"
-	fi
-
 	einfo "Applying patches from ${PATCH_BASE} ..."
 	while read patch ; do
 		EPATCH_SINGLE_MSG="  ${patch} ..."
@@ -328,11 +325,6 @@ src_prepare() {
 	if use gdbm; then
 		sed -i "s:INC => .*:INC => \"-I${EROOT}usr/include/gdbm\":g" \
 			ext/NDBM_File/Makefile.PL || die
-	fi
-
-	# Use errno.h from prefix rather than from host system, bug #645804
-	if use prefix; then
-		sed -i "/my..sysroot/s:'':'${EPREFIX}':" ext/Errno/Errno_pm.PL || die
 	fi
 
 	default
@@ -354,12 +346,6 @@ src_configure() {
 
 	# Perl has problems compiling with -Os in your flags with glibc
 	use elibc_uclibc || replace-flags "-Os" "-O2"
-
-	# xlocale.h is going away in glibc-2.26, so it's counterproductive
-	# if we use it and include it in CORE/perl.h ... Perl builds just
-	# fine with glibc and locale.h only.
-	# However, the darwin prefix people have no locale.h ...
-	use elibc_glibc && myconf -Ui_xlocale
 
 	# This flag makes compiling crash in interesting ways
 	filter-flags "-malign-double"

@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 GNOME2_LA_PUNT="yes"
-PYTHON_COMPAT=( python3_{4,5,6} )
+PYTHON_COMPAT=( python3_{4,5} )
 PYTHON_REQ_USE="xml"
 
 inherit eutils gnome2 python-single-r1 multilib virtualx
@@ -14,7 +14,7 @@ HOMEPAGE="https://wiki.gnome.org/Apps/Rhythmbox"
 LICENSE="GPL-2"
 SLOT="0"
 
-IUSE="cdr daap dbus gnome-keyring ipod libnotify lirc mtp nsplugin +python test +udev upnp-av visualizer"
+IUSE="cdr daap dbus gnome-keyring ipod libnotify lirc mtp nsplugin +python test +udev upnp-av visualizer zeitgeist"
 REQUIRED_USE="
 	ipod? ( udev )
 	mtp? ( udev )
@@ -59,6 +59,7 @@ COMMON_DEPEND="
 		>=media-libs/clutter-gtk-1.0:1.0
 		>=x11-libs/mx-1.0.1:1.0
 		>=media-plugins/gst-plugins-libvisual-1.4:1.0 )
+	zeitgeist? ( gnome-extra/zeitgeist )
 "
 RDEPEND="${COMMON_DEPEND}
 	media-plugins/gst-plugins-soup:1.0

@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit elisp-common git-r3 qmake-utils xdg-utils
+inherit elisp-common eutils git-r3 qmake-utils
 
 SITEFILE="50${PN}-gentoo.el"
 
@@ -16,38 +16,32 @@ SLOT="0"
 KEYWORDS=""
 IUSE="emacs"
 
-DEPEND="
+DEPEND="media-gfx/opencsg
+	sci-mathematics/cgal
+	dev-qt/qtcore:4
+	dev-qt/qtgui:4[-egl]
+	dev-qt/qtopengl:4[-egl]
 	dev-cpp/eigen:3
-	dev-libs/boost:=
 	dev-libs/glib:2
 	dev-libs/gmp:0=
 	dev-libs/mpfr:0=
-	dev-qt/qtconcurrent:5
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5[-gles2]
-	dev-qt/qtopengl:5
-	media-gfx/opencsg
+	dev-libs/boost:=
 	media-libs/fontconfig:1.0
 	media-libs/freetype:2
-	>=media-libs/glew-2.0.0:*
+	media-libs/glew:*
 	media-libs/harfbuzz
-	sci-mathematics/cgal:=
-	>=x11-libs/qscintilla-2.9.4:=[qt5(+)]
-	emacs? ( virtual/emacs )
-"
+	x11-libs/qscintilla:=[qt4(-)]
+	emacs? ( virtual/emacs )"
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	default
-
 	sed -i "s/\/usr\/local/\/usr/g" ${PN}.pro || die
 
-	# tries to call ccache even if it's not present otherwise
-	sed -i '/CONFIG += ccache/d' ${PN}.pro || die
+	default
 }
 
 src_configure() {
-	eqmake5 "${PN}.pro"
+	eqmake4 "${PN}.pro"
 }
 
 src_compile() {
@@ -67,14 +61,4 @@ src_install() {
 	fi
 
 	einstalldocs
-}
-
-pkg_postinst() {
-	xdg_mimeinfo_database_update
-	xdg_desktop_database_update
-}
-
-pkg_postrm() {
-	xdg_mimeinfo_database_update
-	xdg_desktop_database_update
 }

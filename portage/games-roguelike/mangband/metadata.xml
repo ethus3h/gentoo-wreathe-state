@@ -3,6 +3,7 @@
 <pkgmetadata>
 	<maintainer type="person">
 		<email>flambard@mangband.org</email>
+		<description>Proxied Maintainer</description>
 	</maintainer>
 	<maintainer type="project">
 		<email>proxy-maint@gentoo.org</email>

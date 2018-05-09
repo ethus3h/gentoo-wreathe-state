@@ -1,7 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
+USE_RUBY="ruby21 ruby22"
 
 inherit cmake-utils multilib
 
@@ -21,7 +22,6 @@ DEPEND=">=dev-libs/boost-1.54[nls]
 
 src_prepare() {
 	sed -i 's/\-Werror\ //g' "cmake/cflags.cmake" || die
-	cmake-utils_src_prepare
 }
 
 src_configure() {

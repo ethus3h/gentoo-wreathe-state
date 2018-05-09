@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-EGIT_REPO_URI="https://anongit.kde.org/${PN}.git"
-inherit cmake-utils gnome2-utils virtualx xdg-utils
+EGIT_REPO_URI="git://anongit.kde.org/${PN}.git"
+inherit cmake-utils fdo-mime gnome2-utils virtualx
 [[ ${PV} == 9999 ]] && inherit git-r3
 
 DESCRIPTION="A Qt IMAP e-mail client"
@@ -17,8 +17,6 @@ fi
 LICENSE="|| ( GPL-2 GPL-3 )"
 SLOT="0"
 IUSE="+crypt +dbus debug +password test +zlib"
-
-REQUIRED_USE="password? ( dbus )"
 
 RDEPEND="
 	dev-qt/qtcore:5
@@ -47,8 +45,7 @@ DOCS=( README LICENSE )
 PATCHES=(
 	"${FILESDIR}/${P}-gpgme.patch"
 	"${FILESDIR}/${P}-gpg-tests.patch"
-	"${FILESDIR}/${P}-qt-5.11b3.patch"
-)
+	)
 
 src_prepare() {
 	cmake-utils_src_prepare
@@ -64,7 +61,7 @@ src_configure() {
 		-DWITH_GPGMEPP=$(usex crypt)
 		-DWITH_MIMETIC=$(usex crypt)
 		-DWITH_DBUS=$(usex dbus)
-		-DWITH_QTKEYCHAIN_PLUGIN=$(usex password)
+		-DWITH_QTKEYCHAINPLUGIN=$(usex password)
 		-DWITH_TESTS=$(usex test)
 		-DWITH_ZLIB=$(usex zlib)
 	)
@@ -81,11 +78,11 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 	gnome2_icon_cache_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 	gnome2_icon_cache_update
 }

@@ -29,7 +29,6 @@ src_compile() {
 
 	./bin/nim c koch || die "csources nim failed"
 	./koch boot -d:release $(nim_use_enable readline useGnuReadline) || die "koch boot failed"
-	PATH="./bin:$PATH" ./koch tools || die "koch tools failed"
 
 	if use doc; then
 		PATH="./bin:$PATH" ./koch web || die "koch web failed"
@@ -41,14 +40,11 @@ src_test() {
 }
 
 src_install() {
-	./koch install "${ED}/usr" || die "koch install failed"
-	rm -r "${ED}/usr/nim/doc" || die "failed to remove 'doc'"
+	./koch install "${D}/usr" || die "koch install failed"
+	rm -r "${D}/usr/nim/doc" || die "failed to remove 'doc'"
 
 	dodir /usr/bin
-	local exe
-	for bin_exe in bin/*; do
-		dosym ../nim/${bin_exe} /usr/${bin_exe}
-	done
+	dosym ../nim/bin/nim /usr/bin/nim
 
 	if use doc; then
 		insinto /usr/share/doc/${PF}

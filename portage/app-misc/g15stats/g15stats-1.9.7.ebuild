@@ -1,10 +1,10 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
 
 DESCRIPTION="CPU, memory, swap, network stats for G15 Keyboard"
-HOMEPAGE="https://sourceforge.net/projects/g15daemon/"
+HOMEPAGE="http://g15daemon.sourceforge.net/"
 SRC_URI="mirror://sourceforge/g15daemon/${P}.tar.bz2"
 
 LICENSE="GPL-2"

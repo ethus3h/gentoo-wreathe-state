@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 PYTHON_COMPAT=( python2_7 )
-inherit cmake-utils python-single-r1 gnome2-utils
+inherit cmake-utils python-any-r1 gnome2-utils
 
 DESCRIPTION="A free turn-based space empire and galactic conquest game"
 HOMEPAGE="http://www.freeorion.org"
@@ -24,10 +24,10 @@ SLOT="0"
 IUSE=""
 
 RDEPEND="
-	>=dev-libs/boost-1.56:=[python,threads,${PYTHON_USEDEP}]
+	>=dev-libs/boost-1.56[python,threads]
 	media-libs/freealut
 	media-libs/freetype
-	media-libs/glew:=
+	media-libs/glew:*
 	media-libs/libsdl2
 	>=media-libs/libogg-1.1.3
 	media-libs/libpng:0
@@ -46,7 +46,7 @@ DEPEND="${RDEPEND}
 
 pkg_setup() {
 	# build system is using FindPythonLibs.cmake which needs python:2
-	python-single-r1_pkg_setup
+	python-any-r1_pkg_setup
 }
 
 src_prepare() {

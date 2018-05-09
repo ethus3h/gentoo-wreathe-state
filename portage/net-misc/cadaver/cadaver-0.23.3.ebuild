@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI="3"
 
-inherit autotools
+inherit autotools eutils
 
 DESCRIPTION="Command-line WebDAV client"
 HOMEPAGE="http://www.webdav.org/cadaver"
@@ -18,13 +18,10 @@ RDEPEND=">=net-libs/neon-0.27.0"
 DEPEND="${RDEPEND}
 	sys-devel/gettext"
 
-DOCS=(BUGS ChangeLog FAQ NEWS README THANKS TODO)
-
 src_prepare() {
-	eapply "${FILESDIR}/${PN}-0.23.2-disable-nls.patch"
-	eapply_user
+	epatch "${FILESDIR}/${PN}-0.23.2-disable-nls.patch"
 
-	rm -r lib/{expat,intl,neon} || die "rm failed"
+	rm -fr lib/{expat,intl,neon}
 	sed \
 		-e "/NE_REQUIRE_VERSIONS/s/29/& 30/" \
 		-e "s:lib/neon/Makefile lib/intl/Makefile ::" \
@@ -39,4 +36,9 @@ src_configure() {
 	econf \
 		$(use_enable nls) \
 		--with-libs=/usr
+}
+
+src_install () {
+	emake DESTDIR="${D}" install || die "emake install failed"
+	dodoc BUGS ChangeLog FAQ NEWS README THANKS TODO
 }

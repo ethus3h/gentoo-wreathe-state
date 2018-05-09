@@ -1,8 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
+EAPI="2"
 MY_PN=msu_ru_nsh_clunits
 
 DESCRIPTION="Russian voices for Festival"
@@ -17,14 +16,12 @@ IUSE=""
 RDEPEND=">=app-accessibility/festival-1.96_beta"
 DEPEND=""
 
-S=${WORKDIR}
-
 src_install() {
-	dodoc ${MY_PN}/README
+	dodoc "${MY_PN}/README" || die "Could not install README"
+	rm "${MY_PN}/{README,COPYING}"
 
-	insinto /usr/share/festival/voices/russian
-	rm ${MY_PN}/{README,COPYING} || die
-	doins -r ${MY_PN}
+	insinto "/usr/share/festival/voices/russian/"
+	doins -r "${MY_PN}/" || die "Could not install Russian Voices"
 }
 
 pkg_postinst() {

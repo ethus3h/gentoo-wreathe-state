@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -11,7 +11,7 @@ SRC_URI="https://github.com/puppetlabs/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="amd64 ~arm hppa ppc ppc64 sparc x86"
+KEYWORDS="amd64 ~arm hppa ~ppc ~ppc64 x86"
 IUSE="debug test"
 
 DEPEND="
@@ -22,8 +22,7 @@ DEPEND="
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	cmake-utils_src_prepare
-
+	default
 	# make it support multilib
 	sed -i "s/\ lib)/\ $(get_libdir))/g" lib/CMakeLists.txt || die
 	sed -i "s/lib\")/$(get_libdir)\")/g" CMakeLists.txt || die

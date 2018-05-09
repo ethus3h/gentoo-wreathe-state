@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -8,7 +8,7 @@ GITHUB_COMMIT="e358601cc521d8aced941eb928fae2d8c53cf0c2"
 inherit ruby-ng eutils user
 
 DESCRIPTION="A ruby IRC bot"
-HOMEPAGE="https://ruby-rbot.org/"
+HOMEPAGE="http://ruby-rbot.org/"
 SRC_URI="https://github.com/ruby-rbot/rbot/archive/${GITHUB_COMMIT}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="|| ( feh GPL-2 )"
@@ -18,6 +18,10 @@ IUSE="spell aspell timezone translator shorturl nls figlet
 	fortune cal host sqlite toilet"
 ILINGUAS="zh_CN zh_TW ru nl de fi fr it ja"
 RUBY_S="${PN}-${GITHUB_COMMIT}"
+
+for lang in $ILINGUAS; do
+	IUSE="${IUSE} linguas_${lang}"
+done
 
 RUBY_PATCHES=( rbot-rakefile-gettext.patch )
 
@@ -124,7 +128,7 @@ all_ruby_compile() {
 	# need to add them later.
 	if use nls; then
 		strip-linguas ${ILINGUAS}
-		if [[ -n ${LINGUAS+set} ]]; then
+		if [[ -n ${LINGUAS} ]]; then
 			# As the the language name used by the rbot data files does
 			# not correspond to the ISO codes we usually use for LINGUAS,
 			# the following list of local varables will work as a
@@ -139,7 +143,7 @@ all_ruby_compile() {
 			local lang_rbot_ja="japanese"
 
 			for lang in ${ILINGUAS}; do
-				has ${lang} ${LINGUAS} && continue
+				use linguas_${lang} && continue
 
 				lang_varname="lang_rbot_${lang}"
 				lang_rbot=${!lang_varname}

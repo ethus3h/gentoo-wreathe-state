@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -21,29 +21,28 @@ LICENSE="Apache-2.0"
 SLOT="0"
 IUSE="test"
 
-CDEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
+CDEPEND=">=dev-python/setuptools-1.0[${PYTHON_USEDEP}]"
 RDEPEND="
 	${CDEPEND}
-	>app-crypt/acme-0.21.1[${PYTHON_USEDEP}]
+	~app-crypt/acme-${PV}[${PYTHON_USEDEP}]
 	>=dev-python/configargparse-0.9.3[${PYTHON_USEDEP}]
 	dev-python/configobj[${PYTHON_USEDEP}]
 	>=dev-python/cryptography-1.2[${PYTHON_USEDEP}]
-	dev-python/josepy[${PYTHON_USEDEP}]
-	dev-python/mock[${PYTHON_USEDEP}]
 	>=dev-python/parsedatetime-1.3[${PYTHON_USEDEP}]
+	dev-python/pyopenssl[${PYTHON_USEDEP}]
 	dev-python/pyrfc3339[${PYTHON_USEDEP}]
 	dev-python/pytz[${PYTHON_USEDEP}]
+	dev-python/six[${PYTHON_USEDEP}]
 	dev-python/zope-component[${PYTHON_USEDEP}]
-	dev-python/zope-interface[${PYTHON_USEDEP}]"
+	dev-python/zope-interface[${PYTHON_USEDEP}]
+	dev-python/mock[${PYTHON_USEDEP}]"
 DEPEND="
 	${CDEPEND}
 	test? (
 		>=dev-python/astroid-1.3.5[${PYTHON_USEDEP}]
 		dev-python/coverage[${PYTHON_USEDEP}]
-		dev-python/ipdb[${PYTHON_USEDEP}]
-		dev-python/pytest[${PYTHON_USEDEP}]
-		dev-python/pytest-cov[${PYTHON_USEDEP}]
-		dev-python/pytest-xdist[${PYTHON_USEDEP}]
+		dev-python/nose[${PYTHON_USEDEP}]
+		dev-python/pep8[${PYTHON_USEDEP}]
 		>=dev-python/pylint-1.4.2[${PYTHON_USEDEP}]
 		dev-python/wheel[${PYTHON_USEDEP}]
 	)"

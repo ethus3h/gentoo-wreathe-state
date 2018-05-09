@@ -1,4 +1,4 @@
-/var/log/kube-proxy/*.log {
+/var/log/kube-proxy/* {
 	missingok
 	size 5M
 	rotate 3

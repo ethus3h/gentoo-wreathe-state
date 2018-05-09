@@ -20,9 +20,6 @@
 		<email>williamh@gentoo.org</email>
 		<name>William Hubbs</name>
 	</maintainer>
-	<use>
-	<flag name="btrfs">Support for BTRFS snapshot driver</flag>
-	</use>
 	<upstream>
 		<remote-id type="github">docker/containerd</remote-id>
 	</upstream>

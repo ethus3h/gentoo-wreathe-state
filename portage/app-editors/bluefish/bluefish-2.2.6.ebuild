@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
 PYTHON_COMPAT=( python2_7 )
 
-inherit gnome2-utils python-single-r1 xdg-utils
+inherit eutils fdo-mime python-single-r1
 
 MY_P=${P/_/-}
 
@@ -35,7 +35,7 @@ DEPEND="${RDEPEND}
 		dev-util/intltool
 	)"
 
-S="${WORKDIR}/${MY_P}"
+S=${WORKDIR}/${MY_P}
 
 # there actually is just some broken manpage checkup -> not bother
 RESTRICT="test"
@@ -60,17 +60,12 @@ src_configure() {
 
 src_install() {
 	default
-	find "${ED}" -name '*.la' -delete || die
-}
-
-pkg_preinst() {
-	gnome2_icon_savelist
+	find "${ED}" -name '*.la' -exec rm -f {} +
 }
 
 pkg_postinst() {
-	gnome2_icon_cache_update
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 
 	einfo "Adding XML catalog entries..."
 	/usr/bin/xmlcatalog  --noout \
@@ -82,9 +77,8 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	gnome2_icon_cache_update
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 	einfo "Removing XML catalog entries..."
 	/usr/bin/xmlcatalog  --noout \
 		--del 'Bluefish/DTD/Bflang' \

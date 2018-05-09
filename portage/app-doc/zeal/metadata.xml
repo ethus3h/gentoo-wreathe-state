@@ -4,6 +4,7 @@
   <maintainer type="person">
     <email>tranquility@gentoo.org</email>
     <name>Ole Reifschneider</name>
+    <description>Offline documentation browser inspired by Dash</description>
   </maintainer>
   <upstream>
     <remote-id type="github">zealdocs/zeal</remote-id>

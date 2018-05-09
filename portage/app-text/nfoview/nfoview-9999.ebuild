@@ -1,28 +1,30 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="5"
 
 PYTHON_COMPAT=( python3_{4,5,6} )
 
-inherit distutils-r1 gnome2-utils xdg-utils
-
-if [[ ${PV} == *9999 ]] ; then
-	EGIT_REPO_URI="https://github.com/otsaloma/nfoview.git"
-	inherit git-r3
+inherit distutils-r1 fdo-mime gnome2-utils
+if [[ ${PV} == "9999" ]] ; then
+	EGIT_REPO_URI="git://github.com/otsaloma/nfoview.git
+		https://github.com/otsaloma/nfoview.git"
+	inherit git-2
+	SRC_URI=""
+	#KEYWORDS=""
 else
-	SRC_URI="https://github.com/otsaloma/nfoview/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="http://download.gna.org/nfoview/${PV:0:4}/${P}.tar.xz"
 	KEYWORDS="~amd64 ~x86"
 fi
 
 DESCRIPTION="simple viewer for NFO files, which are ASCII art in the CP437 codepage"
-HOMEPAGE="https://otsaloma.io/nfoview/"
+HOMEPAGE="http://home.gna.org/nfoview/"
 
 LICENSE="GPL-3"
 SLOT="0"
 IUSE=""
 
-DEPEND="dev-python/pygobject:3[${PYTHON_USEDEP}]"
+DEPEND="dev-python/pygobject:3"
 RDEPEND="${DEPEND}
 	media-fonts/terminus-font"
 
@@ -32,10 +34,10 @@ pkg_preinst() {
 
 pkg_postinst() {
 	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
 	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

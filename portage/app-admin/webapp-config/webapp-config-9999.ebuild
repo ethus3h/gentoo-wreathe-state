@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -26,13 +26,7 @@ IUSE="+portage"
 
 DEPEND="app-text/xmlto
 	sys-apps/gentoo-functions"
-RDEPEND="
-	portage? (
-		|| (
-			sys-apps/portage[${PYTHON_USEDEP}]
-			sys-apps/portage-mgorny[${PYTHON_USEDEP}]
-		)
-	)"
+RDEPEND="portage? ( sys-apps/portage[${PYTHON_USEDEP}] )"
 
 python_prepare_all() {
 	distutils-r1_python_prepare_all

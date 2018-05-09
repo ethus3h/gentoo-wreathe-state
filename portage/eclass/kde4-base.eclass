@@ -1,8 +1,6 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-# @DEAD
-# Removal on 2018-05-03.
 # @ECLASS: kde4-base.eclass
 # @MAINTAINER:
 # kde@gentoo.org
@@ -35,7 +33,7 @@ _KDE4_BASE_ECLASS=1
 # for tests you should proceed with setting VIRTUALX_REQUIRED=test.
 : ${VIRTUALX_REQUIRED:=manual}
 
-inherit kde4-functions toolchain-funcs flag-o-matic gnome2-utils virtualx versionator eutils multilib xdg-utils
+inherit kde4-functions toolchain-funcs fdo-mime flag-o-matic gnome2-utils virtualx versionator eutils multilib
 
 if [[ ${KDE_BUILD_TYPE} = live ]]; then
 	case ${KDE_SCM} in
@@ -160,7 +158,7 @@ CPPUNIT_REQUIRED="${CPPUNIT_REQUIRED:-never}"
 # @DESCRIPTION:
 # Is kde required? Possible values are 'always', 'optional' and 'never'.
 # This variable must be set before inheriting any eclasses. Defaults to 'always'
-# If set to 'always' or 'optional', KDE_MINIMAL may be overridden as well.
+# If set to 'always' or 'optional', KDE_MINIMAL may be overriden as well.
 # Note that for kde-base packages this variable is fixed to 'always'.
 KDE_REQUIRED="${KDE_REQUIRED:-always}"
 
@@ -931,8 +929,8 @@ kde4-base_pkg_postinst() {
 	if [[ -n ${GNOME2_ECLASS_ICONS} ]]; then
 		gnome2_icon_cache_update
 	fi
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 	buildsycoca
 
 	if [[ -z ${I_KNOW_WHAT_I_AM_DOING} ]]; then
@@ -955,8 +953,8 @@ kde4-base_pkg_postrm() {
 	if [[ -n ${GNOME2_ECLASS_ICONS} ]]; then
 		gnome2_icon_cache_update
 	fi
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 	buildsycoca
 }
 

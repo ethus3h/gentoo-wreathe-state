@@ -8,9 +8,6 @@ if [[ ${PV} == 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/airblade/vim-gitgutter.git"
 	inherit git-r3
 else
-	inherit vcs-snapshot
-	COMMIT_HASH="37bdd03d176c5e182c7e8dbdc79c3f71d2a04898"
-	SRC_URI="https://github.com/airblade/vim-gitgutter/archive/${COMMIT_HASH}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 fi
 
@@ -23,8 +20,6 @@ RDEPEND="dev-vcs/git"
 
 src_prepare() {
 	default
-
-	# remove unwanted files
-	rm LICENCE README* screenshot.png unplace.vim || die
-	rm -r test || die
+	rm LICENCE README* screenshot.png || die
+	rm -rf test || die
 }

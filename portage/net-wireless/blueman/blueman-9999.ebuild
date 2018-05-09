@@ -82,8 +82,8 @@ src_configure() {
 		--docdir=/usr/share/doc/${PF}
 		--disable-runtime-deps-check
 		--disable-static
-		--with-systemdsystemunitdir="$(systemd_get_systemunitdir)"
-		--with-systemduserunitdir="$(systemd_get_userunitdir)"
+		# TODO: replace upstream with sane system/user unitdir getters
+		--with-systemdunitdir="$(systemd_get_utildir)"
 		$(use_enable appindicator)
 		$(use_enable policykit polkit)
 		$(use_enable nls)

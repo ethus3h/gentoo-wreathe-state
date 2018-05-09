@@ -5,6 +5,8 @@
 <email>vdr@gentoo.org</email>
 <name>Gentoo VDR Project</name>
 </maintainer>
+<longdescription lang="en">
+</longdescription>
 <use>
 	<flag name="conflictcheckonly">ToDo</flag>
 	<flag name="epgsearchonly">ToDo</flag>

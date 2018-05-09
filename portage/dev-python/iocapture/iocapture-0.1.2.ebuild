@@ -8,7 +8,7 @@ PYTHON_COMPAT=( python{2_7,3_4,3_5} pypy )
 inherit distutils-r1
 
 DESCRIPTION="Capture stdout,stderr easily"
-HOMEPAGE="https://pypi.org/project/iocapture/"
+HOMEPAGE="https://pypi.python.org/pypi/iocapture/"
 SRC_URI="https://github.com/oinume/iocapture/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 SLOT="0"

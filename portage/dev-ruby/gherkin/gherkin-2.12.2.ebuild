@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-USE_RUBY="ruby22 ruby23"
+USE_RUBY="ruby20 ruby21 ruby22"
 
 RUBY_FAKEGEM_TASK_DOC=""
 RUBY_FAKEGEM_TASK_TEST=""
@@ -17,7 +17,7 @@ HOMEPAGE="https://github.com/cucumber/gherkin"
 LICENSE="MIT"
 SRC_URI="https://github.com/cucumber/gherkin/archive/v${PV}.tar.gz -> ${P}-git.tgz"
 
-KEYWORDS="alpha amd64 arm ~hppa ia64 ppc ppc64 ~sparc x86"
+KEYWORDS="~alpha amd64 arm ~hppa ~ia64 ppc ppc64 ~sparc x86"
 SLOT="0"
 IUSE="doc test"
 

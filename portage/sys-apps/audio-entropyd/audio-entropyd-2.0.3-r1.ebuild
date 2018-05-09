@@ -1,9 +1,8 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit systemd toolchain-funcs
+EAPI=4
+inherit eutils systemd toolchain-funcs
 
 DESCRIPTION="Audio-entropyd generates entropy-data for the /dev/random device"
 HOMEPAGE="http://www.vanheusden.com/aed/"
@@ -14,32 +13,25 @@ SLOT="0"
 KEYWORDS="amd64 ppc ~sparc x86"
 IUSE="selinux"
 
-DEPEND="media-libs/alsa-lib:="
-RDEPEND="${DEPEND}
+RDEPEND="selinux? ( sec-policy/selinux-entropyd )
 	media-sound/alsa-utils
-	selinux? ( sec-policy/selinux-entropyd )"
-
-PATCHES=(
-	"${FILESDIR}"/${PN}-2.0.1-uclibc.patch
-	"${FILESDIR}"/${PN}-2.0.1-ldflags.patch
-)
+	media-libs/alsa-lib"
 
 src_prepare() {
-	default
-
+	epatch "${FILESDIR}/${PN}-2.0.1-uclibc.patch" \
+		"${FILESDIR}/${PN}-2.0.1-ldflags.patch"
 	sed -i -e "s:^OPT_FLAGS=.*:OPT_FLAGS=${CFLAGS}:" \
 		-e "/^WARNFLAGS/s: -g::" Makefile || die
 }
 
-src_configure() {
-	tc-export CC
+src_compile() {
+	emake CC="$(tc-getCC)"
 }
 
 src_install() {
 	dosbin audio-entropyd
-	einstalldocs
-
-	systemd_dounit "${FILESDIR}"/${PN}.service
-	newinitd "${FILESDIR}"/${PN}.init-2 ${PN}
-	newconfd "${FILESDIR}"/${PN}.conf-2 ${PN}
+	dodoc README TODO
+	systemd_dounit "${FILESDIR}/${PN}.service"
+	newinitd "${FILESDIR}/${PN}.init-2" ${PN}
+	newconfd "${FILESDIR}/${PN}.conf-2" ${PN}
 }

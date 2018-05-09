@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=3
 
-inherit flag-o-matic toolchain-funcs
+inherit toolchain-funcs flag-o-matic eutils
 
 DESCRIPTION="library wrapping the interix lib-c to make it less buggy"
 HOMEPAGE="http://suacomp.sf.net"
@@ -21,11 +21,9 @@ get_opts() {
 	local shlibc=
 	local stlibc=
 
-	local dir
 	for dir in /usr/lib /usr/lib/x86; do
 		[[ -f ${dir}/libc.a ]] && stlibc=${dir}/libc.a
 
-		local name
 		for name in libc.so.5.2 libc.so.3.5; do
 			[[ -f ${dir}/${name} ]] && { shlibc=${dir}/${name}; break; }
 		done
@@ -36,19 +34,23 @@ get_opts() {
 	echo "SHARED_LIBC=${shlibc} STATIC_LIBC=${stlibc}"
 }
 
-src_prepare() {
-	[[ ${CHOST} == *-interix6* ]] && eapply "${FILESDIR}"/${P}-strtoll.patch
-	eapply_user
-}
-
-src_configure() {
+pkg_setup() {
 	if use debug; then
 		append-flags -D_DEBUG -D_DEBUG_TRACE
 	fi
 }
 
+src_prepare() {
+	[[ ${CHOST} == *-interix6* ]] && epatch "${FILESDIR}"/${P}-strtoll.patch
+}
+
 src_compile() {
-	emake all CC=$(tc-getCC) $(get_opts) CFLAGS="${CFLAGS}"
+	emake all CC=$(tc-getCC) $(get_opts) CFLAGS="${CFLAGS}" || die "emake failed"
+}
+
+src_install() {
+	emake install PREFIX="${EPREFIX}/usr" DESTDIR="${D}" $(get_opts) \
+		CFLAGS="${CFLAGS}" || die "emake install failed"
 }
 
 src_test() {
@@ -57,10 +59,5 @@ src_test() {
 	use debug && v="TEST_VERBOSE=1"
 	use debug && export SUACOMP_DEBUG_OUT=stderr
 
-	emake check $(get_opts) ${v}
-}
-
-src_install() {
-	emake install PREFIX="${EPREFIX}/usr" DESTDIR="${D}" $(get_opts) \
-		CFLAGS="${CFLAGS}"
+	emake check $(get_opts) ${v} || die "emake check failed"
 }

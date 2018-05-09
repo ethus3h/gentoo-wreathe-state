@@ -8,7 +8,7 @@ PYTHON_COMPAT=( python2_7 )
 inherit distutils-r1
 
 DESCRIPTION="Enthought Tool Suite: Interactive Graph (network) Visualization"
-HOMEPAGE="https://pypi.org/project/graphcanvas"
+HOMEPAGE="https://pypi.python.org/pypi/graphcanvas"
 SRC_URI="http://www.enthought.com/repo/ets/${P}.tar.gz"
 
 LICENSE="BSD"

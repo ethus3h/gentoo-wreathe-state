@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit autotools multilib-minimal ltprune
+inherit autotools eutils multilib-minimal
 
 DESCRIPTION="A system-independent library for user-level network packet capture"
 HOMEPAGE="
@@ -38,11 +38,12 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.8.1-darwin.patch
 	"${FILESDIR}"/${PN}-1.8.1-libnl.patch
 	"${FILESDIR}"/${PN}-1.8.1-usbmon.patch
-	"${FILESDIR}"/${PN}-9999-parallel.patch
 )
 
 src_prepare() {
 	default
+
+	eapply_user
 
 	echo ${PV} > VERSION || die
 

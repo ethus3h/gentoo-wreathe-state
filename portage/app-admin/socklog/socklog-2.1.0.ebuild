@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="3"
 
 inherit eutils toolchain-funcs flag-o-matic
 
@@ -16,22 +16,20 @@ IUSE="static"
 
 RDEPEND=">=sys-process/runit-1.4.0"
 
-PATCHES=( "${FILESDIR}"/${PN}-2.1.0-headers.patch )
-
 S=${WORKDIR}/admin/${P}/src
 
 src_prepare() {
-	default
+	epatch "${FILESDIR}"/${PN}-2.1.0-headers.patch
 	use static && append-ldflags -static
-	echo "$(tc-getCC) ${CFLAGS} ${CPPFLAGS}" > conf-cc || die
-	echo "$(tc-getCC) ${CFLAGS} ${LDFLAGS}" > conf-ld || die
+	echo "$(tc-getCC) ${CFLAGS} ${CPPFLAGS}" > conf-cc
+	echo "$(tc-getCC) ${CFLAGS} ${LDFLAGS}" > conf-ld
 }
 
 src_install() {
-	dobin tryto uncat socklog-check
-	dosbin socklog socklog-conf
+	dobin tryto uncat socklog-check || die
+	dosbin socklog socklog-conf || die
 
-	cd .. || die
+	cd ..
 	dodoc package/CHANGES
 	dohtml doc/*.html
 	doman man/*

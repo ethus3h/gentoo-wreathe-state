@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -8,7 +8,7 @@ CMAKE_REMOVE_MODULES_LIST="FindFreetype FindDoxygen FindZLIB"
 inherit eutils cmake-utils vcs-snapshot
 
 DESCRIPTION="Object-oriented Graphics Rendering Engine"
-HOMEPAGE="https://www.ogre3d.org/"
+HOMEPAGE="http://www.ogre3d.org/"
 SRC_URI="https://bitbucket.org/sinbad/ogre/get/v${PV//./-}.tar.bz2 -> ${P}.tar.bz2"
 
 LICENSE="MIT public-domain"
@@ -55,13 +55,6 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	doc? ( app-doc/doxygen )"
 
-PATCHES=(
-	"${FILESDIR}/${P}-remove_resource_path_to_bindir.patch"
-	"${FILESDIR}/${P}-remove_media_path_to_bindir.patch"
-	"${FILESDIR}/${P}-gcc52.patch"
-	"${FILESDIR}/${P}-samples.patch"
-)
-
 src_prepare() {
 	sed -i \
 		-e "s:share/OGRE/docs:share/doc/${PF}:" \
@@ -75,7 +68,11 @@ src_prepare() {
 	rm -f Tools/XMLConverter/{include,src}/tiny*.*
 
 	# Fix some path issues
-	cmake-utils_src_prepare
+	epatch \
+		"${FILESDIR}/${P}-remove_resource_path_to_bindir.patch" \
+		"${FILESDIR}/${P}-remove_media_path_to_bindir.patch" \
+		"${FILESDIR}/${P}-gcc52.patch" \
+		"${FILESDIR}/${P}-samples.patch"
 }
 
 src_configure() {

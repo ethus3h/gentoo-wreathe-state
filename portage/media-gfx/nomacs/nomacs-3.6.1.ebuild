@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit cmake-utils xdg-utils
+inherit cmake-utils fdo-mime
 
 DESCRIPTION="Qt-based image viewer"
 HOMEPAGE="https://nomacs.org/"
@@ -31,7 +31,7 @@ RDEPEND="
 	opencv? ( media-libs/opencv:=[-qt4(-)] )
 	raw? ( >=media-libs/libraw-0.14:= )
 	tiff? ( media-libs/tiff:0 )
-	zip? ( >=dev-libs/quazip-0.7.2[qt5(+)] )
+	zip? ( >=dev-libs/quazip-0.7.2[qt5] )
 "
 DEPEND="${RDEPEND}
 	dev-qt/linguist-tools:5
@@ -65,9 +65,9 @@ src_configure() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

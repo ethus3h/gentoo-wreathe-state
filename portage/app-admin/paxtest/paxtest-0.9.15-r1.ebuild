@@ -1,13 +1,13 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="6"
 
-inherit toolchain-funcs
+inherit eutils multilib toolchain-funcs
 
 DESCRIPTION="PaX regression test suite"
-HOMEPAGE="https://pax.grsecurity.net"
-SRC_URI="https://grsecurity.net/~spender/${P}.tar.gz"
+HOMEPAGE="http://pax.grsecurity.net"
+SRC_URI="http://grsecurity.net/~spender/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -21,15 +21,12 @@ DEPEND="${RDEPEND}
 # EI_PAX flags are not strip safe.
 RESTRICT="strip"
 
-PATCHES=(
-	"${FILESDIR}/${PN}-0.9.13-Makefile.patch"
-)
-
 src_prepare() {
 	mv Makefile.psm Makefile
-	default
+	epatch "${FILESDIR}/${PN}-0.9.13-Makefile.patch"
 	sed -i "s/^CC := gcc/CC := $(tc-getCC)/" Makefile
 	sed -i "s/^LD := ld/LD := $(tc-getLD)/" Makefile
+	eapply_user
 }
 
 src_compile() {

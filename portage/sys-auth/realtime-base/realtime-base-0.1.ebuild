@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=3
 
 inherit user
 
@@ -17,30 +17,30 @@ IUSE=""
 DEPEND=""
 RDEPEND="virtual/pam"
 
-S=${WORKDIR}
-
 limitsdfile=40-${PN}.conf
 rtgroup=realtime
+
+S=${WORKDIR}
 
 pkg_setup() {
 	enewgroup ${rtgroup}
 }
 
+print_limitsdfile() {
+	printf "# Start of ${limitsdfile} from ${P}\n\n"
+	printf "@${rtgroup}\t-\trtprio\t99\n"
+	printf "@${rtgroup}\t-\tmemlock\tunlimited\n"
+	printf "\n# End of ${limitsdfile} from ${P}\n"
+}
+
 src_compile() {
 	einfo "Generating ${limitsdfile}"
-	cat > ${limitsdfile} <<- EOF || die
-		# Start of ${limitsdfile} from ${P}
-
-		@${rtgroup}	-	rtprio	99
-		@${rtgroup}	-	memlock	unlimited
-
-		# End of ${limitsdfile} from ${P}
-	EOF
+	print_limitsdfile > "${S}/${limitsdfile}"
 }
 
 src_install() {
 	insinto /etc/security/limits.d/
-	doins ${limitsdfile}
+	doins "${S}/${limitsdfile}" || die
 }
 
 pkg_postinst() {

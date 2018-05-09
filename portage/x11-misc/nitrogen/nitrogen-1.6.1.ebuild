@@ -1,9 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-
-inherit autotools flag-o-matic xdg-utils
+inherit autotools fdo-mime flag-o-matic
 
 DESCRIPTION="A background browser and setter for X"
 HOMEPAGE="http://projects.l3ib.org/nitrogen/"
@@ -43,9 +42,9 @@ src_configure() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

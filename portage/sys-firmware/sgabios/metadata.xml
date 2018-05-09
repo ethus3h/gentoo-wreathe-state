@@ -9,7 +9,4 @@
 		<email>qemu@gentoo.org</email>
 		<name>Gentoo QEMU Project</name>
 	</maintainer>
-	<use>
-		<flag name="binary">Use pre-built binaries</flag>
-	</use>
-</pkgmetadata>
+	</pkgmetadata>

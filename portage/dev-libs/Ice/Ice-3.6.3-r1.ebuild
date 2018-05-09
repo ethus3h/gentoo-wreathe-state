@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -6,7 +6,7 @@ EAPI=5
 PYTHON_COMPAT=( python{2_7,3_4,3_5} pypy )
 
 RUBY_OPTIONAL="yes"
-USE_RUBY="ruby23"
+USE_RUBY="ruby22"
 
 PHP_EXT_NAME="IcePHP"
 PHP_EXT_INI="yes"
@@ -28,7 +28,7 @@ SRC_URI="https://github.com/zeroc-ice/ice/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	doc? ( http://download.zeroc.com/Ice/$(get_version_component_range 1-2)/${P}.pdf )"
 LICENSE="GPL-2"
 SLOT="0/36"
-KEYWORDS="amd64 ~arm x86"
+KEYWORDS="~amd64 ~arm ~x86"
 IUSE="doc examples libressl +ncurses mono php python ruby test debug"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
@@ -41,7 +41,7 @@ RDEPEND=">=dev-libs/expat-2.0.1
 	)
 	dev-cpp/libmcpp
 	python? ( ${PYTHON_DEPS} )
-	ruby? ( $(ruby_implementation_depend ruby23) )
+	ruby? ( $(ruby_implementation_depend ruby22) )
 	mono? ( dev-lang/mono )
 	php? ( dev-lang/php:7.0 )
 	!dev-python/IcePy
@@ -174,13 +174,13 @@ src_configure() {
 	fi
 
 	if use ruby; then
-		SITERUBY="$(ruby23 -r rbconfig -e 'print RbConfig::CONFIG["sitelibdir"]')"
+		SITERUBY="$(ruby22 -r rbconfig -e 'print RbConfig::CONFIG["sitelibdir"]')"
 		MAKE_RULES_RUBY=(
 			"install_rubydir=\"${ED%/}/${SITERUBY}\""
 			"install_libdir=\"${ED%/}/${SITERUBY}\""
 		)
 
-		# make it use ruby23 only
+		# make it use ruby22 only
 		sed -i \
 			-e 's|RUBY = ruby|\022|' \
 			ruby/config/Make.rules || die "sed failed"

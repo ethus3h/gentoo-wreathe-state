@@ -12,7 +12,7 @@ SRC_URI="https://dev.gentoo.org/~hasufell/distfiles/${P}.tar.xz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="debug"
 
 RDEPEND="app-arch/bzip2
@@ -26,18 +26,14 @@ RDEPEND="app-arch/bzip2
 DEPEND="${RDEPEND}
 	sys-devel/gettext"
 
-PATCHES=(
-	"${FILESDIR}"/${P}-cmake.patch
-	"${FILESDIR}"/${P}-soundconverter.patch
-	"${FILESDIR}"/${P}-fpic.patch
-	"${FILESDIR}"/${P}-format.patch
-	"${FILESDIR}"/${P}-miniupnpc-api-14.patch
-	"${FILESDIR}"/${P}-cmake-3.patch
-	"${FILESDIR}"/${P}-gcc6.patch
-)
-
 src_prepare() {
-	cmake-utils_src_prepare
+	epatch "${FILESDIR}"/${P}-cmake.patch \
+		"${FILESDIR}"/${P}-soundconverter.patch \
+		"${FILESDIR}"/${P}-fpic.patch \
+		"${FILESDIR}"/${P}-format.patch \
+		"${FILESDIR}"/${P}-miniupnpc-api-14.patch \
+		"${FILESDIR}"/${P}-cmake-3.patch \
+		"${FILESDIR}"/${P}-gcc6.patch
 }
 
 src_configure() {

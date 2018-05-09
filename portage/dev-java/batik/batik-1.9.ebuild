@@ -13,7 +13,7 @@ SRC_URI="http://apache.mirrors.ovh.net/ftp.apache.org/dist/xmlgraphics/${PN}/sou
 
 LICENSE="Apache-2.0"
 SLOT="1.9"
-KEYWORDS="amd64 ppc64 x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
+KEYWORDS="~amd64 ppc64 ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE="doc python tcl"
 
 CDEPEND="
@@ -26,32 +26,27 @@ CDEPEND="
 	dev-java/xml-commons-external:1.3"
 
 DEPEND="
-	${CDEPEND}
-	>=virtual/jdk-1.6"
+	>=virtual/jdk-1.6
+	${CDEPEND}"
 
 RDEPEND="
-	${CDEPEND}
-	>=virtual/jre-1.6"
+	>=virtual/jre-1.6
+	${CDEPEND}"
 
 JAVA_ANT_REWRITE_CLASSPATH="true"
 
 EANT_GENTOO_CLASSPATH="
 	xml-commons-external-1.3
 	xmlgraphics-commons-2
+	xalan
 	rhino-1.6
-	xalan"
+"
 
-src_prepare() {
-	default
-
-	# See bug 318323.
-	local file
+java_prepare() {
+	# bug #318323
 	for file in build.xml contrib/rasterizertask/build.xml; do
 		java-ant_xml-rewrite -f ${file} -c -e javadoc -a failonerror -v no -a maxmemory -v 512m
 	done
-
-	# See bug 628812.
-	use tcl && epatch "${FILESDIR}/${P}-ImportInfo.patch"
 
 	cd lib || die
 	rm -v *.jar build/*.jar || die
@@ -71,7 +66,6 @@ src_compile() {
 
 src_install() {
 	batik_unversion_jars() {
-		local jar
 		for jar in batik-*.jar; do
 			newj="${jar%-*}.jar"
 			java-pkg_newjar ${jar} ${newj}
@@ -91,13 +85,11 @@ src_install() {
 	dodoc README CHANGES
 	use doc && java-pkg_dojavadoc "${P}/docs/javadoc"
 
-	# See bug #116976.
-	java-pkg_dolauncher "batik-${SLOT}" \
-		--pwd "${EPREFIX}/usr/share/${PN}-${SLOT}/" \
+	# pwd fixes bug #116976
+	java-pkg_dolauncher batik-${SLOT} --pwd "${EPREFIX}/usr/share/${PN}-${SLOT}/" \
 		--main org.apache.batik.apps.svgbrowser.Main
 
 	# To find these lsjar batik-${SLOT} | grep Main.class
-	local launcher
 	for launcher in ttf2svg slideshow svgpp rasterizer; do
 		java-pkg_dolauncher batik-${launcher}-${SLOT} \
 			--main org.apache.batik.apps.${launcher}.Main

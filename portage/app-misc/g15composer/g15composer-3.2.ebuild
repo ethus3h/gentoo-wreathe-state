@@ -5,7 +5,7 @@ EAPI=2
 inherit eutils
 
 DESCRIPTION="A library to render text and shapes into a buffer usable by the Logitech G15"
-HOMEPAGE="https://sourceforge.net/projects/g15tools/"
+HOMEPAGE="http://g15tools.sourceforge.net/"
 SRC_URI="mirror://sourceforge/g15tools/${P}.tar.bz2"
 
 LICENSE="GPL-2"

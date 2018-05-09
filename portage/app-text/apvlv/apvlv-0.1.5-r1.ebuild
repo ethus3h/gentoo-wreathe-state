@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -14,7 +14,7 @@ KEYWORDS="amd64 x86"
 IUSE="debug djvu"
 
 RDEPEND="
-	>=app-text/poppler-0.18[cairo,xpdf-headers(+)]
+	>=app-text/poppler-0.18:=[cairo,xpdf-headers(+)]
 	dev-libs/glib:2
 	x11-libs/gtk+:3
 	djvu? ( app-text/djvu:= )
@@ -23,11 +23,11 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig
 "
 
-PATCHES=(
+src_prepare() {
 	# preserve cflags
-	"${FILESDIR}/${PN}-0.1.5-cflags.patch"
-	"${FILESDIR}/${PN}-0.1.5-gcc6.patch"
-)
+	epatch "${FILESDIR}/${PN}-0.1.5-cflags.patch"
+	epatch "${FILESDIR}/${PN}-0.1.5-gcc6.patch"
+}
 
 src_configure() {
 	local mycmakeargs=(

@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit cmake-utils eutils flag-o-matic gnome2-utils
+inherit cmake-utils eutils flag-o-matic gnome2-utils l10n
 
 DESCRIPTION="3D photo-realistic skies in real time"
 HOMEPAGE="http://www.stellarium.org/"

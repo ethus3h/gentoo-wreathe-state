@@ -14,9 +14,14 @@ SLOT="3"
 KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~x86-solaris"
 IUSE="debug"
 
-RDEPEND=">=dev-libs/glib-2.24[${MULTILIB_USEDEP}]
+COMMON_DEPEND=">=dev-libs/glib-2.24[${MULTILIB_USEDEP}]
 	>=x11-libs/gtk+-3.2:3[${MULTILIB_USEDEP}]"
-DEPEND="${RDEPEND}
+RDEPEND="${COMMON_DEPEND}
+	abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-gtklibs-20140508-r5
+		!app-emulation/emul-linux-x86-gtklibs[-abi_x86_32(-)]
+	)"
+DEPEND="${COMMON_DEPEND}
 	virtual/pkgconfig[${MULTILIB_USEDEP}]"
 
 S=${WORKDIR}/${MY_PN}-${PV}

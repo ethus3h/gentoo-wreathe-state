@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -13,7 +13,7 @@ HOMEPAGE="https://wiki.gnome.org/Apps/Devhelp"
 
 LICENSE="GPL-2+"
 SLOT="0/3-3" # subslot = 3-(libdevhelp-3 soname version)
-KEYWORDS="~alpha amd64 ~arm ~ia64 ~ppc ~ppc64 ~sparc x86 ~amd64-fbsd ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
 IUSE="gedit +introspection"
 REQUIRED_USE="gedit? ( ${PYTHON_REQUIRED_USE} )"
 
@@ -34,7 +34,6 @@ RDEPEND="${COMMON_DEPEND}
 DEPEND="${COMMON_DEPEND}
 	${PYTHON_DEPS}
 	>=dev-util/gtk-doc-am-1.25
-	>=sys-devel/gettext-0.19.7
 	virtual/pkgconfig
 "
 # eautoreconf requires:

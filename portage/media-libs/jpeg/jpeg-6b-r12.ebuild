@@ -20,7 +20,9 @@ IUSE=""
 
 DOCS=""
 
-RDEPEND="!>=media-libs/libjpeg-turbo-1.3.0-r2:0"
+RDEPEND="!>=media-libs/libjpeg-turbo-1.3.0-r2:0
+	abi_x86_32? ( !<=app-emulation/emul-linux-x86-baselibs-20130224-r5
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)] )"
 DEPEND="${RDEPEND}"
 
 src_prepare() {

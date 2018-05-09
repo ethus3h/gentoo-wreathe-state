@@ -11,4 +11,8 @@
 		<bugs-to>https://github.com/OpenRA/OpenRA/issues</bugs-to>
 		<remote-id type="github">OpenRA/OpenRA</remote-id>
 	</upstream>
+	<use>
+		<flag name="tools">Install some development tools
+			such as editor.</flag>
+	</use>
 </pkgmetadata>

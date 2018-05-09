@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -20,7 +20,10 @@ CDEPEND="app-i18n/ibus
 	)
 	nls? ( virtual/libintl )"
 RDEPEND="${CDEPEND}
-	>=dev-db/m17n-db-1.7"
+	|| (
+		>=dev-db/m17n-db-1.7
+		dev-db/m17n-contrib
+	)"
 DEPEND="${CDEPEND}
 	dev-util/intltool
 	sys-devel/gettext

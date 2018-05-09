@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-inherit autotools xdg-utils
+inherit autotools fdo-mime
 
 MY_PV=${PV/_/}
 MY_PN="libfm"
@@ -83,9 +83,9 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	xdg_mimeinfo_database_update
+	fdo-mime_mime_database_update
 }
 
 pkg_postrm() {
-	xdg_mimeinfo_database_update
+	fdo-mime_mime_database_update
 }

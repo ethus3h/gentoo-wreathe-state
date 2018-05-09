@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -33,10 +33,7 @@ COMMONDEPEND="
 	>=dev-perl/YAML-0.60
 "
 RDEPEND="${COMMONDEPEND}
-	|| (
-		>=sys-apps/portage-2.0.0
-		sys-apps/portage-mgorny
-	)
+	>=sys-apps/portage-2.0.0
 "
 DEPEND="${COMMONDEPEND}
 	virtual/perl-ExtUtils-MakeMaker

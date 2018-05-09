@@ -61,7 +61,7 @@ src_configure() {
 
 	ac_cv_path_NCURSES_CONFIG="pkg-config ncursesw" \
 	econf \
-		--bindir="${EPREFIX}"/usr/bin \
+		--bindir=/usr/bin \
 		--with-private-dirs \
 		$(use_enable X x11) \
 		$(use_enable sdl) \

@@ -8,5 +8,4 @@
 	<upstream>
 		<remote-id type="github">mgorny/eselect-repository</remote-id>
 	</upstream>
-	<stabilize-allarches/>
 </pkgmetadata>

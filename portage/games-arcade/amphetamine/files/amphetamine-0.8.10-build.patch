@@ -1,5 +1,5 @@
---- a/Makefile
-+++ b/Makefile
+--- Makefile
++++ Makefile
 @@ -26,8 +26,8 @@
  
  # makemake variables

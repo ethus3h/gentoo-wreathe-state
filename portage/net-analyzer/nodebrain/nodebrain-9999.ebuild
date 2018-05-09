@@ -29,7 +29,6 @@ RDEPEND="
 "
 PATCHES=(
 	"${FILESDIR}"/${PN}-0.8.14-include.patch
-	"${FILESDIR}"/${PN}-0.9.04-include.patch
 )
 
 src_prepare() {
@@ -47,7 +46,7 @@ src_configure() {
 src_install() {
 	default
 
-	prune_libtool_files
-
 	dodoc -r AUTHORS ChangeLog NEWS README THANKS sample/ html/
+
+	prune_libtool_files
 }

@@ -22,6 +22,5 @@ RDEPEND="
 	dev-ros/nodelet
 	dev-ros/sensor_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-libs/boost:=
-	dev-libs/console_bridge:=
 "
 DEPEND="${RDEPEND}"

@@ -17,7 +17,9 @@ SLOT="0.4"
 KEYWORDS="~alpha amd64 arm ~arm64 hppa ~ia64 ~mips ppc ppc64 sparc x86 ~amd64-fbsd ~x86-fbsd"
 IUSE="debug nls static-libs threads"
 
-DEPEND="
+RDEPEND="abi_x86_32? ( !<=app-emulation/emul-linux-x86-medialibs-20130224-r9
+		!app-emulation/emul-linux-x86-medialibs[-abi_x86_32(-)] )"
+DEPEND="${RDEPEND}
 	nls? ( sys-devel/gettext )
 	virtual/pkgconfig"
 

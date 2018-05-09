@@ -3,6 +3,7 @@
 <pkgmetadata>
 	<maintainer type="person">
 		<email>dolsen@gentoo.org</email>
+		<description>maintainer</description>
 	</maintainer>
 	<upstream>
 		<maintainer>

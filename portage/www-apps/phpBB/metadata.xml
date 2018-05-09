@@ -8,5 +8,6 @@
 	<maintainer type="person">
 		<email>chewi@gentoo.org</email>
 		<name>James Le Cuirot</name>
+		<description>Maintainer</description>
 	</maintainer>
 </pkgmetadata>

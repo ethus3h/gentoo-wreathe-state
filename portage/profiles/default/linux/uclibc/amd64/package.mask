@@ -7,7 +7,7 @@ app-accessibility/mbrola
 app-accessibility/perlbox-voice
 app-arch/stuffit
 app-benchmarks/cpuburn
-app-editors/emacs:18
+=app-editors/emacs-18*
 app-emulation/crossover-bin
 app-emulation/playonlinux
 app-emulation/q4wine
@@ -24,6 +24,7 @@ dev-lang/icc
 dev-lang/idb
 dev-lang/ifc
 dev-perl/Archive-Rar
+dev-python/skype4py
 dev-util/android-sdk-update-manager
 dev-util/android-ndk
 dev-util/biew
@@ -90,6 +91,14 @@ games-fps/ut2004-demo
 games-puzzle/hoh-bin
 games-roguelike/adom
 games-rpg/eschalon-book-1-demo
+games-rpg/nwmouse
+games-rpg/nwmovies
+games-rpg/nwn
+games-rpg/nwn-cep
+games-rpg/nwn-data
+games-rpg/nwn-penultima
+games-rpg/nwn-penultimarerolled
+games-rpg/nwn-shadowlordsdreamcatcherdemon
 games-rpg/penumbra-collection
 games-server/etqw-ded
 games-server/nwn-ded
@@ -108,6 +117,8 @@ media-fonts/acroread-asianfonts
 media-sound/ventrilo-server-bin
 media-video/binkplayer
 media-video/tsmuxer
+net-im/skype
+net-im/skypetab-ng
 net-print/cndrvcups-common-lb
 net-print/cndrvcups-lb
 net-misc/icaclient
@@ -115,6 +126,7 @@ net-misc/ps3mediaserver
 sci-biology/foldingathome
 sci-electronics/eagle
 sci-chemistry/cara-bin
+sci-chemistry/cyana
 sci-chemistry/mars
 sci-libs/ipp
 sys-libs/lib-compat-loki

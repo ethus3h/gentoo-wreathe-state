@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -26,12 +26,6 @@ python_test() {
 }
 
 python_install_all() {
-	if use examples; then
-		insinto /usr/share/doc/${PF}
-		doins -r examples
-	fi
+	use examples && local EXAMPLES=( examples/. )
 	distutils-r1_python_install_all
-
-	# package installs unneeded LICENSE files here
-	rm -rf "${ED}"/usr/socketpool || die
 }

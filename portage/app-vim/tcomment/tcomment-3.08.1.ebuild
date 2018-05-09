@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -12,12 +12,12 @@ if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
 else
 	SRC_URI="https://github.com/tomtom/${MY_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="amd64 x86"
+	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/${MY_PN}-${PV}"
 fi
 
 DESCRIPTION="vim plugin: an extensible and universal comment toggler"
-HOMEPAGE="https://www.vim.org/scripts/script.php?script_id=1173 https://github.com/tomtom/tcomment_vim"
+HOMEPAGE="http://www.vim.org/scripts/script.php?script_id=1173 https://github.com/tomtom/tcomment_vim"
 LICENSE="GPL-3"
 
 VIM_PLUGIN_HELPFILES="${PN}.txt"

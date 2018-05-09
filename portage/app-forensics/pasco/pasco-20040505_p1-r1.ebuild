@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
 inherit toolchain-funcs
 
@@ -10,23 +10,17 @@ MY_P=${PN}_${PV/_p/_}
 DESCRIPTION="IE Activity Parser"
 HOMEPAGE="https://sourceforge.net/projects/odessa/"
 SRC_URI="mirror://sourceforge/odessa/${MY_P}.tar.gz"
-
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc x86"
+KEYWORDS="~amd64 ~ppc ~x86"
 IUSE=""
 
-S=${WORKDIR}/${MY_P}/src
-PATCHES=(
-	"${FILESDIR}"/${P}-fix-build-system.patch
-	"${FILESDIR}"/${P}-Wimplicit-function-declaration.patch
-)
+S="${WORKDIR}/${MY_P}/src"
 
-src_configure() {
-	tc-export CC
+src_compile() {
+	$(tc-getCC) ${CFLAGS} ${LDFLAGS} -o ${PN} ${PN}.c -lm -lc || die "failed to compile"
 }
 
 src_install() {
 	dobin ${PN}
-	dodoc ../{CHANGES,Readme.txt}
 }

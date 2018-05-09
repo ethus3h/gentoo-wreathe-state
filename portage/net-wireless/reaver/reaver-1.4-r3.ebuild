@@ -33,9 +33,6 @@ PATCHES=(
 
 src_compile() {
 	emake V=1
-
-	# doman accept only uncompressed files #619966
-	gzip -d ../docs/reaver.1.gz || die
 }
 
 src_install() {
@@ -44,6 +41,6 @@ src_install() {
 	insinto "/var/db/reaver"
 	doins reaver.db
 
-	doman ../docs/reaver.1
+	doman ../docs/reaver.1.gz
 	dodoc ../docs/README ../docs/README.REAVER ../docs/README.WASH
 }

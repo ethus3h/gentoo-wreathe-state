@@ -1,7 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
+WANT_AUTOCONF="2.5"
 
 inherit autotools eutils multilib toolchain-funcs versionator multilib-minimal
 
@@ -16,7 +17,11 @@ SLOT="0"
 KEYWORDS="alpha amd64 arm arm64 hppa ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh sparc x86 ~ppc-aix ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris ~x86-solaris"
 IUSE="debug"
 
-RDEPEND=""
+RDEPEND="
+	abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-baselibs-20140508-r12
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)]
+	)"
 
 MULTILIB_CHOST_TOOLS=(
 	/usr/bin/nspr-config

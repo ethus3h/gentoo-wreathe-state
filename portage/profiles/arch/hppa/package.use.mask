@@ -4,29 +4,6 @@
 # NOTE: When masking a USE flag due to missing keywords, please file a keyword
 # request bug for the hppa arch.
 
-# Jeroen Roovers (jer@gentoo.org) (22 Mar 2018)
-# dev-ruby/capybara depends on www-client/firefox which has not been ported to
-# HPPA
-dev-ruby/capybara test
-
-# Jeroen Roovers (jer@gentoo.org) (22 Mar 2018)
-# dev-ruby/haml depends on dev-ruby/action* which lost their keywords, so that
-# kills the fun
-dev-ruby/haml test
-
-# Jeroen Roovers (jer@gentoo.org) (22 Mar 2018)
-# dev-ruby/tilt requires dev-ruby/coffee-script which requires net-libs/nodejs
-# which has not been ported to HPPA
-dev-ruby/tilt test
-
-# Andreas K. Hüttel <dilfridge@gentoo.org> (4 Oct 2017)
-# -fstack-protector is not supported for hppa, bug 630702
->=sys-devel/gcc-6.0 ssp
-
-# Michael Palimaka <kensington@gentoo.org> (30 Sep 2017)
-# Required dependencies are not keyworded.
-x11-themes/qtcurve plasma
-
 # Andreas K. Hüttel <dilfridge@gentoo.org> (11 Sep 2017)
 # Systemtap has no hppa keywords
 sys-libs/glibc systemtap
@@ -60,6 +37,10 @@ dev-vcs/git pcre-jit
 # app-misc/dtach is not keyworded, and tests are restricted anyway, so
 # no point in pursuing it right now.
 app-shells/bash-completion test
+
+# Jeroen Roovers <jer@gentoo.org> (26 Feb 2017)
+# app-crypt/libsecret is not keyworded for HPPA
+dev-vcs/git libsecret
 
 # Jeroen Roovers <jer@gentoo.org> (4 Feb 2017)
 # media-libs/libilbc has not been ported to HPPA
@@ -135,9 +116,17 @@ dev-python/pymongo test
 # USE=gui requires x11-libs/qscintilla,
 sci-mathematics/octave gui
 
+# Jeroen Roovers <jer@gentoo.org> (31 Jan 2014)
+# Mask x11-libs/libgksu dependency (bug #499900)
+xfce-extra/xfce4-taskmanager gksu
+
 # Julian Ospald <hasufell@gentoo.org> (23 Nov 2013)
 # needs app-arch/innoextract (bug #492326)
 games-fps/duke3d-data gog
+
+# Jeroen Roovers <jer@gentoo.org> (25 Oct 2013)
+# Building against libatomic_ops fails (bug #453704)
+sys-libs/libunwind libatomic
 
 # Jeroen Roovers <jer@gentoo.org> (23 Jul 2013)
 # graphite is not implemented on HPPA
@@ -221,6 +210,7 @@ net-im/pidgin gstreamer
 x11-misc/xscreensaver gdm new-login
 x11-libs/wxGTK gstreamer
 net-p2p/mldonkey guionly gtk
+dev-vcs/git gtk
 net-im/pidgin eds
 
 # Jeroen Roovers <jer@gentoo.org> (15 Apr 2008)

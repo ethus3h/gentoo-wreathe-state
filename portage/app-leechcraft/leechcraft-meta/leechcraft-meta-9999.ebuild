@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 DESCRIPTION="Metapackage containing all ready-to-use LeechCraft plugins"
-HOMEPAGE="https://leechcraft.org/"
+HOMEPAGE="http://leechcraft.org/"
 
 SLOT="0"
 KEYWORDS=""

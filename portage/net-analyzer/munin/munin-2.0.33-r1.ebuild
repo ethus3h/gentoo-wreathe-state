@@ -17,7 +17,7 @@ SRC_URI="
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~ppc ~x86"
+KEYWORDS="~amd64 ~arm ~mips ~ppc ~x86"
 IUSE="asterisk irc java ldap memcached minimal mysql postgres selinux ssl test cgi ipv6 syslog ipmi http dhcpd doc apache2"
 REQUIRED_USE="cgi? ( !minimal ) apache2? ( cgi )"
 
@@ -118,7 +118,6 @@ pkg_setup() {
 src_prepare() {
 	epatch "${WORKDIR}"/patches/*.patch
 	eapply "${FILESDIR}/${P}"-perl526.patch
-	eapply "${FILESDIR}/${P}"-nogitversion.patch
 
 	eapply_user
 

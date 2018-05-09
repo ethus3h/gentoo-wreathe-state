@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
-inherit eutils qmake-utils autotools xdg-utils
+inherit eutils qmake-utils autotools fdo-mime
 
 DESCRIPTION="Music audio files viewer and analiser"
 HOMEPAGE="http://www.sonicvisualiser.org/"
@@ -97,9 +97,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

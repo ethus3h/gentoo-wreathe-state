@@ -1,9 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-
-inherit gnome2-utils linux-info xdg-utils
+inherit linux-info fdo-mime gnome2-utils
 
 DESCRIPTION="A battery monitor panel plugin for the Xfce desktop environment"
 HOMEPAGE="https://goodies.xfce.org/projects/panel-plugins/xfce4-battery-plugin"
@@ -11,7 +10,7 @@ SRC_URI="mirror://xfce/src/panel-plugins/${PN}/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="GPL-2 LGPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~mips ~ppc x86"
+KEYWORDS="~amd64 ~arm ~mips ~ppc ~x86"
 IUSE="kernel_linux"
 
 RDEPEND=">=dev-libs/glib-2.24:2=
@@ -37,13 +36,13 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 	gnome2_icon_cache_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 	gnome2_icon_cache_update
 }

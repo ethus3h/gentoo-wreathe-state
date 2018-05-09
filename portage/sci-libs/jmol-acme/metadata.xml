@@ -5,4 +5,6 @@
 		<email>sci@gentoo.org</email>
 		<name>Gentoo Science Project</name>
 	</maintainer>
+	<longdescription lang="en">
+</longdescription>
 </pkgmetadata>

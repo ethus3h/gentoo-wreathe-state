@@ -3,7 +3,7 @@
 
 EAPI=4
 
-inherit versionator eutils
+inherit versionator
 
 DESCRIPTION="LightDM GTK+ Greeter"
 HOMEPAGE="https://launchpad.net/lightdm-gtk-greeter"

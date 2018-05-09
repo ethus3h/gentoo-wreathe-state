@@ -14,15 +14,11 @@ KEYWORDS="~amd64"
 IUSE=""
 
 RDEPEND="media-libs/alsa-lib
-	media-libs/freetype
 	media-libs/lv2
 	virtual/jack
 	virtual/opengl
 	x11-libs/libX11
-	x11-libs/libXcursor
-	x11-libs/libXext
-	x11-libs/libXinerama
-	x11-libs/libXrandr"
+	x11-libs/libXext"
 DEPEND="${RDEPEND}"
 
 DOCS="README.md"

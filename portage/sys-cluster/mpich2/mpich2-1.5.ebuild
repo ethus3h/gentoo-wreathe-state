@@ -19,7 +19,6 @@ IUSE="+cxx doc fortran mpi-threads romio threads"
 
 COMMON_DEPEND="
 	dev-libs/libaio
-	net-libs/libnsl:0=
 	sys-apps/hwloc
 	romio? ( net-fs/nfs-utils )"
 

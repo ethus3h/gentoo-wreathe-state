@@ -1,13 +1,13 @@
---- a/cmdline/Makefile.am
-+++ b/cmdline/Makefile.am
+--- cmdline/Makefile.am
++++ cmdline/Makefile.am
 @@ -7,4 +7,4 @@
  
  runacovea_SOURCES = runacovea.cpp
  
 -LIBS = -L../libacovea -lacovea -lcoyotl -levocosm -lexpat
 +LIBS = -L../libacovea -lacovea -lcoyotl -levocosm
---- a/libacovea/Makefile.am
-+++ b/libacovea/Makefile.am
+--- libacovea/Makefile.am
++++ libacovea/Makefile.am
 @@ -16,3 +16,5 @@
  library_include_HEADERS = $(h_sources)
  

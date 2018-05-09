@@ -38,7 +38,6 @@ src_configure() {
 }
 
 src_test() {
-	export GSETTINGS_BACKEND="memory"
 	virtx emake check
 }
 

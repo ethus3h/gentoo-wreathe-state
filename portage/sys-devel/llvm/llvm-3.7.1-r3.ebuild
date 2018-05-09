@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -30,12 +30,13 @@ SRC_URI="https://llvm.org/releases/${PV}/${P}.src.tar.xz
 
 LICENSE="UoI-NCSA rc BSD public-domain
 	arm? ( LLVM-Grant )
+	arm64? ( LLVM-Grant )
 	multitarget? ( LLVM-Grant )"
 SLOT="0/${PV}"
-KEYWORDS="arm ~ppc-macos ~x64-macos ~x86-macos"
+KEYWORDS="amd64 arm ~arm64 x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos"
 IUSE="clang debug doc gold libedit +libffi lldb multitarget ncurses ocaml
 	python +static-analyzer test xml video_cards_radeon
-	kernel_Darwin"
+	kernel_Darwin kernel_FreeBSD"
 
 COMMON_DEPEND="
 	sys-libs/zlib:0=
@@ -75,7 +76,9 @@ DEPEND="${COMMON_DEPEND}
 	ocaml? ( test? ( dev-ml/ounit ) )
 	${PYTHON_DEPS}"
 RDEPEND="${COMMON_DEPEND}
-	clang? ( !<=sys-devel/clang-${PV}-r99 )"
+	clang? ( !<=sys-devel/clang-${PV}-r99 )
+	abi_x86_32? ( !<=app-emulation/emul-linux-x86-baselibs-20130224-r2
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)] )"
 PDEPEND="clang? ( =sys-devel/clang-${PV}-r100 )
 	kernel_Darwin? ( =sys-libs/libcxx-${PV}* )"
 
@@ -254,8 +257,8 @@ src_prepare() {
 		eapply "${WORKDIR}/${P}-patchset"/lldb/tinfo.patch
 	fi
 
-	# User patches + QA
-	cmake-utils_src_prepare
+	# User patches
+	eapply_user
 
 	# Native libdir is used to hold LLVMgold.so
 	NATIVE_LIBDIR=$(get_libdir)
@@ -450,6 +453,11 @@ src_install() {
 	fi
 
 	multilib-minimal_src_install
+
+	# Remove unnecessary headers on FreeBSD, bug #417171
+	if use kernel_FreeBSD && use clang; then
+		rm "${ED}"usr/lib/clang/${PV}/include/{std,float,iso,limits,tgmath,varargs}*.h || die
+	fi
 }
 
 multilib_src_install() {
@@ -555,5 +563,11 @@ multilib_src_install_all() {
 		if use lldb && use python; then
 			python_optimize
 		fi
+	fi
+}
+
+pkg_postinst() {
+	if use clang && ! has_version sys-libs/libomp; then
+		elog "To enable OpenMP support in clang, install sys-libs/libomp."
 	fi
 }

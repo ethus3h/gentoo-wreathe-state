@@ -6,7 +6,7 @@ EAPI="4"
 inherit apache-module
 
 MY_PV="1.0b1"
-DESCRIPTION="Apache module that processes X-SENDFILE headers registered by the output handler"
+DESCRIPTION="Apache2 module that processes X-SENDFILE headers registered by the original output handler"
 HOMEPAGE="https://tn123.org/mod_xsendfile/"
 SRC_URI="https://tn123.org/mod_xsendfile/beta/${PN}-${MY_PV}.tar.gz"
 

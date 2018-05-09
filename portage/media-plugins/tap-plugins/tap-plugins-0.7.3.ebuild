@@ -7,7 +7,7 @@ inherit multilib toolchain-funcs eutils
 
 IUSE=""
 
-DESCRIPTION="A bunch of LADSPA plugins for audio processing"
+DESCRIPTION="TAP LADSPA plugins package. Contains DeEsser, Dynamics, Equalizer, Reverb, Stereo Echo, Tremolo"
 HOMEPAGE="http://tap-plugins.sourceforge.net"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 

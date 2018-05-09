@@ -1,9 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-
-inherit flag-o-matic
 
 EGIT_REPO_URI="https://anongit.freedesktop.org/git/libreoffice/libcdr.git"
 [[ ${PV} == 9999 ]] && inherit autotools git-r3
@@ -15,7 +13,7 @@ HOMEPAGE="https://wiki.documentfoundation.org/DLP/Libraries/libcdr"
 LICENSE="MPL-2.0"
 SLOT="0"
 [[ ${PV} == 9999 ]] || \
-KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64 ~arm ~hppa ~ppc64 ~x86"
 IUSE="doc static-libs test"
 
 RDEPEND="
@@ -39,9 +37,6 @@ src_prepare() {
 }
 
 src_configure() {
-	# bug 619448
-	append-cxxflags -std=c++14
-
 	econf \
 		--disable-werror \
 		$(use_with doc docs) \

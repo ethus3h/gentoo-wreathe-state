@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -25,7 +25,7 @@ RDEPEND="
 	>=media-libs/alsa-lib-1.0.20-r1
 	!<app-accessibility/festival-1.96_beta
 	!sys-power/powerman
-	>=sys-libs/ncurses-5.6-r2:0=
+	>=sys-libs/ncurses-5.6-r2
 "
 DEPEND="${RDEPEND}
 	virtual/pkgconfig

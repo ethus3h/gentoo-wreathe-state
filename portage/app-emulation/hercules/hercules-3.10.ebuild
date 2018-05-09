@@ -15,7 +15,6 @@ KEYWORDS="alpha amd64 ppc sparc x86 ~x64-macos ~x86-macos"
 IUSE="bzip2 custom-cflags +suid"
 
 RDEPEND="bzip2? ( app-arch/bzip2 )
-	net-libs/libnsl:0
 	sys-libs/zlib"
 DEPEND="${RDEPEND}"
 

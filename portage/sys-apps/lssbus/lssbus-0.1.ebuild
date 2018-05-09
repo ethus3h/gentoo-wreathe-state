@@ -1,7 +1,5 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2006 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=6
 
 DESCRIPTION="Small utility for Linux/SPARC that list devices on SBUS"
 HOMEPAGE="https://people.redhat.com/tcallawa/lssbus/"
@@ -17,5 +15,5 @@ RDEPEND=""
 
 src_install() {
 	dosbin lssbus
-	einstalldocs
+	dodoc COPYING README
 }

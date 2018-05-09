@@ -22,7 +22,6 @@ DEPEND="${RDEPEND}
 	app-arch/unzip"
 
 S=${WORKDIR}
-PATCHES=( "${FILESDIR}"/${PN}-use-system-libs3.patch )
 
 pkg_setup() {
 	enewgroup freenet
@@ -32,8 +31,7 @@ pkg_setup() {
 src_prepare() {
 	rm -rv  libs
 	edos2unix src/http/pages/showfilepage.cpp
-
-	cmake-utils_src_prepare
+	epatch "${FILESDIR}"/${PN}-use-system-libs3.patch
 }
 
 src_configure() {

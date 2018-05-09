@@ -7,9 +7,10 @@
 	</maintainer>
 	<upstream>
 		<maintainer status="active">
-			<email>agaida@siduction.org</email>
-			<name>Alf Gaida</name>
+			<email>doomer3d@gmail.com</email>
+			<name>Artem Galichkin</name>
 		</maintainer>
-		<remote-id type="github">QtDesktop/screengrab</remote-id>
+		<remote-id type="google-code">screengrab-qt</remote-id>
+		<remote-id type="github">DOOMer/screengrab</remote-id>
 	</upstream>
 </pkgmetadata>

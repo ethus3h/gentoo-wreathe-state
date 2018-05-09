@@ -1,9 +1,8 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit multilib-minimal
+EAPI=5
+inherit eutils multilib-minimal
 
 DESCRIPTION="GNU VCDimager"
 HOMEPAGE="http://www.vcdimager.org/"
@@ -23,13 +22,9 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig
 "
 
-DOCS=( AUTHORS BUGS ChangeLog FAQ HACKING NEWS README THANKS TODO )
-
-PATCHES=( "${FILESDIR}/${P}-libcdio-1.0.0.patch" )
+DOCS="AUTHORS BUGS ChangeLog FAQ HACKING NEWS README THANKS TODO"
 
 src_prepare() {
-	default
-
 	# Avoid building useless programs. Bug #226249
 	sed -i \
 		-e 's/check_PROGRAMS =/check_PROGRAMS +=/' \
@@ -55,6 +50,6 @@ multilib_src_configure() {
 }
 
 multilib_src_install_all() {
-	find "${D}" -name '*.la' -delete
+	prune_libtool_files
 	einstalldocs
 }

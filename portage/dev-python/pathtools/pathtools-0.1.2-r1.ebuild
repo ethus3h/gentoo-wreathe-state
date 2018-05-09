@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python{2_7,3_4,3_5} pypy)
 inherit distutils-r1
 
 DESCRIPTION="Pattern matching and various utilities for file systems paths"
-HOMEPAGE="https://pypi.org/project/pathtools/"
+HOMEPAGE="https://pypi.python.org/pypi/pathtools/"
 SRC_URI="mirror://pypi/p/pathtools/${P}.tar.gz"
 
 LICENSE="MIT"

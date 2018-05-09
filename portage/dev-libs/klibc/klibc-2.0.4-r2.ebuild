@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # Robin H. Johnson <robbat2@gentoo.org>, 12 Nov 2007:
@@ -54,9 +54,8 @@ KEYWORDS="~alpha amd64 ~arm ia64 -mips ~ppc ~ppc64 ~sparc x86"
 SLOT="0"
 IUSE="debug test custom-cflags"
 
-RDEPEND="dev-lang/perl"
-DEPEND="${RDEPEND}
-	sys-devel/bc"
+DEPEND="dev-lang/perl"
+RDEPEND="${DEPEND}"
 
 KS="${WORKDIR}/linux-${OKV}"
 

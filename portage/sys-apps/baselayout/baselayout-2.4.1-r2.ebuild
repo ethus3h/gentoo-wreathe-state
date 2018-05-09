@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -11,7 +11,7 @@ SRC_URI="https://gitweb.gentoo.org/proj/baselayout.git/snapshot/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
 IUSE="build kernel_linux"
 
 pkg_setup() {
@@ -93,7 +93,7 @@ multilib_layout() {
 				case ${CHOST} in
 				*-gentoo-freebsd*) ;; # We want it the other way on fbsd.
 				i?86*|x86_64*|powerpc*|sparc*|s390*)
-					if [[ -d ${prefix}lib32 && ! -h ${prefix}lib32 ]] ; then
+					if [ -d "${prefix}lib32" ] ; then
 						rm -f "${prefix}lib32"/.keep
 						if ! rmdir "${prefix}lib32" 2>/dev/null ; then
 							ewarn "You need to merge ${prefix}lib32 into ${prefix}lib"
@@ -224,12 +224,10 @@ pkg_postinst() {
 	if use kernel_linux; then
 		mkdir -p "${EROOT}"run
 
-		local found fstype mountpoint
-		while read -r _ mountpoint fstype _; do
-		[[ ${mountpoint} = /run ]] && [[ ${fstype} = tmpfs ]] && found=1
-		done < "${ROOT}"proc/mounts
-		[[ -z ${found} ]] &&
-			ewarn "You should reboot now to get /run mounted with tmpfs!"
+		if ! grep -qs "^tmpfs.*/run " "${ROOT}"proc/mounts ; then
+			echo
+			ewarn "You should reboot the system now to get /run mounted with tmpfs!"
+		fi
 	fi
 
 	for x in ${REPLACING_VERSIONS}; do

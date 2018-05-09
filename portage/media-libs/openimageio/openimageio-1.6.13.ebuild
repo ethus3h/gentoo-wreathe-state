@@ -14,7 +14,7 @@ SRC_URI="https://github.com/OpenImageIO/oiio/archive/Release-${PV}.tar.gz -> ${P
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="amd64 ~ppc64 x86"
-IUSE="colorio ffmpeg gif jpeg2k opencv opengl python raw ssl +truetype"
+IUSE="colorio ffmpeg gif jpeg2k opencv opengl python qt4 raw ssl +truetype"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 RESTRICT="test" #431412
@@ -45,6 +45,12 @@ RDEPEND="
 		${PYTHON_DEPS}
 		dev-libs/boost:=[python,${PYTHON_USEDEP}]
 	)
+	qt4? (
+		dev-qt/qtcore:4
+		dev-qt/qtgui:4
+		dev-qt/qtopengl:4
+		media-libs/glew:=
+	)
 	raw? ( media-libs/libraw:= )
 	ssl? ( dev-libs/openssl:0 )
 	truetype? ( media-libs/freetype:2= )"
@@ -59,7 +65,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	cmake-utils_src_prepare
+	default
 
 	use python && python_fix_shebang .
 }
@@ -85,7 +91,7 @@ src_configure() {
 		-DUSE_OPENSSL=$(usex ssl)
 		-DUSE_PYTHON=$(usex python)
 		-DUSE_LIBRAW=$(usex raw)
-		-DUSE_QT=OFF # Deprecated
+		-DUSE_QT=$(usex qt4)
 	)
 
 	if [[ ${EPYTHON} == python3* ]]; then

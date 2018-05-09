@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -25,6 +25,7 @@ DEPEND="${CDEPEND}
 	dev-java/junit:0
 	test? (
 		dev-java/ant-junit:0
+		dev-java/ant-trax:0
 	)"
 
 JAVA_ANT_REWRITE_CLASSPATH="true"
@@ -44,7 +45,7 @@ java_prepare() {
 }
 
 src_test() {
-	ANT_TASKS="ant-junit ant-core" eant test
+	ANT_TASKS="ant-junit ant-trax" eant test
 }
 
 src_install() {

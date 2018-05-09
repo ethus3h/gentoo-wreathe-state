@@ -14,8 +14,7 @@ PYTHON_COMPAT=( python2_7 )
 
 [[ ${PV} == 9999 ]] && SCM="git-r3" || SCM=""
 
-inherit ${SCM} cmake-multilib llvm multiprocessing python-any-r1 \
-	toolchain-funcs
+inherit ${SCM} cmake-multilib llvm python-any-r1 toolchain-funcs
 
 DESCRIPTION="New implementation of the C++ standard library, targeting C++11"
 HOMEPAGE="https://libcxx.llvm.org/"
@@ -36,20 +35,19 @@ fi
 IUSE="elibc_glibc elibc_musl +libcxxabi libcxxrt +libunwind +static-libs test"
 REQUIRED_USE="libunwind? ( || ( libcxxabi libcxxrt ) )
 	?? ( libcxxabi libcxxrt )"
-RESTRICT="!test? ( test )"
 
 RDEPEND="
 	libcxxabi? ( ~sys-libs/libcxxabi-${PV}[libunwind=,static-libs?,${MULTILIB_USEDEP}] )
 	libcxxrt? ( sys-libs/libcxxrt[libunwind=,static-libs?,${MULTILIB_USEDEP}] )
 	!libcxxabi? ( !libcxxrt? ( >=sys-devel/gcc-4.7:=[cxx] ) )"
-# llvm-6 for new lit options
+# LLVM 4 required for llvm-config --cmakedir
 # clang-3.9.0 installs necessary target symlinks unconditionally
 # which removes the need for MULTILIB_USEDEP
 DEPEND="${RDEPEND}
 	test? ( >=sys-devel/clang-3.9.0
 		$(python_gen_any_dep 'dev-python/lit[${PYTHON_USEDEP}]') )
 	app-arch/xz-utils
-	>=sys-devel/llvm-6"
+	>=sys-devel/llvm-4"
 
 DOCS=( CREDITS.TXT )
 
@@ -82,11 +80,6 @@ pkg_setup() {
 		eerror "gcc-4.7 or later version."
 		die
 	fi
-}
-
-test_compiler() {
-	$(tc-getCXX) ${CXXFLAGS} ${LDFLAGS} "${@}" -o /dev/null -x c++ - \
-		<<<'int main() { return 0; }' &>/dev/null
 }
 
 multilib_src_configure() {
@@ -125,15 +118,6 @@ multilib_src_configure() {
 		fi
 	fi
 
-	# bootstrap: cmake is unhappy if compiler can't link to stdlib
-	local nolib_flags=( -nodefaultlibs -lc )
-	if ! test_compiler; then
-		if test_compiler "${nolib_flags[@]}"; then
-			local -x LDFLAGS="${LDFLAGS} ${nolib_flags[*]}"
-			ewarn "${CXX} seems to lack runtime, trying with ${nolib_flags[*]}"
-		fi
-	fi
-
 	local libdir=$(get_libdir)
 	local mycmakeargs=(
 		-DLIBCXX_LIBDIR_SUFFIX=${libdir#lib}
@@ -150,20 +134,22 @@ multilib_src_configure() {
 	)
 
 	if use test; then
-		local clang_path=$(type -P "${CHOST:+${CHOST}-}clang" 2>/dev/null)
-		local jobs=${LIT_JOBS:-$(makeopts_jobs "${MAKEOPTS}" "$(get_nproc)")}
-
-		[[ -n ${clang_path} ]] || die "Unable to find ${CHOST}-clang for tests"
-
 		mycmakeargs+=(
-			-DLLVM_EXTERNAL_LIT="${EPREFIX}/usr/bin/lit"
-			-DLLVM_LIT_ARGS="-vv;-j;${jobs};--param=cxx_under_test=${clang_path}"
+			# this can be any directory, it just needs to exist...
+			# FIXME: remove this once https://reviews.llvm.org/D25093 is merged
+			-DLLVM_MAIN_SRC_DIR="${T}"
+			-DLIT_COMMAND="${EPREFIX}"/usr/bin/lit
 		)
 	fi
 	cmake-utils_src_configure
 }
 
 multilib_src_test() {
+	local clang_path=$(type -P "${CHOST:+${CHOST}-}clang" 2>/dev/null)
+
+	[[ -n ${clang_path} ]] || die "Unable to find ${CHOST}-clang for tests"
+	sed -i -e "/cxx_under_test/s^\".*\"^\"${clang_path}\"^" test/lit.site.cfg || die
+
 	cmake-utils_src_make check-libcxx
 }
 

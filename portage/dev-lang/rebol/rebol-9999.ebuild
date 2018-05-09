@@ -2,17 +2,19 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
-
-MY_PR=${PVR/3_pre/}
-
-inherit eutils git-r3
-
 DESCRIPTION="Relative Expression-Based Object Language"
 HOMEPAGE="http://rebol.com"
+
+MY_PR=${PVR/3_pre/}
 EGIT_REPO_URI="https://github.com/rebol/r3.git"
+
+inherit eutils git-2
 
 LICENSE="Apache-2.0"
 SLOT="0"
+#KEYWORDS="~amd64 ~x86"
+# live ebuild
+KEYWORDS=""
 IUSE=""
 
 # usual bootstrap problems

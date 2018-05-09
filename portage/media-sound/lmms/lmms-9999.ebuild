@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit cmake-utils xdg-utils
+inherit cmake-utils
 
 DESCRIPTION="Cross-platform music production software"
 HOMEPAGE="https://lmms.io"
@@ -11,9 +11,8 @@ if [[ ${PV} == "9999" ]]; then
 	EGIT_REPO_URI="https://github.com/LMMS/lmms.git"
 	inherit git-r3
 else
-	SRC_URI="https://github.com/LMMS/${PN}/archive/v${PV/_/-}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/LMMS/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
-	S="${WORKDIR}/${P/_/-}"
 fi
 
 LICENSE="GPL-2 LGPL-2"
@@ -45,7 +44,7 @@ COMMON_DEPEND="
 	)
 	soundio? ( media-libs/libsoundio )
 	stk? ( media-libs/stk )
-	vst? ( virtual/wine )
+	vst? ( || ( app-emulation/wine virtual/wine ) )
 "
 DEPEND="${COMMON_DEPEND}
 	dev-qt/linguist-tools:5
@@ -85,14 +84,4 @@ src_configure() {
 		-DWANT_SF2=$(usex fluidsynth)
 	)
 	cmake-utils_src_configure
-}
-
-pkg_postinst() {
-	xdg_mimeinfo_database_update
-	xdg_desktop_database_update
-}
-
-pkg_postrm() {
-	xdg_mimeinfo_database_update
-	xdg_desktop_database_update
 }

@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,19 +9,19 @@ PYTHON_REQ_USE="sqlite"
 
 inherit autotools cmake-utils eutils linux-info pax-utils python-single-r1
 
-LIBDVDCSS_VERSION="1.4.1-Leia-Alpha-1"
-LIBDVDREAD_VERSION="6.0.0-Leia-Alpha-1"
-LIBDVDNAV_VERSION="6.0.0-Leia-Alpha-1"
-FFMPEG_VERSION="4.0"
+LIBDVDCSS_COMMIT="2f12236bc1c92f73c21e973363f79eb300de603f"
+LIBDVDREAD_COMMIT="17d99db97e7b8f23077b342369d3c22a6250affd"
+LIBDVDNAV_COMMIT="43b5f81f5fe30bceae3b7cecf2b0ca57fc930dac"
+FFMPEG_VERSION="3.3.3"
 CODENAME="Leia"
 FFMPEG_KODI_VERSION="Alpha-1"
-SRC_URI="https://github.com/xbmc/libdvdcss/archive/${LIBDVDCSS_VERSION}.tar.gz -> libdvdcss-${LIBDVDCSS_VERSION}.tar.gz
-	https://github.com/xbmc/libdvdread/archive/${LIBDVDREAD_VERSION}.tar.gz -> libdvdread-${LIBDVDREAD_VERSION}.tar.gz
-	https://github.com/xbmc/libdvdnav/archive/${LIBDVDNAV_VERSION}.tar.gz -> libdvdnav-${LIBDVDNAV_VERSION}.tar.gz
+SRC_URI="https://github.com/xbmc/libdvdcss/archive/${LIBDVDCSS_COMMIT}.tar.gz -> libdvdcss-${LIBDVDCSS_COMMIT}.tar.gz
+	https://github.com/xbmc/libdvdread/archive/${LIBDVDREAD_COMMIT}.tar.gz -> libdvdread-${LIBDVDREAD_COMMIT}.tar.gz
+	https://github.com/xbmc/libdvdnav/archive/${LIBDVDNAV_COMMIT}.tar.gz -> libdvdnav-${LIBDVDNAV_COMMIT}.tar.gz
 	!system-ffmpeg? ( https://github.com/xbmc/FFmpeg/archive/${FFMPEG_VERSION}-${CODENAME}-${FFMPEG_KODI_VERSION}.tar.gz -> ffmpeg-${PN}-${FFMPEG_VERSION}-${CODENAME}-${FFMPEG_KODI_VERSION}.tar.gz )"
 
 DESCRIPTION="Kodi is a free and open source media-player and entertainment hub"
-HOMEPAGE="https://kodi.tv/ https://kodi.wiki/"
+HOMEPAGE="https://kodi.tv/ http://kodi.wiki/"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -41,12 +41,12 @@ REQUIRED_USE="
 
 COMMON_DEPEND="${PYTHON_DEPS}
 	airplay? (
-		>=app-pda/libplist-2.0.0[python,${PYTHON_USEDEP}]
+		app-pda/libplist
 		net-libs/shairplay
 	)
 	alsa? ( >=media-libs/alsa-lib-1.1.4.1 )
 	bluetooth? ( net-wireless/bluez )
-	bluray? ( >=media-libs/libbluray-1.0.2 )
+	bluray? ( >=media-libs/libbluray-1.0.1 )
 	caps? ( sys-libs/libcap )
 	dbus? ( sys-apps/dbus )
 	dev-db/sqlite
@@ -64,21 +64,18 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	gles? ( media-libs/mesa[gles2] )
 	lcms? ( media-libs/lcms:2 )
 	libusb? ( virtual/libusb:1 )
-	virtual/ttf-fonts
+	media-fonts/corefonts
+	>=media-fonts/noto-20160531
 	media-fonts/roboto
 	>=media-libs/fontconfig-2.12.4
 	>=media-libs/freetype-2.8
 	>=media-libs/libass-0.13.4
 	media-libs/mesa[egl]
 	>=media-libs/taglib-1.11.1
-	system-ffmpeg? (
-		>=media-video/ffmpeg-${FFMPEG_VERSION}:=[encode,postproc]
-		libressl? ( media-video/ffmpeg[libressl,-openssl] )
-		!libressl? ( media-video/ffmpeg[-libressl,openssl] )
-	)
+	system-ffmpeg? ( >=media-video/ffmpeg-${FFMPEG_VERSION}:=[encode,openssl,postproc] )
 	mysql? ( virtual/mysql )
-	>=net-misc/curl-7.56.1
-	nfs? ( >=net-fs/libnfs-2.0.0:= )
+	>=net-misc/curl-7.51.0
+	nfs? ( net-fs/libnfs:= )
 	opengl? ( media-libs/glu )
 	!libressl? ( >=dev-libs/openssl-1.0.2l:0= )
 	libressl? ( dev-libs/libressl:0= )
@@ -88,7 +85,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	>=sys-libs/zlib-1.2.11
 	udev? ( virtual/udev )
 	vaapi? (
-		x11-libs/libva:=
+		x11-libs/libva[egl]
 		opengl? ( x11-libs/libva[opengl] )
 		system-ffmpeg? ( media-video/ffmpeg[vaapi] )
 		vdpau? ( x11-libs/libva[vdpau] )
@@ -101,10 +98,10 @@ COMMON_DEPEND="${PYTHON_DEPS}
 		system-ffmpeg? ( media-video/ffmpeg[vdpau] )
 	)
 	wayland? (
-		>=dev-cpp/waylandpp-0.2.3:=
+		dev-cpp/waylandpp
 		media-libs/mesa[wayland]
 		>=dev-libs/wayland-protocols-1.7
-		>=x11-libs/libxkbcommon-0.4.1
+		x11-libs/libxkbcommon
 	)
 	webserver? ( >=net-libs/libmicrohttpd-0.9.55[messages] )
 	X? (
@@ -193,7 +190,7 @@ src_prepare() {
 	# avoid long delays when powerkit isn't running #348580
 	sed -i \
 		-e '/dbus_connection_send_with_reply_and_block/s:-1:3000:' \
-		xbmc/platform/linux/*.cpp || die
+		xbmc/linux/*.cpp || die
 
 	# Prepare tools and libs witch are configured with autotools during compile time
 	AUTOTOOLS_DIRS=(
@@ -252,9 +249,9 @@ src_configure() {
 		-DENABLE_VAAPI=$(usex vaapi)
 		-DENABLE_VDPAU=$(usex vdpau)
 		-DENABLE_XSLT=$(usex xslt)
-		-Dlibdvdread_URL="${DISTDIR}/libdvdread-${LIBDVDREAD_VERSION}.tar.gz"
-		-Dlibdvdnav_URL="${DISTDIR}/libdvdnav-${LIBDVDNAV_VERSION}.tar.gz"
-		-Dlibdvdcss_URL="${DISTDIR}/libdvdcss-${LIBDVDCSS_VERSION}.tar.gz"
+		-Dlibdvdread_URL="${DISTDIR}/libdvdread-${LIBDVDREAD_COMMIT}.tar.gz"
+		-Dlibdvdnav_URL="${DISTDIR}/libdvdnav-${LIBDVDNAV_COMMIT}.tar.gz"
+		-Dlibdvdcss_URL="${DISTDIR}/libdvdcss-${LIBDVDCSS_COMMIT}.tar.gz"
 	)
 
 	use libusb && mycmakeargs+=( -DENABLE_LIBUSB=$(usex libusb) )
@@ -302,6 +299,18 @@ src_install() {
 	rm "${ED%/}"/usr/share/doc/*/{LICENSE.GPL,copying.txt}* || die
 
 	newicon media/icon48x48.png kodi.png
+
+	# Replace bundled fonts with system ones.
+	rm "${ED%/}"/usr/share/kodi/addons/skin.estouchy/fonts/NotoSans-Regular.ttf || die
+	dosym ../../../../fonts/noto/NotoSans-Regular.ttf \
+		usr/share/kodi/addons/skin.estouchy/fonts/NotoSans-Regular.ttf
+
+	local f
+	for f in NotoMono-Regular.ttf NotoSans-Bold.ttf NotoSans-Regular.ttf ; do
+		rm "${ED%/}"/usr/share/kodi/addons/skin.estuary/fonts/"${f}" || die
+		dosym ../../../../fonts/noto/"${f}" \
+			usr/share/kodi/addons/skin.estuary/fonts/"${f}"
+	done
 
 	rm "${ED%/}"/usr/share/kodi/addons/skin.estuary/fonts/Roboto-Thin.ttf || die
 	dosym ../../../../fonts/roboto/Roboto-Thin.ttf \

@@ -16,7 +16,10 @@ IUSE="nls static-libs"
 
 DEPEND="nls? ( sys-devel/gettext )
 	sys-devel/autoconf"
-RDEPEND=""
+RDEPEND="abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-baselibs-20130224-r9
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)]
+	)"
 
 src_prepare() {
 	sed -i \

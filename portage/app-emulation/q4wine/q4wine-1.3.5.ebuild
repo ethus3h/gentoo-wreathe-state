@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -10,12 +10,12 @@ inherit cmake-utils gnome2-utils xdg-utils
 MY_P=${PN}-${PV/_p/-r}
 
 DESCRIPTION="Qt GUI configuration tool for Wine"
-HOMEPAGE="https://q4wine.brezblock.org.ua/"
+HOMEPAGE="http://q4wine.brezblock.org.ua/"
 SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="+dbus debug +ico +iso +wineappdb"
 
 CDEPEND="

@@ -5,6 +5,8 @@
 		<email>base-system@gentoo.org</email>
 		<name>Gentoo Base System</name>
 	</maintainer>
+	<longdescription lang="en">
+	</longdescription>
 	<upstream>
 		<remote-id type="github">open-iscsi/open-isns</remote-id>
 	</upstream>

@@ -113,8 +113,7 @@ src_prepare() {
 			tools/podofocolor/luaconverter.cpp \
 			tools/podofoimpose/planreader_lua.cpp || die
 	fi
-
-	cmake-utils_src_prepare
+	eapply_user
 }
 
 src_configure() {

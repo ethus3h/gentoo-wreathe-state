@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit autotools
+inherit eutils autotools
 
 DESCRIPTION="The Yate GSM base station"
-HOMEPAGE="https://yatebts.com"
+HOMEPAGE="http://www.yatebts.com/"
 ESVN_REPO_URI="http://voip.null.ro/svn/yatebts/trunk"
 
 LICENSE="GPL-2"
@@ -26,28 +26,22 @@ if [[ ${PV} == "9999" ]] ; then
 	KEYWORDS=""
 else
 	KEYWORDS="~amd64 ~arm ~x86"
-	SRC_URI="http://yate.null.ro/tarballs/${PN}6/yate-bts-${PV}-1.tar.gz"
+	SRC_URI="http://yate.null.ro/tarballs/${PN}4/yate-bts-${PV}-1.tar.gz"
 	S="${WORKDIR}/yate-bts"
 fi
 
-#we need more patches or configure flags because things install in really wrong places per FHS
-PATCHES=(
-	"${FILESDIR}"/${PN}-sgsnggsn-inetutils-hostname-fix.diff
-	"${FILESDIR}"/${PN}-5.0.0-gcc6.patch
-	"${FILESDIR}"/${P}-dont-mess-with-cflags.patch
-	)
-
 src_prepare() {
-	default
+	#we need more patches or configure flags because things install in really wrong places per FHS
+	epatch "${FILESDIR}"/${PN}-sgsnggsn-inetutils-hostname-fix.diff
 	eautoreconf
 }
 
-#		$(use_enable rad1) \
-#		$(use_enable usrp1) \
-#		$(use_enable uhd) \
-#		$(use_enable bladerf) \
 src_configure() {
 	econf \
+		$(use_enable rad1) \
+		$(use_enable usrp1) \
+		$(use_enable uhd) \
+		$(use_enable bladerf) \
 		$(use_enable cpu_flags_x86_sse3 sse3) \
 		$(use_enable cpu_flags_x86_sse4_1 sse41)
 

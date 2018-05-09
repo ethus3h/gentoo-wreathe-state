@@ -12,4 +12,6 @@
 <use>
 	<flag name="drawing">Enables drawing tool</flag>
 </use>
+<longdescription lang="en">
+</longdescription>
 </pkgmetadata>

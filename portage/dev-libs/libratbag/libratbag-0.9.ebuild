@@ -23,12 +23,6 @@ RDEPEND="
 	virtual/libudev
 "
 
-src_prepare() {
-	default
-
-	sed '/default:/d' -i meson_options.txt || die
-}
-
 src_configure() {
 	local emesonargs=(
 		-Denable-documentation=$(usex doc true false)

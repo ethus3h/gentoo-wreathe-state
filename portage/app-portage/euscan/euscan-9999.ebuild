@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -6,10 +6,11 @@ EAPI=5
 PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="xml"
 
-inherit distutils-r1 git-r3
+inherit distutils-r1 git-2
 
 DESCRIPTION="Ebuild upstream scan utility"
 HOMEPAGE="https://github.com/iksaif/euscan"
+SRC_URI=""
 EGIT_REPO_URI="https://github.com/iksaif/euscan.git"
 
 LICENSE="GPL-2"
@@ -18,11 +19,7 @@ IUSE=""
 
 KEYWORDS=""
 
-DEPEND="
-	|| (
-		sys-apps/portage[${PYTHON_USEDEP}]
-		sys-apps/portage-mgorny[${PYTHON_USEDEP}]
-	)"
+DEPEND="sys-apps/portage[${PYTHON_USEDEP}]"
 RDEPEND="${DEPEND}
 	>=app-portage/gentoolkit-0.2.8[${PYTHON_USEDEP}]
 	dev-python/setuptools[${PYTHON_USEDEP}]

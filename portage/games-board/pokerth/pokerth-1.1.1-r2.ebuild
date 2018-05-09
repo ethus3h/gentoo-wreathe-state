@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -7,12 +7,12 @@ inherit eutils flag-o-matic qmake-utils
 
 MY_P="PokerTH-${PV}-src"
 DESCRIPTION="Texas Hold'em poker game"
-HOMEPAGE="https://www.pokerth.net/"
+HOMEPAGE="http://www.pokerth.net/"
 SRC_URI="mirror://sourceforge/pokerth/${MY_P}.tar.bz2"
 
 LICENSE="AGPL-3 GPL-1 GPL-2 GPL-3 BitstreamVera public-domain"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="dedicated"
 
 RDEPEND="dev-db/sqlite:3

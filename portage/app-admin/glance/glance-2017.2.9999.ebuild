@@ -1,25 +1,19 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 PYTHON_COMPAT=( python2_7 python3_4 python3_5 )
 
-inherit distutils-r1 user
+inherit distutils-r1 git-r3 user
 
 DESCRIPTION="Services for discovering, registering, and retrieving VM images"
 HOMEPAGE="https://launchpad.net/glance"
-
-if [[ ${PV} == *9999 ]];then
-	inherit git-r3
-	EGIT_REPO_URI="https://github.com/openstack/glance.git"
-	EGIT_BRANCH="stable/pike"
-else
-	SRC_URI="https://tarballs.openstack.org/${PN}/${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm64 ~x86"
-fi
+EGIT_REPO_URI="https://github.com/openstack/glance.git"
+EGIT_BRANCH="stable/pike"
 
 LICENSE="Apache-2.0"
 SLOT="0"
+KEYWORDS=""
 IUSE="doc mysql postgres +sqlite +swift"
 REQUIRED_USE="|| ( mysql postgres sqlite )"
 
@@ -77,7 +71,7 @@ RDEPEND="
 	>=dev-python/stevedore-1.20.0[${PYTHON_USEDEP}]
 	>=dev-python/futurist-0.11.0[${PYTHON_USEDEP}]
 	!~dev-python/futurist-0.15.0[${PYTHON_USEDEP}]
-	>=dev-python/taskflow-2.7.0[${PYTHON_USEDEP}]
+	>=dev-python/taskflow-2.7.0.0[${PYTHON_USEDEP}]
 	>=dev-python/keystoneauth-3.1.0[${PYTHON_USEDEP}]
 	>=dev-python/keystonemiddleware-4.12.0[${PYTHON_USEDEP}]
 	>=dev-python/WSME-0.8.0[${PYTHON_USEDEP}]
@@ -132,7 +126,7 @@ python_compile_all() {
 python_install_all() {
 	distutils-r1_python_install_all
 
-	newinitd "${FILESDIR}/glance.initd" glance-api
+	newinitd "${FILESDIR}/glance.initd-2" glance-api
 
 	diropts -m 0750 -o glance -g glance
 	dodir /var/log/glance /var/lib/glance/images /var/lib/glance/scrubber

@@ -4,6 +4,7 @@
 <maintainer type="person">
   <email>mgorny@gentoo.org</email>
   <name>Michał Górny</name>
+  <description>Co-maintainer</description>
 </maintainer>
 <maintainer type="project">
   <email>sci@gentoo.org</email>

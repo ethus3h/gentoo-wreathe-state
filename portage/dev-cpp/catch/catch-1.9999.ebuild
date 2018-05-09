@@ -1,29 +1,34 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-EGIT_REPO_URI="https://github.com/catchorg/Catch2.git"
-EGIT_BRANCH="Catch1.x"
+EGIT_REPO_URI="https://github.com/philsquared/Catch.git"
+EGIT_BRANCH=master
 inherit cmake-utils git-r3
 
 DESCRIPTION="Modern C++ header-only framework for unit-tests"
-HOMEPAGE="https://github.com/catchorg/Catch2"
+HOMEPAGE="https://github.com/philsquared/Catch"
 SRC_URI=""
 
 LICENSE="Boost-1.0"
 SLOT="0"
 KEYWORDS=""
-IUSE="test"
+IUSE=""
 
-src_configure() {
-	local mycmakeargs=(
-		-DNO_SELFTEST=$(usex !test)
-	)
+# CMake is only used to build & run tests, so override phases
+src_configure() { :; }
+src_compile() { :; }
+
+src_test() {
 	cmake-utils_src_configure
+	cmake-utils_src_compile
+	cmake-utils_src_test
 }
 
 src_install() {
-	cmake-utils_src_install
+	# same location as used in fedora
+	insinto /usr/include/catch
+	doins -r include/.
 	dodoc -r docs/.
 }

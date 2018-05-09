@@ -5,7 +5,9 @@
 	<email>voyageur@gentoo.org</email>
 	<name>Bernard Cafarelli</name>
 </maintainer>
-<upstream>
-	<remote-id type="github">voyageur/wmsysmon</remote-id>
-</upstream>
+
+<use>
+	<flag name="high-ints">Enable support for monitoring 24 interrupts. Useful
+		on SMP machines</flag>
+</use>
 </pkgmetadata>
