@@ -1,9 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI=6
 
-inherit autotools eutils
+inherit autotools
 
 # agedu-20151213.59b0ed3.ebuild is not a legitimate name
 # so we'll drop versionator and just set MY_P manually.
@@ -20,11 +20,13 @@ KEYWORDS="~amd64 ~x86"
 IUSE="doc ipv6"
 
 DEPEND="doc? ( app-doc/halibut )"
-RDEPEND="${DEPEND}"
+
+PATCHES=(
+	"${FILESDIR}/${PN}-r9671-fix-automagic.patch"
+)
 
 src_prepare() {
-	epatch "${FILESDIR}/${PN}-r9671-fix-automagic.patch"
-	eapply_user
+	default
 	eautoreconf
 }
 

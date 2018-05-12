@@ -12,12 +12,12 @@ MY_PN="SQLAlchemy"
 MY_P="${MY_PN}-${PV/_beta/b}"
 
 DESCRIPTION="Python SQL toolkit and Object Relational Mapper"
-HOMEPAGE="http://www.sqlalchemy.org/ https://pypi.python.org/pypi/SQLAlchemy"
+HOMEPAGE="http://www.sqlalchemy.org/ https://pypi.org/project/SQLAlchemy/"
 SRC_URI="mirror://pypi/${MY_P:0:1}/${MY_PN}/${MY_P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos"
+KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ~mips ppc ppc64 ~s390 ~sh sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos"
 IUSE="doc examples +sqlite test"
 
 REQUIRED_USE="test? ( sqlite )"

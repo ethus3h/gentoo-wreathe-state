@@ -3,10 +3,9 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python{3_4,3_5} )
-PLOCALES="ru"
+PYTHON_COMPAT=( python3_{4,5,6} )
 
-inherit cmake-utils l10n python-single-r1 readme.gentoo-r1 systemd user
+inherit cmake-utils python-single-r1 readme.gentoo-r1 systemd user
 
 GTEST_VER="1.8.0"
 GTEST_URL="https://github.com/google/googletest/archive/release-${GTEST_VER}.tar.gz -> gtest-${GTEST_VER}.tar.gz"
@@ -42,7 +41,7 @@ RDEPEND="
 		libressl? ( dev-libs/libressl:0= )
 	)
 	tcl? ( dev-lang/tcl:0= )
-	zlib? ( sys-libs/zlib )
+	zlib? ( sys-libs/zlib:0= )
 "
 DEPEND="
 	${RDEPEND}
@@ -66,14 +65,6 @@ pkg_setup() {
 }
 
 src_prepare() {
-	l10n_find_plocales_changes "${S}/src/po" "${PN}." '.po'
-
-	remove_locale() {
-		# Some language/module pairs can be missing
-		rm -f src/po/${PN}.${1}.po modules/po/*.${1}.po || die
-	}
-	l10n_for_each_disabled_locale_do remove_locale
-
 	# Let SWIG rebuild modperl/modpython to make user patching easier.
 	if [[ ${PV} != *9999* ]]; then
 		rm modules/modperl/generated.tar.gz || die

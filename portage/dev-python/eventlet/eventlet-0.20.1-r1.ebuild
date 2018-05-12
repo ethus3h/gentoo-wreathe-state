@@ -8,12 +8,12 @@ PYTHON_COMPAT=( python2_7 python3_{4,5,6} )
 inherit distutils-r1
 
 DESCRIPTION="Highly concurrent networking library"
-HOMEPAGE="https://pypi.python.org/pypi/eventlet https://github.com/eventlet/eventlet/"
+HOMEPAGE="https://pypi.org/project/eventlet/ https://github.com/eventlet/eventlet/"
 SRC_URI="mirror://pypi/e/${PN}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~x86"
+KEYWORDS="amd64 ~arm64 x86"
 IUSE="doc examples test"
 
 RDEPEND=">=dev-python/greenlet-0.3[${PYTHON_USEDEP}]

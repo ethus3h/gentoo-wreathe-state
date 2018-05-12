@@ -19,7 +19,7 @@ else
 	SRC_URI="https://download.fcitx-im.org/${PN}/${P}.tar.xz"
 fi
 
-LICENSE="GPL-2+"
+LICENSE="BSD GPL-2+ GPL-3+ LGPL-2+"
 SLOT="4"
 KEYWORDS=""
 IUSE=""
@@ -33,6 +33,7 @@ RDEPEND=">=app-i18n/fcitx-4.2.9:4
 	virtual/libintl
 	x11-libs/libxkbcommon"
 DEPEND="${RDEPEND}
+	dev-qt/qtconcurrent:5
 	kde-frameworks/extra-cmake-modules:5
 	virtual/pkgconfig"
 

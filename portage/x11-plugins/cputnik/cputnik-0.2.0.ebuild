@@ -1,11 +1,13 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+
+EAPI=0
 
 inherit eutils toolchain-funcs
 
 DESCRIPTION="cputnik is a simple cpu monitor dockapp"
-HOMEPAGE="http://dockapps.windowmaker.org/file.php/id/273"
-SRC_URI="http://dockapps.windowmaker.org/download.php/id/576/${P}.tar.gz"
+HOMEPAGE="https://www.dockapps.net/cputnik"
+SRC_URI="https://www.dockapps.net/download/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"

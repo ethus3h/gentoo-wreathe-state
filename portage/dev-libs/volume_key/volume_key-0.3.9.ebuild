@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -13,32 +13,33 @@ SRC_URI="http://releases.pagure.org/${PN}/${P}.tar.xz"
 
 LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="alpha amd64 arm ~arm64 ia64 ~mips ppc ppc64 ~sparc x86"
 IUSE="test"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-COMMON_DEPEND="
+RDEPEND="
+	app-crypt/gpgme
 	dev-libs/glib:2
+	dev-libs/nspr
 	dev-libs/nss
 	sys-apps/util-linux
-	sys-devel/gettext
+	sys-fs/cryptsetup:=
 "
 DEPEND="
-	${COMMON_DEPEND}
-	app-crypt/gpgme
-	sys-fs/cryptsetup
+	${RDEPEND}
+	sys-devel/gettext
 	test? ( dev-libs/nss[utils] )
 	"
-RDEPEND="
-	${COMMON_DEPEND}
-"
 
 RESTRICT="test" # possible gpgme issue
 
 PATCHES=(
 	"${FILESDIR}"/${P}-config.h.diff
 	"${FILESDIR}"/${PN}-0.3.9-find_python.patch
+
+	# Patches from upstream (can usually be removed with next version bump)
+	"${FILESDIR}/${P}-cryptsetup2.patch"
 )
 
 pkg_setup() {

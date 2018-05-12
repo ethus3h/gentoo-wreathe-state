@@ -22,7 +22,7 @@ fi
 DESCRIPTION="A ROS-independent package for logging into rosconsole/rosout"
 HOMEPAGE="http://wiki.ros.org/console_bridge"
 LICENSE="BSD"
-SLOT="0"
+SLOT="0/4"
 IUSE=""
 
 RDEPEND="dev-libs/boost:=[threads]"

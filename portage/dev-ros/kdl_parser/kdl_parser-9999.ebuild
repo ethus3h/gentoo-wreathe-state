@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -18,9 +18,9 @@ RDEPEND="
 	dev-libs/boost:=
 	dev-ros/roscpp
 	dev-ros/rosconsole
-	dev-ros/urdf
-	sci-libs/orocos_kdl
-	dev-libs/tinyxml
+	>=dev-ros/urdf-1.13
+	sci-libs/orocos_kdl:=
+	dev-libs/tinyxml2:=
 "
 DEPEND="${RDEPEND}
 	test? ( dev-ros/rostest[${PYTHON_USEDEP}] )"

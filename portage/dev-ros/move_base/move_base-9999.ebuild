@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -18,8 +18,12 @@ RDEPEND="
 	>=dev-ros/costmap_2d-1.15.1
 	dev-ros/roscpp
 	dev-ros/pluginlib
+		dev-libs/tinyxml2:=
 	dev-ros/actionlib
 	dev-ros/base_local_planner
+	dev-ros/clear_costmap_recovery
+	dev-ros/navfn
+	dev-ros/rotate_recovery
 	dev-ros/dynamic_reconfigure[${PYTHON_USEDEP}]
 	dev-ros/nav_core
 	dev-ros/tf
@@ -27,6 +31,7 @@ RDEPEND="
 	dev-ros/std_srvs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-cpp/eigen:3
 	dev-libs/boost:=
+	dev-libs/console_bridge:=
 "
 DEPEND="${RDEPEND}
 	dev-ros/cmake_modules"

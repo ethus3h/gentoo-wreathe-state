@@ -14,11 +14,13 @@ SRC_URI="https://github.com/aquynh/${PN}/archive/${PV/_rc/-rc}.tar.gz -> ${P}.ta
 
 LICENSE="BSD"
 SLOT="0/3" # libcapstone.so.3
-KEYWORDS="~amd64 ~arm ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 
 IUSE="python"
 RDEPEND="python? ( ${PYTHON_DEPS} )"
-DEPEND="${RDEPEND}"
+DEPEND="${RDEPEND}
+	python? ( dev-python/setuptools[${PYTHON_USEDEP}] )
+"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 PATCHES=(

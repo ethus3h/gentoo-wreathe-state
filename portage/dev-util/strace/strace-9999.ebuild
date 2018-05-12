@@ -1,16 +1,16 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI=6
 
-inherit flag-o-matic eutils toolchain-funcs
+inherit flag-o-matic toolchain-funcs
 
 if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="git://git.code.sf.net/p/strace/code"
-	EGIT_PROJECT="${PN}"
-	inherit git-2 autotools
+	EGIT_REPO_URI="https://github.com/strace/strace.git"
+	inherit git-r3 autotools
 else
-	SRC_URI="mirror://sourceforge/${PN}/${P}.tar.xz"
+	#SRC_URI="mirror://sourceforge/${PN}/${P}.tar.xz"
+	SRC_URI="https://github.com/${PN}/${PN}/releases/download/v${PV}/${P}.tar.xz"
 	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-linux ~arm-linux ~x86-linux"
 fi
 
@@ -34,10 +34,12 @@ RDEPEND="
 "
 
 src_prepare() {
-	if epatch_user || [[ ! -e configure ]] ; then
+	default
+
+	if [[ ! -e configure ]] ; then
 		# git generation
-		./xlat/gen.sh || die
-		./generate_mpers_am.sh || die
+		sed /autoreconf/d -i bootstrap || die
+		./bootstrap || die
 		eautoreconf
 		[[ ! -e CREDITS ]] && cp CREDITS{.in,}
 	fi
@@ -62,6 +64,15 @@ src_configure() {
 	done
 
 	econf $(use_with unwind libunwind)
+}
+
+src_test() {
+	if has usersandbox $FEATURES ; then
+		ewarn "Test suite is known to fail with FEATURES=usersandbox -- skipping ..." #643044
+		return 0
+	fi
+
+	default
 }
 
 src_install() {

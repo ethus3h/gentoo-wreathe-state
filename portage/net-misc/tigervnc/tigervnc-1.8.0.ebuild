@@ -17,7 +17,7 @@ SRC_URI="https://github.com/TigerVNC/tigervnc/archive/v${PV}.tar.gz -> ${P}.tar.
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 arm ~hppa ia64 ~mips ppc ppc64 ~sh sparc x86"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 ~sh sparc x86"
 IUSE="+drm gnutls nls java +opengl pam server systemd +xorgmodule"
 
 CDEPEND="virtual/jpeg:0
@@ -89,7 +89,7 @@ src_prepare() {
 		cp -r "${WORKDIR}"/xorg-server-${XSERVER_VERSION}/. unix/xserver || die
 	fi
 
-	default
+	cmake-utils_src_prepare
 
 	if use server; then
 		cd unix/xserver || die

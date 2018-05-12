@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -15,7 +15,7 @@ SLOT="0"
 IUSE="ssl"
 
 if [[ ${PV} != *9999 ]]; then
-	SRC_URI="http://www.thc.org/releases/${P}.tar.gz"
+	SRC_URI="https://github.com/vanhauser-thc/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 fi
 
@@ -23,6 +23,8 @@ DEPEND="net-libs/libpcap
 	net-libs/libnetfilter_queue
 	ssl? ( dev-libs/openssl:* )"
 RDEPEND="${DEPEND}"
+
+PATCHES=( "${FILESDIR}/${PN}-3.2-stdint.patch" )
 
 src_unpack() {
 	if [[ ${PV} != *9999 ]]; then
@@ -33,15 +35,13 @@ src_unpack() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-3.0-Makefile.patch
-	sed -i \
-		-e '/^CFLAGS=/s,CFLAGS=,CFLAGS?=,' \
-		Makefile
+	sed -e '/^CFLAGS=/s,CFLAGS=,CFLAGS?=,' \
+		-i Makefile || die
 	if ! use ssl ; then
 		sed -e '/^HAVE_SSL/s:^:#:' \
 			-i Makefile
 	fi
-	eapply_user
+	default
 }
 
 src_compile() {

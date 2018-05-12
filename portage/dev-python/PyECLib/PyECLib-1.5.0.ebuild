@@ -7,13 +7,13 @@ PYTHON_COMPAT=( python2_7 )
 inherit distutils-r1 eutils multilib
 
 DESCRIPTION="Messaging API for RPC and notifications over different messaging transports"
-HOMEPAGE="https://pypi.python.org/pypi/PyECLib"
+HOMEPAGE="https://pypi.org/project/PyECLib/"
 SRC_URI="mirror://pypi/p/pyeclib/pyeclib-${PV}.tar.gz"
 S="${WORKDIR}/pyeclib-${PV}"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~x86"
+KEYWORDS="amd64 ~arm64 x86"
 IUSE="test"
 
 CDEPEND="dev-libs/jerasure"

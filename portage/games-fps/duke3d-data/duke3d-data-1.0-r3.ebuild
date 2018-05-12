@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -6,14 +6,14 @@ EAPI=5
 CDROM_OPTIONAL="yes"
 inherit eutils cdrom unpacker games
 
-GOG_FILE="gog_duke_nukem_3d_atomic_edition_2.0.0.8.sh"
+GOG_FILE="gog_duke_nukem_3d_atomic_edition_2.0.0.9.sh"
 DESCRIPTION="Duke Nukem 3D data files"
 HOMEPAGE="http://www.3drealms.com/"
 SRC_URI="gog? ( ${GOG_FILE} )"
 
 LICENSE="DUKE3D gog? ( GOG-EULA )"
 SLOT="0"
-KEYWORDS="amd64 hppa x86"
+KEYWORDS="~amd64 ~hppa ~x86"
 IUSE="gog"
 REQUIRED_USE="^^ ( cdinstall gog )"
 RESTRICT="mirror bindist gog? ( fetch )"

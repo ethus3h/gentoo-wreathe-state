@@ -1,5 +1,6 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+
 EAPI="6"
 
 if [[ ${PV} == 9999* ]]; then
@@ -14,7 +15,7 @@ else
 	KEYWORDS="~amd64 -arm ~arm64 ~mips ~x86"
 fi
 
-HOMEPAGE="https://www.gentoo.org/proj/en/hardened/selinux/"
+HOMEPAGE="https://wiki.gentoo.org/wiki/Project:SELinux"
 DESCRIPTION="SELinux policy for core modules"
 
 IUSE="systemd +unconfined"
@@ -103,9 +104,9 @@ pkg_postinst() {
 	for i in ${POLICY_TYPES}; do
 		einfo "Inserting the following modules, with base, into the $i module store: ${MODS}"
 
-		cd /usr/share/selinux/${i} || die "Could not enter /usr/share/selinux/${i}"
+		cd /usr/share/selinux/${i}
 
-		semodule -s ${i} ${COMMAND} || die "Failed to load in base and modules ${MODS} in the $i policy store"
+		semodule -s ${i} ${COMMAND}
 	done
 
 	# Relabel depending packages

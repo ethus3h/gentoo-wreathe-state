@@ -43,6 +43,7 @@ RDEPEND+="
 	)
 	!app-misc/realpath
 	!<sys-apps/util-linux-2.13
+	!<sys-apps/sandbox-2.10-r4
 	!sys-apps/stat
 	!net-mail/base64
 	!sys-apps/mktemp
@@ -100,7 +101,7 @@ src_configure() {
 	# kill/uptime - procps
 	# groups/su   - shadow
 	# hostname    - net-tools
-	econf ${myconf[@]}
+	econf "${myconf[@]}"
 }
 
 src_test() {

@@ -1,7 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
+
+inherit flag-o-matic
 
 EGIT_REPO_URI="https://anongit.freedesktop.org/git/libreoffice/libfreehand.git"
 [[ ${PV} == 9999 ]] && inherit autotools git-r3
@@ -13,20 +15,22 @@ HOMEPAGE="https://wiki.documentfoundation.org/DLP/Libraries/libfreehand"
 LICENSE="MPL-2.0"
 SLOT="0"
 [[ ${PV} == 9999 ]] || \
-KEYWORDS="~amd64 ~arm ~x86"
-IUSE="doc static-libs"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+IUSE="doc static-libs test"
 
 RDEPEND="
 	dev-libs/librevenge
 	sys-libs/zlib
 "
 DEPEND="${RDEPEND}
-	dev-libs/icu:=
+	dev-libs/boost
+	dev-libs/icu
 	dev-util/gperf
 	media-libs/lcms
 	sys-devel/libtool
 	virtual/pkgconfig
 	doc? ( app-doc/doxygen )
+	test? ( dev-util/cppunit )
 "
 
 src_prepare() {
@@ -36,10 +40,14 @@ src_prepare() {
 }
 
 src_configure() {
+	# bug 619762
+	append-cxxflags -std=c++14
+
 	econf \
 		--disable-werror \
 		$(use_with doc docs) \
-		$(use_enable static-libs static)
+		$(use_enable static-libs static) \
+		$(use_enable test tests)
 }
 
 src_install() {

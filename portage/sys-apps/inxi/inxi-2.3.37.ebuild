@@ -12,12 +12,11 @@ SRC_URI="https://github.com/smxi/${PN}/tarball/${MY_COMMIT} -> ${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~x86"
+KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
 IUSE=""
 
 DEPEND=""
-RDEPEND=">=app-shells/bash-3.0
-	sys-apps/pciutils
+RDEPEND="sys-apps/pciutils
 	sys-apps/usbutils
 	"
 S="${WORKDIR}/smxi-${PN}-${MY_COMMIT:0:7}"

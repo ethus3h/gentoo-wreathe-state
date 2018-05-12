@@ -1,19 +1,19 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="5"
+EAPI=6
 
-inherit eutils toolchain-funcs
+inherit toolchain-funcs
 if [[ ${PV} == "9999" ]] ; then
-	ESVN_REPO_URI="https://code.coreboot.org/svn/flashrom/trunk"
-	inherit subversion
+	EGIT_REPO_URI="https://review.coreboot.org/flashrom.git"
+	inherit git-r3
 else
-	SRC_URI="http://download.flashrom.org/releases/${P}.tar.bz2"
-	KEYWORDS="~amd64 ~arm ~arm64 ~mips ~ppc ~ppc64 ~sparc ~x86"
+	SRC_URI="https://download.flashrom.org/releases/${P}.tar.bz2"
+	KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~sparc ~x86"
 fi
 
 DESCRIPTION="Utility for reading, writing, erasing and verifying flash ROM chips"
-HOMEPAGE="http://flashrom.org/"
+HOMEPAGE="https://flashrom.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -62,12 +62,6 @@ _flashrom_enable() {
 flashrom_enable() {
 	local u
 	for u ; do _flashrom_enable "${u}" ; done
-}
-
-src_prepare() {
-	sed -i \
-		-e 's:pkg-config:$(PKG_CONFIG):' \
-		Makefile || die
 }
 
 src_compile() {

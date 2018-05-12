@@ -17,6 +17,22 @@
 
 #--- END OF EXAMPLES ---
 
+# Andreas Sturmlechner <asturm@gentoo.org> (21 Nov 2017)
+# Requires not yet stabilised media-libs/qtav
+media-gfx/digikam mediaplayer
+
+# Thomas Deutschmann <whissi@gentoo.org> (01 Oct 2017)
+# Stable mask dev-ruby/haml test till rails is stabilized.
+dev-ruby/haml test
+
+# Michael Palimaka <kensington@gentoo.org> (30 Sep 2017)
+# Required dependeny is not stable
+sci-libs/gdal oracle
+
+# NP-Hardass <NP-Hardass@gentoo.org> (27 Sep 2017)
+# patchset variants are not stable
+virtual/wine d3d9 staging
+
 # Andreas Sturmlechner <asturm@gentoo.org> (01 Mar 2017)
 # Requires not yet stabilised dev-db/oracle-instantclient.
 sci-geosciences/qgis oracle
@@ -43,16 +59,8 @@ dev-cpp/eigen test
 # mayavi is broken, bug #500104
 dev-python/apptools test
 
-# Tim Harder <radhermit@gentoo.org> (11 Oct 2014)
-# Masked since skype isn't stable
-net-im/bitlbee skype
-
 # Michał Górny <mgorny@gentoo.org> (30 Mar 2014)
 # Don't apply stable masks to python-exec since we're forcing every
 # impl there anyway. Please keep this in sync with use.stable.mask.
 dev-lang/python-exec -python_targets_pypy
 dev-lang/python-exec -python_targets_pypy3
-
-# Tom Wijsman <TomWij@gentoo.org> (06 Feb 2014)
-# [QA] Masked jit USE flag on www-apps/cgit as dev-lang/luajit is not stable.
-www-apps/cgit jit

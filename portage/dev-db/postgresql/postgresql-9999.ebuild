@@ -1,11 +1,11 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="5"
+EAPI="6"
 
 PYTHON_COMPAT=( python2_7 python3_{4,5,6} )
 
-inherit eutils flag-o-matic git-2 linux-info multilib pam prefix \
+inherit eutils flag-o-matic git-r3 linux-info multilib pam prefix \
 		python-single-r1 systemd user versionator
 
 KEYWORDS=""
@@ -13,27 +13,23 @@ KEYWORDS=""
 # Bump when rc released.
 SLOT="11"
 
-EGIT_REPO_URI="git://git.postgresql.org/git/postgresql.git"
+EGIT_REPO_URI="https://git.postgresql.org/git/postgresql.git"
 
 LICENSE="POSTGRESQL GPL-2"
 DESCRIPTION="PostgreSQL RDBMS"
 HOMEPAGE="http://www.postgresql.org/"
 
-LINGUAS="af cs de en es fa fr hr hu it ko nb pl pt_BR ro ru sk sl sv tr
-		 zh_CN zh_TW"
 IUSE="kerberos kernel_linux ldap libressl nls pam perl -pg_legacytimestamp python
 	  +readline selinux +server systemd ssl static-libs tcl threads uuid xml zlib"
-
-for lingua in ${LINGUAS}; do
-	IUSE+=" linguas_${lingua}"
-done
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 wanted_languages() {
-	local enable_langs
+	local linguas="af cs de en es fa fr hr hu it ko nb pl pt_BR ro ru
+		sk sl sv tr zh_CN zh_TW"
+	local enable_langs lingua
 
-	for lingua in ${LINGUAS} ; do
-		use linguas_${lingua} && enable_langs+="${lingua} "
+	for lingua in ${linguas} ; do
+		has ${lingua} ${LINGUAS-${lingua}} && enable_langs+="${lingua} "
 	done
 
 	echo -n ${enable_langs}
@@ -75,11 +71,6 @@ sys-devel/flex
 nls? ( sys-devel/gettext )
 xml? ( virtual/pkgconfig )
 "
-src_unpack() {
-	base_src_unpack
-	git-2_src_unpack
-}
-
 RDEPEND="${CDEPEND}
 !dev-db/postgresql-docs:${SLOT}
 !dev-db/postgresql-base:${SLOT}
@@ -124,7 +115,7 @@ src_prepare() {
 			die 'PGSQL_PAM_SERVICE rename failed.'
 	fi
 
-	epatch_user
+	eapply_user
 }
 
 src_configure() {
@@ -188,8 +179,9 @@ src_install() {
 
 	if use systemd; then
 		sed -e "s|@SLOT@|${SLOT}|g" -e "s|@LIBDIR@|$(get_libdir)|g" \
-			"${FILESDIR}/${PN}.service-9.6" | \
+			"${FILESDIR}/${PN}.service-9.6-r1" | \
 			systemd_newunit - ${PN}-${SLOT}.service
+		systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfiles ${PN}-${SLOT}.conf
 	fi
 
 	newbin "${FILESDIR}"/${PN}-check-db-dir ${PN}-${SLOT}-check-db-dir
@@ -234,7 +226,7 @@ src_install() {
 
 	if use prefix ; then
 		keepdir /run/postgresql
-		fperms 0775 /run/postgresql
+		fperms 1775 /run/postgresql
 	fi
 }
 
@@ -273,6 +265,7 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
+	use server && use systemd && systemd_tmpfiles_create ${PN}-${SLOT}.conf
 	postgresql-config update
 
 	elog "If you need a global psqlrc-file, you can place it in:"

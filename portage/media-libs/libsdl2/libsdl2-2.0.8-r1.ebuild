@@ -11,9 +11,9 @@ SRC_URI="http://www.libsdl.org/release/${MY_P}.tar.gz"
 
 LICENSE="ZLIB"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ~arm64 ~hppa ia64 ~ppc ~ppc64 ~sparc x86"
+KEYWORDS="~alpha amd64 arm ~arm64 ~hppa ia64 ~ppc ~ppc64 ~sparc x86"
 
-IUSE="cpu_flags_x86_3dnow alsa altivec custom-cflags dbus gles haptic libsamplerate +joystick cpu_flags_x86_mmx nas opengl oss pulseaudio +sound cpu_flags_x86_sse cpu_flags_x86_sse2 static-libs +threads tslib udev +video wayland X xinerama xscreensaver"
+IUSE="cpu_flags_x86_3dnow alsa altivec aqua custom-cflags dbus gles haptic libsamplerate +joystick cpu_flags_x86_mmx nas opengl oss pulseaudio +sound cpu_flags_x86_sse cpu_flags_x86_sse2 static-libs +threads tslib udev +video wayland X xinerama xscreensaver"
 REQUIRED_USE="
 	alsa? ( sound )
 	gles? ( video )
@@ -55,10 +55,7 @@ RDEPEND="
 		xscreensaver? ( >=x11-libs/libXScrnSaver-1.2.2-r1[${MULTILIB_USEDEP}] )
 	)"
 DEPEND="${RDEPEND}
-	X? (
-		>=x11-proto/xextproto-7.2.1-r1[${MULTILIB_USEDEP}]
-		>=x11-proto/xproto-7.0.24[${MULTILIB_USEDEP}]
-	)
+	X? ( x11-base/xorg-proto )
 	virtual/pkgconfig"
 
 MULTILIB_WRAPPED_HEADERS=(
@@ -133,7 +130,7 @@ multilib_src_configure() {
 		$(use_enable xscreensaver video-x11-scrnsaver)
 		$(use_enable X video-x11-xshape)
 		$(use_enable X video-x11-vm)
-		--disable-video-cocoa
+		$(use_enable aqua video-cocoa)
 		--disable-video-directfb
 		--disable-fusionsound
 		--disable-fusionsound-shared

@@ -1,8 +1,8 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-ROS_REPO_URI="https://github.com/ros/robot_model"
+ROS_REPO_URI="https://github.com/ros/urdf"
 KEYWORDS="~amd64 ~arm"
 ROS_SUBDIR=${PN}
 PYTHON_COMPAT=( python2_7 )
@@ -21,9 +21,10 @@ RDEPEND="
 	dev-ros/urdf_parser_plugin
 	dev-ros/pluginlib
 	dev-ros/rosconsole_bridge
+		dev-libs/console_bridge:=
 	dev-ros/roscpp
 	dev-libs/tinyxml
+	dev-libs/tinyxml2:=
 "
 DEPEND="${RDEPEND}
-	dev-ros/cmake_modules
 	test? ( dev-ros/rostest[${PYTHON_USEDEP}] dev-cpp/gtest )"

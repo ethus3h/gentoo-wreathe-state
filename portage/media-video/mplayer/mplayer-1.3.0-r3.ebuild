@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -12,14 +12,14 @@ inherit toolchain-funcs eutils flag-o-matic multilib base ${SVN_ECLASS}
 IUSE="cpu_flags_x86_3dnow cpu_flags_x86_3dnowext a52 aalib +alsa altivec aqua bidi bl bluray
 bs2b cddb +cdio cdparanoia cpudetection debug dga
 directfb doc dts dv dvb +dvd +dvdnav +enca +encode faac faad fbcon
-ftp gif ggi gsm +iconv ipv6 jack joystick jpeg jpeg2k kernel_linux ladspa
+ftp gif ggi gsm +iconv ipv6 jack joystick jpeg kernel_linux ladspa
 +libass libcaca libmpeg2 lirc live lzo mad md5sum +cpu_flags_x86_mmx cpu_flags_x86_mmxext mng mp3 nas
 +network nut openal opengl +osdmenu oss png pnm pulseaudio pvr
 radio rar rtc rtmp samba selinux +shm sdl speex cpu_flags_x86_sse cpu_flags_x86_sse2 cpu_flags_x86_ssse3
 tga theora tremor +truetype toolame twolame +unicode v4l vcd vdpau vidix
 vorbis +X x264 xinerama +xscreensaver +xv xvid xvmc yuv4mpeg zoran"
 
-VIDEO_CARDS="s3virge mga tdfx"
+VIDEO_CARDS="mga tdfx"
 for x in ${VIDEO_CARDS}; do
 	IUSE+=" video_cards_${x}"
 done
@@ -91,7 +91,6 @@ RDEPEND+="
 	iconv? ( virtual/libiconv )
 	jack? ( virtual/jack )
 	jpeg? ( virtual/jpeg:0 )
-	jpeg2k? ( media-libs/openjpeg:0 )
 	ladspa? ( media-libs/ladspa-sdk )
 	libass? ( >=media-libs/libass-0.9.10:= )
 	libcaca? ( media-libs/libcaca )
@@ -131,17 +130,13 @@ RDEPEND+="
 	xvmc? ( x11-libs/libXvMC )
 "
 
-X_DEPS="
-	x11-proto/videoproto
-	x11-proto/xf86vidmodeproto
-"
 ASM_DEP="dev-lang/yasm"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
-	dga? ( x11-proto/xf86dgaproto )
-	X? ( ${X_DEPS} )
-	xinerama? ( x11-proto/xineramaproto )
-	xscreensaver? ( x11-proto/scrnsaverproto )
+	dga? ( x11-base/xorg-proto )
+	X? ( x11-base/xorg-proto )
+	xinerama? ( x11-base/xorg-proto )
+	xscreensaver? ( x11-base/xorg-proto )
 	amd64? ( ${ASM_DEP} )
 	doc? (
 		dev-libs/libxslt app-text/docbook-xml-dtd
@@ -157,9 +152,9 @@ RDEPEND+="
 SLOT="0"
 LICENSE="GPL-2"
 if [[ ${PV} != *9999* ]]; then
-	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x86-solaris"
+	KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 else
-	KEYWORDS="~alpha ~arm ~hppa ~ia64 ~ppc ~ppc64"
+	KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 x86"
 fi
 
 # faac codecs are nonfree
@@ -185,6 +180,8 @@ REQUIRED_USE="
 	xv? ( X )
 	xvmc? ( xv )"
 RESTRICT="faac? ( bindist )"
+
+PATCHES=( "${FILESDIR}/${PN}-1.3-vdpau-x11.patch" )
 
 pkg_setup() {
 	if [[ ${PV} == *9999* ]]; then
@@ -245,6 +242,7 @@ src_prepare() {
 		subversion_wc_info
 		printf "${ESVN_WC_REVISION}" > $svf
 	else
+		epatch "${FILESDIR}"/${PN}-1.3.0-freetype_pkgconfig.patch #655240
 		epatch "${FILESDIR}"/${PN}-1.3-CVE-2016-4352.patch
 	fi
 	if [ ! -f VERSION ] ; then
@@ -392,7 +390,8 @@ src_configure() {
 	for i in ${uses}; do
 		use ${i} || myconf+=" --disable-${i}"
 	done
-	use jpeg2k || myconf+=" --disable-libopenjpeg"
+	# Pulls an outdated libopenjpeg, ffmpeg provides better support for it
+	myconf+=" --disable-libopenjpeg"
 
 	# Encoding
 	uses="faac x264 xvid toolame twolame"
@@ -422,7 +421,6 @@ src_configure() {
 	done
 	use aalib || myconf+=" --disable-aa"
 	use fbcon || myconf+=" --disable-fbdev"
-	use fbcon && use video_cards_s3virge && myconf+=" --enable-s3fb"
 	use libcaca || myconf+=" --disable-caca"
 	use zoran || myconf+=" --disable-zr"
 

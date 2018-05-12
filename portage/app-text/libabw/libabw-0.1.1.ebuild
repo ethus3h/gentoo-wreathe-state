@@ -1,13 +1,13 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit autotools
+inherit autotools flag-o-matic
 
 DESCRIPTION="Library parsing abiword documents"
-HOMEPAGE="https://wiki.documentfoundation.org/DLP/Libraries/${PN}"
-SRC_URI="http://dev-www.libreoffice.org/src/${PN}/${P}.tar.xz"
+HOMEPAGE="https://wiki.documentfoundation.org/DLP/Libraries/libabw"
+SRC_URI="https://dev-www.libreoffice.org/src/${PN}/${P}.tar.xz"
 
 LICENSE="MPL-2.0"
 SLOT="0"
@@ -39,6 +39,9 @@ src_prepare() {
 }
 
 src_configure() {
+	# bug 619470
+	append-cxxflags -std=c++14
+
 	econf \
 		--disable-werror \
 		$(use_with doc docs) \

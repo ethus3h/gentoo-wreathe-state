@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,7 +9,7 @@ inherit cmake-utils user wxwidgets
 
 MY_PN=${PN/a/A}
 
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 
 DESCRIPTION="${MY_PN} is a job scheduler for PostgreSQL"
 HOMEPAGE="http://www.pgadmin.org/download/pgagent.php"
@@ -33,7 +33,8 @@ PATCHES=(
 )
 
 src_prepare() {
-	default
+	cmake-utils_src_prepare
+
 	sed -e "s:share):share/${P}):" \
 		-i CMakeLists.txt || die "failed to patch CMakeLists.txt"
 	sed -i -e '/SET(WX_VERSION "2.8")/d' CMakeLists.txt || die

@@ -3,7 +3,7 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python{2_7,3_4,3_5} )
+PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
 CMAKE_BUILD_TYPE="Release"
 
 inherit python-any-r1 cmake-multilib flag-o-matic toolchain-funcs
@@ -40,7 +40,7 @@ DEPEND="${COMMON}
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.4.0_no-debian-multiarch.patch
-	"${FILESDIR}"/${PN}-1.3.1-oclicd_no_upstream_icdfile.patch
+	"${FILESDIR}"/${PN}-1.4.0-oclicd_no_upstream_icdfile.patch
 	"${FILESDIR}"/${PN}-1.2.0_no-hardcoded-cflags.patch
 	"${FILESDIR}"/llvm-terminfo.patch
 )

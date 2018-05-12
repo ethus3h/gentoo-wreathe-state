@@ -8,7 +8,7 @@ PYTHON_COMPAT=( python2_7 python3_{4,5,6} pypy )
 inherit distutils-r1
 
 DESCRIPTION="Extensible memoizing collections and decorators"
-HOMEPAGE="https://pypi.python.org/pypi/cachetools"
+HOMEPAGE="https://pypi.org/project/cachetools/"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
 LICENSE="MIT"
@@ -18,6 +18,7 @@ IUSE="test"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
+	dev-python/setuptools[${PYTHON_USEDEP}]
 	test? ( dev-python/pytest[${PYTHON_USEDEP}] )"
 
 python_test() {

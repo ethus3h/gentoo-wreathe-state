@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -17,11 +17,11 @@ else
 fi
 
 DESCRIPTION="UPnP Media Server (Based on MediaTomb)"
-HOMEPAGE="https://github.com/v00d00/gerbera"
+HOMEPAGE="https://github.com/gerbera/gerbera"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="curl debug +exif +ffmpeg +javascript lastfm libav +magic mysql +taglib"
+IUSE="curl debug +exif exiv2 +ffmpeg ffmpegthumbnailer +javascript lastfm libav +magic mysql protocol-extensions systemd +taglib"
 
 DEPEND="
 	!!net-misc/mediatomb
@@ -33,10 +33,12 @@ DEPEND="
 	taglib? ( >=media-libs/taglib-1.11 )
 	lastfm? ( >=media-libs/lastfmlib-0.4 )
 	exif? ( media-libs/libexif )
+	exiv2? ( media-gfx/exiv2 )
 	ffmpeg? (
 		libav? ( >=media-video/libav-10:0= )
 		!libav? ( >=media-video/ffmpeg-2.2:0= )
 	)
+	ffmpegthumbnailer? ( media-video/ffmpegthumbnailer )
 	curl? ( net-misc/curl net-misc/youtube-dl )
 	magic? ( sys-apps/file )
 	sys-apps/util-linux
@@ -57,15 +59,19 @@ pkg_setup() {
 src_configure() {
 	local mycmakeargs=(
 		-DWITH_CURL="$(usex curl)" \
-		-DWITH_LOGGING=1 \
-		-DWITH_DEBUG_LOGGING="$(usex debug)" \
+		-DWITH_DEBUG="$(usex debug)" \
 		-DWITH_EXIF="$(usex exif)" \
+		-DWITH_EXIV2="$(usex exiv2)" \
 		-DWITH_AVCODEC="$(usex ffmpeg)" \
+		-DWITH_FFMPEGTHUMBNAILER="$(usex ffmpegthumbnailer)" \
 		-DWITH_JS="$(usex javascript)" \
 		-DWITH_LASTFM="$(usex lastfm)" \
 		-DWITH_MAGIC="$(usex magic)" \
 		-DWITH_MYSQL="$(usex mysql)"
-		-DWITH_TAGLIB="$(usex taglib)"
+		-DWITH_PROTOCOL_EXTENSIONS="$(usex protocol-extensions)" \
+		-DWITH_SYSTEMD="$(usex systemd)" \
+		-DWITH_TAGLIB="$(usex taglib)" \
+		-DWITH_INOTIFY=1
 	)
 
 	cmake-utils_src_configure
@@ -73,9 +79,6 @@ src_configure() {
 
 src_install() {
 	cmake-utils_src_install
-
-	systemd_dounit "${S}/scripts/systemd/${PN}.service"
-	use mysql && systemd_dounit "${S}/scripts/systemd/${PN}-mysql.service"
 
 	newinitd "${FILESDIR}/${PN}-1.0.0.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}-1.0.0.confd" "${PN}"

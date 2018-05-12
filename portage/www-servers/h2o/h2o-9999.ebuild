@@ -1,9 +1,11 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit cmake-utils git-r3 systemd user
+USE_RUBY="ruby23 ruby24"
+
+inherit cmake-utils git-r3 ruby-single systemd user
 
 DESCRIPTION="An optimized HTTP server with support for HTTP/1.x and HTTP/2"
 HOMEPAGE="https://h2o.examp1e.net"
@@ -20,24 +22,12 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	mruby? (
 		sys-devel/bison
-		|| (
-			dev-lang/ruby:2.4
-			dev-lang/ruby:2.3
-			dev-lang/ruby:2.2
-		)
+		${RUBY_DEPS}
 	)"
 
 pkg_setup() {
 	enewgroup h2o
 	enewuser h2o -1 -1 -1 h2o
-}
-
-src_prepare() {
-	# Leave optimization level to user CFLAGS
-	sed -i 's/-O2 -g ${CC_WARNING_FLAGS} //g' ./CMakeLists.txt \
-		|| die "sed fix failed!"
-
-	default
 }
 
 src_configure() {

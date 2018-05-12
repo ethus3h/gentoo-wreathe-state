@@ -1,7 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
+
+DIST_EXAMPLES=( "examples/*" )
 
 if [[ "${PV}" != "9999" ]]; then
 	DIST_VERSION=${PV%.0}
@@ -9,7 +11,7 @@ if [[ "${PV}" != "9999" ]]; then
 	KEYWORDS="~amd64 ~x86"
 	inherit perl-module
 else
-	EGIT_REPO_URI="https://github.com/lab-measurement/lab-measurement.git"
+	EGIT_REPO_URI="https://github.com/lab-measurement/Lab-Measurement.git"
 	EGIT_BRANCH="master"
 	EGIT_CHECKOUT_DIR="${WORKDIR}/${PN}-git"
 	inherit perl-module git-r3
@@ -31,6 +33,7 @@ RDEPEND="
 	virtual/perl-Data-Dumper
 	virtual/perl-Encode
 	>=dev-perl/Exception-Class-1.0.0
+	virtual/perl-Exporter
 	virtual/perl-File-Path
 	virtual/perl-File-Spec
 	virtual/perl-Getopt-Long
@@ -43,6 +46,7 @@ RDEPEND="
 	>=virtual/perl-Module-Load-0.260.0
 	>=dev-perl/Moose-2.121.300
 	>=dev-perl/MooseX-Params-Validate-0.180.0
+	dev-perl/MooseX-StrictConstructor
 	>=dev-perl/PDL-2.7.0
 	dev-perl/PDL-Graphics-Gnuplot
 	>=dev-perl/Role-Tiny-1.3.4
@@ -52,12 +56,15 @@ RDEPEND="
 	>=dev-perl/TermReadKey-2.300.0
 	virtual/perl-Thread-Semaphore
 	virtual/perl-Time-HiRes
+	dev-perl/Time-Monotonic
 	>=dev-perl/Try-Tiny-0.220.0
 	>=dev-perl/YAML-LibYAML-0.410.0
 	virtual/perl-autodie
 	>=dev-perl/namespace-autoclean-0.200.0
 	virtual/perl-parent
 	sci-visualization/gnuplot
+	dev-perl/Lab-VXI11
+	dev-perl/USB-TMC
 "
 DEPEND="
 	${RDEPEND}

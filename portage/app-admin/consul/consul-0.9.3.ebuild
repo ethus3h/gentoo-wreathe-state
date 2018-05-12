@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -8,7 +8,7 @@ inherit golang-vcs-snapshot systemd user
 KEYWORDS="~amd64"
 EGO_PN="github.com/hashicorp/consul"
 DESCRIPTION="A tool for service discovery, monitoring and configuration"
-HOMEPAGE="http://www.consul.io"
+HOMEPAGE="https://www.consul.io"
 SRC_URI="https://github.com/hashicorp/consul/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 SLOT="0"
@@ -42,7 +42,7 @@ src_compile() {
 	# The dev target sets causes build.sh to set appropriate XC_OS
 	# and XC_ARCH, and skips generation of an unused zip file,
 	# avoiding a dependency on app-arch/zip.
-	GOPATH="${S}" \
+	GOPATH="${S}" GOBIN="${S}/bin" \
 		emake -C "${S}/src/${EGO_PN}" dev
 }
 

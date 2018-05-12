@@ -1,12 +1,12 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 inherit autotools multilib user
 
 DESCRIPTION="The de facto standard for intrusion detection/prevention"
-HOMEPAGE="http://www.snort.org/"
-SRC_URI="https://www.snort.org/downloads/${PN}/${P}.tar.gz"
+HOMEPAGE="https://www.snort.org"
+SRC_URI="https://www.snort.org/downloads/archive/${PN}/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~mips ~ppc ~ppc64 ~sparc ~x86"
@@ -20,10 +20,10 @@ DEPEND=">=net-libs/libpcap-1.3.0
 	>=net-libs/daq-2.0.2
 	>=dev-libs/libpcre-8.33
 	dev-libs/libdnet
+	net-libs/libnsl:0=
 	sys-libs/zlib
 	!libtirpc? ( sys-libs/glibc[rpc(-)] )
 	libtirpc? ( net-libs/libtirpc )
-	|| ( net-libs/libnsl <sys-libs/glibc-2.26 )
 "
 
 RDEPEND="${DEPEND}

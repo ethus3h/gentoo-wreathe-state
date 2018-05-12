@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -26,11 +26,15 @@ RDEPEND="
 	dev-ros/roscpp
 	dev-ros/sensor_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-ros/std_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
+	dev-ros/std_srvs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-ros/tf2
 	dev-ros/tf2_geometry_msgs
 	dev-ros/tf2_ros
 	dev-ros/xmlrpcpp
 	dev-libs/boost:=
+	dev-cpp/yaml-cpp:=
+	dev-ros/nodelet
+	dev-libs/console_bridge:=
 "
 DEPEND="${RDEPEND}
 	dev-ros/roslint

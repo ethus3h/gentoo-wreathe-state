@@ -19,7 +19,7 @@ else
 	SRC_URI="https://download.fcitx-im.org/${PN}/${P}.tar.xz"
 fi
 
-LICENSE="GPL-2+ GPL-3+"
+LICENSE="GPL-2+ GPL-3+ LGPL-2+"
 SLOT="4"
 KEYWORDS=""
 IUSE="+macro-editor"
@@ -27,9 +27,10 @@ IUSE="+macro-editor"
 RDEPEND=">=app-i18n/fcitx-4.2.9:4
 	virtual/libintl
 	macro-editor? (
-		>=app-i18n/fcitx-4.2.9:4[qt4]
-		dev-qt/qtcore:4
-		dev-qt/qtgui:4
+		>=app-i18n/fcitx-qt5-1.1:4
+		>=dev-qt/qtcore-5.7:5
+		>=dev-qt/qtgui-5.7:5
+		>=dev-qt/qtwidgets-5.7:5
 	)"
 DEPEND="${RDEPEND}
 	sys-devel/gettext

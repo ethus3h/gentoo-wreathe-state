@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,7 +6,7 @@ EAPI=6
 inherit mate
 
 if [[ ${PV} != 9999 ]]; then
-	KEYWORDS="~amd64 ~arm ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 fi
 
 DESCRIPTION="MATE session manager"
@@ -36,7 +36,7 @@ COMMON_DEPEND=">=dev-libs/dbus-glib-0.76
 	x11-libs/libXtst
 	x11-libs/pango
 	virtual/libintl
-	elibc_FreeBSD? ( dev-libs/libexecinfo )
+	elibc_FreeBSD? ( || ( dev-libs/libexecinfo >=sys-freebsd/freebsd-lib-10.0 ) )
 	systemd? ( sys-apps/systemd )
 	!systemd? ( >=sys-auth/consolekit-0.9.2 )
 	xtrans? ( x11-libs/xtrans )"

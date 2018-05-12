@@ -1,7 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
+
+CMAKE_MIN_VERSION=3.9.6
 
 inherit cmake-utils gnome2-utils
 
@@ -21,7 +23,7 @@ LICENSE="GPL-2"
 SLOT="0"
 IUSE="+alsa fdk imagemagick jack pulseaudio truetype v4l"
 
-DEPEND="
+COMMON_DEPEND="
 	>=dev-libs/jansson-2.5
 	dev-qt/qtcore:5
 	dev-qt/qtdeclarative:5
@@ -49,7 +51,8 @@ DEPEND="
 	)
 	v4l? ( media-libs/libv4l )
 "
-RDEPEND="${DEPEND}"
+DEPEND="${COMMON_DEPEND}"
+RDEPEND="${COMMON_DEPEND}"
 
 CMAKE_REMOVE_MODULES_LIST=( FindFreetype )
 
@@ -90,10 +93,10 @@ pkg_postinst() {
 		elog
 	fi
 
-	if ! has_version "media-libs/speex"; then
+	if ! has_version "media-libs/speexdsp"; then
 		elog
 		elog "For the speexdsp-based noise suppression filter"
-		elog "to be available, the 'media-libs/speex' package needs"
+		elog "to be available, the 'media-libs/speexdsp' package needs"
 		elog "to be installed."
 		elog
 	fi

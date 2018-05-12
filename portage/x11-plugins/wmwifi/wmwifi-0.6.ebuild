@@ -1,14 +1,16 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-IUSE=""
-HOMEPAGE="http://wmwifi.digitalssg.net"
-DESCRIPTION="wireless network interface monitor dockapp"
-SRC_URI="http://digitalssg.net/debian/${P}.tar.gz"
+EAPI=0
 
-SLOT="0"
+DESCRIPTION="wireless network interface monitor dockapp"
+HOMEPAGE="http://www.dockapps.net/wmwifi"
+SRC_URI="http://www.dockapps.net/download/${P}.tar.gz"
+
 LICENSE="GPL-2"
+SLOT="0"
 KEYWORDS="amd64 ppc x86"
+IUSE=""
 
 RDEPEND="x11-libs/libX11
 	x11-libs/libXt

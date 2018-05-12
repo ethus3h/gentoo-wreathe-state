@@ -5,9 +5,9 @@ EAPI=3
 
 inherit bsdmk freebsd
 
-DESCRIPTION="Makefiles definitions used for building and installing libraries and system files"
+DESCRIPTION="Makefile definitions used for building and installing libraries and system files"
 SLOT="0"
-KEYWORDS="~amd64 ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="~amd64 ~x86 ~amd64-fbsd ~x86-fbsd"
 
 IUSE="userland_GNU"
 

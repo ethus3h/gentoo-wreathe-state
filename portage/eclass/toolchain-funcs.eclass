@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: toolchain-funcs.eclass
@@ -40,7 +40,13 @@ _tc-getPROG() {
 	export ${var}="${prog[*]}"
 	echo "${!var}"
 }
-tc-getBUILD_PROG() { _tc-getPROG CBUILD "BUILD_$1 $1_FOR_BUILD HOST$1" "${@:2}"; }
+tc-getBUILD_PROG() {
+	local vars="BUILD_$1 $1_FOR_BUILD HOST$1"
+	# respect host vars if not cross-compiling
+	# https://bugs.gentoo.org/630282
+	tc-is-cross-compiler || vars+=" $1"
+	_tc-getPROG CBUILD "${vars}" "${@:2}"
+}
 tc-getPROG() { _tc-getPROG CHOST "$@"; }
 
 # @FUNCTION: tc-getAR
@@ -241,13 +247,21 @@ tc-stack-grows-down() {
 # Export common build related compiler settings.
 tc-export_build_env() {
 	tc-export "$@"
-	# Some build envs will initialize vars like:
-	# : ${BUILD_LDFLAGS:-${LDFLAGS}}
-	# So make sure all variables are non-empty. #526734
-	: ${BUILD_CFLAGS:=-O1 -pipe}
-	: ${BUILD_CXXFLAGS:=-O1 -pipe}
-	: ${BUILD_CPPFLAGS:= }
-	: ${BUILD_LDFLAGS:= }
+	if tc-is-cross-compiler; then
+		# Some build envs will initialize vars like:
+		# : ${BUILD_LDFLAGS:-${LDFLAGS}}
+		# So make sure all variables are non-empty. #526734
+		: ${BUILD_CFLAGS:=-O1 -pipe}
+		: ${BUILD_CXXFLAGS:=-O1 -pipe}
+		: ${BUILD_CPPFLAGS:= }
+		: ${BUILD_LDFLAGS:= }
+	else
+		# https://bugs.gentoo.org/654424
+		: ${BUILD_CFLAGS:=${CFLAGS}}
+		: ${BUILD_CXXFLAGS:=${CXXFLAGS}}
+		: ${BUILD_CPPFLAGS:=${CPPFLAGS}}
+		: ${BUILD_LDFLAGS:=${LDFLAGS}}
+	fi
 	export BUILD_{C,CXX,CPP,LD}FLAGS
 
 	# Some packages use XXX_FOR_BUILD.

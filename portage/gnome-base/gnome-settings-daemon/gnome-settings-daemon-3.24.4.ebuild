@@ -21,7 +21,7 @@ REQUIRED_USE="
 	smartcard? ( udev )
 	wayland? ( udev )
 "
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~x86-solaris"
+KEYWORDS="~alpha amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~x86-solaris"
 
 COMMON_DEPEND="
 	>=dev-libs/glib-2.44.0:2[dbus]
@@ -90,10 +90,7 @@ DEPEND="${COMMON_DEPEND}
 	sys-devel/gettext
 	>=dev-util/intltool-0.40
 	virtual/pkgconfig
-	x11-proto/inputproto
-	x11-proto/xf86miscproto
-	x11-proto/kbproto
-	>=x11-proto/xproto-7.0.15
+	x11-base/xorg-proto
 "
 
 # TypeErrors with python3; weird test errors with python2; all in power component that was made required now

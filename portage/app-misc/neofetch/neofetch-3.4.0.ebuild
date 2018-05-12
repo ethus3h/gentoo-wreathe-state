@@ -8,15 +8,15 @@ HOMEPAGE="https://github.com/dylanaraps/neofetch"
 SRC_URI="https://github.com/dylanaraps/${PN}/archive/${PV}/${P}.tar.gz"
 LICENSE="MIT-with-advertising"
 SLOT="0"
-KEYWORDS="~amd64 ~x86 ~amd64-fbsd"
+KEYWORDS="amd64 x86 ~amd64-fbsd"
 IUSE="X"
 
 RDEPEND="sys-apps/pciutils
 	X? (
-		x11-apps/xprop
-		x11-apps/xwininfo
-		x11-apps/xrandr
-		www-client/w3m[imlib]
-		media-libs/imlib2
 		media-gfx/imagemagick
+		media-libs/imlib2
+		www-client/w3m[imlib]
+		x11-apps/xprop
+		x11-apps/xrandr
+		x11-apps/xwininfo
 	)"

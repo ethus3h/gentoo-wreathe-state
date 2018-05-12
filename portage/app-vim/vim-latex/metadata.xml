@@ -5,10 +5,6 @@
 		<email>vim@gentoo.org</email>
 		<name>Gentoo Vim Project</name>
 	</maintainer>
-	<use>
-		<flag name="html">Install HTML documentation</flag>
-		<flag name="python">Enable python support which can help speed up some functionality</flag>
-	</use>
 	<upstream>
 		<remote-id type="sourceforge">vim-latex</remote-id>
 	</upstream>

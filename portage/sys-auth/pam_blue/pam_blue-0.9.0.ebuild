@@ -1,9 +1,11 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+
+EAPI=0
 
 inherit pam autotools multilib
 
-DESCRIPTION="Linux PAM module providing ability to authenticate via a bluetooth compatible device"
+DESCRIPTION="PAM module providing ability to authenticate via a bluetooth compatible device"
 HOMEPAGE="http://pam.0xdef.net/"
 SRC_URI="http://pam.0xdef.net/source/${P}.tar.bz2"
 

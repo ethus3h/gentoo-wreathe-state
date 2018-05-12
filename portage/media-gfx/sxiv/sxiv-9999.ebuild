@@ -30,16 +30,12 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 
 src_prepare() {
-	sed -i '/^LDFLAGS/d' Makefile || die
-
-	tc-export CC
-
 	restore_config config.h
 	default
 }
 
 src_compile() {
-	emake $(usex exif "" NO_LIBEXIF=1) $(usex gif "" NO_GIFLIB=1)
+	emake V=1 CC="$(tc-getCC)" HAVE_LIBEXIF=$(usex exif 1 0) HAVE_GIFLIB=$(usex gif 1 0)
 }
 
 src_install() {

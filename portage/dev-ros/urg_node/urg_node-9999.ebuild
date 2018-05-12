@@ -5,6 +5,7 @@ EAPI=5
 ROS_REPO_URI="https://github.com/ros-drivers/urg_node"
 KEYWORDS="~amd64 ~arm"
 PYTHON_COMPAT=( python2_7 )
+CATKIN_HAS_MESSAGES=yes
 
 inherit ros-catkin
 
@@ -23,6 +24,7 @@ RDEPEND="
 	dev-ros/diagnostic_updater
 	dev-ros/laser_proc
 	dev-ros/sensor_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
+	dev-ros/std_srvs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-libs/boost:=
 "
 DEPEND="${RDEPEND}"

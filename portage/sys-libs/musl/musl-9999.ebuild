@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -32,7 +32,7 @@ DESCRIPTION="Light, fast and simple C library focused on standards-conformance a
 HOMEPAGE="http://www.musl-libc.org/"
 LICENSE="MIT LGPL-2 GPL-2"
 SLOT="0"
-IUSE="crosscompile_opts_headers-only"
+IUSE="headers-only"
 
 QA_SONAME="/usr/lib/libc.so"
 QA_DT_NEEDED="/usr/lib/libc.so"
@@ -42,7 +42,7 @@ is_crosscompile() {
 }
 
 just_headers() {
-	use crosscompile_opts_headers-only && is_crosscompile
+	use headers-only && is_crosscompile
 }
 
 pkg_setup() {
@@ -72,9 +72,11 @@ src_compile() {
 	just_headers && return 0
 
 	emake
-	$(tc-getCC) ${CFLAGS} "${DISTDIR}"/getconf.c -o "${T}"/getconf || die
-	$(tc-getCC) ${CFLAGS} "${DISTDIR}"/getent.c -o "${T}"/getent || die
-	$(tc-getCC) ${CFLAGS} "${DISTDIR}"/iconv.c -o "${T}"/iconv || die
+	if [[ ${CATEGORY} != cross-* ]] ; then
+		$(tc-getCC) ${CFLAGS} "${DISTDIR}"/getconf.c -o "${T}"/getconf || die
+		$(tc-getCC) ${CFLAGS} "${DISTDIR}"/getent.c -o "${T}"/getent || die
+		$(tc-getCC) ${CFLAGS} "${DISTDIR}"/iconv.c -o "${T}"/iconv || die
+	fi
 }
 
 src_install() {

@@ -75,7 +75,7 @@ add_src_uri() {
 	else
 		a+=".bz2"
 	fi
-	set -- mirror://gentoo https://dev.gentoo.org/~vapier/dist https://dev.gentoo.org/~tamiko/distfiles
+	set -- mirror://gentoo https://dev.gentoo.org/~vapier/dist https://dev.gentoo.org/~tamiko/distfiles https://dev.gentoo.org/~dilfridge/distfiles
 	SRC_URI="${SRC_URI} ${@/%//${a}}"
 }
 PATCH_BINUTILS_VER=${PATCH_BINUTILS_VER:-${BVER}}
@@ -505,7 +505,7 @@ toolchain-binutils_pkg_postrm() {
 		choice=${choice//$'\n'/ }
 		choice=${choice/* }
 		if [[ -z ${choice} ]] ; then
-			env -i ROOT="${ROOT}" binutils-config -u ${CTARGET}
+			binutils-config -u ${CTARGET}
 		else
 			binutils-config ${choice}
 		fi

@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -29,23 +29,22 @@ RDEPEND="
 	sys-libs/ncurses:0=[unicode]
 "
 DEPEND="${RDEPEND}
-	dev-lang/perl
+	app-text/asciidoc
 	virtual/pkgconfig
 	sys-devel/gettext
-	test? (
-		dev-libs/boost
-		sys-devel/bc
-	)
+	test? ( >=dev-cpp/catch-2 )
 "
-[[ ${PV} == 9999 ]] && DEPEND+=" app-text/asciidoc"
 
-# tests require network access
-RESTRICT="test"
+PATCHES=(
+	"${FILESDIR}"/${PN}-2.11-flags.patch
+)
 
 src_prepare() {
 	default
 
-	sed -e 's:-ggdb::' -e 's:-Werror::' -i Makefile || die
+	# use system catch
+	sed -i 's#"3rd-party/catch.hpp"#<catch/catch.hpp>#' test/*.cpp || die
+	rm 3rd-party/catch.hpp || die
 }
 
 src_configure() {
@@ -53,11 +52,15 @@ src_configure() {
 }
 
 src_compile() {
+	# update object build deps to use system catch
+	echo > mk/mk.deps || die
+	emake depslist
+
 	emake prefix="/usr" CXX="$(tc-getCXX)" AR="$(tc-getAR)" RANLIB="$(tc-getRANLIB)"
-	[[ ${PV} == 9999 ]] && emake doc
 }
 
 src_test() {
+	# tests require UTF-8 locale
 	emake test
 	# Tests fail if in ${S} rather than in ${S}/test
 	cd "${S}"/test || die

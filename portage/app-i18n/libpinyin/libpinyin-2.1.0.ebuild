@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -18,20 +18,18 @@ HOMEPAGE="https://github.com/libpinyin/libpinyin https://sourceforge.net/project
 if [[ "${PV}" == "9999" ]]; then
 	SRC_URI=""
 else
-	SRC_URI="https://github.com/${PN}/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/libpinyin/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 fi
 SRC_URI+=" mirror://sourceforge/${PN}/models/model${LIBPINYIN_MODEL_VERSION}.text.tar.gz -> ${PN}-model${LIBPINYIN_MODEL_VERSION}.text.tar.gz"
 
 LICENSE="GPL-3+"
 SLOT="0/13"
-KEYWORDS="~amd64 ~arm64 ~ppc ~ppc64 ~x86"
+KEYWORDS="amd64 ~arm64 ppc ppc64 x86"
 IUSE=""
 
 RDEPEND="dev-libs/glib:2
 	sys-libs/db:="
-
 DEPEND="${RDEPEND}
-	virtual/libintl
 	virtual/pkgconfig"
 
 src_unpack() {
