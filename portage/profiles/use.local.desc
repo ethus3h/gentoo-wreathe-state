@@ -243,6 +243,7 @@ app-crypt/qca:sasl - Enable SASL plugin
 app-crypt/qca:softstore - Enable softstore plugin
 app-crypt/seahorse:ldap - Enable seahorse to manipulate GPG keys on a LDAP server.
 app-crypt/tpm-tools:pkcs11 - Build Token data management utilities based on OpenCryptoki's (dev-libs/opencryptoki) PKCS#11 implementation.
+app-crypt/veracrypt:asm - Enable assembly for optimization
 app-dicts/aspell-be:classic - Support classic spelling by default
 app-dicts/myspell-pt:preao - Use the pre ortographic agreement version of the dictionary
 app-doc/doxygen:clang - support for sys-devel/clang assisted parsing
@@ -458,6 +459,7 @@ app-emulation/wine-vanilla:run-exes - Use Wine to open and run .EXE and .MSI fil
 app-emulation/wine-vanilla:samba - Add support for NTLM auth. see http://wiki.winehq.org/NtlmAuthSetupGuide and http://wiki.winehq.org/NtlmSigningAndSealing
 app-emulation/wine-vanilla:sdl - Add support for gamepad detection using SDL
 app-emulation/wine-vanilla:udev - Use virtual/libudev to provide plug and play support
+app-emulation/wine-vanilla:vkd3d - Use app-emulation/vkd3d to provide Direct3D 12 support
 app-emulation/wine-vanilla:vulkan - Enable Vulkan drivers
 app-emulation/winetricks:rar - Pull in app-arch/unrar for extraction of rar-compressed game files
 app-emulation/x48:readline - Enables support for libreadline
@@ -525,9 +527,9 @@ app-i18n/scim:gtk3 - Enable support for x11-libs/gtk+:3
 app-i18n/scim-anthy:gtk3 - Enable support for x11-libs/gtk+:3
 app-i18n/scim-anthy:kasumi - Use Anthy dictionary maintenance tool (app-dicts/kasumi)
 app-i18n/tomoe:hyperestraier - Enable support for app-text/hyperestraier
-app-i18n/uim:anthy - Enable support for app-i18n/anthy input method
+app-i18n/uim:anthy - Enable support for app-i18n/anthy
 app-i18n/uim:eb - Enable support for dev-libs/eb
-app-i18n/uim:gtk3 - Enable support for x11-libs/gtk+:3
+app-i18n/uim:gtk2 - Enable support for x11-libs/gtk+:2
 app-i18n/uim:skk - Enable support for app-i18n/skk-jisyo
 app-laptop/hdapsd:libconfig - Require dev-libs/libconfig to allow the daemon to read a configuration file at startup
 app-laptop/thinkfan:atasmart - include libatasmart support to get disc temperature
@@ -632,13 +634,11 @@ app-misc/tracker:thunderbird - Install email data miner plugin for mail-client/t
 app-misc/tracker:xps - Add support for XPS file format through app-text/libgxps.
 app-misc/unfoo:minimal - Do not install all support archive binaries
 app-misc/vifm:X - Add support for X11
-app-misc/vifm:compatibility - Compatibility with previous versions of vifm
 app-misc/vifm:developer - Enable features of interest to developers
 app-misc/vifm:extended-keys - Support for extended keys (arrows, home etc)
 app-misc/vifm:gtk - Use gtk+ to determine mimetypes
 app-misc/vifm:magic - Use libmagic to determine mimetypes
 app-misc/vifm:vim - Install the vifm vim plugin and vim-compatible documentation
-app-misc/vifm:vim-plugin - Install the vifm vim plugin
 app-misc/vifm:vim-syntax - Pulls in related vim syntax scripts
 app-misc/worker:avfs - Enable support for sys-fs/avfs
 app-misc/worker:magic - Add magic file support from sys-apps/file to automatically detect file types
@@ -693,15 +693,12 @@ app-office/kmymoney:holidays - Enable kde-frameworks/kholidays integration
 app-office/kmymoney:quotes - Enable Online Stock Quote retrieval
 app-office/kmymoney:weboob - Enable import of online banking transactions extracted by www-client/weboob
 app-office/libreoffice:coinmp - Use sci-libs/coinor-mp as alternative solver
-app-office/libreoffice:collada - Enable Collada for rendering 3D models stored in *.dae and *.kmz format
-app-office/libreoffice:gltf - Use media-libs/libgltf for inserting 3D models in the glTF format into presentations
 app-office/libreoffice:googledrive - Enable support for remote files on Google Drive
 app-office/libreoffice:gtk2 - Enable legacy gtk2 frontend
 app-office/libreoffice:gtk3 - Enable experimental gtk3 frontend
 app-office/libreoffice:jemalloc - Use dev-libs/jemalloc for allocations
 app-office/libreoffice:odk - Build the Office Development Kit
 app-office/libreoffice:pdfimport - Enable PDF import via the Poppler library
-app-office/libreoffice:quickstarter - Build the system tray quickstarter
 app-office/libreoffice:vlc - Use media-video/vlc for video embedding
 app-office/libreoffice-l10n:offlinehelp - Install help files locally instead of using the LibreOffice Wiki
 app-office/lyx:aspell - Add support for aspell spellchecking
@@ -791,6 +788,7 @@ app-text/kbibtex:zotero - Enable support for synchronisation with zotero.org web
 app-text/lcdf-typetools:kpathsea - Enable integration with kpathsea search library (TeX related)
 app-text/libebook:tools - Build file conversion tools
 app-text/libmwaw:tools - Build file conversion tools
+app-text/libqxp:tools - Build file conversion tools
 app-text/libstaroffice:tools - Build conversion tools
 app-text/libstaroffice:zlib - Enable support for compressed data
 app-text/libwpd:tools - Build file conversion tools
@@ -1000,6 +998,12 @@ dev-db/unixODBC:minimal - Disable bundled drivers and extra libraries (most user
 dev-db/unixODBC:odbcmanual - Administrator, Internal Structure, Programmer and User documentation
 dev-embedded/avrdude:ftdi - Enable support for USB FTDI chips via dev-embedded/libftdi
 dev-embedded/libftdi:tools - build ftdi_eeprom helper tool
+dev-embedded/openocd:cmsis-dap - Support for CMSIS-DAP compliant adapters
+dev-embedded/openocd:dummy - Build the dummy port driver
+dev-embedded/openocd:ftdi - Enable support for USB FTDI chips via dev-embedded/libftdi
+dev-embedded/openocd:jlink - Build the SEGGER J-Link driver
+dev-embedded/openocd:parport - Enable support for parport JTAG devices
+dev-embedded/openocd:verbose-io - Verbose IO and comm JTAG and USB messages
 dev-embedded/sdcc:boehm-gc - Enable Hans Boehm's garbage collector dev-libs/boehm-gc
 dev-embedded/sdcc:device-lib - Enable built of devices libraries
 dev-embedded/sdcc:ds390 - Add support for Dallas DS390
@@ -1785,7 +1789,6 @@ dev-python/markdown:pygments - Enable fancy pygments support
 dev-python/matplotlib:excel - Pull dev-python/xlwt for the exceltools toolkit
 dev-python/matplotlib:gtk2 - Enable x11-libs/gtk+:2 support
 dev-python/matplotlib:gtk3 - Enable x11-libs/gtk+:3 support
-dev-python/matplotlib:pyside - Qt support via dev-python/pyside
 dev-python/mpmath:matplotlib - Add support for dev-python/matplotlib
 dev-python/msgpack:native-extensions - Compiles native "C" extensions (speedups, instead of using python fallback code).
 dev-python/netaddr:cli - Enable netaddr shell with dev-python/ipython
@@ -2144,7 +2147,6 @@ games-emulation/dolphin:lto - Add support for link-time optimizations.
 games-emulation/dosbox:glide - Enable unofficial Glide emulation via media-libs/openglide
 games-engines/renpy:development - Install IDE for game developers and an empty game template
 games-misc/xcowsay:fortune - Installs the fortune-mod xcow binary
-games-strategy/seven-kingdoms:network - Enable support for multiplayer via media-libs/sdl-net
 games-util/pyfa:graph - Enable support for graphs
 games-util/wit:fuse - Enable image mount support via fuse
 gnome-base/gconf:ldap - Build backend which enables default mail accounts, addressbooks and calendars for Evolution to be configured using each user's LDAP entry."
@@ -2233,7 +2235,7 @@ kde-apps/cantor:R - Enable dev-lang/R backend support
 kde-apps/cantor:analitza - Enable kde-apps/analitza backend support
 kde-apps/cantor:julia - Enable dev-lang/julia backend support
 kde-apps/cantor:qalculate - Enable sci-libs/libqalculate backend support
-kde-apps/dolphin:thumbnail - Enables video thumbnail generation
+kde-apps/dolphin:thumbnail - Enables thumbnail generation
 kde-apps/dolphin-plugins:bazaar - Enable support for the bazaar VCS
 kde-apps/dolphin-plugins:dropbox - Enable support for the dropbox fileviewer plugin
 kde-apps/dolphin-plugins:git - Enable support for the git VCS
@@ -2269,6 +2271,7 @@ kde-apps/kio-extras:htmlthumbs - Enable HTML thumbnail previews via dev-qt/qtweb
 kde-apps/kio-extras:man - Enable manpages kioslave
 kde-apps/kio-extras:phonon - Enable file audio preview plugin using media-libs/phonon
 kde-apps/kio-extras:sftp - Enable SFTP protocol support using net-libs/libssh
+kde-apps/kio-extras:taglib - Enable audio thumbnails via media-libs/taglib
 kde-apps/kmag:keyboardfocus - Enable keyboard focus tracking
 kde-apps/konqueror:activities - Enable kactivities support
 kde-apps/konqueror:speech - Build text-to-speech plugin
@@ -2305,7 +2308,6 @@ kde-apps/step:qalculate - Enable the libqalculate library for unit conversion
 kde-frameworks/frameworkintegration:appstream - Enable AppStream software metadata support
 kde-frameworks/kconfigwidgets:man - Build and install man pages
 kde-frameworks/kded:man - Build and install man pages
-kde-frameworks/kdelibs:qt3support - Enable kde3support/qt3support for very old applications
 kde-frameworks/kdesignerplugin:designer - Build KF5 widgets plugin for QtDesigner
 kde-frameworks/kdesignerplugin:webkit - Build kdewebkit plugin for QtDesigner
 kde-frameworks/kfilemetadata:epub - Enable support for reading EPUB ebook metadata
@@ -2330,12 +2332,11 @@ kde-frameworks/purpose:kaccounts - Enable support for system-wide defined KAccou
 kde-frameworks/sonnet:aspell - Enable the app-text/aspell spell-checking backend
 kde-frameworks/sonnet:hunspell - Enable the app-text/hunspell spell-checking backend
 kde-misc/kdeconnect:app - Enable experimental kcapp frontend
-kde-misc/kdeconnect:sms - Enable SMS support using kde-frameworks/kpeople
+kde-misc/kdeconnect:mousepad - Enable remote mousepad plugin using x11-libs/libfakekey
 kde-misc/kdeconnect:wayland - Enable kwin_wayland support for mousepad plugin using kde-frameworks/kwayland
 kde-misc/kio-gdrive:kaccounts - Use kde-apps/kaccounts-integration backend (default) instead of dev-libs/qtkeychain
 kde-misc/tellico:discid - Add support for reading disc IDs from audio CDs
 kde-plasma/kde-cli-tools:kdesu - Build graphical frontend for kde-frameworks/kdesu
-kde-plasma/kde-gtk-config:gtk3 - Add support for gtk+3-based applications.
 kde-plasma/kdeplasma-addons:dictionary - Enable dictionary applet using dev-qt/qtwebengine
 kde-plasma/kdeplasma-addons:share - Enable applet for quickly sharing data to a variety of sources
 kde-plasma/kinfocenter:gles2 - Show OpenGL ES information in kinfocenter
@@ -2346,10 +2347,7 @@ kde-plasma/kwin:gles2 - Use OpenGL ES 2 instead of full GL
 kde-plasma/kwin:multimedia - Enable effect video button in desktop effects KCM
 kde-plasma/libksysguard:detailedmemory - Enable display of detailed memory information using dev-qt/qtwebkit.
 kde-plasma/plasma-desktop:appstream - Enable AppStream software metadata support
-kde-plasma/plasma-desktop:gtk2 - Add support for gtk+2-based applications using legacy xembed systray icons via libappindicator.
-kde-plasma/plasma-desktop:gtk3 - Add support for gtk+3-based applications using legacy xembed systray icons via libappindicator.
 kde-plasma/plasma-desktop:ibus - Use ibus input method via app-i18n/ibus
-kde-plasma/plasma-desktop:legacy-systray - Add support for applications using legacy xembed systray icons.
 kde-plasma/plasma-desktop:mouse - Enable mouse KCM
 kde-plasma/plasma-desktop:scim - Enable applets that use app-i18n/scim
 kde-plasma/plasma-desktop:touchpad - Enable touchpad KCM
@@ -2357,7 +2355,7 @@ kde-plasma/plasma-meta:crypt - Pull in kde-plasma/plasma-vault for encrypted vau
 kde-plasma/plasma-meta:display-manager - Pull in a graphical display manager
 kde-plasma/plasma-meta:grub - Pull in Breeze theme for sys-boot/grub
 kde-plasma/plasma-meta:gtk - Enable Breeze widget style and KCM for GTK2 and GTK3
-kde-plasma/plasma-meta:legacy-systray - Add support for applications using legacy xembed systray icons, depending on USE qt4 or gtk.
+kde-plasma/plasma-meta:legacy-systray - Add support for GTK+ applications using legacy xembed systray icons
 kde-plasma/plasma-meta:pam - Enable support for kwallet auto-unlocking
 kde-plasma/plasma-meta:plymouth - Pull in Breeze theme for sys-boot/plymouth
 kde-plasma/plasma-meta:pulseaudio - Install Plasma applet for PulseAudio volume management
@@ -2865,6 +2863,7 @@ media-libs/libsdl2:fusionsound - use FusionSound audio driver
 media-libs/libsdl2:gles - include OpenGL ES support
 media-libs/libsdl2:haptic - Enable the haptic (force feedback) subsystem
 media-libs/libsdl2:joystick - Control joystick support (disable at your own risk)
+media-libs/libsdl2:kms - Build the KMSDRM video driver
 media-libs/libsdl2:sound - Control audio support (disable at your own risk)
 media-libs/libsdl2:tslib - Build with tslib support for touchscreen devices
 media-libs/libsdl2:video - Control video support (disable at your own risk)
@@ -2921,7 +2920,6 @@ media-libs/mlt:rtaudio - Builds rtaudio consumer for native audio support on mul
 media-libs/mlt:ruby - Build SWIG bindings for Ruby
 media-libs/mlt:sdl2 - Build media-libs/libsdl2 module
 media-libs/netpbm:rle - Build converters for the RLE format (utah raster toolkit)
-media-libs/opencolorio:pdf - Install extra documentation in PDF format
 media-libs/opencv:contrib - Install user contributed scripts from opencv_contrib (Experimental!)
 media-libs/opencv:contrib_cvv - CVV module requires Qt5
 media-libs/opencv:contrib_dnn - DNN module contrib requires tiny dnn
@@ -2929,6 +2927,7 @@ media-libs/opencv:contrib_hdf - HDF module requires sci-libs/hdf5
 media-libs/opencv:contrib_sfm - SFM module requires eigen, gflags, and glog
 media-libs/opencv:contrib_xfeatures2d - Enables xfeatures2d and autodownload of samples in contrib
 media-libs/opencv:cuda - Enable NVIDIA Cuda computations support (Experimental!)
+media-libs/opencv:dnn_samples - Download dnn caffeemodel samples
 media-libs/opencv:eigen - Enable usage of dev-cpp/eigen for computations
 media-libs/opencv:gdal - Enable support for sci-libs/gdal library
 media-libs/opencv:gflags - Use Google's C++ argument parsing library
@@ -3588,6 +3587,7 @@ media-video/vlc:shout - Enable libshout output
 media-video/vlc:sid - Adds support for playing C64 SID files through media-libs/libsidplay:2
 media-video/vlc:skins - Enable support for the skins2 interface
 media-video/vlc:soxr - Enable SoX Resampler support via media-libs/soxr
+media-video/vlc:srt - Enable support for Secure Reliable Transport (SRT) via net-libs/srt
 media-video/vlc:swscale - Enable image scaling and conversion via libswscale (part of FFmpeg)
 media-video/vlc:tremor - Enable tremor, a fixed-point version of the Ogg Vorbis decoder
 media-video/vlc:twolame - Enable twolame support (MPEG Audio Layer 2 encoder)
@@ -3875,6 +3875,7 @@ net-fs/netatalk:shadow - Add shadow support
 net-fs/netatalk:ssl - Use dev-libs/openssl to provide DHX User Access Modules. These are not used with most recent versions of OS X and can be kept disabled without risks.
 net-fs/netatalk:tracker - Add support for spotlight like tracker
 net-fs/netatalk:utils - Install afpstats script
+net-fs/nfs-utils:junction - Enable NFS junction support in nfsref
 net-fs/nfs-utils:ldap - Add ldap support
 net-fs/nfs-utils:libmount - Link mount.nfs with libmount
 net-fs/nfs-utils:nfsdcld - Enable nfsdcld NFSv4 clientid tracking daemon
@@ -4210,6 +4211,7 @@ net-libs/wvstreams:boost - Use dev-libs/boost to provide TR1-compatible function
 net-libs/xrootd:fuse - Enable the sys-fs/fuse filesystem driver
 net-libs/xrootd:http - Enable http protocol support
 net-libs/xrootd:rbd - Enable rados block device support via sys-cluster/ceph
+net-libs/zeromq:drafts - Build draft API, which may change at any time without any notice, and is therefore not recommended for normal use.
 net-libs/zeromq:pgm - Build PGM (Pragmatic General Multicast)extention, a protocol for reliable multicast transport of data over IP networks.
 net-libs/zeromq:sodium - Use dev-libs/libsodium for cryptography
 net-mail/automx:memcached - Enable memcached support
@@ -4591,8 +4593,6 @@ net-nntp/slrn:canlock - Add support for cancel locks via net-libs/canlock
 net-nntp/slrn:uudeview - Add support for yEnc coding and more using dev-libs/uulib
 net-nntp/tin:cancel-locks - Enable Cancel-Lock header functionality (also enables USE=evil)
 net-nntp/tin:etiquette - Enable the display off posting etiquettes
-net-nntp/tin:evil - Let tin generate a message ID
-net-nntp/tin:forgery - Cancel messages posted from a different account
 net-nntp/tin:gpg - Enable app-crypt/gnupg support
 net-p2p/amule:daemon - Enable amule daemon
 net-p2p/amule:remote - Enable remote controlling of the client
@@ -4637,8 +4637,6 @@ net-p2p/mldonkey:fasttrack - enable fasttrack support
 net-p2p/mldonkey:gnutella - enable gnutella and gnutella2 support
 net-p2p/mldonkey:guionly - enable client build only
 net-p2p/mldonkey:magic - enable use of libmagic
-net-p2p/pybitmessage:opencl - Enable dev-python/pyopencl for GPU acceleration
-net-p2p/pybitmessage:qrcode - Enable dev-python/qrcode for QR code support
 net-p2p/qbittorrent:webui - Enable the Web UI
 net-p2p/retroshare:cli - Enables the CLI version of RetroShare
 net-p2p/retroshare:feedreader - Enables the Feedreader plugin
@@ -4821,6 +4819,7 @@ net-wireless/wpa_supplicant:p2p - Add support for Wi-Fi Direct mode
 net-wireless/wpa_supplicant:privsep - Enable wpa_priv privledge separation binary
 net-wireless/wpa_supplicant:ps3 - Add support for ps3 hypervisor driven gelic wifi
 net-wireless/wpa_supplicant:smartcard - Add support for smartcards
+net-wireless/wpa_supplicant:suiteb - Enable enable NSA Suite B encryption
 net-wireless/wpa_supplicant:tdls - Add support for Tunneled Direct Link Setup (802.11z)
 net-wireless/wpa_supplicant:uncommon-eap-types - Add support for GPSK, SAKE, GPSK_SHA256, IKEV2 and EKE
 net-wireless/wpa_supplicant:wimax - Add support for Wimax EAP-PEER authentication algorithm
@@ -5005,7 +5004,6 @@ sci-misc/nco:udunits - Add sci-libs/udunits files support
 sci-physics/bullet:bullet3 - Build Bullet 3
 sci-physics/bullet:double-precision - Build libraries in double precision
 sci-physics/bullet:extras - Build additional libraries
-sci-physics/cernlib-montecarlo:herwig - Build Herwig internal event generator, newer version available in sci-physics/herwig
 sci-physics/hepmc:cm - Build with cm instead of default mm for length units
 sci-physics/hepmc:gev - Build with GeV instead of default MeV for momentum units
 sci-physics/lammps:cuda - Enable cuda non-bonded kernels
@@ -5057,7 +5055,7 @@ sec-policy/selinux-base:unconfined - Enable support for the unconfined SELinux m
 sec-policy/selinux-base-policy:unconfined - Enable support for the unconfined SELinux policy module
 sys-apps/accountsservice:elogind - Use sys-auth/elogind instead of sys-auth/consolekit for session tracking
 sys-apps/accountsservice:systemd - Use sys-apps/systemd instead of sys-auth/consolekit for session tracking
-sys-apps/baselayout:usrmerge - Activate the /usr merge when stages are built
+sys-apps/baselayout:split-usr - Enable this if /bin and /usr/bin are separate directories
 sys-apps/busybox:make-symlinks - Create all the appropriate symlinks in /bin and /sbin.
 sys-apps/busybox:math - Enable math support in gawk (requires libm)
 sys-apps/busybox:mdev - Create the appropriate symlink in /sbin and install mdev.conf and support files
@@ -5068,6 +5066,7 @@ sys-apps/coreutils:caps - Add Linux capabilities support in output of file utili
 sys-apps/coreutils:hostname - Build the hostname program
 sys-apps/coreutils:kill - Build the kill program
 sys-apps/coreutils:multicall - Build all tools into a single `coreutils` program akin to busybox to save space
+sys-apps/coreutils:split-usr - Enable this if /bin and /usr/bin are separate directories
 sys-apps/dbus:elogind - Use sys-auth/elogind for session tracking.
 sys-apps/dbus:systemd - Build with sys-apps/systemd at_console support
 sys-apps/dbus:user-session - Enable user-session semantics for session bus under systemd
@@ -5205,8 +5204,8 @@ sys-apps/systemd:lz4 - Enable lz4 compression for the journal
 sys-apps/systemd:nat - Enable support for network address translation in networkd
 sys-apps/systemd:qrcode - Enable qrcode output support in journal
 sys-apps/systemd:resolvconf - Install resolvconf symlink for systemd-resolve
+sys-apps/systemd:split-usr - Enable this if /bin and /usr/bin are separate directories
 sys-apps/systemd:sysv-utils - Install sysvinit compatibility symlinks and manpages for init, telinit, halt, poweroff, reboot, runlevel, and shutdown
-sys-apps/systemd:usrmerge - Enable /usr merge (experimental)
 sys-apps/systemd:vanilla - Disable Gentoo-specific behavior and compatibility quirks
 sys-apps/systemd:xkb - Depend on x11-libs/libxkbcommon to allow logind to control the X11 keymap
 sys-apps/tcp-wrappers:netgroups - Support matching NIS (host) netgroup names via the @netgroup syntax (if you don't know what this means, you most likely do not need it)
@@ -5469,9 +5468,11 @@ sys-fabric/ofed:rds - Tools to manage rds sockets
 sys-fabric/ofed:srp - Suport for userspace part for srp initiator
 sys-fabric/opensm:tools - Install ssld extra tool
 sys-firmware/edk2-ovmf:binary - Use pre-built binaries
+sys-firmware/intel-microcode:hostonly - only install ucode(s) supported by currently available (=online) processor(s)
 sys-firmware/intel-microcode:initramfs - install a small initramfs for use with CONFIG_MICROCODE_EARLY
 sys-firmware/intel-microcode:monolithic - install the large text microcode.dat (used by older kernels via microcode_ctl)
 sys-firmware/intel-microcode:split-ucode - install the split binary ucode files (used by the kernel directly)
+sys-firmware/intel-microcode:vanilla - install only microcode updates from Intel's official microcode tarball
 sys-firmware/ipxe:binary - Use pre-built binaries
 sys-firmware/ipxe:efi - Build an EFI program for using PXE
 sys-firmware/ipxe:iso - Build a bootable ISO for using PXE
@@ -5802,8 +5803,6 @@ www-client/seamonkey:system-sqlite - Use the system-wide dev-db/sqlite installat
 www-client/surf:savedconfig - Without a saved config.h, this package depends on net-misc/curl and x11-terms/st for a default download mechanism
 www-client/uget:aria2 - Enable support for net-misc/aria2 through xmlrpc. You'll find the plugin in the app's settings.
 www-client/uget:control-socket - Enable JSON-RPC over unix domain socket
-www-client/uget:gtk3 - Use x11-libs/gtk+:3 instead of x11-libs/gtk+:2
-www-client/uget:hide-temp-files - Make temporary files that are used while downloading hidden.
 www-client/uget:openssl - Use dev-libs/openssl instead of net-libs/gnutls
 www-client/uget:rss - Enable uGet feed messages
 www-client/w3m:gdk-pixbuf - Enable support for x11-libs/gdk-pixbuf
@@ -5839,6 +5838,7 @@ www-servers/apache:apache2_modules_lbmethod_byrequests - Request counting load b
 www-servers/apache:apache2_modules_lbmethod_bytraffic - Weighted traffic counting load balancer scheduler algorithm for proxy_balancer.
 www-servers/apache:apache2_modules_lbmethod_heartbeat - Heartbeat traffic counting load balancer scheduler algorithm for proxy_balancer.
 www-servers/apache:apache2_modules_macro - Macros for the Apache config file.
+www-servers/apache:apache2_modules_md - Managing domains across virtual hosts, certificate provisioning via the ACME protocol.
 www-servers/apache:apache2_modules_proxy_fcgi - FCGI support module for mod_proxy.
 www-servers/apache:apache2_modules_proxy_html - Module to rewrite links in html pages behind a reverse proxy
 www-servers/apache:apache2_modules_proxy_wstunnel - Provides support for the tunnelling of web socket connections to a backend websockets server.
@@ -5931,8 +5931,6 @@ x11-libs/gtkmathview:t1lib - Enable media-libs/t1lib support
 x11-libs/gtksourceview:glade - Install a glade catalog file
 x11-libs/libSM:uuid - Use UUID for session identification instead of IP address and system time.
 x11-libs/libXaw:deprecated - Install deprecated Xaw6 library.
-x11-libs/libXfont:bzip2 - Support bzip2 compressed PCF fonts.
-x11-libs/libXfont:truetype - Use media-libs/freetype for font rasterization.
 x11-libs/libXfont2:bzip2 - Support bzip2 compressed PCF fonts.
 x11-libs/libXfont2:truetype - Use media-libs/freetype for font rasterization.
 x11-libs/libaosd:pango - Enable the textual helpers (requires pangocairo).
@@ -6071,6 +6069,7 @@ x11-themes/zuki-themes:gnome-shell - Install theme for gnome-base/gnome-shell
 x11-themes/zuki-themes:mate - Install Metacity theme for mate-base/mate
 x11-themes/zuki-themes:xfce - Install theme for xfce-base/xfwm4
 x11-themes/zukitwo:gnome-shell - Install theme for gnome-base/gnome-shell
+x11-wm/enlightenment:egl - Enable EGL rendering
 x11-wm/enlightenment:enlightenment_modules_appmenu - Gadget that holds the menubar of the foreground application
 x11-wm/enlightenment:enlightenment_modules_backlight - Backlight control slider gadget
 x11-wm/enlightenment:enlightenment_modules_battery - A gadget to visualize your battery status

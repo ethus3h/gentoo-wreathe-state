@@ -19,7 +19,11 @@ SRC_URI="https://github.com/jpace/logue/archive/v${PV}.tar.gz -> ${PN}-git-${PV}
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~hppa ~ppc ~sparc ~x86"
+KEYWORDS="amd64 ~hppa ~ppc ~sparc ~x86"
 IUSE=""
 
 ruby_add_rdepend ">=dev-ruby/rainbow-2.0.0:*"
+
+all_ruby_prepare() {
+	sed -i -e '/bundler/ s:^:#:' Rakefile || die
+}

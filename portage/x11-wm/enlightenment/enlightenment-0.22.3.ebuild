@@ -11,7 +11,7 @@ SRC_URI="https://download.enlightenment.org/rel/apps/${PN}/${P}.tar.xz"
 
 LICENSE="BSD-2"
 SLOT="0.17/${PV%%_*}"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~hppa ~mips ~ppc ~ppc64 ~sh ~sparc ~x86"
 
 E_CONF_MODS=(
 	applications bindings dialogs display
@@ -53,7 +53,7 @@ RDEPEND="
 	systemd? ( sys-apps/systemd )
 	udisks? ( sys-fs/udisks:2 )
 	wayland? (
-		dev-libs/efl[wayland]
+		dev-libs/efl[drm,wayland]
 		>=dev-libs/wayland-1.12.0
 		x11-libs/libxkbcommon
 		x11-libs/pixman
@@ -67,6 +67,8 @@ DEPEND="
 
 src_prepare() {
 	default
+
+	xdg_environment_reset
 
 	# fix QA issues with .desktop files
 	find data/desktop/ -type f -exec sed -i 's|OnlyShowIn=Enlightenment|OnlyShowIn=X-Enlightenment|g' {} \; || die

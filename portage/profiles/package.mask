@@ -29,6 +29,136 @@
 
 #--- END OF EXAMPLES ---
 
+# Mike Pagano <mpagano@gentoo.org> (30 May 2018)
+# Masking due to bad commit in the networking stack.
+=sys-kernel/gentoo-sources-4.14.46
+=sys-kernel/gentoo-sources-4.9.104
+=sys-kernel/gentoo-sources-4.4.134
+=sys-kernel/vanilla-sources-4.14.46
+=sys-kernel/vanilla-sources-4.9.104
+=sys-kernel/vanilla-sources-4.4.134
+
+# Michał Górny <mgorny@gentoo.org> (30 May 2018)
+# Gentoo repository mirrors are now running on Gentoo Infastructure,
+# and the key used to sign commits is appropriately part of the regular
+# keyring (>=app-crypt/openpgp-keys-gentoo-release-20180530).  Please
+# upgrade this keyring, and remove the custom sync-openpgp-key-path from
+# your repos.conf to make Portage use the release keys.
+# Removal in 30 days.
+app-crypt/openpgp-keys-gentoo-mirror
+
+# Chema Alonso Josa <nimiux@gentoo.org> (28 May 2018)
+# Upstream is dead.
+# Masked for removal in 30 days. Bug #646118
+net-misc/urlview
+
+# Andreas Sturmlechner <asturm@gentoo.org> (27 May 2018)
+# Depends on dead Qt4. No more revdeps. Masked for removal in 30 days.
+dev-util/automoc
+media-libs/phonon-qt7
+
+# Kent Fredric <kentnl@gentoo.org> (27 May 2018)
+# Subject to Man-in-the-middle security bypass vulnerability.
+# Retained in tree only for users who need older versions
+# for compatibility reasons.
+# Bug: #623942
+<dev-perl/DBD-mysql-4.44.0
+
+# Akinori Hattori <hattya@gentoo.org> (27 May 2018)
+# Dead upstream, for old versions of iBus
+# Masked for removal in 30 days.
+app-i18n/ibus-tutcode
+
+# Matt Turner <mattst88@gentoo.org> (25 May 2018)
+# New package. Needs to interact with media-libs/mesa and
+# x11-drivers/nvidia-drivers. Work in progress.
+media-libs/libglvnd
+
+# Andreas Sturmlechner <asturm@gentoo.org> (24 May 2018)
+# Depends on dead Qt4. Masked for removal in 30 days. Bug #629018
+dev-libs/libattica
+kde-frameworks/kdelibs
+kde-frameworks/kdelibs-env
+kde-plasma/qguiplatformplugin_kde
+
+# Matt Turner <mattst88@gentoo.org> (20 May 2018)
+# Removal in 30 days. Bug #655102
+x11-libs/libXfont
+
+# Matt Turner <mattst88@gentoo.org> (20 May 2018)
+# Unmaintained. Dead homepage. Depends on dead libXfont.
+# Removal in 30 days. Bug #655104
+app-i18n/fbiterm
+
+# Joonas Niilola <juippis@gmail.com> (18 May 2018)
+# Unmaintained, bugs open without activity, makes users
+# install ancient version of enlightenment by typing
+# 'emerge enlightenment' due to obnoxious package slotting.
+# Bug #656020. Removal in ~30 days
+=x11-wm/enlightenment-1.0.17
+=x11-wm/enlightenment-0.16.9999
+app-doc/edox-data
+x11-misc/e16keyedit
+x11-misc/e16menuedit2
+x11-plugins/epplets
+
+# Andreas Sturmlechner <asturm@gentoo.org> (18 May 2018)
+# Breaking consumers by internal header cleanup and removal of deprecated
+# qt5_use_modules from Qt5CoreMacros.cmake. File bugs with fixes upstream
+# and against the qt-5.11 tracker (bug #653646).
+~dev-qt/assistant-5.11.0_rc2
+~dev-qt/designer-5.11.0_rc2
+~dev-qt/linguist-5.11.0_rc2
+~dev-qt/linguist-tools-5.11.0_rc2
+~dev-qt/pixeltool-5.11.0_rc2
+~dev-qt/qdbus-5.11.0_rc2
+~dev-qt/qdbusviewer-5.11.0_rc2
+~dev-qt/qdoc-5.11.0_rc2
+~dev-qt/qt3d-5.11.0_rc2
+~dev-qt/qtbluetooth-5.11.0_rc2
+~dev-qt/qtcharts-5.11.0_rc2
+~dev-qt/qtconcurrent-5.11.0_rc2
+~dev-qt/qtcore-5.11.0_rc2
+~dev-qt/qtdatavis3d-5.11.0_rc2
+~dev-qt/qtdbus-5.11.0_rc2
+~dev-qt/qtdeclarative-5.11.0_rc2
+~dev-qt/qtdiag-5.11.0_rc2
+~dev-qt/qtgraphicaleffects-5.11.0_rc2
+~dev-qt/qtgui-5.11.0_rc2
+~dev-qt/qthelp-5.11.0_rc2
+~dev-qt/qtimageformats-5.11.0_rc2
+~dev-qt/qtlocation-5.11.0_rc2
+~dev-qt/qtmultimedia-5.11.0_rc2
+~dev-qt/qtnetworkauth-5.11.0_rc2
+~dev-qt/qtnetwork-5.11.0_rc2
+~dev-qt/qtopengl-5.11.0_rc2
+~dev-qt/qtpaths-5.11.0_rc2
+~dev-qt/qtplugininfo-5.11.0_rc2
+~dev-qt/qtpositioning-5.11.0_rc2
+~dev-qt/qtprintsupport-5.11.0_rc2
+~dev-qt/qtquickcontrols2-5.11.0_rc2
+~dev-qt/qtquickcontrols-5.11.0_rc2
+~dev-qt/qtscript-5.11.0_rc2
+~dev-qt/qtscxml-5.11.0_rc2
+~dev-qt/qtsensors-5.11.0_rc2
+~dev-qt/qtserialbus-5.11.0_rc2
+~dev-qt/qtserialport-5.11.0_rc2
+~dev-qt/qtspeech-5.11.0_rc2
+~dev-qt/qtsql-5.11.0_rc2
+~dev-qt/qtsvg-5.11.0_rc2
+~dev-qt/qttest-5.11.0_rc2
+~dev-qt/qttranslations-5.11.0_rc2
+~dev-qt/qtvirtualkeyboard-5.11.0_rc2
+~dev-qt/qtwayland-5.11.0_rc2
+~dev-qt/qtwebchannel-5.11.0_rc2
+~dev-qt/qtwebengine-5.11.0_rc2
+~dev-qt/qtwebsockets-5.11.0_rc2
+~dev-qt/qtwebview-5.11.0_rc2
+~dev-qt/qtwidgets-5.11.0_rc2
+~dev-qt/qtx11extras-5.11.0_rc2
+~dev-qt/qtxmlpatterns-5.11.0_rc2
+~dev-qt/qtxml-5.11.0_rc2
+
 # Amy Liffey <amynka@gentoo.org> (16 May 2018)
 # Obsolete and not used anymore replaced by app-crypt/eid-mw.
 # Requested by maintainer Vincent Hardy <vincent.hardy.be@gmail.com>
@@ -49,26 +179,14 @@ sci-libs/freesteam
 =dev-util/scons-3.0.1-r2
 
 # Michał Górny <mgorny@gentoo.org> (15 May 2018)
-# Distfile missing BLAKE2B hash.  The package is fetch-restricted,
-# the sources can apparently by only obtained by buying it, or filing
-# an academic license request and having it approved.  Please provide
-# the updated hash if you have the matching distfile.
-# Bug #642908.  Removal in 30 days.
-sci-libs/coinhsl
-
-# Michał Górny <mgorny@gentoo.org> (15 May 2018)
 # Remaining fetch-restricted game packages missing BLAKE2B hashes.
 # Please provide updated hashes if you have the matching distfiles.
 # Bug #642876.  Removal in 30 days.
-games-action/shadowgrounds-bin
-games-action/shadowgrounds-survivor-bin
 games-action/trine2
 games-misc/dont-starve
 games-puzzle/larry
 games-rpg/avadon
-games-rpg/bastion
 games-rpg/penumbra-collection
-games-rpg/wasteland2
 
 # Michał Górny <mgorny@gentoo.org> (15 May 2018)
 # All current versions are unfetchable.  No maintainer activity
@@ -123,63 +241,6 @@ dev-util/valkyrie
 # Depends on dead Qt4, severely outdated, no one does the bump.
 # Masked for removal in 30 days. Bugs #489190, #648666
 media-gfx/ipe
-
-# Andreas Sturmlechner <asturm@gentoo.org> (8 May 2018)
-# Breaking consumers by internal header cleanup and removal of deprecated
-# qt5_use_modules from Qt5CoreMacros.cmake. File bugs with fixes upstream
-# and against the qt-5.11 tracker (bug #653646).
-~dev-qt/assistant-5.11.0_rc
-~dev-qt/designer-5.11.0_rc
-~dev-qt/linguist-5.11.0_rc
-~dev-qt/linguist-tools-5.11.0_rc
-~dev-qt/pixeltool-5.11.0_rc
-~dev-qt/qdbus-5.11.0_rc
-~dev-qt/qdbusviewer-5.11.0_rc
-~dev-qt/qdoc-5.11.0_rc
-~dev-qt/qt3d-5.11.0_rc
-~dev-qt/qtbluetooth-5.11.0_rc
-~dev-qt/qtcharts-5.11.0_rc
-~dev-qt/qtconcurrent-5.11.0_rc
-~dev-qt/qtcore-5.11.0_rc
-~dev-qt/qtdatavis3d-5.11.0_rc
-~dev-qt/qtdbus-5.11.0_rc
-~dev-qt/qtdeclarative-5.11.0_rc
-~dev-qt/qtdiag-5.11.0_rc
-~dev-qt/qtgraphicaleffects-5.11.0_rc
-~dev-qt/qtgui-5.11.0_rc
-~dev-qt/qthelp-5.11.0_rc
-~dev-qt/qtimageformats-5.11.0_rc
-~dev-qt/qtlocation-5.11.0_rc
-~dev-qt/qtmultimedia-5.11.0_rc
-~dev-qt/qtnetworkauth-5.11.0_rc
-~dev-qt/qtnetwork-5.11.0_rc
-~dev-qt/qtopengl-5.11.0_rc
-~dev-qt/qtpaths-5.11.0_rc
-~dev-qt/qtplugininfo-5.11.0_rc
-~dev-qt/qtpositioning-5.11.0_rc
-~dev-qt/qtprintsupport-5.11.0_rc
-~dev-qt/qtquickcontrols2-5.11.0_rc
-~dev-qt/qtquickcontrols-5.11.0_rc
-~dev-qt/qtscript-5.11.0_rc
-~dev-qt/qtscxml-5.11.0_rc
-~dev-qt/qtsensors-5.11.0_rc
-~dev-qt/qtserialbus-5.11.0_rc
-~dev-qt/qtserialport-5.11.0_rc
-~dev-qt/qtspeech-5.11.0_rc
-~dev-qt/qtsql-5.11.0_rc
-~dev-qt/qtsvg-5.11.0_rc
-~dev-qt/qttest-5.11.0_rc
-~dev-qt/qttranslations-5.11.0_rc
-~dev-qt/qtvirtualkeyboard-5.11.0_rc
-~dev-qt/qtwayland-5.11.0_rc
-~dev-qt/qtwebchannel-5.11.0_rc
-~dev-qt/qtwebengine-5.11.0_rc
-~dev-qt/qtwebsockets-5.11.0_rc
-~dev-qt/qtwebview-5.11.0_rc
-~dev-qt/qtwidgets-5.11.0_rc
-~dev-qt/qtx11extras-5.11.0_rc
-~dev-qt/qtxmlpatterns-5.11.0_rc
-~dev-qt/qtxml-5.11.0_rc
 
 # Hans de Graaff <graaff@gentoo.org> (7 May 2018)
 # Old slots that are ruby23-only and no longer maintained
@@ -254,25 +315,11 @@ dev-python/kiwi
 # instead of its own.  Removal in 30 days.  Bug #526552.
 dev-python/tdaemon
 
-# Andreas Sturmlechner <asturm@gentoo.org> (26 Apr 2018)
-# Depends on dead Qt4, no more revdeps. Masked for removal in 30 days.
-dev-libs/qjson
-
 # Michał Górny <mgorny@gentoo.org> (22 Apr 2018)
 # Unmaintained buggy package with unresearched segfaults.  No support
 # for Python 3.  No reverse dependencies.
 # Removal in 30 days.  Bug #454680.
 dev-python/simpleparse
-
-# Matt Turner <mattst88@gentoo.org> (21 Apr 2018)
-# Awful, unmaintained, unused. Removal in 30 days. Bug #651300.
-x11-libs/xpyb
-
-# Matt Turner <mattst88@gentoo.org> (21 Apr 2018)
-# Protocol headers and client library for the long dead Xprint extension.
-# Removal in 30 days. Bug #649076.
-x11-proto/printproto
-x11-libs/libXp
 
 # Alexis Ballier <aballier@gentoo.org> (21 Apr 2018)
 # Needs porting of revdeps
@@ -283,17 +330,6 @@ x11-libs/libXp
 # Likely to break a lot of software
 # Masked for initial testing
 >=dev-db/mysql-connector-c++-8.0.0
-
-# Lars Wendler <polynomial-c@gentoo.org> (18 Apr 2018)
-# Breaks consumers most likely because of the following change:
-#   * Add const to several classes and members
-# See tracker bug #653464
->=app-text/poppler-0.64.0
-
-# Jason Zaman <perfinion@gentoo.org> (08 Apr 2018)
-# Dead upstream, for an old version of Xfce
-# Masked for removal in 30 days.
-xfce-extra/xfce-theme-manager
 
 # Rick Farina <zerochaos@gentoo.org> (04 Apr 2018)
 # Violates PMS and does not work with stable portage.
@@ -335,7 +371,8 @@ sci-chemistry/cyana
 # Mart Raudsepp <leio@gentoo.org> (30 Mar 2018)
 # GStreamer mp3 decoder plugin based on libmad is removed with gstreamer-1.12.
 # media-plugins/gst-plugins-mpg123 is the suggested replacement.
-# Masked for removal in 30 days. Bug 631128
+# Please keep this package.mask entry until at least 26th June 2018 for
+# extra notification of the deprecation and replacement. Bug #631128.
 media-plugins/gst-plugins-mad:1.0
 
 # Lars Wendler <polynomial-c@gentoo.org> (27 Mar 2018)
@@ -380,15 +417,6 @@ media-plugins/gst-plugins-mad:1.0
 # Upstream has been dead since 2012.  Migrate to uclibc-ng.
 # See https://wiki.gentoo.org/wiki/Project:Hardened_uClibc
 sys-libs/uclibc
-
-# Mart Raudsepp <leio@gentoo.org> (23 Feb 2018)
-# Old net-libs/webkit-gtk SLOTs have hundreds of known security issues.
-# Use the security safe net-libs webkit-gtk SLOT=4 instead via
-# libraries and applications ported to gtk3 and webkit2gtk API.
-# Please keep this package.mask entry until at least 25th May 2018 for
-# extra notification of the security vulnerabilities. Bug #577068.
-net-libs/webkit-gtk:2
-net-libs/webkit-gtk:3
 
 # Eray Aslan <eras@gentoo.org> (08 Feb 2018)
 # Mask experimental software
@@ -441,7 +469,7 @@ media-fonts/fontawesome:0/5
 
 # Andreas Sturmlechner <asturm@gentoo.org> (21 Dec 2017)
 # Masked for testing
-=dev-libs/libical-3.0.1
+~dev-libs/libical-3.0.3
 
 # James Le Cuirot <chewi@gentoo.org> (17 Dec 2017)
 # Java 9 is not yet fully supported on Gentoo. Packages cannot depend
@@ -467,6 +495,7 @@ games-kids/crayon-physics
 >=xfce-extra/thunar-archive-plugin-0.4.0
 >=xfce-extra/thunar-media-tags-plugin-0.3.0
 >=xfce-extra/thunar-shares-plugin-0.3.0
+>=xfce-extra/thunar-vcs-plugin-0.1.90
 
 # Andreas Sturmlechner <asturm@gentoo.org> (16 Nov 2017)
 # Depends on dead Qt4. Last-rites on hold for chance of Qt5-port. Bug #620702

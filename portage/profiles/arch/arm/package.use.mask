@@ -1,6 +1,15 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+# Markus Meier <maekke@gentoo.org> (30 May 2018)
+# unkeyworded deps for bug #621434
+net-analyzer/zmap mongo
+
+# Andreas Sturmlechner <asturm@gentoo.org> (18 May 2018)
+# media-libs/libaom not yet keyworded
+# projectm not yet keyworded, bug #314969
+media-video/vlc aom chromaprint opencv projectm
+
 # Michał Górny <mgorny@gentoo.org> (15 Apr 2018)
 # Unkeyworded dep masks moved from default/linux.
 app-admin/diamond mongo
@@ -10,10 +19,6 @@ mail-client/mutt notmuch
 # Andreas Sturmlechner <asturm@gentoo.org> (02 Mar 2018)
 # Requires unkeyworded deps
 >=dev-python/ipython-5.4.1 notebook qt5 smp
-
-# NP-Hardass <NP-Hardass@gentoo.org> (01 Mar 2018)
-# net-libs/libmicrodns not yet keyworded for arm, bug #653800
-media-video/vlc microdns
 
 # Andreas Sturmlechner <asturm@gentoo.org> (04 Feb 2018)
 # Depends on not yet keyworded dev-python/geoip-python. Bug #636860
@@ -158,9 +163,7 @@ dev-scheme/racket futures jit
 # Tests require dev-python/tox which isn't keyworded on arm
 sys-cluster/ceph test
 
-# Thomas Deutschmann <whissi@whissi.de> (19 Mar 2016), on behalf of
-# Ian Delaney <idella4@gentoo.org> (19 Mar 2016)
-# for the proxy-maintainers project
+# Thomas Deutschmann <whissi@gentoo.org> (19 Mar 2016)
 # Unkeyworded deps, bug #564274
 app-metrics/collectd collectd_plugins_gmond
 app-metrics/collectd collectd_plugins_ipmi
@@ -171,6 +174,7 @@ app-metrics/collectd collectd_plugins_sigrok
 app-metrics/collectd collectd_plugins_tokyotyrant
 app-metrics/collectd collectd_plugins_varnish
 app-metrics/collectd collectd_plugins_virt
+app-metrics/collectd collectd_plugins_write_mongodb
 
 # Markus Meier <maekke@gentoo.org> (02 Mar 2016)
 # unkeyworded deps for bug #573324
@@ -269,10 +273,6 @@ media-libs/clutter-gtk wayland
 # Unkeyworded deps, bug #518742
 dev-python/ipython doc
 dev-python/oct2py doc
-
-# Patrick Lauer <patrick@gentoo.org> (19 Nov 2014)
-# Missing keywords #529820
-app-office/libreoffice collada
 
 # Michael Weber <xmw@gentoo.org> (15 Nov 2014)
 # missing keywords on media-libs/libharu
@@ -453,7 +453,7 @@ sci-astronomy/kstars indi
 
 # Markus Meier <maekke@gentoo.org> (08 Dec 2012)
 # mask app-office/libreoffice java extensions
-app-office/libreoffice libreoffice_extensions_scripting-beanshell libreoffice_extensions_scripting-javascript libreoffice_extensions_wiki-publisher coinmp gltf
+app-office/libreoffice libreoffice_extensions_scripting-beanshell libreoffice_extensions_scripting-javascript libreoffice_extensions_wiki-publisher coinmp
 
 # Steev Klimaszewski <steev@gentoo.org> (03 Aug 2012)
 # No java on ARM
@@ -509,9 +509,6 @@ app-admin/gkrellm ntlm
 
 # missing keywords
 media-plugins/gst-plugins-meta aac dts dv lame libvisual modplug taglib vcd wavpack dvd
-
-# projectm not keyworded, bug #314969
-media-video/vlc projectm chromaprint opencv
 
 # Ultrabug <ultrabug@gentoo.org> (05 Sept 2011)
 # missing keyword for net-libs/zeromq

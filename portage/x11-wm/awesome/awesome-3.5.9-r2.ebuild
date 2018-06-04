@@ -10,7 +10,7 @@ SRC_URI="http://awesome.naquadah.org/download/${P}.tar.xz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 arm ~ppc ppc64 x86 ~x86-fbsd"
+KEYWORDS="amd64 arm ppc ppc64 x86 ~x86-fbsd"
 IUSE="dbus doc elibc_FreeBSD gnome"
 
 COMMON_DEPEND="
@@ -38,7 +38,7 @@ DEPEND="${COMMON_DEPEND}
 	virtual/pkgconfig
 	media-gfx/imagemagick[png]
 	>=x11-base/xcb-proto-1.5
-	>=x11-proto/xproto-7.0.15
+	x11-base/xorg-proto
 	doc? (
 		app-doc/doxygen
 		media-gfx/graphviz

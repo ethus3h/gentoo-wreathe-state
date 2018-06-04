@@ -10,7 +10,7 @@ SRC_URI="${HOMEPAGE}/releases/download/${PV}/${P}.tar.xz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm64 ~x86"
 IUSE="test windowmode"
 
 RDEPEND="
@@ -31,8 +31,7 @@ RDEPEND="
 DEPEND="
 	${RDEPEND}
 	virtual/pkgconfig
-	x11-proto/xineramaproto
-	x11-proto/xproto
+	x11-base/xorg-proto
 	test? ( >=dev-libs/check-0.11 )
 "
 PATCHES=(
