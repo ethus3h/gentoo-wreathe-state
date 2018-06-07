@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -12,7 +12,7 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="gsl libav pulseaudio qt5"
 
 RDEPEND=">=dev-libs/glib-2.10
@@ -41,6 +41,7 @@ S=${WORKDIR}/${MY_P}
 
 src_prepare() {
 	sed -i '/^docdir/,/^$/d' Makefile.am || die
+	has_version '>=media-video/ffmpeg-4' && epatch "${FILESDIR}/ffmpeg4.patch"
 	eautoreconf
 }
 

@@ -1,11 +1,11 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 inherit eutils multilib toolchain-funcs
 
 DESCRIPTION="a lightweight programmers editor"
-HOMEPAGE="http://packages.qa.debian.org/l/lpe.html"
+HOMEPAGE="https://packages.qa.debian.org/l/lpe.html"
 SRC_URI="mirror://debian/pool/main/l/${PN}/${PN}_${PV}-0.1.tar.gz"
 
 LICENSE="GPL-2"
@@ -14,7 +14,7 @@ KEYWORDS="amd64 ppc sparc x86 ~x86-linux"
 IUSE="nls"
 
 RDEPEND=">=sys-libs/slang-2.2.4
-	>=sys-libs/ncurses-5.7-r7"
+	>=sys-libs/ncurses-5.7-r7:0="
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	nls? ( sys-devel/gettext )"

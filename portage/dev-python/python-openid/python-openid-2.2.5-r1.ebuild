@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -9,13 +9,13 @@ PYTHON_COMPAT=( python2_7 )
 inherit distutils-r1
 
 DESCRIPTION="OpenID support for servers and consumers"
-HOMEPAGE="http://www.openidenabled.com/openid/libraries/python/ https://pypi.python.org/pypi/python-openid"
+HOMEPAGE="http://www.openidenabled.com/openid/libraries/python/ https://pypi.org/project/python-openid/"
 # Downloaded from https://github.com/openid/python-openid/downloads
 SRC_URI="mirror://gentoo/${P}.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~ppc ~ppc64 x86"
+KEYWORDS="amd64 ~arm ~arm64 ~ppc ~ppc64 x86"
 IUSE="examples mysql postgres sqlite test"
 
 RDEPEND="mysql? ( >=dev-python/mysql-python-1.2.2[${PYTHON_USEDEP}] )

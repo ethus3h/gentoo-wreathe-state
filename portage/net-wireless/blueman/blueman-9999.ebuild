@@ -3,7 +3,7 @@
 
 EAPI="6"
 
-PYTHON_COMPAT=( python{2_7,3_4,3_5} )
+PYTHON_COMPAT=( python{3_4,3_5,3_6} )
 inherit gnome2-utils linux-info python-single-r1 systemd
 
 DESCRIPTION="Simple and intuitive GTK+ Bluetooth Manager"
@@ -20,7 +20,7 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="appindicator network nls policykit pulseaudio thunar"
+IUSE="appindicator network nls policykit pulseaudio"
 
 COMMON_DEPEND="
 	dev-python/pygobject:3
@@ -37,6 +37,7 @@ RDEPEND="${COMMON_DEPEND}
 	x11-libs/gtk+:3[introspection]
 	x11-libs/libnotify[introspection]
 	|| (
+		x11-themes/adwaita-icon-theme
 		x11-themes/faenza-icon-theme
 		x11-themes/gnome-icon-theme
 		x11-themes/mate-icon-theme
@@ -53,7 +54,6 @@ RDEPEND="${COMMON_DEPEND}
 	)
 	policykit? ( sys-auth/polkit )
 	pulseaudio? ( media-sound/pulseaudio[bluetooth] )
-	thunar? ( xfce-base/thunar )
 	!net-wireless/gnome-bluetooth
 "
 
@@ -82,13 +82,15 @@ src_configure() {
 		--docdir=/usr/share/doc/${PF}
 		--disable-runtime-deps-check
 		--disable-static
-		# TODO: replace upstream with sane system/user unitdir getters
-		--with-systemdunitdir="$(systemd_get_utildir)"
+		--with-systemdsystemunitdir="$(systemd_get_systemunitdir)"
+		--with-systemduserunitdir="$(systemd_get_userunitdir)"
 		$(use_enable appindicator)
 		$(use_enable policykit polkit)
 		$(use_enable nls)
 		$(use_enable pulseaudio)
-		$(use_enable thunar thunar-sendto)
+		# thunar integration is a single data file with no extra deps
+		# so install it unconditionally
+		--enable-thunar-sendto
 	)
 	econf "${myconf[@]}"
 }

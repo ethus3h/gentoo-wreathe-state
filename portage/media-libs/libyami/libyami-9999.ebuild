@@ -28,7 +28,7 @@ SLOT="0"
 IUSE="debug egl dmabuf doc md5 v4l X test wayland"
 
 RDEPEND="
-	>=x11-libs/libva-1.7.2[drm,X?,wayland?,${MULTILIB_USEDEP}]
+	>=x11-libs/libva-1.7.2:=[drm,X?,wayland?,${MULTILIB_USEDEP}]
 	v4l? (
 		>=virtual/opengl-7[${MULTILIB_USEDEP}]
 		>=media-libs/libv4l-1.6.2[${MULTILIB_USEDEP}]
@@ -45,11 +45,12 @@ DEPEND="${RDEPEND}
 "
 
 src_prepare() {
+	sed -i -e 's/-Werror//' configure.ac || die
 	eautoreconf
 }
 
 multilib_src_configure() {
-	append-cppflags -I"${S}/"
+	append-cppflags -I"${S}/" -I"${BUILD_DIR}/interface"
 	ECONF_SOURCE="${S}" econf \
 		$(use_enable debug) \
 		$(use_enable egl) \

@@ -3,14 +3,14 @@
 
 EAPI=5
 
-PYTHON_COMPAT=( python{2_7,3_4,3_5} pypy )
+PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} pypy )
 
 RESTRICT="test"
 
 inherit distutils-r1
 
 DESCRIPTION="Natural sorting for Python"
-HOMEPAGE="https://pypi.python.org/pypi/natsort"
+HOMEPAGE="https://pypi.org/project/natsort/"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
 LICENSE="MIT"

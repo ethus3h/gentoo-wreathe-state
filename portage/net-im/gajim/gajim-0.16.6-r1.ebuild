@@ -14,14 +14,14 @@ MY_PV=${PV/_/-}
 MY_P="${PN}-${MY_PV}"
 
 DESCRIPTION="Jabber client written in PyGTK"
-HOMEPAGE="http://www.gajim.org/"
+HOMEPAGE="https://www.gajim.org/"
 SRC_URI="
-	http://www.gajim.org/downloads/$(get_version_component_range 1-2)/${MY_P}.tar.bz2"
+	https://www.gajim.org/downloads/$(get_version_component_range 1-2)/${MY_P}.tar.bz2"
 #	test? ( https://dev.gentoo.org/~jlec/distfiles/${PN}-tests-${PV}.tar.xz )"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~ppc ~ppc64 x86 ~x86-fbsd"
+KEYWORDS="amd64 arm ppc ppc64 x86 ~x86-fbsd"
 IUSE="crypt dbus gnome gnome-keyring kde idle jingle libnotify networkmanager nls spell +srv test X xhtml zeroconf"
 
 REQUIRED_USE="
@@ -41,6 +41,7 @@ DEPEND="${COMMON_DEPEND}
 RDEPEND="${COMMON_DEPEND}
 	dev-python/pyasn1[${PYTHON_USEDEP}]
 	>=dev-python/pyopenssl-0.14[${PYTHON_USEDEP}]
+	!>=dev-python/pyopenssl-17.4.0[${PYTHON_USEDEP}]
 	>=dev-python/python-nbxmpp-0.5.3[${PYTHON_USEDEP}]
 	crypt? (
 		app-crypt/gnupg

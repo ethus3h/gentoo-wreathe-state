@@ -11,15 +11,15 @@ HOMEPAGE="https://github.com/ajaiantilal/i7z"
 SRC_URI="https://github.com/ajaiantilal/${PN}/archive/${COMMIT}.tar.gz -> ${P}.tar.gz"
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 x86 ~amd64-linux ~x86-linux"
 IUSE="qt5"
 
 RDEPEND="
 	sys-libs/ncurses:0=
 	qt5? (
-		dev-qt/qtcore:5=
-		dev-qt/qtgui:5=
-		dev-qt/qtwidgets:5=
+		dev-qt/qtcore:5
+		dev-qt/qtgui:5
+		dev-qt/qtwidgets:5
 	)
 "
 DEPEND="${RDEPEND}"

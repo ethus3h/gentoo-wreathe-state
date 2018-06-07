@@ -13,7 +13,7 @@ HOMEPAGE="https://www.gnome.org/"
 
 LICENSE="GPL-2 LGPL-2"
 SLOT="2"
-KEYWORDS="alpha amd64 arm ia64 ~mips ppc ppc64 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm ~arm64 ia64 ~mips ppc ppc64 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE="acl gnutls ipv6 kerberos libressl samba ssl zeroconf"
 
 RDEPEND="
@@ -38,10 +38,6 @@ RDEPEND="
 			libressl? ( dev-libs/libressl[${MULTILIB_USEDEP}] )
 			!gnome-extra/gnome-vfs-sftp ) )
 	zeroconf? ( >=net-dns/avahi-0.6.31-r2[${MULTILIB_USEDEP}] )
-	abi_x86_32? (
-		!<=app-emulation/emul-linux-x86-gtklibs-20140508-r1
-		!app-emulation/emul-linux-x86-gtklibs[-abi_x86_32(-)]
-	)
 "
 DEPEND="${RDEPEND}
 	sys-devel/gettext

@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -11,7 +11,7 @@ SRC_URI="https://sourceware.org/elfutils/ftp/${PV}/${P}.tar.bz2"
 
 LICENSE="|| ( GPL-2+ LGPL-3+ ) utils? ( GPL-3+ )"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-linux ~arm-linux ~x86-linux"
+KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh ~sparc x86 ~amd64-linux ~arm-linux ~x86-linux"
 IUSE="bzip2 lzma nls static-libs test +threads +utils"
 
 RDEPEND=">=sys-libs/zlib-1.2.8-r1[${MULTILIB_USEDEP}]
@@ -23,9 +23,12 @@ DEPEND="${RDEPEND}
 	>=sys-devel/flex-2.5.4a
 	sys-devel/m4"
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-0.118-PaX-support.patch
+)
+
 src_prepare() {
 	default
-	epatch "${FILESDIR}"/${PN}-0.118-PaX-support.patch
 	if use static-libs; then
 		sed -i -e '/^lib_LIBRARIES/s:=.*:=:' -e '/^%.os/s:%.o$::' lib{asm,dw,elf}/Makefile.in || die
 	fi

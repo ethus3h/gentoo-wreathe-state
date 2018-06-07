@@ -1,5 +1,7 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+
+EAPI=0
 
 inherit eutils toolchain-funcs
 
@@ -7,8 +9,8 @@ MY_PN=AlsaMixer.app
 MY_P=${MY_PN}-${PV}
 
 DESCRIPTION="AlsaMixer.app is a simple mixer dockapp"
-HOMEPAGE="http://dockapps.windowmaker.org/file.php/id/253"
-SRC_URI="http://dockapps.windowmaker.org/download.php/id/517/${MY_P}.tar.gz"
+HOMEPAGE="http://www.dockapps.net/alsamixerapp"
+SRC_URI="http://www.dockapps.net/download/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -20,7 +22,7 @@ RDEPEND="x11-libs/libX11
 	x11-libs/libXext
 	media-libs/alsa-lib"
 DEPEND="${RDEPEND}
-	x11-proto/xextproto"
+	x11-base/xorg-proto"
 
 S=${WORKDIR}/${MY_P}
 

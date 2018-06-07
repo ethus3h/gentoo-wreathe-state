@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -10,7 +10,7 @@ MY_P=${P/_/-}
 if [[ "${PV}" == "9999" ]] ; then
 	EGIT_SUB_PROJECT="bindings/python"
 	EGIT_URI_APPEND="${PN}"
-	EGIT_REPO_URI="git://git.enlightenment.org/${EGIT_SUB_PROJECT}/${EGIT_URI_APPEND}.git"
+	EGIT_REPO_URI="https://git.enlightenment.org/${EGIT_SUB_PROJECT}/${EGIT_URI_APPEND}.git"
 	inherit git-2
 else
 	SRC_URI="https://download.enlightenment.org/rel/bindings/python/${MY_P}.tar.xz"
@@ -19,7 +19,7 @@ fi
 inherit distutils-r1
 
 DESCRIPTION="Python bindings for Enlightenment Fundation Libraries"
-HOMEPAGE="http://www.enlightenment.org"
+HOMEPAGE="https://www.enlightenment.org"
 
 LICENSE="|| ( GPL-3 LGPL-3 )"
 SLOT="0"

@@ -1,9 +1,9 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
 
-USE_RUBY="ruby20 ruby21 ruby22"
+USE_RUBY="ruby22 ruby23"
 RUBY_OPTIONAL=yes
 inherit autotools eutils multilib ruby-ng toolchain-funcs
 
@@ -49,7 +49,8 @@ src_prepare() {
 		"${FILESDIR}"/${P}-tcl-automagic-as-needed.patch \
 		"${FILESDIR}"/${PN}-1.1.2-perl-automagic-as-needed.patch \
 		"${FILESDIR}"/${P}-without-localdir.patch \
-		"${FILESDIR}"/${P}-socks5-libsocks.patch
+		"${FILESDIR}"/${P}-socks5-libsocks.patch \
+		"${FILESDIR}"/${P}-xlocale.patch
 	eautoconf
 }
 

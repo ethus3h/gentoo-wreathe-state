@@ -5,7 +5,7 @@ EAPI=6
 
 GENTOO_DEPEND_ON_PERL=no
 
-inherit perl-module systemd
+inherit perl-module systemd flag-o-matic
 
 if [[ "${PV}" == "9999" ]] ; then
 	inherit bzr autotools
@@ -14,15 +14,14 @@ else
 	SRC_URI="http://www.openprinting.org/download/${PN}/${P}.tar.xz"
 	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86 ~amd64-fbsd ~m68k-mint"
 fi
-DESCRIPTION="Cups PDF filters"
-HOMEPAGE="https://wiki.linuxfoundation.org/openprinting/pdf_as_standard_print_job_format"
+DESCRIPTION="Cups filters"
+HOMEPAGE="https://wiki.linuxfoundation.org/openprinting/cups-filters"
 
 LICENSE="MIT GPL-2"
 SLOT="0"
-IUSE="dbus +foomatic ipp_autosetup jpeg ldap pdf perl png +postscript static-libs tiff zeroconf"
+IUSE="dbus +foomatic ipp_autosetup jpeg ldap pclm pdf perl png +postscript static-libs test tiff zeroconf"
 
 RDEPEND="
-	postscript? ( >=app-text/ghostscript-gpl-9.09[cups] )
 	>=app-text/poppler-0.32:=[cxx,jpeg?,lcms,tiff?,utils]
 	>=app-text/qpdf-3.0.2:=
 	dev-libs/glib:2
@@ -37,19 +36,25 @@ RDEPEND="
 	foomatic? ( !net-print/foomatic-filters )
 	jpeg? ( virtual/jpeg:0 )
 	ldap? ( net-nds/openldap )
+	pclm? ( >=app-text/qpdf-7.0_beta1 )
 	pdf? ( app-text/mupdf )
 	perl? ( dev-lang/perl:= )
 	png? ( media-libs/libpng:0= )
+	postscript? ( >=app-text/ghostscript-gpl-9.09[cups] )
 	tiff? ( media-libs/tiff:0 )
 	zeroconf? ( net-dns/avahi[dbus] )
 "
 DEPEND="${RDEPEND}
 	dev-util/gdbus-codegen
+	test? ( media-fonts/dejavu )
 "
 
 src_prepare() {
 	default
 	[[ "${PV}" == "9999" ]] && eautoreconf
+
+	# Bug #626800
+	append-cxxflags -std=c++11
 }
 
 src_configure() {
@@ -67,6 +72,7 @@ src_configure() {
 		$(use_enable foomatic)
 		$(use_enable ipp_autosetup auto-setup-driverless)
 		$(use_enable ldap)
+		$(use_enable pclm)
 		$(use_enable pdf mutool)
 		$(use_enable postscript ghostscript)
 		$(use_enable postscript ijs)

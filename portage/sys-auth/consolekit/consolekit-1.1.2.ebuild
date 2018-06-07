@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit autotools libtool linux-info pam
+inherit autotools libtool linux-info pam xdg-utils
 
 MY_PN=ConsoleKit2
 MY_P=${MY_PN}-${PV}
@@ -13,7 +13,7 @@ SRC_URI="https://github.com/${MY_PN}/${MY_PN}/releases/download/${PV}/${MY_P}.ta
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux"
+KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ppc ppc64 sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux"
 IUSE="acl cgroups debug doc evdev kernel_linux pam pm-utils policykit selinux test udev"
 
 COMMON_DEPEND=">=dev-libs/glib-2.40:2=[dbus]
@@ -66,6 +66,8 @@ pkg_setup() {
 }
 
 src_prepare() {
+	xdg_environment_reset
+
 	sed -i -e '/SystemdService/d' data/org.freedesktop.ConsoleKit.service.in || die
 
 	default

@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -13,13 +13,5 @@ LICENSE="BSD"
 SLOT="0"
 IUSE=""
 
-RDEPEND="
-	dev-ros/collada_parser
-	dev-ros/collada_urdf
-	dev-ros/joint_state_publisher
-	dev-ros/kdl_parser
-	dev-ros/kdl_parser_py
-	dev-ros/urdf
-	dev-ros/urdf_parser_plugin
-"
+RDEPEND=""
 DEPEND="${RDEPEND}"

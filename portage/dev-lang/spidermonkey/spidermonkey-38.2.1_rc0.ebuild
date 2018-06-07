@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,11 +9,12 @@ MY_PN="mozjs"
 MY_P="${MY_PN}-${PV/_/.}"
 DESCRIPTION="Stand-alone JavaScript C library"
 HOMEPAGE="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey"
-SRC_URI="https://people.mozilla.org/~sstangl/${MY_P}.tar.bz2"
+SRC_URI="https://people.mozilla.org/~sstangl/${MY_P}.tar.bz2
+	https://dev.gentoo.org/~axs/distfiles/${PN}-slot38-patches-01.tar.xz"
 
 LICENSE="NPL-1.1"
 SLOT="38"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~alpha amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc x86 ~x86-fbsd"
 IUSE="debug +jit minimal static-libs +system-icu test"
 
 RESTRICT="ia64? ( test )"
@@ -36,12 +37,13 @@ pkg_setup(){
 }
 
 src_prepare() {
-	eapply "${FILESDIR}"/${PN}-38-jsapi-tests.patch \
-		"${FILESDIR}"/mozjs38-1269317.patch \
-		"${FILESDIR}"/mozjs38-fix-tracelogger.patch \
-		"${FILESDIR}"/mozjs38-copy-headers.patch \
-		"${FILESDIR}"/mozjs38-pkg-config-version.patch \
-		"${FILESDIR}"/mozilla_configure_regexp_esr38.patch
+	eapply "${WORKDIR}"/sm38/${PN}-38-jsapi-tests.patch \
+		"${WORKDIR}"/sm38/mozjs38-1269317.patch \
+		"${WORKDIR}"/sm38/mozjs38-fix-tracelogger.patch \
+		"${WORKDIR}"/sm38/mozjs38-copy-headers.patch \
+		"${WORKDIR}"/sm38/mozjs38-pkg-config-version.patch \
+		"${WORKDIR}"/sm38/mozilla_configure_regexp_esr38.patch \
+		"${FILESDIR}"/moz38-dont-hardcode-libc-soname.patch
 
 	eapply_user
 
