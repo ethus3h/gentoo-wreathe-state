@@ -4,6 +4,7 @@
 	<maintainer type="person">
 		<email>sautier.louis@gmail.com</email>
 		<name>Louis Sautier</name>
+		<description>Proxied maintainer; set to assignee in all bugs</description>
 	</maintainer>
 	<maintainer type="project">
 		<email>proxy-maint@gentoo.org</email>
@@ -11,6 +12,6 @@
 	</maintainer>
 	<upstream>
 		<remote-id type="pypi">inflect</remote-id>
-		<remote-id type="github">jazzband/inflect</remote-id>
+		<remote-id type="github">pwdyson/inflect.py</remote-id>
 	</upstream>
 </pkgmetadata>

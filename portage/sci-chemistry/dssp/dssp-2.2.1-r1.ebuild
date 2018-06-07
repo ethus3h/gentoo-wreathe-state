@@ -1,9 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit toolchain-funcs
+inherit eutils multilib toolchain-funcs
 
 DESCRIPTION="The protein secondary structure standard"
 HOMEPAGE="http://swift.cmbi.ru.nl/gv/dssp/"
@@ -17,19 +17,17 @@ IUSE=""
 RDEPEND="dev-libs/boost:=[threads]"
 DEPEND="${RDEPEND}"
 
-PATCHES=(
-	"${FILESDIR}"/${PN}-2.1.0-gentoo.patch
-	"${FILESDIR}"/${PN}-2.2.1-boost-1.65-tr1-removal.patch
-)
-
-src_configure() {
+src_prepare() {
 	tc-export CXX
 
-	cat >> make.config <<- EOF || die
-		BOOST_LIB_SUFFIX = -mt
-		BOOST_LIB_DIR = "${EPREFIX}/usr/$(get_libdir)"
-		BOOST_INC_DIR = "${EPREFIX}/usr/include"
+	cat >> make.config <<- EOF
+	BOOST_LIB_SUFFIX = -mt
+	BOOST_LIB_DIR = "${EPREFIX}/usr/$(get_libdir)"
+	BOOST_INC_DIR = "${EPREFIX}/usr/include"
 	EOF
+
+	epatch \
+		"${FILESDIR}"/${PN}-2.1.0-gentoo.patch
 }
 
 src_install() {
@@ -38,8 +36,8 @@ src_install() {
 	doman doc/mkdssp.1
 	dodoc README.txt changelog
 
-	cat >> "${T}"/30-${PN} <<- EOF || die
-		DSSP="${EPREFIX}"/usr/bin/${PN}
+	cat >> "${T}"/30-${PN} <<- EOF
+	DSSP="${EPREFIX}"/usr/bin/${PN}
 	EOF
 	doenvd "${T}"/30-${PN}
 }

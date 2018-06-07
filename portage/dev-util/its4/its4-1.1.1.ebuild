@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 DESCRIPTION="ITS4: Software Security Tool"
 HOMEPAGE="http://www.cigital.com/its4/"

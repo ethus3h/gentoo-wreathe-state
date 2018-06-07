@@ -1,17 +1,17 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
 if [[ ${PV} = 9999* ]]; then
-	EGIT_REPO_URI="https://anongit.freedesktop.org/git/wayland/weston.git"
+	EGIT_REPO_URI="git://anongit.freedesktop.org/git/wayland/${PN}"
 	GIT_ECLASS="git-r3"
 	EXPERIMENTAL="true"
 fi
 VIRTUALX_REQUIRED="test"
 RESTRICT="test"
 
-inherit autotools readme.gentoo-r1 toolchain-funcs virtualx epatch $GIT_ECLASS
+inherit autotools readme.gentoo-r1 toolchain-funcs virtualx $GIT_ECLASS
 
 DESCRIPTION="Wayland reference compositor"
 HOMEPAGE="https://wayland.freedesktop.org/"
@@ -95,7 +95,6 @@ DEPEND="${RDEPEND}
 "
 
 src_prepare() {
-	epatch "${FILESDIR}/${P}-sysmacros.patch"
 	if [[ ${PV} = 9999* ]]; then
 		eautoreconf
 	fi

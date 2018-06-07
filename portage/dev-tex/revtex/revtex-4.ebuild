@@ -1,12 +1,13 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
 inherit latex-package
 
-DESCRIPTION="LaTeX2e macros to prepare manuscripts for the journals of the APS and AIP"
-HOMEPAGE="https://journals.aps.org/revtex"
+DESCRIPTION="LaTeX2e macros for journals of the American Physical Society and the American Institute of Physics"
+HOMEPAGE="http://authors.aps.org/revtex4/"
+
 SRC_URI="http://publish.aps.org/files/revtex/4/revtex4.zip"
 
 LICENSE="LPPL-1.3c"

@@ -1,9 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit autotools
+EAPI=3
+inherit autotools base
 
 DESCRIPTION="An open implementation of the MFC/R2 telephony signaling protocol"
 HOMEPAGE="http://libopenr2.org/"
@@ -15,21 +14,13 @@ KEYWORDS="~amd64"
 IUSE=""
 
 RDEPEND="net-misc/dahdi"
-DEPEND="${RDEPEND}"
-
-PATCHES=( "${FILESDIR}"/${P}-fix-build-system.patch )
+PATCHES=( "${FILESDIR}/${PV}-respect-user-cflags.patch" )
 
 src_prepare() {
-	default
-	mv configure.{in,ac} || die
+	base_src_prepare
 	eautoreconf
 }
 
-src_configure() {
-	econf --disable-static
-}
-
 src_install() {
-	default
-	find "${D}" -name '*.la' -delete || die
+	emake DESTDIR="${D}" install || die
 }

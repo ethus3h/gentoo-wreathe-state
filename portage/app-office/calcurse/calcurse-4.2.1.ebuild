@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,8 +6,8 @@ EAPI=6
 inherit eutils autotools multilib-minimal
 
 DESCRIPTION="a text-based calendar and scheduling application"
-HOMEPAGE="https://calcurse.org/"
-SRC_URI="https://calcurse.org/files/${P}.tar.gz"
+HOMEPAGE="http://calcurse.org/"
+SRC_URI="http://calcurse.org/files/${P}.tar.gz"
 
 LICENSE="BSD-2"
 SLOT="0"
@@ -18,7 +18,7 @@ DEPEND="${RDEPEND}"
 
 DOCS=( AUTHORS NEWS README )
 
-PATCHES=( "${FILESDIR}"/"${PN}-4.2.1-tinfo.patch" )
+PATCHES=( "${FILESDIR}"/"${P}-tinfo.patch" )
 
 src_prepare() {
 	default

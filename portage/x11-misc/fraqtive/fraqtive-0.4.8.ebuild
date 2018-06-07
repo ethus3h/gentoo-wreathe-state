@@ -1,22 +1,29 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 inherit eutils gnome2-utils qmake-utils toolchain-funcs
 
 DESCRIPTION="an open source, multi-platform generator of the Mandelbrot family fractals"
-HOMEPAGE="https://fraqtive.mimec.org/"
+HOMEPAGE="http://fraqtive.mimec.org/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="cpu_flags_x86_sse2"
+IUSE="qt5 cpu_flags_x86_sse2"
 
 RDEPEND="
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5
-	dev-qt/qtopengl:5
+	!qt5? (
+		dev-qt/qtcore:4
+		dev-qt/qtgui:4
+		dev-qt/qtopengl:4
+	)
+	qt5? (
+		dev-qt/qtcore:5
+		dev-qt/qtgui:5
+		dev-qt/qtopengl:5
+	)
 	virtual/glu
 "
 DEPEND="
@@ -25,8 +32,6 @@ DEPEND="
 "
 
 src_configure() {
-	epatch "${FILESDIR}/${P}-qt-includes.patch"
-
 	tc-export PKG_CONFIG
 	sed -i -e "s|-lGLU|$( ${PKG_CONFIG} --libs glu )|g" src/src.pro || die
 	local conf="release"
@@ -42,7 +47,11 @@ src_configure() {
 	# Don't strip wrt #252096
 	echo "QMAKE_STRIP =" >> "${S}"/config.pri
 
-	eqmake5
+	if use qt5; then
+		eqmake5
+	else
+		eqmake4
+	fi
 }
 
 src_install() {

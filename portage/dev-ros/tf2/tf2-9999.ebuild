@@ -15,11 +15,9 @@ IUSE=""
 
 RDEPEND="
 	dev-ros/tf2_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
-	dev-libs/console_bridge:=
+	dev-libs/console_bridge
 	dev-ros/rostime
 	dev-ros/geometry_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-libs/boost:=[threads]
 "
-DEPEND="${RDEPEND}
-	test? ( dev-ros/roscpp )
-"
+DEPEND="${RDEPEND}"

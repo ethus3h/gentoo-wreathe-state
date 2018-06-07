@@ -5,7 +5,7 @@ EAPI=5
 CATKIN_HAS_MESSAGES=yes
 ROS_REPO_URI="https://github.com/ros/actionlib"
 KEYWORDS="~amd64 ~arm"
-PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} pypy{,3} )
+PYTHON_COMPAT=( python{2_7,3_4,3_5} )
 CATKIN_MESSAGES_TRANSITIVE_DEPS="dev-ros/actionlib_msgs dev-ros/std_msgs"
 
 inherit ros-catkin
@@ -22,7 +22,3 @@ RDEPEND="dev-libs/boost:=[threads]
 DEPEND="${RDEPEND}
 	dev-ros/rosunit[${PYTHON_USEDEP}]
 	test? ( dev-ros/rostest[${PYTHON_USEDEP}] )"
-RDEPEND="${RDEPEND}
-	dev-ros/roslib[${PYTHON_USEDEP}]
-	dev-ros/rostopic[${PYTHON_USEDEP}]
-"

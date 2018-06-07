@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=7
 
 DESCRIPTION="command-line utility to create toc-files for cdrdao"
 HOMEPAGE="https://sourceforge.net/projects/mkcdtoc/"
@@ -14,3 +12,12 @@ IUSE=""
 
 DEPEND=">=dev-lang/perl-5.8.0"
 RDEPEND="${DEPEND}"
+
+src_compile() {
+	emake PREFIX="/usr" || die "emake failed"
+}
+
+src_install() {
+	emake PREFIX="/usr" MANDIR="/usr/share/man" DESTDIR="${D}" install || die "emake install failed"
+	dodoc AUTHORS ChangeLog NEWS README
+}

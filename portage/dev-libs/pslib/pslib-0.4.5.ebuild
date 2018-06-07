@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=4
 
-inherit autotools
+inherit eutils autotools
 
 DESCRIPTION="pslib is a C-library to create PostScript files on the fly"
 HOMEPAGE="http://pslib.sourceforge.net/"
@@ -11,13 +11,13 @@ SRC_URI="mirror://sourceforge/pslib/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~amd64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux"
 IUSE="debug jpeg png static-libs tiff"
 
 RDEPEND="
-	png? ( media-libs/libpng:0= )
-	jpeg? ( virtual/jpeg:0 )
-	tiff? ( media-libs/tiff:0= )"
+	png? ( >=media-libs/libpng-1.2.43-r2:0 )
+	jpeg? ( virtual/jpeg )
+	tiff? ( media-libs/tiff )"
 #gif? requires libungif, not in portage
 DEPEND="${RDEPEND}
 	dev-lang/perl
@@ -25,11 +25,10 @@ DEPEND="${RDEPEND}
 	dev-util/intltool
 	dev-perl/XML-Parser"
 
-PATCHES=( "${FILESDIR}"/${PN}-0.4.5-fix-build-system.patch )
-
 src_prepare() {
-	default
-	mv configure.{in,ac} || die
+	# hackpatchfix underlinking
+	sed -i -e 's/$(TIFF_LIBS)/$(TIFF_LIBS) -lm/' src/Makefile.am || die
+	sed -e "s/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/" -i configure.in || die
 	eautoreconf
 }
 
@@ -46,6 +45,5 @@ src_configure() {
 src_install() {
 	default
 
-	# package installs .pc files
-	find "${D}" -name '*.la' -delete || die
+	prune_libtool_files --all
 }

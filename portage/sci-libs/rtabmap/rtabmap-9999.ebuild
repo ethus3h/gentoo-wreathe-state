@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -16,8 +16,7 @@ if [ "${PV#9999}" != "${PV}" ] ; then
 	SRC_URI=""
 else
 	KEYWORDS="~amd64"
-	SRC_URI="https://github.com/introlab/rtabmap/archive/${PV}-melodic.tar.gz -> ${P}.tar.gz"
-	S="${WORKDIR}/${P}-melodic"
+	SRC_URI="https://github.com/introlab/rtabmap/archive/${PV}.tar.gz -> ${P}.tar.gz"
 fi
 
 DESCRIPTION="Real-Time Appearance-Based Mapping (RGB-D Graph SLAM)"
@@ -28,11 +27,10 @@ IUSE="examples ieee1394 openni2 qt5"
 
 RDEPEND="
 	media-libs/opencv:=[qt5(-)?]
-	sci-libs/pcl:=[openni,vtk,qt5(-)?]
+	sci-libs/pcl:=[openni,vtk]
 	sci-libs/vtk:=[qt5(-)?]
 	sys-libs/zlib
 	sci-libs/octomap:=
-	dev-libs/boost:=
 	ieee1394? ( media-libs/libdc1394 )
 	openni2? ( dev-libs/OpenNI2 )
 	qt5? (

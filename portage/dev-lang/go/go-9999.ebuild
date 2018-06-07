@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -30,7 +30,7 @@ x64-solaris? ( ${BOOTSTRAP_DIST}/go-solaris-amd64-${BOOTSTRAP_VERSION}.tbz )
 
 case ${PV}  in
 *9999*)
-	EGIT_REPO_URI="https://github.com/golang/go.git"
+	EGIT_REPO_URI="git://github.com/golang/go.git"
 	inherit git-r3
 	;;
 *)
@@ -52,7 +52,7 @@ esac
 SRC_URI+="!gccgo? ( ${BOOTSTRAP_URI} )"
 
 DESCRIPTION="A concurrent garbage collected and typesafe programming language"
-HOMEPAGE="https://golang.org"
+HOMEPAGE="http://www.golang.org"
 
 LICENSE="BSD"
 SLOT="0/${PV}"
@@ -64,7 +64,6 @@ RDEPEND="!<dev-go/go-tools-0_pre20150902"
 # These test data objects have writable/executable stacks.
 QA_EXECSTACK="
 	usr/lib/go/src/debug/elf/testdata/*.obj
-	usr/lib/go/src/go/internal/gccgoimporter/testdata/escapeinfo.gox
 	usr/lib/go/src/go/internal/gccgoimporter/testdata/unicode.gox
 	usr/lib/go/src/go/internal/gccgoimporter/testdata/time.gox
 	"

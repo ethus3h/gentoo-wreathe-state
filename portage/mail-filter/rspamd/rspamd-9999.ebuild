@@ -1,30 +1,18 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-if [[ ${PV} == *9999 ]] ; then
-	SCM="git-r3"
-	EGIT_REPO_URI="https://github.com/vstakhov/rspamd.git"
-fi
-
-inherit cmake-utils user systemd pax-utils ${SCM}
+inherit cmake-utils user systemd git-r3 pax-utils
 
 DESCRIPTION="Rapid spam filtering system"
 HOMEPAGE="https://github.com/vstakhov/rspamd"
-
-if [[ ${PV} == *9999 ]] ; then
-	SRC_URI=""
-	KEYWORDS=""
-else
-	SRC_URI="https://github.com/vstakhov/rspamd/archive/${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-fi
+EGIT_REPO_URI="https://github.com/vstakhov/rspamd.git"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-IUSE="cpu_flags_x86_ssse3 fann gd jemalloc +jit libressl pcre2 +torch"
-REQUIRED_USE="torch? ( jit )"
+KEYWORDS=""
+IUSE="fann +gd jemalloc +jit libressl pcre2"
 
 RDEPEND="!libressl? ( dev-libs/openssl:0=[-bindist] )
 	libressl? ( dev-libs/libressl:0= )
@@ -36,11 +24,10 @@ RDEPEND="!libressl? ( dev-libs/openssl:0=[-bindist] )
 	dev-libs/libevent
 	dev-db/sqlite:3
 	dev-libs/glib:2
-	<dev-util/ragel-7.0
+	dev-util/ragel
 	sys-apps/file
 	gd? ( media-libs/gd[jpeg] )
-	dev-libs/icu
-	cpu_flags_x86_ssse3? ( dev-libs/hyperscan )"
+	dev-libs/icu"
 DEPEND="dev-util/ragel
 	${RDEPEND}"
 
@@ -59,26 +46,24 @@ src_configure() {
 		-DLOGDIR=/var/log/rspamd
 		-DENABLE_LUAJIT=$(usex jit ON OFF)
 		-DENABLE_FANN=$(usex fann ON OFF)
-		-DENABLE_GD=$(usex gd ON OFF)
 		-DENABLE_PCRE2=$(usex pcre2 ON OFF)
 		-DENABLE_JEMALLOC=$(usex jemalloc ON OFF)
-		-DENABLE_HYPERSCAN=$(usex cpu_flags_x86_ssse3 ON OFF)
-		-DENABLE_TORCH=$(usex torch ON OFF)
+		-DENABLE_GD=$(usex gd ON OFF)
 	)
 	cmake-utils_src_configure
 }
 
 src_install() {
 	cmake-utils_src_install
-	newinitd "${FILESDIR}/rspamd.init-r5" rspamd
+	newinitd "${FILESDIR}/rspamd.init-r2" rspamd
 
 	# Remove mprotect for JIT support
 	if use jit; then
 		pax-mark m "${ED}"/usr/bin/rspamd-* "${ED}"/usr/bin/rspamadm-* || die
 	fi
 
-	keepdir /var/lib/rspamd
-	keepdir /var/log/rspamd
+	dodir /var/lib/rspamd
+	dodir /var/log/rspamd
 
 	fowners rspamd:rspamd /var/lib/rspamd /var/log/rspamd
 

@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=6
 
 DESCRIPTION="howto write linux device drivers (updated for Linux 2.6)"
 HOMEPAGE="http://www.oreilly.com/catalog/linuxdrive3/ http://lwn.net/Kernel/LDD3/"
@@ -23,7 +21,7 @@ S=${WORKDIR}
 
 src_install() {
 	insinto /usr/share/doc/${PF}
-	doins ldd3_pdf/*.pdf
+	doins ldd3_pdf/*.pdf || die "pdfs"
 	insinto /usr/share/doc/${PF}/examples
-	doins -r examples/*
+	doins -r examples/* || die "examples"
 }

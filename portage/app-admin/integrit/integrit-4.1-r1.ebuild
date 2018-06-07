@@ -1,61 +1,61 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=4
 
-inherit autotools
+inherit autotools toolchain-funcs
 
 DESCRIPTION="file integrity verification program"
 HOMEPAGE="http://integrit.sourceforge.net/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
-
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ppc x86"
+KEYWORDS="~amd64 ~ppc ~x86"
 IUSE=""
 
-PATCHES=( "${FILESDIR}"/${PN}-4.1-fix-build-system.patch )
-
 src_prepare() {
-	default
-	mv configure.{in,ac} || die
-	mv hashtbl/configure.{in,ac} || die
-
-	# tests are not executable
-	chmod +x test/test || die
-
+	sed -i -e "/^CC/d" configure.in hashtbl/configure.in || die
+	sed -i -e "/^AC_PROGRAM_PATH/d" configure.in hashtbl/configure.in || die
 	eautoreconf
+	tc-export AR
 }
 
 src_compile() {
 	emake
 	emake utils
 
-	emake -C doc
-	emake -C hashtbl hashtest
+	cd "${S}"/doc && emake
+	cd "${S}"/hashtbl && emake hashtest
+}
+
+src_test() {
+	chmod +x test/test || die
+	default
 }
 
 src_install() {
 	dosbin integrit
-	dolib.a libintegrit.a
+	dolib libintegrit.a
 	dodoc Changes HACKING README todo.txt
 
-	# utils
-	dosbin utils/i-viewdb
-	dobin utils/i-ls
+	cd "${S}"/utils
+	dosbin i-viewdb
+	dobin i-ls
 
-	# hashtbl
-	dolib.a hashtbl/libhashtbl.a
-	doheader hashtbl/hashtbl.h
-	dobin hashtbl/hashtest
-	newdoc hashtbl/README README.hashtbl
+	cd "${S}"/hashtbl
+	dolib libhashtbl.a
+	insinto /usr/include
+	doins hashtbl.h
+	dobin hashtest
+	newdoc README README.hashtbl
 
-	# doc
-	doman doc/{i-ls.1,i-viewdb.1,integrit.1}
-	doinfo doc/integrit.info
+	cd "${S}"/doc
+	doman i-ls.1 i-viewdb.1 integrit.1
+	doinfo integrit.info
 
-	# examples
-	dodoc -r examples
+	cd "${S}"/examples
+	docinto examples
+	dodoc *
 }
 
 pkg_postinst() {

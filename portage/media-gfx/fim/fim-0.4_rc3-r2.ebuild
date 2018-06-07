@@ -39,7 +39,6 @@ S=${WORKDIR}/${P/_rc/-rc}
 
 src_prepare() {
 	epatch "${FILESDIR}/${P}-poppler031.patch"
-	epatch "${FILESDIR}/${PN}-0.4_rc3-gcc6.patch"
 }
 
 src_configure() {

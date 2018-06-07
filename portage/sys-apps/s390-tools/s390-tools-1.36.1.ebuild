@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -6,12 +6,12 @@ EAPI="5"
 inherit toolchain-funcs udev
 
 DESCRIPTION="User space utilities for the zSeries (s390) Linux kernel and device drivers"
-HOMEPAGE="https://www.ibm.com/developerworks/linux/linux390/s390-tools.html"
-SRC_URI="https://download.boulder.ibm.com/ibmdl/pub/software/dw/linux390/ht_src/${P}.tar.bz2"
+HOMEPAGE="http://www.ibm.com/developerworks/linux/linux390/s390-tools.html"
+SRC_URI="http://download.boulder.ibm.com/ibmdl/pub/software/dw/linux390/ht_src/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="-* s390"
+KEYWORDS="-* ~s390"
 IUSE="fuse ncurses pfm snmp zlib"
 
 RDEPEND="fuse? ( sys-fs/fuse )

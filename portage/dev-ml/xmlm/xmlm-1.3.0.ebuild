@@ -3,8 +3,6 @@
 
 EAPI=5
 
-inherit opam
-
 DESCRIPTION="Ocaml XML manipulation module"
 HOMEPAGE="http://erratique.ch/software/xmlm https://github.com/dbuenzli/xmlm"
 SRC_URI="http://erratique.ch/software/${PN}/releases/${P}.tbz"
@@ -14,9 +12,10 @@ SLOT="0/${PV}"
 KEYWORDS="~amd64"
 IUSE="test"
 
-RDEPEND=""
+RDEPEND=">=dev-lang/ocaml-3.12:="
 DEPEND="${RDEPEND}
 	dev-ml/findlib
+	dev-ml/opam
 	>=dev-ml/topkg-0.9
 "
 
@@ -28,4 +27,13 @@ src_compile() {
 
 src_test() {
 	ocaml pkg/pkg.ml test || die
+}
+
+src_install() {
+	opam-installer \
+		--prefix="${ED}/usr" \
+		--libdir="${D}/$(ocamlc -where)" \
+		--docdir="${ED}/usr/share/doc/${PF}" \
+		|| die
+	dodoc CHANGES.md README.md
 }

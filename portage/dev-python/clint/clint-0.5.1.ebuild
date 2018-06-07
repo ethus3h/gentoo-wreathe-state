@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -12,7 +12,7 @@ SRC_URI="https://github.com/kennethreitz/${PN}/archive/v${PV}.tar.gz -> ${P}.tar
 
 LICENSE="ISC"
 SLOT="0"
-KEYWORDS="amd64 ~x86"
+KEYWORDS="~x86 ~amd64"
 IUSE="doc examples test"
 
 DEPEND="
@@ -32,10 +32,7 @@ python_test() {
 
 python_install_all() {
 	use doc && local HTML_DOCS=( docs/_build/html/. )
-	if use examples; then
-		insinto /usr/share/doc/${PF}
-		doins -r examples
-	fi
+	use examples && local EXAMPLES=( examples/. )
 
 	distutils-r1_python_install_all
 }

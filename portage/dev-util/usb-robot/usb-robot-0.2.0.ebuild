@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="2"
 
 inherit toolchain-funcs
 
@@ -19,5 +19,10 @@ DEPEND="virtual/libusb:0
 RDEPEND="${DEPEND}"
 
 src_compile() {
-	emake CC="$(tc-getCC)"
+	emake CC="$(tc-getCC)" || die "emake failed"
+}
+
+src_install () {
+	emake install DESTDIR="${D}" || die
+	dodoc AUTHORS NEWS README ChangeLog
 }

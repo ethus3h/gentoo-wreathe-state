@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
 DESCRIPTION="Metapackage to pull all open build service services"
-HOMEPAGE="https://openbuildservice.org/"
+HOMEPAGE="http://openbuildservice.org/"
 SRC_URI=""
 
 LICENSE="GPL-2"

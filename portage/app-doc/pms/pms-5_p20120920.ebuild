@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -17,23 +17,21 @@ IUSE="binary html"
 DEPEND="!binary? (
 		dev-tex/leaflet
 		dev-texlive/texlive-bibtexextra
-		dev-texlive/texlive-fontsrecommended
 		dev-texlive/texlive-latex
 		dev-texlive/texlive-latexextra
 		dev-texlive/texlive-latexrecommended
-		dev-texlive/texlive-mathscience
+		|| ( dev-texlive/texlive-mathscience dev-texlive/texlive-science )
 		html? (
 			app-text/recode
 			>=dev-tex/tex4ht-20090115_p0029
 		)
 	)"
+RDEPEND=""
 
 S="${WORKDIR}/${MY_P}"
 
 src_compile() {
 	if ! use binary; then
-		# just in case; we shouldn't be generating any fonts
-		export VARTEXFONTS="${T}/fonts"
 		emake
 		use html && emake html
 	fi

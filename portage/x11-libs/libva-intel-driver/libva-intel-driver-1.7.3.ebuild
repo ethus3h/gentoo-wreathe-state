@@ -7,7 +7,7 @@ SCM=""
 if [ "${PV%9999}" != "${PV}" ] ; then # Live ebuild
 	SCM=git-2
 	EGIT_BRANCH=master
-	EGIT_REPO_URI="https://github.com/01org/intel-vaapi-driver.git"
+	EGIT_REPO_URI="git://anongit.freedesktop.org/git/vaapi/intel-driver"
 fi
 
 AUTOTOOLS_AUTORECONF="yes"
@@ -19,8 +19,7 @@ if [ "${PV%9999}" != "${PV}" ] ; then # Live ebuild
 	SRC_URI=""
 	S="${WORKDIR}/${PN}"
 else
-	SRC_URI="https://github.com/01org/intel-vaapi-driver/archive/${PV}.tar.gz -> ${P}.tar.gz"
-	S="${WORKDIR}/intel-vaapi-driver-${PV}"
+	SRC_URI="https://www.freedesktop.org/software/vaapi/releases/libva-intel-driver/${P}.tar.bz2"
 fi
 
 LICENSE="MIT"

@@ -1,13 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils
 IUSE=""
 DESCRIPTION="fork of wmmixer adding scrollwheel support and other features"
-HOMEPAGE="http://www.dockapps.net/wmsmixer"
-SRC_URI="http://www.dockapps.net/download/${P}.tar.gz"
+HOMEPAGE="http://dockapps.windowmaker.org/file.php/id/63"
+SRC_URI="http://dockapps.windowmaker.org/download.php/id/268/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -17,7 +15,8 @@ RDEPEND="x11-libs/libXpm
 	x11-libs/libXext
 	x11-libs/libX11"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xproto
+	x11-proto/xextproto"
 
 src_compile() {
 	g++ ${CFLAGS} -I/usr/X11R6/include -c -o wmsmixer.o wmsmixer.cc

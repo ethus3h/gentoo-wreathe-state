@@ -3,8 +3,6 @@
 
 EAPI=6
 
-inherit opam
-
 DESCRIPTION="Generation of accessor and iteration functions for ocaml variant types"
 HOMEPAGE="https://github.com/janestreet/ppx_variants_conv"
 SRC_URI="https://github.com/janestreet/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -23,4 +21,12 @@ DEPEND="
 	dev-ml/ocaml-migrate-parsetree:=
 "
 RDEPEND="${DEPEND}"
-DEPEND="${DEPEND} dev-ml/jbuilder"
+DEPEND="${DEPEND} dev-ml/opam dev-ml/jbuilder"
+
+src_install() {
+	opam-installer -i \
+		--prefix="${ED}/usr" \
+		--libdir="${D}/$(ocamlc -where)" \
+		--docdir="${ED}/usr/share/doc/${PF}" \
+		${PN}.install || die
+}

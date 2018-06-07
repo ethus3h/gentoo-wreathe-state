@@ -6,7 +6,7 @@ EAPI=6
 inherit multilib-build
 
 DESCRIPTION="Meta-ebuild for clang runtime libraries"
-HOMEPAGE="https://clang.llvm.org/"
+HOMEPAGE="http://clang.llvm.org/"
 SRC_URI=""
 
 LICENSE="metapackage"

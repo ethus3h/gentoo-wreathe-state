@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 JAVA_PKG_IUSE="doc source"
 inherit java-pkg-2 java-ant-2
@@ -12,7 +10,7 @@ SRC_URI="mirror://gnu/classpathx/activation-${PV}.tar.gz"
 
 LICENSE="GPL-2-with-linking-exception"
 SLOT="1"
-KEYWORDS="amd64 ppc64 x86"
+KEYWORDS="amd64 ppc64 x86 ~x86-fbsd"
 IUSE=""
 
 DEPEND=">=virtual/jdk-1.4"

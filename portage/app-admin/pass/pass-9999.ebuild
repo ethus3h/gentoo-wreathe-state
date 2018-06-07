@@ -3,7 +3,7 @@
 
 EAPI=5
 
-inherit bash-completion-r1 git-r3 elisp-common
+inherit bash-completion-r1 git-2 elisp-common
 
 DESCRIPTION="Stores, retrieves, generates, and synchronizes passwords securely"
 HOMEPAGE="https://www.passwordstore.org/"
@@ -26,6 +26,8 @@ RDEPEND="
 	dmenu? ( x11-misc/dmenu x11-misc/xdotool )
 	emacs? ( virtual/emacs )
 "
+
+S="${WORKDIR}/password-store-${PV}"
 
 src_prepare() {
 	use elibc_Darwin || return
@@ -65,7 +67,7 @@ pkg_postinst() {
 	if use importers; then
 		einfo "To import passwords from other password managers, you may use the"
 		einfo "various importer scripts found in:"
-		einfo "    ${EROOT%/}/usr/share/${PN}/importers/"
+		einfo "    ${ROOT}usr/share/${PN}/importers/"
 	fi
 }
 

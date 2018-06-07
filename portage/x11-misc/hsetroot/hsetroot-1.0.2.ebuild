@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 inherit autotools eutils
 
 DESCRIPTION="Tool which allows you to compose wallpapers ('root pixmaps') for X"
-HOMEPAGE="https://wiki.gentoo.org/wiki/No_homepage"
+HOMEPAGE="http://thegraveyard.org/hsetroot.html"
 SRC_URI="http://cdn.thegraveyard.org/releases/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
@@ -17,7 +17,7 @@ RDEPEND="x11-libs/libX11
 	>=media-libs/imlib2-1.0.6.2003[X]"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
-	x11-base/xorg-proto"
+	x11-proto/xproto"
 
 DOCS="AUTHORS ChangeLog NEWS README"
 

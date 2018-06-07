@@ -1,5 +1,7 @@
 [Unit]
 Description=Container hypervisor based on LXC
+After=cgmanager.service
+Requires=cgmanager.service
 
 [Service]
 ExecStart=/usr/sbin/lxd --group lxd

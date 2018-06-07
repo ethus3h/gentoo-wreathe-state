@@ -1,70 +1,51 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
-PYTHON_COMPAT=( python2_7 )
+EAPI="4"
 
-inherit python-any-r1 versionator
+EGIT_REPO_URI="git://git.savannah.gnu.org/${PN}.git
+	http://git.savannah.gnu.org/r/${PN}.git"
 
-if [[ ${PV} == 9999 ]] ; then
-	EGIT_REPO_URI="https://git.savannah.gnu.org/r/${PN}.git"
-
-	inherit git-r3
-else
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~x64-cygwin ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
-	if [[ ${PV/_beta} == ${PV} ]]; then
-		MY_P=${P}
-		SRC_URI="mirror://gnu/${PN}/${P}.tar.xz
-			https://alpha.gnu.org/pub/gnu/${PN}/${MY_P}.tar.xz"
-	else
-		MY_PV="$(get_major_version).$(($(get_version_component_range 2)-1))b"
-		MY_P="${PN}-${MY_PV}"
-
-		# Alpha/beta releases are not distributed on the usual mirrors.
-		SRC_URI="https://alpha.gnu.org/pub/gnu/${PN}/${MY_P}.tar.xz"
-	fi
-	S="${WORKDIR}/${MY_P}"
-fi
+inherit eutils git-2
 
 DESCRIPTION="Used to generate Makefile.in from Makefile.am"
 HOMEPAGE="https://www.gnu.org/software/automake/"
+SRC_URI=""
 
 LICENSE="GPL-2"
 # Use Gentoo versioning for slotting.
 SLOT="${PV:0:4}"
-IUSE="test"
+KEYWORDS=""
+IUSE=""
 
 RDEPEND="dev-lang/perl
-	>=sys-devel/automake-wrapper-11
-	>=sys-devel/autoconf-2.69:*
+	>=sys-devel/automake-wrapper-10
+	>=sys-devel/autoconf-2.69
+	>=sys-apps/texinfo-4.7
 	sys-devel/gnuconfig"
 DEPEND="${RDEPEND}
-	sys-apps/help2man
-	test? ( ${PYTHON_DEPS} )"
-
-pkg_setup() {
-	use test && python-any-r1_pkg_setup
-}
+	sys-apps/help2man"
 
 src_prepare() {
-	default
 	export WANT_AUTOCONF=2.5
 	# Don't try wrapping the autotools this thing runs as it tends
 	# to be a bit esoteric, and the script does `set -e` itself.
-	./bootstrap || die
-	sed -i -e "/APIVERSION=/s:=.*:=${SLOT}:" configure || die
+	./bootstrap.sh
+}
 
-	# Bug 628912
-	if ! has_version sys-apps/texinfo ; then
-		touch doc/{stamp-vti,version.texi,automake.info} || die
-	fi
+src_configure() {
+	econf --docdir="\$(datarootdir)/doc/${PF}"
+}
+
+src_test() {
+	emake check
 }
 
 # slot the info pages.  do this w/out munging the source so we don't have
 # to depend on texinfo to regen things.  #464146 (among others)
 slot_info_pages() {
-	pushd "${ED%/}"/usr/share/info >/dev/null || die
-	rm -f dir || die
+	pushd "${ED}"/usr/share/info >/dev/null
+	rm -f dir
 
 	# Rewrite all the references to other pages.
 	# before: * aclocal-invocation: (automake)aclocal Invocation.   Generating aclocal.m4.
@@ -86,22 +67,23 @@ slot_info_pages() {
 		sed -i -e "s:${f}:${d}:g" * || die
 	done
 
-	popd >/dev/null || die
+	popd >/dev/null
 }
 
 src_install() {
 	default
-
 	slot_info_pages
-	rm "${ED%/}"/usr/share/aclocal/README || die
-	rmdir "${ED%/}"/usr/share/aclocal || die
-	rm \
-		"${ED%/}"/usr/bin/{aclocal,automake} \
-		"${ED%/}"/usr/share/man/man1/{aclocal,automake}.1 || die
+
+	# SLOT the docs and junk
+	local x
+	for x in aclocal automake ; do
+		help2man "perl -Ilib ${x}" > ${x}-${SLOT}.1
+		doman ${x}-${SLOT}.1
+		rm -f "${ED}"/usr/bin/${x}
+	done
 
 	# remove all config.guess and config.sub files replacing them
 	# w/a symlink to a specific gnuconfig version
-	local x
 	for x in guess sub ; do
 		dosym ../gnuconfig/config.${x} /usr/share/${PN}-${SLOT}/config.${x}
 	done

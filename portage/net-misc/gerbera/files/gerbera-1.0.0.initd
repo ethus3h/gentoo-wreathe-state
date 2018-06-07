@@ -1,24 +1,29 @@
 #!/sbin/openrc-run
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-command="/usr/bin/gerbera"
-command_args="--logfile ${GERBERA_LOGFILE}
-	      --config ${GERBERA_CONFIG}
-	      --port ${GERBERA_PORT}
-	      ${GERBERA_OPTIONS}"
-command_user="gerbera:gerbera"
-command_background=true
-start_stop_daemon_args="--wait 500"
-retry="10"
-pidfile="/run/${RC_SVCNAME}.pid"
+# $Id$
 
 depend() {
 	need net
+	# In order to properly support this (need vs use), we would have to
+	# parse ${MEDIATOMB_CONFIG} and see if mysql is enabled and if it is
+	# pointing to the local system.  #368409
+	use mysql
 }
 
-start_pre() {
-	checkpath --owner "gerbera:gerbera" \
-			  --mode 0644 \
-			  --file "${GERBERA_LOGFILE}"
+start() {
+	ebegin "Starting MediaTomb"
+	start-stop-daemon --start --quiet --exec /usr/bin/mediatomb \
+		--pidfile ${MEDIATOMB_PIDFILE} -- --daemon \
+		--pidfile ${MEDIATOMB_PIDFILE} --user ${MEDIATOMB_USER} \
+		--group ${MEDIATOMB_GROUP} --logfile ${MEDIATOMB_LOGFILE} \
+		--config ${MEDIATOMB_CONFIG} --port ${MEDIATOMB_PORT} \
+		${MEDIATOMB_OPTIONS}
+	eend $?
+}
+
+stop () {
+	ebegin "Stopping MediaTomb"
+	start-stop-daemon --stop --retry 10 --quiet --pidfile ${MEDIATOMB_PIDFILE}
+	eend $?
 }

@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 JAVA_PKG_IUSE="doc source"
 
@@ -13,7 +11,7 @@ SRC_URI="mirror://apache/avalon/avalon-framework/source/${P}.src.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="4.1"
-KEYWORDS="amd64 ppc64 x86"
+KEYWORDS="amd64 ppc64 x86 ~x86-fbsd"
 IUSE=""
 
 COMMON_DEP="

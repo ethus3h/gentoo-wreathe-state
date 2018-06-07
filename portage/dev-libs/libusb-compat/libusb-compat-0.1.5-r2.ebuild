@@ -1,9 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit toolchain-funcs multilib-minimal
+EAPI=5
+inherit eutils toolchain-funcs multilib-minimal
 
 DESCRIPTION="Userspace access to USB devices (libusb-0.1 compat wrapper)"
 HOMEPAGE="http://libusb.sourceforge.net/"
@@ -15,15 +14,19 @@ KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86
 IUSE="debug examples static-libs"
 
 RDEPEND=">=virtual/libusb-1-r1:1[${MULTILIB_USEDEP}]
-	!dev-libs/libusb:0"
+	!dev-libs/libusb:0
+	abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-baselibs-20130224-r7
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)]
+	)"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
 DOCS="AUTHORS ChangeLog NEWS README"
 
-PATCHES=(
-	"${FILESDIR}"/${PN/-compat}-0.1-ansi.patch
-)
+src_prepare() {
+	epatch "${FILESDIR}"/${PN/-compat}-0.1-ansi.patch
+}
 
 multilib_src_configure() {
 	ECONF_SOURCE=${S} \
@@ -39,7 +42,7 @@ multilib_src_install() {
 }
 
 multilib_src_install_all() {
-	find "${ED}" -name '*.la' -delete || die
+	prune_libtool_files
 	einstalldocs
 
 	if use examples; then

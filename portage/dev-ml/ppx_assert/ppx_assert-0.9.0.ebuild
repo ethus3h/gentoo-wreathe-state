@@ -3,8 +3,6 @@
 
 EAPI=6
 
-inherit opam
-
 DESCRIPTION="Assert-like extension nodes that raise useful errors on failure"
 HOMEPAGE="https://github.com/janestreet/ppx_assert"
 SRC_URI="https://github.com/janestreet/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -15,6 +13,7 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND="
+	dev-lang/ocaml:=
 	dev-ml/base:=
 	dev-ml/ppx_compare:=
 	dev-ml/ppx_core:=
@@ -28,4 +27,12 @@ DEPEND="
 "
 
 RDEPEND="${DEPEND}"
-DEPEND="${RDEPEND} dev-ml/jbuilder"
+DEPEND="${RDEPEND} dev-ml/opam dev-ml/jbuilder"
+
+src_install() {
+	opam-installer -i \
+		--prefix="${ED}/usr" \
+		--libdir="${D}/$(ocamlc -where)" \
+		--docdir="${ED}/usr/share/doc/${PF}" \
+		${PN}.install || die
+}

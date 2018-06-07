@@ -4,7 +4,7 @@
 EAPI="5"
 
 DESCRIPTION="Meta package for utilities for the GNOME desktop"
-HOMEPAGE="https://wiki.gnome.org/Apps/Attic/GnomeUtils"
+HOMEPAGE="https://live.gnome.org/GnomeUtils"
 
 LICENSE="metapackage"
 SLOT="0"

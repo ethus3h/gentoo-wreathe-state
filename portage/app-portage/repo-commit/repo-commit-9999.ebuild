@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -26,10 +26,9 @@ RDEPEND="
 		>=sys-apps/portage-2.2.0_alpha86
 		( >=sys-apps/portage-2.1.10.30
 			<sys-apps/portage-2.2.0_alpha )
-		sys-apps/portage-mgorny
-		( sys-apps/portage
-			app-portage/gentoolkit-dev )
-	)"
+		app-portage/gentoolkit-dev
+	)
+	sys-apps/portage"
 #if LIVE
 
 KEYWORDS=

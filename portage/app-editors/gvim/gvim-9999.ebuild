@@ -1,26 +1,24 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 VIM_VERSION="8.0"
 PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
-PYTHON_REQ_USE="threads"
-USE_RUBY="ruby22 ruby23 ruby24 ruby25"
+PYTHON_REQ_USE=threads
+inherit eutils vim-doc flag-o-matic fdo-mime gnome2-utils versionator bash-completion-r1 prefix python-single-r1
 
-inherit vim-doc flag-o-matic xdg-utils gnome2-utils versionator bash-completion-r1 prefix python-single-r1 ruby-single
-
-if [[ ${PV} == 9999* ]]; then
+if [[ ${PV} == 9999* ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/vim/vim.git"
 	EGIT_CHECKOUT_DIR=${WORKDIR}/vim-${PV}
 else
 	SRC_URI="https://github.com/vim/vim/archive/v${PV}.tar.gz -> vim-${PV}.tar.gz
-		https://dev.gentoo.org/~radhermit/vim/vim-8.0.0938-gentoo-patches.tar.bz2"
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~x86-solaris"
+		https://dev.gentoo.org/~radhermit/vim/vim-8.0.0106-gentoo-patches.tar.bz2"
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~x86-solaris"
 fi
 
 DESCRIPTION="GUI version of the Vim text editor"
-HOMEPAGE="https://vim.sourceforge.io/ https://github.com/vim/vim"
+HOMEPAGE="http://www.vim.org/ https://github.com/vim/vim"
 
 SLOT="0"
 LICENSE="vim"
@@ -48,6 +46,7 @@ RDEPEND="
 			gtk? (
 				>=x11-libs/gtk+-2.6:2
 				x11-libs/libXft
+				gnome? ( >=gnome-base/libgnomeui-2.6 )
 			)
 			!gtk? (
 				motif? ( >=x11-libs/motif-2.3:0 )
@@ -67,7 +66,7 @@ RDEPEND="
 	perl? ( dev-lang/perl:= )
 	python? ( ${PYTHON_DEPS} )
 	racket? ( dev-scheme/racket )
-	ruby? ( ${RUBY_DEPS} )
+	ruby? ( || ( dev-lang/ruby:2.4 dev-lang/ruby:2.3 dev-lang/ruby:2.2 dev-lang/ruby:2.1 ) )
 	selinux? ( sys-libs/libselinux )
 	session? ( x11-libs/libSM )
 	tcl? ( dev-lang/tcl:0= )
@@ -87,34 +86,30 @@ pkg_setup() {
 	export LC_COLLATE="C"
 
 	# Gnome sandbox silliness. bug #114475.
-	mkdir -p "${T}"/home || die
+	mkdir -p "${T}"/home
 	export HOME="${T}"/home
 
 	use python && python-single-r1_pkg_setup
 }
 
 src_prepare() {
-	if [[ ${PV} != 9999* ]]; then
+	if [[ ${PV} != 9999* ]] ; then
 		# Gentoo patches to fix runtime issues, cross-compile errors, etc
 		eapply "${WORKDIR}"/patches/
 	fi
 
 	# Fixup a script to use awk instead of nawk
-	sed -i -e \
-		'1s|.*|#!'"${EPREFIX}"'/usr/bin/awk -f|' \
-		"${S}"/runtime/tools/mve.awk || die "mve.awk sed failed"
+	sed -i '1s|.*|#!'"${EPREFIX}"'/usr/bin/awk -f|' "${S}"/runtime/tools/mve.awk \
+		|| die "mve.awk sed failed"
 
 	# Read vimrc and gvimrc from /etc/vim
-	echo '#define SYS_VIMRC_FILE "'${EPREFIX}'/etc/vim/vimrc"' \
-	    >> "${S}"/src/feature.h || die "echo failed"
-	echo '#define SYS_GVIMRC_FILE "'${EPREFIX}'/etc/vim/gvimrc"' \
-	    >> "${S}"/src/feature.h || die "echo failed"
+	echo '#define SYS_VIMRC_FILE "'${EPREFIX}'/etc/vim/vimrc"' >> "${S}"/src/feature.h
+	echo '#define SYS_GVIMRC_FILE "'${EPREFIX}'/etc/vim/gvimrc"' >> "${S}"/src/feature.h
 
 	# Use exuberant ctags which installs as /usr/bin/exuberant-ctags.
 	# Hopefully this pattern won't break for a while at least.
 	# This fixes bug 29398 (27 Sep 2003 agriffis)
-	sed -i -e \
-		's/\<ctags\("\| [-*.]\)/exuberant-&/g' \
+	sed -i 's/\<ctags\("\| [-*.]\)/exuberant-&/g' \
 		"${S}"/runtime/doc/syntax.txt \
 		"${S}"/runtime/doc/tagsrch.txt \
 		"${S}"/runtime/doc/usr_29.txt \
@@ -124,30 +119,29 @@ src_prepare() {
 	# Don't be fooled by /usr/include/libc.h.  When found, vim thinks
 	# this is NeXT, but it's actually just a file in dev-libs/9libs
 	# This fixes bug 43885 (20 Mar 2004 agriffis)
-	sed -i -e \
-		's/ libc\.h / /' "${S}"/src/configure.ac || die 'sed failed'
+	sed -i 's/ libc\.h / /' "${S}"/src/configure.ac || die 'sed failed'
 
 	# gcc on sparc32 has this, uhm, interesting problem with detecting EOF
 	# correctly. To avoid some really entertaining error messages about stuff
 	# which isn't even in the source file being invalid, we'll do some trickery
 	# to make the error never occur. bug 66162 (02 October 2004 ciaranm)
-	find "${S}" -name '*.c' | while read c; do
-	    echo >> "$c" || die "echo failed"
-	done
+	find "${S}" -name '*.c' | while read c ; do echo >> "$c" ; done
 
 	# Try to avoid sandbox problems. Bug #114475.
-	if [[ -d "${S}"/src/po ]]; then
-		sed -i -e \
-			'/-S check.vim/s,..VIM.,ln -s $(VIM) testvim \; ./testvim -X,' \
-			"${S}"/src/po/Makefile || die
+	if [[ -d "${S}"/src/po ]] ; then
+		sed -i '/-S check.vim/s,..VIM.,ln -s $(VIM) testvim \; ./testvim -X,' \
+			"${S}"/src/po/Makefile
 	fi
 
-	cp -v "${S}"/src/config.mk.dist "${S}"/src/auto/config.mk || die "cp failed"
+	if version_is_at_least 7.3.122 ; then
+		cp "${S}"/src/config.mk.dist "${S}"/src/auto/config.mk
+	fi
 
 	# Bug #378107 - Build properly with >=perl-core/ExtUtils-ParseXS-3.20.0
-	sed -i -e \
-		"s:\\\$(PERLLIB)/ExtUtils/xsubpp:${EPREFIX}/usr/bin/xsubpp:" \
-		"${S}"/src/Makefile || die 'sed for ExtUtils-ParseXS failed'
+	if version_is_at_least 7.3 ; then
+		sed -i "s:\\\$(PERLLIB)/ExtUtils/xsubpp:${EPREFIX}/usr/bin/xsubpp:"	\
+			"${S}"/src/Makefile || die 'sed for ExtUtils-ParseXS failed'
+	fi
 
 	eapply_user
 }
@@ -169,18 +163,14 @@ src_configure() {
 	# (2) Rebuild auto/configure
 	# (3) Notice auto/configure is newer than auto/config.mk
 	# (4) Run ./configure (with wrong args) to remake auto/config.mk
-	sed -i -e \
-		's# auto/config\.mk:#:#' src/Makefile || die "Makefile sed failed"
-	rm -v src/auto/configure || die "rm failed"
+	sed -i 's# auto/config\.mk:#:#' src/Makefile || die "Makefile sed failed"
+	rm -f src/auto/configure
 	emake -j1 -C src autoconf
 
 	# This should fix a sandbox violation (see bug 24447). The hvc
 	# things are for ppc64, see bug 86433.
-	local file
-	for file in /dev/pty/s* /dev/console /dev/hvc/* /dev/hvc*; do
-		if [[ -e ${file} ]]; then
-			addwrite $file
-		fi
+	for file in /dev/pty/s* /dev/console /dev/hvc/* /dev/hvc* ; do
+		[[ -e ${file} ]] && addwrite $file
 	done
 
 	use debug && append-flags "-DDEBUG"
@@ -207,9 +197,9 @@ src_configure() {
 
 	# --with-features=huge forces on cscope even if we --disable it. We need
 	# to sed this out to avoid screwiness. (1 Sep 2004 ciaranm)
-	if ! use cscope; then
-		sed -i -e \
-			'/# define FEAT_CSCOPE/d' src/feature.h || die "couldn't disable cscope"
+	if ! use cscope ; then
+		sed -i '/# define FEAT_CSCOPE/d' src/feature.h || \
+			die "couldn't disable cscope"
 	fi
 
 	# gvim's GUI preference order is as follows:
@@ -221,29 +211,29 @@ src_configure() {
 	# -aqua -gtk -gtk3 -motif neXt  NEXTAW
 	# -aqua -gtk -gtk3 -motif -neXt ATHENA
 	echo ; echo
-	if use aqua; then
+	if use aqua ; then
 		einfo "Building gvim with the Carbon GUI"
 		myconf+=(
 			--enable-darwin
 			--enable-gui=carbon
 		)
-	elif use gtk3; then
+	elif use gtk3 ; then
 		myconf+=( --enable-gtk3-check )
 		einfo "Building gvim with the gtk+-3 GUI"
 		myconf+=( --enable-gui=gtk3 )
-	elif use gtk; then
+	elif use gtk ; then
 		myconf+=( --enable-gtk2-check )
-		if use gnome; then
+		if use gnome ; then
 			einfo "Building gvim with the Gnome 2 GUI"
 			myconf+=( --enable-gui=gnome2 )
 		else
 			einfo "Building gvim with the gtk+-2 GUI"
 			myconf+=( --enable-gui=gtk2 )
 		fi
-	elif use motif; then
+	elif use motif ; then
 		einfo "Building gvim with the MOTIF GUI"
 		myconf+=( --enable-gui=motif )
-	elif use neXt; then
+	elif use neXt ; then
 		einfo "Building gvim with the neXtaw GUI"
 		myconf+=( --enable-gui=nextaw )
 	else
@@ -297,18 +287,45 @@ src_test() {
 	ln -s "${S}"/src/gvim "${S}"/src/testvim || die
 
 	# Make sure our VIMPROG is used.
-	sed -i -e 's:\.\./vim:../testvim:' src/testdir/test49.vim || die
+	sed -i 's:\.\./vim:../testvim:' src/testdir/test49.vim || die
 
 	# Don't do additional GUI tests.
 	emake -j1 VIMPROG=../testvim -C src/testdir nongui
 }
 
-# Call eselect vi update with --if-unset
-# to respect user's choice (bug 187449)
-eselect_vi_update() {
+# Make convenience symlinks, hopefully without stepping on toes.  Some
+# of these links are "owned" by the vim ebuild when it is installed,
+# but they might be good for gvim as well (see bug 45828)
+update_vim_symlinks() {
+	local f syms
+	syms="vimdiff rvim rview"
 	einfo "Calling eselect vi update..."
+	# Call this with --if-unset to respect user's choice (bug 187449)
 	eselect vi update --if-unset
-	eend $?
+
+	# Make or remove convenience symlink, vim -> gvim
+	if [[ -f "${EROOT}"/usr/bin/gvim ]]; then
+		ln -s gvim "${EROOT}"/usr/bin/vim 2>/dev/null
+	elif [[ -L "${EROOT}"/usr/bin/vim && ! -f "${EROOT}"/usr/bin/vim ]]; then
+		rm "${EROOT}"/usr/bin/vim
+	fi
+
+	# Make or remove convenience symlinks to vim
+	if [[ -f "${EROOT}"/usr/bin/vim ]]; then
+		for f in ${syms}; do
+			ln -s vim "${EROOT}"/usr/bin/${f} 2>/dev/null
+		done
+	else
+		for f in ${syms}; do
+			if [[ -L "${EROOT}"/usr/bin/${f} && ! -f "${EROOT}"/usr/bin/${f} ]]; then
+				rm -f "${EROOT}"/usr/bin/${f}
+			fi
+		done
+	fi
+
+	# This will still break if you merge then remove the vi package,
+	# but there's only so much you can do, eh?  Unfortunately we don't
+	# have triggers like are done in rpm-land.
 }
 
 src_install() {
@@ -325,10 +342,9 @@ src_install() {
 	emake -C src DESTDIR="${D}" DATADIR="${EPREFIX}"/usr/share install-icons
 
 	dodir /usr/share/man/man1
-	echo ".so vim.1" > "${ED}"/usr/share/man/man1/gvim.1 || die "echo failed"
-	echo ".so vim.1" > "${ED}"/usr/share/man/man1/gview.1 || die "echo failed"
-	echo ".so vimdiff.1" > "${ED}"/usr/share/man/man1/gvimdiff.1 || \
-		die "echo failed"
+	echo ".so vim.1" > "${ED}"/usr/share/man/man1/gvim.1
+	echo ".so vim.1" > "${ED}"/usr/share/man/man1/gview.1
+	echo ".so vimdiff.1" > "${ED}"/usr/share/man/man1/gvimdiff.1
 
 	insinto /etc/vim
 	newins "${FILESDIR}"/gvimrc-r1 gvimrc
@@ -340,7 +356,7 @@ src_install() {
 	newbashcomp "${FILESDIR}"/${PN}-completion ${PN}
 
 	# don't install vim desktop file
-	rm -v "${ED}"/usr/share/applications/vim.desktop || die "failed to remove vim.desktop"
+	rm "${ED}"/usr/share/applications/vim.desktop || die "failed to remove vim.desktop"
 }
 
 pkg_postinst() {
@@ -348,13 +364,13 @@ pkg_postinst() {
 	update_vim_helptags
 
 	# Update fdo mime stuff, bug #78394
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 
 	# Update icon cache
 	gnome2_icon_cache_update
 
-	# Call eselect vi update
-	eselect_vi_update
+	# Make convenience symlinks
+	update_vim_symlinks
 }
 
 pkg_postrm() {
@@ -362,11 +378,11 @@ pkg_postrm() {
 	update_vim_helptags
 
 	# Update fdo mime stuff, bug #78394
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 
 	# Update icon cache
 	gnome2_icon_cache_update
 
-	# Call eselect vi update
-	eselect_vi_update
+	# Make convenience symlinks
+	update_vim_symlinks
 }

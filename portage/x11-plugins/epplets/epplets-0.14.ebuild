@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="4"
@@ -19,7 +19,8 @@ RDEPEND="x11-libs/libX11
 	>=x11-wm/enlightenment-0.16.4"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
-	x11-base/xorg-proto"
+	x11-proto/xproto
+	x11-proto/xextproto"
 
 src_configure() {
 	econf $(use_enable static-libs static)

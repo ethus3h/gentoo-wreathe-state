@@ -1,5 +1,5 @@
---- a/src/BFont.cpp
-+++ b/src/BFont.cpp
+--- src/BFont.cpp
++++ src/BFont.cpp
 @@ -319,7 +319,7 @@
      int i   = 0;
  

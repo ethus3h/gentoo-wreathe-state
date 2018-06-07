@@ -1,5 +1,5 @@
---- a/src/Makefile.old
-+++ b/src/Makefile
+--- src/Makefile.old
++++ src/Makefile
 @@ -146,7 +146,7 @@
  endif
  

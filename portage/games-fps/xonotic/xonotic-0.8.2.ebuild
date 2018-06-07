@@ -111,3 +111,8 @@ src_install() {
 	insinto "/usr/share/${PN}"
 	doins -r key_0.d0pk server data
 }
+
+pkg_postinst() {
+	elog "If you are using opensource drivers you should consider installing: "
+	elog "    media-libs/libtxc_dxtn"
+}

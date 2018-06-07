@@ -3,7 +3,7 @@
 
 EAPI=5
 
-inherit eutils libtool
+inherit eutils
 
 MY_P="gc-${PV}"
 
@@ -20,10 +20,6 @@ DEPEND=">=dev-libs/libatomic_ops-7.4
 	virtual/pkgconfig"
 
 S="${WORKDIR}/${MY_P}"
-
-src_prepare() {
-	elibtoolize #594754
-}
 
 src_configure() {
 	local config=(

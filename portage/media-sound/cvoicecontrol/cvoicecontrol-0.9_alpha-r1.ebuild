@@ -1,7 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=2
+inherit eutils
 
 MY_P=${P/_/}
 
@@ -16,16 +17,15 @@ IUSE=""
 
 S=${WORKDIR}/${MY_P}
 
-PATCHES=( "${FILESDIR}/${P}-gentoo-2.patch" )
-
 src_prepare() {
-	default
-	sed -i -e "s/install-data-am: install-data-local/install-data-am:/" Makefile.in || die "sed failed"
+	epatch "${FILESDIR}"/${P}-gentoo-2.patch
+	sed -i -e "s/install-data-am: install-data-local/install-data-am:/" Makefile.in
 	# Handle documentation with dohtml instead.
-	sed -i -e "s:SUBDIRS = docs:#SUBDIRS = docs:" cvoicecontrol/Makefile.in || die "sed #2 failed"
+	sed -i -e "s:SUBDIRS = docs:#SUBDIRS = docs:" cvoicecontrol/Makefile.in
 }
 
 src_install () {
-	HTML_DOCS=( cvoicecontrol/docs/en/*.html )
-	default
+	emake DESTDIR="${D}" install || die "emake install failed"
+	dodoc AUTHORS BUGS ChangeLog FAQ README
+	dohtml cvoicecontrol/docs/en/*.html
 }

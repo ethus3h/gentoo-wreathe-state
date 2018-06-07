@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -35,11 +35,7 @@ DEPEND="${RDEPEND}
 
 S="${WORKDIR}"/uhd-release_00$(get_version_component_range 1)_00$(get_version_component_range 2)_00$(get_version_component_range 3)/host
 
-PATCHES=( "${FILESDIR}/${P}-tinfo.patch" )
-
 src_prepare() {
-	cmake-utils_src_prepare
-
 	gnome2_environment_reset #534582
 
 	#this may not be needed in 3.4.3 and above, please verify

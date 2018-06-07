@@ -1,10 +1,10 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 inherit eutils
 
-DESCRIPTION="HTML parsing library"
+DESCRIPTION="HTML parsing library. It takes HTML tags, text, and calls callbacks for each type of token"
 HOMEPAGE="http://msalem.translator.cx/libhtmlparse.html"
 SRC_URI="http://msalem.translator.cx/dist/${P}.tar.gz"
 

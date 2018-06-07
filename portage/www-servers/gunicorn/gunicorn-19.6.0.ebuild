@@ -8,12 +8,12 @@ PYTHON_COMPAT=( python2_7 python3_{4,5,6} pypy )
 inherit distutils-r1
 
 DESCRIPTION="A WSGI HTTP Server for UNIX"
-HOMEPAGE="http://gunicorn.org https://pypi.org/project/gunicorn/ https://github.com/benoitc/gunicorn"
+HOMEPAGE="http://gunicorn.org https://pypi.python.org/pypi/gunicorn https://github.com/benoitc/gunicorn"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
 LICENSE="MIT PSF-2 doc? ( BSD )"
 SLOT="0"
-KEYWORDS="amd64 ~arm64 x86"
+KEYWORDS="amd64 x86"
 IUSE="doc examples test"
 
 RDEPEND="dev-python/setproctitle[${PYTHON_USEDEP}]"

@@ -3,9 +3,9 @@
 
 EAPI=2
 
-inherit autotools elisp-common eutils flag-o-matic java-pkg-opt-2 multilib xdg-utils
+inherit autotools elisp-common eutils flag-o-matic java-pkg-opt-2 multilib
 
-PATCHSET_VER="1"
+PATCHSET_VER="0"
 MY_P=${PN}-srcdist-${PV}
 
 DESCRIPTION="Mercury is a modern general-purpose logic/functional programming language"
@@ -44,8 +44,6 @@ src_prepare() {
 
 	cd "${S}" || die
 	eautoconf
-
-	xdg_environment_reset
 }
 
 src_configure() {
@@ -142,8 +140,7 @@ src_test() {
 src_install() {
 	emake \
 		PARALLEL=${MAKEOPTS} \
-		MMAKEFLAGS="EXTRA_MLFLAGS=--no-strip \
-			    EXTRA_LDFLAGS='${LDFLAGS}' \
+		MMAKEFLAGS="EXTRA_LDFLAGS='${LDFLAGS}' \
 			    EXTRA_LD_LIBFLAGS='${LDFLAGS}'" \
 		MERCURY_COMPILER="${S}"/compiler/mercury_compile \
 		INSTALL_PREFIX="${D}"/usr \

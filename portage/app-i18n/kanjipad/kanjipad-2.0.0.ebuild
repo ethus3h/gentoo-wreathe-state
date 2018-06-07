@@ -1,17 +1,17 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="2"
 
-inherit toolchain-funcs
+inherit eutils toolchain-funcs
 
 DESCRIPTION="Japanese handwriting recognition tool"
-HOMEPAGE="https://fishsoup.net/software/kanjipad/"
-SRC_URI="https://fishsoup.net/software/kanjipad/${P}.tar.gz"
+HOMEPAGE="http://fishsoup.net/software/kanjipad/"
+SRC_URI="http://fishsoup.net/software/kanjipad/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ppc64 x86"
+KEYWORDS="x86 amd64 ppc64"
 IUSE=""
 
 RDEPEND="x11-libs/gtk+:2
@@ -19,26 +19,22 @@ RDEPEND="x11-libs/gtk+:2
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
-DOCS=( ChangeLog README TODO jstroke/README-kanjipad )
-
-PATCHES=(
-	"${FILESDIR}/${P}-cflags.patch"
-	"${FILESDIR}/${P}-underlinking.patch"
-)
-
 src_prepare() {
-	default
-	perl -i -pe "s|PREFIX=/usr/local|PREFIX=/usr|;
-		s|-DG.*DISABLE_DEPRECATED||g" Makefile || die "Fixing Makefile failed"
+	epatch "${FILESDIR}"/${P}-cflags.patch \
+		"${FILESDIR}"/${P}-underlinking.patch
 }
 
-src_configure() {
+src_compile() {
 	tc-export CC
+	perl -i -pe "s|PREFIX=/usr/local|PREFIX=/usr|;
+		s|-DG.*DISABLE_DEPRECATED||g" Makefile || die
+
+	emake || die
 }
 
 src_install() {
-	dobin kanjipad kpengine
+	dobin kanjipad kpengine || die
 	insinto /usr/share/kanjipad
-	doins jdata.dat
-	einstalldocs
+	doins jdata.dat || die
+	dodoc ChangeLog README TODO jstroke/README-kanjipad
 }

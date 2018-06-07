@@ -3,6 +3,6 @@
 <pkgmetadata>
   <maintainer type="project">
     <email>tcltk@gentoo.org</email>
-    <name>TCL / TK Herd</name>
+    <description>TCL / TK Herd</description>
   </maintainer>
 </pkgmetadata>

@@ -3,8 +3,6 @@
 
 EAPI=5
 
-inherit opam
-
 DESCRIPTION="OCaml library for manipulation of IP (and MAC) address representations"
 HOMEPAGE="https://github.com/mirage/ocaml-ipaddr"
 SRC_URI="https://github.com/mirage/ocaml-ipaddr/archive/${PV}.tar.gz -> ${P}.tar.gz"
@@ -16,16 +14,20 @@ IUSE="+ocamlopt test"
 
 RDEPEND="dev-ml/sexplib:=
 	dev-ml/ppx_sexp_conv:=
-	dev-ml/ppx_core:=
-	dev-ml/ppx_type_conv:=
 	dev-lang/ocaml:=[ocamlopt?]
 "
 DEPEND="${RDEPEND}
 	dev-ml/jbuilder
+	dev-ml/opam
 	dev-ml/findlib
 	test? ( dev-ml/ounit )
 "
 
 src_install() {
-	opam_src_install ipaddr
+	opam-installer -i \
+		--prefix="${ED}/usr" \
+		--libdir="${D}/$(ocamlc -where)" \
+		--docdir="${ED}/usr/share/doc/${PF}" \
+		ipaddr.install || die
+	dodoc CHANGES.md README.md
 }

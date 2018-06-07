@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="2"
 
 DESCRIPTION="configurable talking graphical cow (inspired by cowsay)"
 HOMEPAGE="http://www.doof.me.uk/xcowsay/"
@@ -28,8 +28,8 @@ src_configure() {
 }
 
 src_install() {
-	default
+	emake DESTDIR="${D}" install || die "emake failed"
 	if ! use fortune; then
-		rm -f "${ED}"/usr/bin/xcowfortune || die "Removal of xcowfortune failed"
+		rm -f "${D}"/usr/bin/xcowfortune
 	fi
 }

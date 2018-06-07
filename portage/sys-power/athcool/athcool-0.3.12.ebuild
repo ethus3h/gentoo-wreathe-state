@@ -1,9 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="3"
 
-inherit toolchain-funcs
+inherit eutils toolchain-funcs
 
 DESCRIPTION="small utility to toggle Powersaving mode for AMD Athlon/Duron processors"
 HOMEPAGE="http://members.jcom.home.ne.jp/jacobi/linux/softwares.html#athcool"
@@ -17,15 +17,18 @@ IUSE=""
 DEPEND="sys-apps/pciutils"
 RDEPEND=""
 
-PATCHES=( "${FILESDIR}"/${PN}-0.3.11-build.patch )
-
-src_configure() {
+pkg_setup() {
 	tc-export CC
 }
 
+src_prepare() {
+	epatch "${FILESDIR}"/${PN}-0.3.11-build.patch
+}
+
 src_install() {
-	default
+	emake install DESTDIR="${D}" || die
 	doinitd "${FILESDIR}"/athcool
+	dodoc README ChangeLog
 }
 
 pkg_postinst() {

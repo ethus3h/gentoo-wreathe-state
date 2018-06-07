@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -16,7 +16,6 @@ IUSE=""
 RDEPEND="
 	dev-ros/message_filters
 	dev-ros/nodelet
-	dev-libs/console_bridge:=
 	dev-ros/roscpp
 	dev-ros/roslaunch
 	dev-ros/tf2
@@ -25,6 +24,5 @@ RDEPEND="
 	dev-ros/tf2_sensor_msgs
 	dev-ros/sensor_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-ros/geometry_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
-	dev-libs/boost:=
 "
 DEPEND="${RDEPEND}"

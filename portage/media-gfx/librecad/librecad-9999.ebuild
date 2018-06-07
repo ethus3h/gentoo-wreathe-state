@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -6,27 +6,36 @@ EAPI=5
 inherit eutils git-r3 qmake-utils
 
 DESCRIPTION="Generic 2D CAD program"
-HOMEPAGE="https://www.librecad.org/"
+HOMEPAGE="http://www.librecad.org/"
 SRC_URI=""
 EGIT_REPO_URI="https://github.com/LibreCAD/LibreCAD.git"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS=""
-
-IUSE="3d debug doc tools"
+IUSE="3d debug doc tools qt4 +qt5"
+REQUIRED_USE="|| ( qt4 qt5 )"
 
 DEPEND="
+	qt4? (
+		dev-qt/qtcore:4
+		dev-qt/qtgui:4
+		dev-qt/qtsvg:4
+		dev-qt/qthelp:4
+	)
+	qt5? (
+		dev-qt/qtcore:5
+		dev-qt/qtgui:5
+		dev-qt/qthelp:5
+		dev-qt/qtprintsupport:5
+		dev-qt/qtsvg:5
+		dev-qt/qtwidgets:5
+		dev-qt/qtxml:5
+	)
+
+	dev-libs/boost
 	dev-cpp/muParser
-	dev-libs/boost:=
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5
-	dev-qt/qthelp:5
-	dev-qt/qtprintsupport:5
-	dev-qt/qtsvg:5
-	dev-qt/qtwidgets:5
-	dev-qt/qtxml:5
-	media-libs/freetype:2"
+	media-libs/freetype"
 
 RDEPEND="${DEPEND}"
 S="${WORKDIR}/librecad-${PV}"
@@ -37,7 +46,12 @@ src_prepare() {
 }
 
 src_configure() {
-	eqmake5 -r
+	if use qt4
+	then
+		eqmake4 -r
+	else
+		eqmake5 -r
+	fi
 }
 
 src_install() {
@@ -47,7 +61,7 @@ src_install() {
 	doins -r unix/appdata
 	insinto /usr/share/${PN}
 	doins -r unix/resources/*
-	use doc && docinto html && dodoc -r librecad/support/doc/*
+	use doc && dohtml -r librecad/support/doc/*
 	insinto /usr/share/appdata
 	doins unix/appdata/librecad.appdata.xml
 	doicon librecad/res/main/${PN}.png

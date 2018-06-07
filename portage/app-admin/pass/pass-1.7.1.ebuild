@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
 inherit bash-completion-r1 elisp-common
 
@@ -11,7 +11,7 @@ SRC_URI="https://git.zx2c4.com/password-store/snapshot/password-store-${PV}.tar.
 
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="amd64 ~arm x86 ~x86-macos"
+KEYWORDS="amd64 x86 ~x86-macos"
 IUSE="+git X zsh-completion fish-completion emacs dmenu importers elibc_Darwin"
 
 RDEPEND="
@@ -30,8 +30,6 @@ RDEPEND="
 S="${WORKDIR}/password-store-${PV}"
 
 src_prepare() {
-	default
-
 	use elibc_Darwin || return
 	# use coreutils'
 	sed -i -e 's/openssl base64/base64/g' src/platform/darwin.sh || die
@@ -69,7 +67,7 @@ pkg_postinst() {
 	if use importers; then
 		einfo "To import passwords from other password managers, you may use the"
 		einfo "various importer scripts found in:"
-		einfo "    ${EROOT%/}/usr/share/${PN}/importers/"
+		einfo "    ${ROOT}usr/share/${PN}/importers/"
 	fi
 }
 

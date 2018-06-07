@@ -1,15 +1,15 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=2
 
-DESCRIPTION="Library for accessing chip cards via chip card readers (terminals)"
+DESCRIPTION="Libchipcard is a library for easy access to chip cards via chip card readers (terminals)"
 HOMEPAGE="http://www.aquamaniac.de/aqbanking/"
 SRC_URI="http://www.aquamaniac.de/sites/download/download.php?package=02&release=26&file=01&dummy=${P}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="amd64 ~hppa ppc ~ppc64 ~sparc x86"
+KEYWORDS="amd64 hppa ppc ~ppc64 ~sparc x86"
 IUSE="doc examples"
 
 RDEPEND=">=sys-libs/gwenhywfar-4.2.1

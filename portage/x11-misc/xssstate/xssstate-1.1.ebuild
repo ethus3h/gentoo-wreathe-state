@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 inherit eutils toolchain-funcs
 
 DESCRIPTION="A simple tool to retrieve the X screensaver state"
-HOMEPAGE="https://tools.suckless.org/x/xssstate"
-SRC_URI="https://dl.suckless.org/tools/${P}.tar.gz"
+HOMEPAGE="http://tools.suckless.org/x/xssstate"
+SRC_URI="http://dl.suckless.org/tools/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -19,7 +19,8 @@ RDEPEND="
 "
 DEPEND="
 	${RDEPEND}
-	x11-base/xorg-proto
+	x11-proto/scrnsaverproto
+	x11-proto/xproto
 "
 
 src_prepare() {

@@ -1,5 +1,5 @@
---- a/tong.cpp.orig
-+++ b/tong.cpp
+--- tong.cpp.orig
++++ tong.cpp
 @@ -202,7 +202,6 @@
  	Tetrad *tetrad, *nexttetrad;
  	Paddle *paddle;

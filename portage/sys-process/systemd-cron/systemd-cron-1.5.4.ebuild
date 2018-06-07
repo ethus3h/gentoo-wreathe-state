@@ -1,8 +1,8 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-PYTHON_COMPAT=( pypy3 python3_{4,5,6} )
+PYTHON_COMPAT=( pypy3 python3_4 )
 inherit eutils python-single-r1 systemd
 
 DESCRIPTION="systemd units to create timers for cron directories and crontab"
@@ -12,7 +12,7 @@ SRC_URI="https://github.com/systemd-cron/${PN}/archive/v${PV}.tar.gz -> systemd-
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="cron-boot etc-crontab-systemd minutely setgid test yearly"
+IUSE="cron-boot etc-crontab-systemd minutely setgid yearly"
 
 RDEPEND=">=sys-apps/systemd-217
 	     sys-apps/debianutils
@@ -20,8 +20,7 @@ RDEPEND=">=sys-apps/systemd-217
 	     ${PYTHON_DEPS}
 		 sys-process/cronbase"
 
-DEPEND="sys-process/cronbase
-	test? ( sys-apps/man-db dev-python/pyflakes )"
+DEPEND="sys-process/cronbase"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
@@ -36,7 +35,6 @@ src_prepare() {
 	sed -i \
 		-e 's!/crontab$!/crontab-systemd!' \
 		-e 's!/crontab\(\.[15]\)$!/crontab-systemd\1!' \
-		-e 's/pyflakes3/pyflakes/' \
 		-- "${S}/Makefile.in" || die
 
 	if use etc-crontab-systemd

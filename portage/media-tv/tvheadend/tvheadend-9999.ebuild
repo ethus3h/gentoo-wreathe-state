@@ -1,116 +1,75 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit git-r3 linux-info systemd toolchain-funcs user
+inherit eutils git-r3 linux-info systemd toolchain-funcs user
 
 DESCRIPTION="Tvheadend is a TV streaming server and digital video recorder"
 HOMEPAGE="https://tvheadend.org/"
-EGIT_REPO_URI="https://github.com/${PN}/${PN}.git"
+EGIT_REPO_URI="git://github.com/tvheadend/tvheadend.git"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
 
-IUSE="+capmt +constcw +cwc dbus debug +ddci dvbcsa +dvb +ffmpeg hdhomerun +imagecache +inotify iptv libressl opus satip systemd +timeshift uriparser vpx x264 x265 xmltv zeroconf zlib"
+IUSE="capmt constcw +cwc dbus +dvb +dvbscan ffmpeg hdhomerun libav imagecache inotify iptv satip +timeshift uriparser xmltv zeroconf zlib"
 
-RDEPEND="
+RDEPEND="dev-libs/openssl:=
 	virtual/libiconv
 	dbus? ( sys-apps/dbus )
-	dvbcsa? ( media-libs/libdvbcsa )
-	ffmpeg? ( media-video/ffmpeg:0/55.57.57[opus?,vpx?,x264?,x265?] )
+	ffmpeg? (
+		!libav? ( >=media-video/ffmpeg-3:= )
+		libav? ( media-video/libav:= )
+	)
 	hdhomerun? ( media-libs/libhdhomerun )
-	!libressl? ( dev-libs/openssl:= )
-	libressl? ( dev-libs/libressl:= )
 	uriparser? ( dev-libs/uriparser )
 	zeroconf? ( net-dns/avahi )
 	zlib? ( sys-libs/zlib )"
 
-# ffmpeg sub-dependencies needed for headers only. Check under
-# src/transcoding/codec/codecs/libs for include statements.
-
-DEPEND="
-	${RDEPEND}
-	sys-devel/gettext
-	virtual/pkgconfig
+DEPEND="${RDEPEND}
 	dvb? ( virtual/linuxtv-dvb-headers )
-	ffmpeg? (
-		opus? ( media-libs/opus )
-		vpx? ( media-libs/libvpx )
-		x264? ( media-libs/x264 )
-		x265? ( media-libs/x265 )
-	)"
+	capmt? ( virtual/linuxtv-dvb-headers )
+	virtual/pkgconfig"
 
 RDEPEND+="
-	dvb? ( media-tv/dtv-scan-tables )
+	dvbscan? ( media-tv/linuxtv-dvb-apps )
 	xmltv? ( media-tv/xmltv )"
 
-REQUIRED_USE="
-	dvbcsa? ( || ( capmt constcw cwc ) )
-	ddci? ( dvb )
-"
-
-# Some patches from:
-# https://github.com/rpmfusion/tvheadend
-
-PATCHES=(
-	"${FILESDIR}/${PN}-4.0.9-use_system_queue.patch"
-	"${FILESDIR}/${PN}-4.2.1-hdhomerun.patch"
-	"${FILESDIR}/${PN}-4.2.2-dtv_scan_tables.patch"
-)
+CONFIG_CHECK="~INOTIFY_USER"
 
 DOCS=( README.md )
 
 pkg_setup() {
-	use inotify &&
-		CONFIG_CHECK="~INOTIFY_USER" linux-info_pkg_setup
-
-	enewuser tvheadend -1 -1 /etc/tvheadend video
+	enewuser tvheadend -1 -1 /dev/null video
 }
 
-# We unconditionally enable codecs that do not require additional
-# dependencies when building tvheadend. If support is missing from
-# ffmpeg at runtime then tvheadend will simply disable these codecs.
-
-# It is not necessary to specific all the --disable-*-static options as
-# most of them only take effect when --enable-ffmpeg_static is given.
+src_prepare() {
+	# remove '-Werror' wrt bug #438424
+	sed -e 's:-Werror::' -i Makefile || die 'sed failed!'
+}
 
 src_configure() {
-	CC="$(tc-getCC)" \
-	PKG_CONFIG="${CHOST}-pkg-config" \
-	econf \
-		--disable-bundle \
+	econf --prefix="${EPREFIX}"/usr \
+		--datadir="${EPREFIX}"/usr/share \
+		--disable-hdhomerun_static \
+		--disable-ffmpeg_static \
 		--disable-ccache \
 		--disable-dvbscan \
-		--disable-ffmpeg_static \
-		--disable-hdhomerun_static \
-		--enable-libfdkaac \
-		--enable-libtheora \
-		--enable-libvorbis \
-		--nowerror \
 		$(use_enable capmt) \
 		$(use_enable constcw) \
 		$(use_enable cwc) \
-		$(use_enable dbus dbus_1) \
-		$(use_enable debug trace) \
-		$(use_enable ddci) \
+		$(use_enable dbus) \
 		$(use_enable dvb linuxdvb) \
-		$(use_enable dvbcsa) \
 		$(use_enable ffmpeg libav) \
 		$(use_enable hdhomerun hdhomerun_client) \
 		$(use_enable imagecache) \
 		$(use_enable inotify) \
 		$(use_enable iptv) \
-		$(use_enable opus libopus) \
 		$(use_enable satip satip_server) \
 		$(use_enable satip satip_client) \
-		$(use_enable systemd libsystemd_daemon) \
 		$(use_enable timeshift) \
 		$(use_enable uriparser) \
-		$(use_enable vpx libvpx) \
-		$(use_enable x264 libx264) \
-		$(use_enable x265 libx265) \
 		$(use_enable zeroconf avahi) \
 		$(use_enable zlib)
 }
@@ -122,11 +81,10 @@ src_compile() {
 src_install() {
 	default
 
-	newinitd "${FILESDIR}"/tvheadend.initd tvheadend
-	newconfd "${FILESDIR}"/tvheadend.confd tvheadend
+	newinitd "${FILESDIR}/tvheadend.initd" tvheadend
+	newconfd "${FILESDIR}/tvheadend.confd" tvheadend
 
-	use systemd &&
-		systemd_dounit "${FILESDIR}"/tvheadend.service
+	systemd_dounit "${FILESDIR}/tvheadend.service"
 
 	dodir /etc/tvheadend
 	fperms 0700 /etc/tvheadend

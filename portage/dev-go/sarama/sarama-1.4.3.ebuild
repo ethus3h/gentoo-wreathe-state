@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -15,7 +15,7 @@ fi
 inherit golang-build
 
 DESCRIPTION="Sarama is a Go library for Apache Kafka"
-HOMEPAGE="https://github.com/Shopify/sarama"
+HOMEPAGE="https://${EGO_SRC}"
 LICENSE="MIT"
 SLOT="0/${PV}"
 IUSE="test"

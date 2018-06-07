@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
 
 JAVA_PKG_IUSE="source"
 
-inherit eutils java-pkg-2 java-ant-2 versionator xdg-utils
+inherit eutils fdo-mime java-pkg-2 java-ant-2 versionator
 
 MY_PV=$(replace_all_version_separators "")
 MY_SRC="Vuze_${MY_PV}"
@@ -35,6 +35,14 @@ DEPEND="${RDEPEND}
 	>=virtual/jdk-1.6:*"
 
 PDEPEND="~net-p2p/vuze-coreplugins-${PV}"
+
+pkg_pretend() {
+	if ! has_version dev-java/swt:3.8[webkit]; then
+		echo
+		ewarn "dev-java/swt:3.8 was built without webkit support."
+		ewarn "Web features such as Vuze HD Network will be disabled."
+	fi
+}
 
 src_unpack() {
 	mkdir -p "${S}" && cd "${S}"
@@ -128,9 +136,9 @@ pkg_postinst() {
 	elog "rather than the startup script.  You can enable the console UI by"
 	elog "editing this config file."
 	echo
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

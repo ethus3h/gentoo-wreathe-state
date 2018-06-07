@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
 inherit cmake-utils multilib
 
@@ -11,12 +11,9 @@ HOMEPAGE="http://sdr.osmocom.org/trac/wiki/rtl-sdr"
 if [[ ${PV} == 9999* ]]; then
 	inherit git-r3
 	SRC_URI=""
-	EGIT_REPO_URI="https://git.osmocom.org/${PN}"
+	EGIT_REPO_URI="git://git.osmocom.org/${PN}.git"
 	KEYWORDS=""
 else
-	#git clone https://git.osmocom.org/rtl-sdr
-	#cd rtl-sdr
-	#git archive --format=tar --prefix=rtl-sdr-${PV}/ master | xz > ../rtl-sdr-${PV}.tar.xz
 	SRC_URI="https://dev.gentoo.org/~zerochaos/distfiles/${P}.tar.xz"
 	KEYWORDS="~amd64 ~arm ~x86"
 fi

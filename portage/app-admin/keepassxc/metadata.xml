@@ -7,10 +7,7 @@
   </maintainer>
   <use>
     <flag name="autotype">Add support to autotype the passwords into other applications</flag>
-    <flag name="browser">Enables browser plugin support</flag>
     <flag name="http">Add http support</flag>
-    <flag name="network">Enable network support</flag>
-    <flag name="yubikey">Enable database unlocking via YubiKey.</flag>
   </use>
   <longdescription>
     KeePassXC provides a safe location for your passwords and similar

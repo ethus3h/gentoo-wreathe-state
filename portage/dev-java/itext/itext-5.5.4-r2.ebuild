@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -8,7 +8,7 @@ JAVA_PKG_IUSE="doc source"
 inherit java-pkg-2 java-pkg-simple
 
 DESCRIPTION="Generate documents in the Portable Document Format (PDF) and/or HTML"
-HOMEPAGE="https://itextpdf.com"
+HOMEPAGE="http://itextpdf.com"
 SRC_URI="mirror://sourceforge/${PN}/${P}.zip"
 
 LICENSE="AGPL-3"

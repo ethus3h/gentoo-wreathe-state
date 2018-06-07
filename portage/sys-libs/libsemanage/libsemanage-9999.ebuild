@@ -1,13 +1,13 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
-PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
+PYTHON_COMPAT=( python{2_7,3_4,3_5} )
 
 inherit multilib python-r1 toolchain-funcs multilib-minimal
 
 MY_P="${P//_/-}"
-MY_RELEASEDATE="20180524"
+MY_RELEASEDATE="20161014"
 
 SEPOL_VER="${PV}"
 SELNX_VER="${PV}"
@@ -48,9 +48,6 @@ DEPEND="${RDEPEND}
 RESTRICT="test"
 
 src_prepare() {
-	eapply_user
-
-	echo >> "${S}/src/semanage.conf"
 	echo "# Set this to true to save the linked policy." >> "${S}/src/semanage.conf"
 	echo "# This is normally only useful for analysis" >> "${S}/src/semanage.conf"
 	echo "# or debugging of policy." >> "${S}/src/semanage.conf"
@@ -74,6 +71,8 @@ src_prepare() {
 	echo "# decompression of modules in the module store." >> "${S}/src/semanage.conf"
 	echo "bzip-small=true" >> "${S}/src/semanage.conf"
 
+	eapply_user
+
 	multilib_copy_sources
 }
 
@@ -86,11 +85,7 @@ multilib_src_compile() {
 
 	if multilib_is_native_abi && use python; then
 		building_py() {
-			emake \
-				AR="$(tc-getAR)" \
-				CC="$(tc-getCC)" \
-				LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
-				"$@"
+			emake "$@"
 		}
 		python_foreach_impl building_py swigify
 		python_foreach_impl building_py pywrap
@@ -99,13 +94,16 @@ multilib_src_compile() {
 
 multilib_src_install() {
 	emake \
-		LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
+		LIBDIR="${ED}/usr/$(get_libdir)" \
+		SHLIBDIR="${ED}/usr/$(get_libdir)" \
 		DESTDIR="${ED}" install
 
 	if multilib_is_native_abi && use python; then
 		installation_py() {
 			emake DESTDIR="${ED}" \
-				LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
+				LIBDIR="${ED}/usr/$(get_libdir)" \
+				SHLIBDIR="${ED}/usr/$(get_libdir)" \
+				LIBSEPOLA="${EPREFIX%/}/usr/$(get_libdir)/libsepol.a" \
 				install-pywrap
 			python_optimize # bug 531638
 		}
@@ -116,7 +114,7 @@ multilib_src_install() {
 pkg_postinst() {
 	# Migrate the SELinux semanage configuration store if not done already
 	local selinuxtype=$(awk -F'=' '/SELINUXTYPE=/ {print $2}' "${EROOT}"/etc/selinux/config 2>/dev/null)
-	if [ -n "${selinuxtype}" ] && [ ! -d "${EROOT}"/var/lib/selinux/${selinuxtype}/active ] ; then
+	if [ -n "${selinuxtype}" ] && [ ! -d "${EROOT}"/var/lib/selinux/${mcs}/active ] ; then
 		ewarn "Since the 2.4 SELinux userspace, the policy module store is moved"
 		ewarn "from /etc/selinux to /var/lib/selinux. The migration will be run now."
 		ewarn "If there are any issues, it can be done manually by running:"
@@ -129,7 +127,7 @@ pkg_postinst() {
 	for POLICY_TYPE in ${POLICY_TYPES} ; do
 		if [ ! -d "${EROOT}/var/lib/selinux/${POLICY_TYPE}/active" ] ; then
 			einfo "Migrating store ${POLICY_TYPE} (without policy rebuild)."
-			"${EROOT}/usr/libexec/selinux/semanage_migrate_store" -n -s "${POLICY_TYPE}" || die "Failed to migrate store ${POLICY_TYPE}"
+			/usr/libexec/selinux/semanage_migrate_store -n -s "${POLICY_TYPE}" || die "Failed to migrate store ${POLICY_TYPE}"
 		fi
 	done
 }

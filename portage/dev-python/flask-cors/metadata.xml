@@ -4,6 +4,7 @@
   <maintainer type="person">
     <email>wking@tremily.us</email>
     <name>W. Trevor King</name>
+    <description>proxy maintainer</description>
   </maintainer>
   <maintainer type="project">
     <email>proxy-maint@gentoo.org</email>

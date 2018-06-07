@@ -5,14 +5,14 @@ EAPI=6
 inherit savedconfig toolchain-funcs
 
 DESCRIPTION="a simple web browser based on WebKit/GTK+"
-HOMEPAGE="https://surf.suckless.org/"
+HOMEPAGE="http://surf.suckless.org/"
 SRC_URI="
-	https://dl.suckless.org/${PN}/${P}.tar.gz
+	http://dl.suckless.org/${PN}/${P}.tar.gz
 "
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 
 COMMON_DEPEND="
 	dev-libs/glib:2

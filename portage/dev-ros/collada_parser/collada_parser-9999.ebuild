@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-ROS_REPO_URI="https://github.com/ros/collada_urdf"
+ROS_REPO_URI="https://github.com/ros/robot_model"
 KEYWORDS="~amd64 ~arm"
 ROS_SUBDIR=${PN}
 
@@ -16,11 +16,10 @@ IUSE=""
 RDEPEND="
 	dev-libs/boost:=
 	>=dev-ros/urdf_parser_plugin-1.12.6
-	dev-ros/class_loader:=
+	dev-ros/roscpp
+	dev-ros/class_loader
 	dev-libs/urdfdom_headers
-	dev-libs/collada-dom:=
+	dev-libs/collada-dom
 	>=dev-ros/urdf-1.12.6
-	dev-ros/rosconsole
-	dev-libs/console_bridge:=
 "
 DEPEND="${RDEPEND}"

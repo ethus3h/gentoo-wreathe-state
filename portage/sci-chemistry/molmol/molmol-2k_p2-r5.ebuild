@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -12,12 +12,11 @@ DESCRIPTION="Publication-quality molecular visualization package"
 HOMEPAGE="http://hugin.ethz.ch/wuthrich/software/molmol/index.html"
 SRC_URI="
 	ftp://ftp.mol.biol.ethz.ch/software/MOLMOL/unix-gzip/${MY_P}-src.tar.gz
-	ftp://ftp.mol.biol.ethz.ch/software/MOLMOL/unix-gzip/${MY_P}-doc.tar.gz
-	https://dev.gentoo.org/~soap/distfiles/${PN}-patches.tbz2"
+	ftp://ftp.mol.biol.ethz.ch/software/MOLMOL/unix-gzip/${MY_P}-doc.tar.gz"
 
 LICENSE="molmol"
 SLOT="0"
-KEYWORDS="amd64 ppc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~amd64 ~ppc ~x86 ~amd64-linux ~x86-linux"
 IUSE=""
 
 DEPEND="
@@ -46,10 +45,10 @@ pkg_setup() {
 src_prepare() {
 	rm -rf tiff*
 	# Patch from http://pjf.net/science/molmol.html, where src.rpm is provided
-	epatch "${WORKDIR}"/patches/pjf_RH9_molmol2k2.diff
+	epatch "${FILESDIR}"/pjf_RH9_molmol2k2.diff
 
-	epatch "${WORKDIR}"/patches/ldflags.patch
-	epatch "${WORKDIR}"/patches/opengl.patch
+	epatch "${FILESDIR}"/ldflags.patch
+	epatch "${FILESDIR}"/opengl.patch
 
 	ln -s makedef.lnx "${S}"/makedef || die
 
@@ -62,14 +61,14 @@ src_prepare() {
 		-e "s:^CC.*:CC = $(tc-getCC):" \
 		-i "${S}"/makedef || die
 
-	epatch "${WORKDIR}"/patches/cast.patch
-	epatch "${WORKDIR}"/patches/libpng15.patch
+	epatch "${FILESDIR}"/cast.patch
+	epatch "${FILESDIR}"/libpng15.patch
 
 	# patch from fink
 	# fixes numerous bad bracings and hopefully the OGL bug 429974
-	epatch "${WORKDIR}"/patches/${P}-fink.patch
+	epatch "${FILESDIR}"/${P}-fink.patch
 
-	epatch "${WORKDIR}"/patches/wild.patch
+	epatch "${FILESDIR}"/wild.patch
 	tc-export AR
 }
 

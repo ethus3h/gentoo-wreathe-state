@@ -10,8 +10,7 @@ MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="An open source desktop alternative to Microsoft Project"
 HOMEPAGE="http://www.projectlibre.org/"
-SRC_URI="mirror://sourceforge/${MY_PN}/${MY_P}.tar.gz
-	mirror://gentoo/${MY_PN}.png"
+SRC_URI="mirror://sourceforge/${MY_PN}/${MY_P}.tar.gz"
 
 LICENSE="CPAL-1.0"
 SLOT="0"
@@ -25,7 +24,7 @@ S=${WORKDIR}/${MY_P}
 
 src_unpack() {
 	unpack ${MY_P}.tar.gz
-	cp "${FILESDIR}"/${MY_PN}.desktop "${DISTDIR}"/${MY_PN}.png ./ || die
+	cp "${FILESDIR}"/${MY_PN}.{desktop,png} ./ || die
 	cd "${S}"
 	rm -rf license projectlibre.bat
 }

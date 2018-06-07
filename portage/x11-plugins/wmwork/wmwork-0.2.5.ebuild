@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 DESCRIPTION="a dockapp that lets you easily track time spent on different projects"
 HOMEPAGE="http://www.godisch.de/debian/wmwork"
@@ -16,7 +14,7 @@ RDEPEND=">=x11-libs/libXext-1.0.3
 	>=x11-libs/libX11-1.1.1-r1
 	>=x11-libs/libXpm-3.5.6"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xextproto"
 
 S=${WORKDIR}/${P}/src
 

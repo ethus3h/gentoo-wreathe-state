@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,8 +9,8 @@ SRC_URI="mirror://xfce/src/apps/${PN}/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 arm ~arm64 ia64 ppc ppc64 ~sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux"
-IUSE="gtk3"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux"
+IUSE="gksu gtk3"
 
 RDEPEND="
 	x11-libs/cairo:=
@@ -23,6 +23,7 @@ RDEPEND="
 	!gtk3? (
 		>=x11-libs/gtk+-2.12:2=
 		x11-libs/libwnck:1=
+		gksu? ( x11-libs/libgksu:2= )
 	)"
 # GTK+2 is required unconditionally
 # https://bugzilla.xfce.org/show_bug.cgi?id=11819
@@ -31,6 +32,7 @@ DEPEND="${RDEPEND}
 	sys-devel/gettext
 	>=x11-libs/gtk+-2.12:2
 	virtual/pkgconfig"
+REQUIRED_USE="gksu? ( !gtk3 )"
 
 DOCS=( AUTHORS ChangeLog NEWS README THANKS )
 
@@ -38,7 +40,7 @@ src_configure() {
 	local myconf=(
 		--enable-wnck
 		$(use_enable gtk3)
-		--disable-gksu
+		$(use_enable gksu)
 	)
 
 	econf "${myconf[@]}"

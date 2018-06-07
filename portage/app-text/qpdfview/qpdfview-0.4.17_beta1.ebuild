@@ -13,31 +13,36 @@ SRC_URI="https://launchpad.net/${PN}/trunk/${PV/_/}/+download/${P/_/}.tar.gz"
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86 ~amd64-linux ~x86-linux"
-IUSE="cups +dbus djvu fitz +pdf postscript +sqlite +svg synctex"
+IUSE="cups +dbus djvu fitz +pdf postscript qt5 +sqlite +svg synctex"
 
 REQUIRED_USE="?? ( fitz pdf )"
 
 RDEPEND="
-	dev-qt/qtconcurrent:5
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5
-	dev-qt/qtprintsupport:5
-	dev-qt/qtwidgets:5
 	cups? ( net-print/cups )
-	dbus? ( dev-qt/qtdbus:5 )
 	djvu? ( app-text/djvu )
 	fitz? ( >=app-text/mupdf-1.7:= )
-	pdf? (
-		>=app-text/poppler-0.35[qt5]
-		dev-qt/qtxml:5
-	)
 	postscript? ( app-text/libspectre )
-	sqlite? ( dev-qt/qtsql:5[sqlite] )
-	svg? ( dev-qt/qtsvg:5 )
+	!qt5? ( dev-qt/qtcore:4[iconv]
+		dev-qt/qtgui:4
+		sys-apps/file
+		dbus? ( dev-qt/qtdbus:4 )
+		pdf? ( >=app-text/poppler-0.35[qt4] )
+		sqlite? ( dev-qt/qtsql:4[sqlite] )
+		svg? ( dev-qt/qtsvg:4 ) )
+	qt5? ( dev-qt/qtconcurrent:5
+		dev-qt/qtcore:5
+		dev-qt/qtgui:5
+		dev-qt/qtprintsupport:5
+		dev-qt/qtwidgets:5
+		dbus? ( dev-qt/qtdbus:5 )
+		pdf? ( >=app-text/poppler-0.35[qt5]
+			dev-qt/qtxml:5 )
+		sqlite? ( dev-qt/qtsql:5[sqlite] )
+		svg? ( dev-qt/qtsvg:5 ) )
 	!svg? ( virtual/freedesktop-icon-theme )
 	synctex? ( app-text/texlive-core )"
 DEPEND="${RDEPEND}
-	dev-qt/linguist-tools:5
+	qt5? ( dev-qt/linguist-tools:5 )
 	virtual/pkgconfig"
 
 DOCS=( CHANGES CONTRIBUTORS README TODO )
@@ -45,7 +50,8 @@ DOCS=( CHANGES CONTRIBUTORS README TODO )
 S="${WORKDIR}/${P/_/}"
 
 src_prepare() {
-	local mylrelease="$(qt5_get_bindir)"/lrelease
+	local mylrelease="$(qt4_get_bindir)"/lrelease
+	use qt5 && mylrelease="$(qt5_get_bindir)"/lrelease
 
 	prepare_locale() {
 		"${mylrelease}" "translations/${PN}_${1}.ts" || die "preparing ${1} locale failed"
@@ -79,7 +85,11 @@ src_configure() {
 		CONFIG+="${myconfig[@]}"
 		PLUGIN_INSTALL_PATH="${EPREFIX}/usr/$(get_libdir)/${PN}"
 	)
-	eqmake5 "${myqmakeargs[@]}"
+	if use qt5; then
+		eqmake5 "${myqmakeargs[@]}"
+	else
+		eqmake4 "${myqmakeargs[@]}"
+	fi
 }
 
 src_install() {

@@ -9,7 +9,10 @@
 		<email>cjk@gentoo.org</email>
 		<name>Cjk</name>
 	</maintainer>
+	<use>
+		<flag name="gtk3">Use GTK+3 instead of 2</flag>
+	</use>
 	<upstream>
-		<remote-id type="github">fcitx/fcitx-configtool</remote-id>
+		<remote-id type="google-code">fcitx</remote-id>
 	</upstream>
 </pkgmetadata>

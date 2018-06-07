@@ -1,9 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit autotools
+EAPI=2
+inherit autotools eutils
 
 DESCRIPTION="Oggz provides a simple programming interface for reading and writing Ogg files and streams"
 HOMEPAGE="http://www.xiph.org/oggz/"
@@ -11,7 +10,7 @@ SRC_URI="http://downloads.xiph.org/releases/${PN}/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ppc ppc64 sparc x86"
+KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sparc x86"
 IUSE="doc static-libs test"
 
 RDEPEND=">=media-libs/libogg-1.2.0"
@@ -20,10 +19,8 @@ DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )
 	test? ( app-text/docbook-sgml-utils )"
 
-PATCHES=( "${FILESDIR}/${P}-destdir.patch" )
-
 src_prepare() {
-	default
+	epatch "${FILESDIR}"/${P}-destdir.patch
 
 	if ! use doc; then
 		sed -i -e '/AC_CHECK_PROG/s:doxygen:dIsAbLe&:' configure.ac || die
@@ -34,10 +31,13 @@ src_prepare() {
 
 src_configure() {
 	econf \
+		--disable-dependency-tracking \
 		$(use_enable static-libs static)
 }
 
 src_install() {
-	default
-	find "${D}" -name '*.la' -delete || die "Pruning failed"
+	emake DESTDIR="${D}" docdir="/usr/share/doc/${PF}" install || die
+	dodoc AUTHORS ChangeLog README TODO
+
+	find "${D}" -name '*.la' -delete
 }

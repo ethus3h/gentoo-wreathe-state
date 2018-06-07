@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit autotools git-r3 multilib-minimal ltprune
+inherit autotools eutils git-r3 multilib-minimal
 
 DESCRIPTION="A system-independent library for user-level network packet capture"
 EGIT_REPO_URI="https://github.com/the-tcpdump-group/libpcap"
@@ -31,6 +31,8 @@ DEPEND="
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.6.1-prefix-solaris.patch
+	"${FILESDIR}"/${PN}-9999-cross-linux.patch
+	"${FILESDIR}"/${PN}-9999-libnl.patch
 	"${FILESDIR}"/${PN}-9999-prefix-darwin.patch
 )
 
@@ -54,7 +56,7 @@ multilib_src_compile() {
 }
 
 multilib_src_install_all() {
-	dodoc CREDITS CHANGES VERSION TODO README*
+	dodoc CREDITS CHANGES VERSION TODO README{,.dag,.linux,.macosx,.septel}
 
 	# remove static libraries (--disable-static does not work)
 	if ! use static-libs; then

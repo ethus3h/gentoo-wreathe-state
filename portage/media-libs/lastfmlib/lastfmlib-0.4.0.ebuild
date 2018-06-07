@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=2
 
 DESCRIPTION="C++ library to scrobble tracks on Last.fm"
 HOMEPAGE="https://github.com/dirkvdb/lastfmlib/releases"
@@ -18,6 +18,7 @@ DEPEND="${RDEPEND}
 
 src_configure() {
 	econf \
+		--disable-dependency-tracking \
 		--disable-static \
 		$(use_enable debug) \
 		$(use_enable syslog logging) \
@@ -25,6 +26,7 @@ src_configure() {
 }
 
 src_install() {
-	default
-	find "${D}"/usr -name '*.la' -delete || die "Pruning failed"
+	emake DESTDIR="${D}" install || die
+	dodoc AUTHORS ChangeLog
+	find "${D}"/usr -name '*.la' -delete
 }

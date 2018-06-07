@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI=4
 
 inherit gnome2-utils
 
@@ -14,11 +14,12 @@ SLOT="0"
 KEYWORDS="~amd64 ppc x86"
 IUSE=""
 
-RDEPEND="app-i18n/canna
-	x11-libs/gtk+:2"
+RDEPEND=">=x11-libs/gtk+-2.4:2
+	app-i18n/canna"
 DEPEND="${RDEPEND}
-	sys-devel/gettext
 	virtual/pkgconfig"
+
+DOCS=( AUTHORS ChangeLog NEWS README )
 
 pkg_postinst() {
 	gnome2_query_immodules_gtk2

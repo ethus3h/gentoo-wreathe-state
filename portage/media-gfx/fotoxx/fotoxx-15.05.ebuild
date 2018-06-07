@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=4
 
-inherit desktop toolchain-funcs xdg-utils
+inherit eutils toolchain-funcs fdo-mime
 
 DESCRIPTION="Program for improving image files made with a digital camera"
 HOMEPAGE="http://www.kornelix.com/fotoxx.html"
@@ -15,17 +15,19 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="
+	x11-libs/gtk+:3
 	media-libs/libpng
 	media-libs/tiff
-	media-libs/lcms:2
-	x11-libs/gtk+:3"
+	media-libs/lcms:2"
 RDEPEND="${DEPEND}
+	media-libs/exiftool
 	media-gfx/ufraw[gtk]
 	media-gfx/dcraw
-	media-libs/exiftool
 	x11-misc/xdg-utils"
 
-PATCHES=( "${FILESDIR}"/${P}.patch )
+src_prepare() {
+	epatch "${FILESDIR}"/${PF}.patch
+}
 
 src_compile() {
 	tc-export CXX
@@ -37,16 +39,16 @@ src_install() {
 	# and README, changelog, translations, edit-menus, KB-shortcuts must not be compressed
 	emake DESTDIR="${D}" install
 	newmenu desktop ${PN}.desktop
-	rm -f "${D}"/usr/share/doc/${PF}/*.man || die
+	rm -f "${D}"/usr/share/doc/${PF}/*.man
 	docompress -x /usr/share/doc
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_mime_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 }

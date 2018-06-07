@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
-inherit toolchain-funcs
+EAPI=2
+inherit eutils toolchain-funcs
 
 DESCRIPTION="substracts 2 mono wave files from each other by a factor specified on the command line"
 HOMEPAGE="http://panteltje.com/panteltje/dvd/"
@@ -13,13 +13,17 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-PATCHES=(
-	"${FILESDIR}/${P}-Makefile.patch"
-	"${FILESDIR}/${P}-overflow.patch"
-)
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-Makefile.patch \
+		"${FILESDIR}"/${P}-overflow.patch
+}
 
-DOCS=( CHANGES mono-stereo.txt README )
-
-src_configure() {
+src_compile() {
 	tc-export CC
+	emake || die "emake failed"
+}
+
+src_install() {
+	emake DESTDIR="${D}" install || die "emake install failed"
+	dodoc CHANGES mono-stereo.txt README
 }

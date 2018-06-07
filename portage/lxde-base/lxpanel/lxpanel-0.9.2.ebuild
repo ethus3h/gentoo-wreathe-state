@@ -6,7 +6,7 @@ EAPI="6"
 inherit readme.gentoo-r1
 
 DESCRIPTION="Lightweight X11 desktop panel for LXDE"
-HOMEPAGE="https://wiki.lxde.org/en/LXPanel"
+HOMEPAGE="http://lxde.org/"
 SRC_URI="mirror://sourceforge/lxde/${P}.tar.xz"
 
 LICENSE="GPL-2"

@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit multilib eutils autotools libtool
 
@@ -21,7 +19,7 @@ RDEPEND=">=sys-libs/db-4.5
 	>=app-i18n/libtabe-0.2.6
 	unicode? ( media-fonts/hkscs-ming
 		media-fonts/arphicfonts )
-	app-i18n/libchewing
+	dev-libs/libchewing
 	x11-libs/libX11"
 DEPEND="${RDEPEND}
 	nls? ( sys-devel/gettext )"

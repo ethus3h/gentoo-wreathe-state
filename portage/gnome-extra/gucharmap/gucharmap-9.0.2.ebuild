@@ -4,7 +4,7 @@
 EAPI=6
 VALA_USE_DEPEND="vapigen"
 
-inherit gnome2 vala versionator
+inherit gnome2 vala
 
 DESCRIPTION="Unicode character map viewer and library"
 HOMEPAGE="https://wiki.gnome.org/Apps/Gucharmap"
@@ -16,10 +16,8 @@ KEYWORDS="alpha amd64 arm ia64 ppc ppc64 ~sh sparc x86 ~x86-fbsd"
 IUSE="debug +introspection test vala"
 REQUIRED_USE="vala? ( introspection )"
 
-UNICODE_VERSION=$(get_version_component_range 1-2)
-
 COMMON_DEPEND="
-	=app-i18n/unicode-data-${UNICODE_VERSION}*
+	>=app-i18n/unicode-data-9.0.0
 	>=dev-libs/glib-2.32:2
 	>=x11-libs/pango-1.2.1[introspection?]
 	>=x11-libs/gtk+-3.16:3[introspection?]

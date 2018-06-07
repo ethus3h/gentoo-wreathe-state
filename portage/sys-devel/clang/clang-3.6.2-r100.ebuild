@@ -6,7 +6,7 @@ EAPI=5
 inherit multilib-build
 
 DESCRIPTION="C language family frontend for LLVM (meta-ebuild)"
-HOMEPAGE="https://clang.llvm.org/"
+HOMEPAGE="http://clang.llvm.org/"
 SRC_URI=""
 
 LICENSE="UoI-NCSA"

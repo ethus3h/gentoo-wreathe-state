@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 DESCRIPTION="Utilities for manipulation of console fonts in PSF format"
 HOMEPAGE="http://www.seasip.info/Unix/PSF/"

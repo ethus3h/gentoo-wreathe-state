@@ -10,7 +10,7 @@ HOMEPAGE="http://redis.io/"
 SRC_URI="http://download.redis.io/releases/${P}.tar.gz"
 
 LICENSE="BSD"
-KEYWORDS="amd64 arm ~arm64 ~hppa ppc ppc64 x86 ~amd64-linux ~x86-linux ~x86-macos ~x86-solaris"
+KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~x86 ~amd64-linux ~x86-linux ~x86-macos ~x86-solaris"
 IUSE="+jemalloc tcmalloc luajit test"
 SLOT="0"
 
@@ -112,7 +112,7 @@ src_install() {
 	dobin src/redis-cli
 	dosbin src/redis-benchmark src/redis-server src/redis-check-aof src/redis-check-rdb
 	fperms 0750 /usr/sbin/redis-benchmark
-	dosym redis-server /usr/sbin/redis-sentinel
+	dosym /usr/sbin/redis-server /usr/sbin/redis-sentinel
 
 	if use prefix; then
 		diropts -m0750

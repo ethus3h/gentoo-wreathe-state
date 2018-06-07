@@ -3,8 +3,6 @@
 
 EAPI=6
 
-inherit opam
-
 DESCRIPTION="Monadic let-bindings"
 HOMEPAGE="https://github.com/janestreet/ppx_let"
 SRC_URI="https://github.com/janestreet/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -15,9 +13,18 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND="
+	dev-lang/ocaml:=
 	dev-ml/ppx_core:=
 	dev-ml/ppx_driver:=
 	dev-ml/ocaml-migrate-parsetree:=
 "
 RDEPEND="${DEPEND}"
-DEPEND="${DEPEND} dev-ml/jbuilder"
+DEPEND="${DEPEND} dev-ml/opam dev-ml/jbuilder"
+
+src_install() {
+	opam-installer -i \
+		--prefix="${ED}/usr" \
+		--libdir="${D}/$(ocamlc -where)" \
+		--docdir="${ED}/usr/share/doc/${PF}" \
+		${PN}.install || die
+}

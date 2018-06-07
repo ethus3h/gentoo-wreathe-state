@@ -9,12 +9,11 @@ inherit gnome2
 
 DESCRIPTION="Fully featured yet light and fast cross platform word processor"
 HOMEPAGE="http://www.abisource.com/"
-SRC_URI="http://www.abisource.com/downloads/${PN}/${PV}/source/${P}.tar.gz
-	https://dev.gentoo.org/~mgorny/dist/${P}-patchset.tar.gz"
+SRC_URI="http://www.abisource.com/downloads/${PN}/${PV}/source/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="2"
-KEYWORDS="~alpha amd64 ~arm ~ia64 ~mips x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~alpha amd64 ~arm ~mips x86 ~amd64-linux ~x86-linux"
 
 IUSE="calendar collab cups debug eds +goffice grammar +introspection latex map math ots +plugins readline redland spell wordperfect wmf thesaurus"
 # You need 'plugins' enabled if want to enable the extra plugins
@@ -68,30 +67,30 @@ DEPEND="${RDEPEND}
 
 PATCHES=(
 	# http://bugzilla.abisource.com/show_bug.cgi?id=13842
-	"${WORKDIR}"/${P}-patchset/${PN}-2.8.3-desktop.patch
+	"${FILESDIR}"/${PN}-2.8.3-desktop.patch
 
 	# http://bugzilla.abisource.com/show_bug.cgi?id=13843
-	"${WORKDIR}"/${P}-patchset/${PN}-2.6.0-boolean.patch
+	"${FILESDIR}"/${PN}-2.6.0-boolean.patch
 
 	# http://bugzilla.abisource.com/show_bug.cgi?id=13844
-	"${WORKDIR}"/${P}-patchset/${PN}-3.0.0-librevenge.patch
+	"${FILESDIR}"/${PN}-3.0.0-librevenge.patch
 
 	# http://bugzilla.abisource.com/show_bug.cgi?id=13845
-	"${WORKDIR}"/${P}-patchset/${PN}-3.0.0-link-grammar-5-second.patch
+	"${FILESDIR}"/${PN}-3.0.0-link-grammar-5-second.patch
 
 	# http://bugzilla.abisource.com/show_bug.cgi?id=13846
-	"${WORKDIR}"/${P}-patchset/${PN}-3.0.0-libwp.patch
-	"${WORKDIR}"/${P}-patchset/${PN}-3.0.1-libwps-0.4.patch
-	"${WORKDIR}"/${P}-patchset/${PN}-3.0.1-fixwps.patch
+	"${FILESDIR}"/${PN}-3.0.0-libwp.patch
+	"${FILESDIR}"/${PN}-3.0.1-libwps-0.4.patch
+	"${FILESDIR}"/${PN}-3.0.1-fixwps.patch
 
 	# http://bugzilla.abisource.com/show_bug.cgi?id=13847
-	"${WORKDIR}"/${P}-patchset/${PN}-3.0.2-fix-installing-readme.patch
+	"${FILESDIR}"/${PN}-3.0.2-fix-installing-readme.patch
 
 	# http://bugzilla.abisource.com/show_bug.cgi?id=13841
-	"${WORKDIR}"/${P}-patchset/${PN}-3.0.2-fix-nullptr-c++98.patch
+	"${FILESDIR}"/${PN}-3.0.2-fix-nullptr-c++98.patch
 
 	# http://bugzilla.abisource.com/show_bug.cgi?id=13815
-	"${WORKDIR}"/${P}-patchset/${PN}-3.0.2-fix-black-drawing-regression.patch
+	"${FILESDIR}"/${PN}-3.0.2-fix-black-drawing-regression.patch
 )
 
 src_configure() {

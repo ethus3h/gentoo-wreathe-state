@@ -23,6 +23,7 @@ clvm
 directfb
 djbfft
 fbcon
+fmod
 ggi
 gpm
 hardened

@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit linux-info toolchain-funcs xdg-utils
+inherit linux-info toolchain-funcs fdo-mime
 
 if [[ ${PV} == 9999 ]]; then
 	EGIT_REPO_URI="https://github.com/phillipberndt/pqiv.git"
@@ -17,7 +17,7 @@ HOMEPAGE="https://github.com/phillipberndt/pqiv http://www.pberndt.com/Programme
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="archive ffmpeg imagemagick kernel_linux libav pdf postscript webp"
+IUSE="archive ffmpeg imagemagick kernel_linux libav pdf postscript"
 
 RDEPEND="
 	>=dev-libs/glib-2.8:2
@@ -31,15 +31,9 @@ RDEPEND="
 	imagemagick? ( media-gfx/imagemagick:0= )
 	pdf? ( app-text/poppler:0= )
 	postscript? ( app-text/libspectre:0= )
-	webp? ( media-libs/libwebp:0= )
 "
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
-
-doecho() {
-	echo "$@"
-	"$@" || die
-}
 
 pkg_setup() {
 	if use kernel_linux; then
@@ -50,19 +44,19 @@ pkg_setup() {
 
 src_configure() {
 	local backends="gdkpixbuf"
-	use archive && backends+=",archive,archive_cbx"
-	use ffmpeg || use libav && backends+=",libav"
-	use imagemagick && backends+=",wand"
-	use pdf && backends+=",poppler"
-	use postscript && backends+=",spectre"
-	use webp && backends+=",webp"
+	use archive && backends="${backends},archive,archive_cbx"
+	use ffmpeg || use libav && backends="${backends},libav"
+	use imagemagick && backends="${backends},wand"
+	use pdf && backends="${backends},poppler"
+	use postscript && backends="${backends},spectre"
 
-	doecho ./configure \
+	./configure \
 		--backends-build=shared \
 		--backends=${backends} \
 		--prefix="${EPREFIX}/usr" \
 		--libdir="${EPREFIX}/usr/$(get_libdir)" \
-		--destdir="${ED}"
+		--destdir="${ED}" \
+		|| die
 }
 
 src_compile() {
@@ -71,9 +65,9 @@ src_compile() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

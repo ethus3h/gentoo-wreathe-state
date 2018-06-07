@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
@@ -13,7 +13,8 @@ KEYWORDS="amd64 ppc sparc x86"
 IUSE="+server"
 
 DEPEND="server? ( net-libs/libpcap )"
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+	server? ( sys-apps/openrc )"
 
 src_prepare() {
 	sed -e "/^AM_CFLAGS/s: -g : :" \

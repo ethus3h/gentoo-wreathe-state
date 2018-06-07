@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -18,6 +18,10 @@ LICENSE="LGPL-2.1 GPL-2"
 SLOT="0/5"
 KEYWORDS="amd64 arm ~arm64 ppc64 x86"
 IUSE="doc +gnutls gssapi java libproxy nls smartcard static-libs"
+ILINGUAS="ar cs de el en_GB en_US es eu fi fr gl id lt nl pa pl pt pt_BR sk sl tg ug uk zh_CN zh_TW"
+for lang in $ILINGUAS; do
+	IUSE="${IUSE} linguas_${lang}"
+done
 
 DEPEND="dev-libs/libxml2
 	sys-libs/zlib
@@ -56,8 +60,7 @@ pkg_setup() {
 }
 
 src_configure() {
-	local ilinguas="ar cs de el en_GB en_US es eu fi fr gl id lt nl pa pl pt pt_BR sk sl tg ug uk zh_CN zh_TW"
-	strip-linguas ${ilinguas}
+	strip-linguas $ILINGUAS
 	echo ${LINGUAS} > po/LINGUAS
 	if ! use doc; then
 		# If the python cannot be found, the docs will not build

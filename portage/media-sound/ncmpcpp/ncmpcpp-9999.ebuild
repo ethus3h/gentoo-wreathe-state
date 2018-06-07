@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -11,16 +11,15 @@ LICENSE="GPL-2"
 
 SLOT="0"
 KEYWORDS=""
-IUSE="clock icu outputs taglib visualizer"
+IUSE="clock outputs taglib visualizer"
 
 RDEPEND="
 	!dev-libs/boost:0/1.57.0
 	>=media-libs/libmpdclient-2.1
-	dev-libs/boost:=[icu?,nls,threads]
+	dev-libs/boost:=[nls,threads]
 	net-misc/curl
 	sys-libs/ncurses:=
 	sys-libs/readline:*
-	icu? ( dev-libs/icu )
 	taglib? ( media-libs/taglib )
 	visualizer? ( sci-libs/fftw:3.0= )
 "

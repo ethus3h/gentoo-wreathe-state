@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=2
 inherit autotools
 
 DESCRIPTION="A generic file repository synchronization tool"
@@ -18,7 +18,6 @@ DEPEND="sys-libs/zlib
 	doc? ( www-client/lynx )"
 
 src_prepare() {
-	default
 	sed -i \
 		-e "s/#if (DB_VERSION_MAJOR != 4).*/#if (DB_VERSION_MAJOR < 4)/" \
 		configure.ac || die
@@ -34,7 +33,8 @@ src_configure() {
 }
 
 src_install() {
-	DOCS=( doc/README doc/*.txt )
-	use doc && HTML_DOCS=( doc/*.{css,html} )
-	default
+	emake DESTDIR="${D}" install || die
+	cd doc
+	dodoc README *.txt
+	use doc && dohtml *.html *.css
 }

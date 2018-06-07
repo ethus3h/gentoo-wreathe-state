@@ -67,10 +67,6 @@ COMMON_DEPEND="
 	teamd? ( >=net-misc/libteam-1.9 )
 "
 RDEPEND="${COMMON_DEPEND}
-	|| (
-		net-misc/iputils[arping(+)]
-		net-analyzer/arping
-	)
 	wifi? ( >=net-wireless/wpa_supplicant-0.7.3-r3[dbus] )
 "
 DEPEND="${COMMON_DEPEND}
@@ -296,7 +292,6 @@ multilib_src_install_all() {
 
 pkg_postinst() {
 	gnome2_pkg_postinst
-	systemd_reenable NetworkManager.service
 	! use systemd && readme.gentoo_print_elog
 
 	if [[ -e "${EROOT}etc/NetworkManager/nm-system-settings.conf" ]]; then

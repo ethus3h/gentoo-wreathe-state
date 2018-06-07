@@ -1,12 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
 inherit autotools eutils readme.gentoo-r1 user systemd git-r3
 
 DESCRIPTION="Lightweight high-performance web server"
-HOMEPAGE="https://www.lighttpd.net
-		  https://github.com/lighttpd"
+HOMEPAGE="http://www.lighttpd.net/"
 EGIT_REPO_URI="https://git.lighttpd.net/lighttpd1.4.git git+ssh://git@lighttpd.net/lighttpd/lighttpd1.4.git git://git.lighttpd.net/lighttpd/lighttpd1.4.git"
 
 LICENSE="BSD GPL-2"
@@ -23,7 +22,7 @@ CDEPEND="
 	ldap?     ( >=net-nds/openldap-2.1.26 )
 	libev?    ( >=dev-libs/libev-4.01 )
 	lua?      ( >=dev-lang/lua-5.1:= )
-	memcached? ( dev-libs/libmemcached )
+	memcached? ( dev-libs/libmemcache )
 	mysql?    ( >=virtual/mysql-4.0 )
 	pcre?     ( >=dev-libs/libpcre-3.1 )
 	php?      ( dev-lang/php:*[cgi] )
@@ -94,7 +93,11 @@ pkg_setup() {
 		ewarn "as conditionals and modules such as mod_re{write,direct}"
 		ewarn "and mod_ssi."
 	fi
-
+	if use mmap; then
+		ewarn "You have enabled the mmap option. This option may allow"
+		ewarn "local users to trigger SIGBUG crashes. Use this option"
+		ewarn "with EXTRA care."
+	fi
 	enewgroup lighttpd
 	enewuser lighttpd -1 -1 /var/www/localhost/htdocs lighttpd
 

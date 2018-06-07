@@ -9,6 +9,7 @@
 	in production systems, under a variety of names, since 1981.
 	</longdescription>
 	<use>
+		<flag name="superserver">Install SuperServer</flag>
 		<flag name="server">Install the server components of Firebird, not just the client</flag>
 		<flag name="xinetd">Install ClassicServer</flag>
 	</use>

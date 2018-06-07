@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -20,7 +20,8 @@ RDEPEND="x11-libs/libXft
 	truetype? ( media-libs/freetype )"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
-	x11-base/xorg-proto"
+	>=sys-apps/sed-4
+	x11-proto/xextproto"
 
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-gcc-4.3.patch \

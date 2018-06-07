@@ -1,10 +1,12 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 if [[ ${PV} = *9999* ]]; then
-	EGIT_REPO_URI="https://github.com/rafaelmartins/${PN}.git"
+	EGIT_REPO_URI="
+		git://github.com/rafaelmartins/squareball.git
+		https://github.com/rafaelmartins/squareball.git"
 	inherit git-r3 autotools
 fi
 

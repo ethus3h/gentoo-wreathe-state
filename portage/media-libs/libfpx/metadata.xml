@@ -5,7 +5,4 @@
     <email>graphics@gentoo.org</email>
     <name>Gentoo Graphics Project</name>
   </maintainer>
-  <slots>
-    <subslots>Reflect major ABI of libfpx.so.</subslots>
-  </slots>
 </pkgmetadata>

@@ -1,31 +1,30 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 inherit eutils games
 
 DESCRIPTION="A port of Jagged Alliance 2 to SDL"
-HOMEPAGE="https://ja2-stracciatella.github.io/"
+HOMEPAGE="http://tron.homeunix.org/ja2/"
 SRC_URI="https://dev.gentoo.org/~hasufell/distfiles/${P}.tar.xz
 	http://tron.homeunix.org/ja2/editor.slf.gz"
 
 LICENSE="SFI-SCLA"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="cdinstall editor ru-gold zlib"
+KEYWORDS="amd64 x86"
+IUSE="cdinstall editor zlib"
 
 DEPEND="media-libs/libsdl[X,sound,video]
 	zlib? ( sys-libs/zlib )"
 RDEPEND="${DEPEND}
 	cdinstall? ( games-strategy/ja2-stracciatella-data )"
 
-LANGS="l10n_de +l10n_en l10n_fr l10n_it l10n_nl l10n_pl l10n_ru"
+LANGS="linguas_de +linguas_en linguas_fr linguas_it linguas_nl linguas_pl linguas_ru linguas_ru_gold"
 IUSE="$IUSE $LANGS"
 REQUIRED_USE="^^ ( ${LANGS//+/} )"
 
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-makefile.patch
-	epatch "${FILESDIR}"/${P}-gcc6.patch
 
 	sed \
 		-e "s:/some/place/where/the/data/is:${GAMES_DATADIR}/ja2:" \
@@ -39,13 +38,14 @@ src_prepare() {
 src_compile() {
 	local myconf
 
-	case ${L10N} in
+	case ${LINGUAS} in
 		de) myconf="LNG=GERMAN" ;;
 		nl) myconf="LNG=DUTCH" ;;
 		fr) myconf="LNG=FRENCH" ;;
 		it) myconf="LNG=ITALIAN" ;;
 		pl) myconf="LNG=POLISH" ;;
-		ru) myconf="LNG=$(usex ru-gold RUSSIAN_GOLD RUSSIAN)" ;;
+		ru) myconf="LNG=RUSSIAN" ;;
+		ru_gold) myconf="LNG=RUSSIAN_GOLD" ;;
 		en) myconf="LNG=ENGLISH" ;;
 		*) die "wat" ;;
 	esac

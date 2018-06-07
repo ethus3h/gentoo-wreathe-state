@@ -1,25 +1,25 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
 EGIT_REPO_URI="git://git.videolan.org/ffmpeg.git"
 ESVN_REPO_URI="svn://svn.mplayerhq.hu/mplayer/trunk"
-[[ ${PV} = *9999* ]] && SVN_ECLASS="subversion git-r3" || SVN_ECLASS=""
+[[ ${PV} = *9999* ]] && SVN_ECLASS="subversion git-2" || SVN_ECLASS=""
 
-inherit toolchain-funcs flag-o-matic ${SVN_ECLASS}
+inherit toolchain-funcs eutils flag-o-matic multilib base ${SVN_ECLASS}
 
 IUSE="cpu_flags_x86_3dnow cpu_flags_x86_3dnowext a52 aalib +alsa altivec aqua bidi bl bluray
 bs2b cddb +cdio cdparanoia cpudetection debug dga
-doc dts dv dvb +dvd +dvdnav +enca +encode faac faad fbcon
-ftp gif ggi gsm +iconv ipv6 jack joystick jpeg kernel_linux ladspa
+directfb doc dts dv dvb +dvd +dvdnav +enca +encode faac faad fbcon
+ftp gif ggi gsm +iconv ipv6 jack joystick jpeg jpeg2k kernel_linux ladspa
 +libass libcaca libmpeg2 lirc live lzo mad md5sum +cpu_flags_x86_mmx cpu_flags_x86_mmxext mng mp3 nas
 +network nut openal opengl +osdmenu oss png pnm pulseaudio pvr
 radio rar rtc rtmp samba selinux +shm sdl speex cpu_flags_x86_sse cpu_flags_x86_sse2 cpu_flags_x86_ssse3
 tga theora tremor +truetype toolame twolame +unicode v4l vcd vdpau vidix
 vorbis +X x264 xinerama +xscreensaver +xv xvid xvmc yuv4mpeg zoran"
 
-VIDEO_CARDS="mga tdfx"
+VIDEO_CARDS="s3virge mga tdfx"
 for x in ${VIDEO_CARDS}; do
 	IUSE+=" video_cards_${x}"
 done
@@ -69,6 +69,7 @@ RDEPEND+="
 	cdio? ( dev-libs/libcdio:0= dev-libs/libcdio-paranoia )
 	cdparanoia? ( !cdio? ( media-sound/cdparanoia ) )
 	dga? ( x11-libs/libXxf86dga )
+	directfb? ( dev-libs/DirectFB )
 	dts? ( media-libs/libdca )
 	dv? ( media-libs/libdv )
 	dvb? ( virtual/linuxtv-dvb-headers )
@@ -88,8 +89,9 @@ RDEPEND+="
 	gif? ( media-libs/giflib:0= )
 	gsm? ( media-sound/gsm )
 	iconv? ( virtual/libiconv )
-	jack? ( virtual/jack )
+	jack? ( media-sound/jack-audio-connection-kit )
 	jpeg? ( virtual/jpeg:0 )
+	jpeg2k? ( media-libs/openjpeg:0 )
 	ladspa? ( media-libs/ladspa-sdk )
 	libass? ( >=media-libs/libass-0.9.10:= )
 	libcaca? ( media-libs/libcaca )
@@ -129,13 +131,17 @@ RDEPEND+="
 	xvmc? ( x11-libs/libXvMC )
 "
 
+X_DEPS="
+	x11-proto/videoproto
+	x11-proto/xf86vidmodeproto
+"
 ASM_DEP="dev-lang/yasm"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
-	dga? ( x11-base/xorg-proto )
-	X? ( x11-base/xorg-proto )
-	xinerama? ( x11-base/xorg-proto )
-	xscreensaver? ( x11-base/xorg-proto )
+	dga? ( x11-proto/xf86dgaproto )
+	X? ( ${X_DEPS} )
+	xinerama? ( x11-proto/xineramaproto )
+	xscreensaver? ( x11-proto/scrnsaverproto )
 	amd64? ( ${ASM_DEP} )
 	doc? (
 		dev-libs/libxslt app-text/docbook-xml-dtd
@@ -233,8 +239,6 @@ src_unpack() {
 }
 
 src_prepare() {
-	default
-
 	local svf=snapshot_version
 	if [[ ${PV} = *9999* ]]; then
 		# Set SVN version manually
@@ -249,6 +253,8 @@ src_prepare() {
 
 	# fix path to bash executable in configure scripts
 	sed -i -e "1c\#!${EPREFIX}/bin/bash" configure version.sh || die
+
+	base_src_prepare
 
 	# Use sane default for >=virtual/udev-197
 	sed -i -e '/default_dvd_device/s:/dev/dvd:/dev/cdrom:' configure || die
@@ -384,8 +390,7 @@ src_configure() {
 	for i in ${uses}; do
 		use ${i} || myconf+=" --disable-${i}"
 	done
-	# Pulls an outdated libopenjpeg, ffmpeg provides better support for it
-	myconf+=" --disable-libopenjpeg"
+	use jpeg2k || myconf+=" --disable-libopenjpeg"
 
 	# Encoding
 	uses="faac x264 xvid toolame twolame"
@@ -409,12 +414,13 @@ src_configure() {
 	################
 	# Video Output #
 	################
-	uses="md5sum sdl yuv4mpeg"
+	uses="directfb md5sum sdl yuv4mpeg"
 	for i in ${uses}; do
 		use ${i} || myconf+=" --disable-${i}"
 	done
 	use aalib || myconf+=" --disable-aa"
 	use fbcon || myconf+=" --disable-fbdev"
+	use fbcon && use video_cards_s3virge && myconf+=" --enable-s3fb"
 	use libcaca || myconf+=" --disable-caca"
 	use zoran || myconf+=" --disable-zr"
 
@@ -519,8 +525,7 @@ src_configure() {
 }
 
 src_compile() {
-	default
-
+	base_src_compile
 	# Build only user-requested docs if they're available.
 	if use doc ; then
 		# select available languages from $LINGUAS
@@ -552,7 +557,7 @@ src_install() {
 	docinto tech/
 	dodoc DOCS/tech/{*.txt,MAINTAINERS,mpsub.sub,playtree,TODO,wishlist}
 	docinto TOOLS/
-	dodoc -r TOOLS/*
+	dodoc -r TOOLS
 	docinto tech/mirrors/
 	dodoc DOCS/tech/mirrors/*
 

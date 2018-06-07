@@ -15,7 +15,8 @@ KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ~mips ppc ppc64 ~sh sparc x86 ~ppc-ai
 IUSE="debug static-libs"
 
 DEPEND=""
-RDEPEND=""
+RDEPEND="abi_x86_32? ( !<=app-emulation/emul-linux-x86-medialibs-20130224-r3
+		!app-emulation/emul-linux-x86-medialibs[-abi_x86_32(-)] )"
 
 DOCS=( CHANGES CREDITS README TODO VERSION )
 

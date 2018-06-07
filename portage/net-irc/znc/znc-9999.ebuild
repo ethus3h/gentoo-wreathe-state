@@ -1,11 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-PYTHON_COMPAT=( python3_{4,5,6} )
+PYTHON_COMPAT=( python{3_4,3_5} )
+PLOCALES="ru"
 
-inherit cmake-utils python-single-r1 readme.gentoo-r1 systemd user
+inherit cmake-utils l10n python-single-r1 readme.gentoo-r1 systemd user
 
 GTEST_VER="1.8.0"
 GTEST_URL="https://github.com/google/googletest/archive/release-${GTEST_VER}.tar.gz -> gtest-${GTEST_VER}.tar.gz"
@@ -17,13 +18,13 @@ if [[ ${PV} == *9999* ]]; then
 	SRC_URI=""
 else
 	SRC_URI="
-		https://znc.in/releases/archive/${P}.tar.gz
+		http://znc.in/releases/archive/${P}.tar.gz
 		test? ( ${GTEST_URL} )
 	"
 	KEYWORDS="~amd64 ~arm ~x86"
 fi
 
-HOMEPAGE="https://znc.in"
+HOMEPAGE="http://znc.in"
 LICENSE="Apache-2.0"
 SLOT="0"
 IUSE="+ipv6 +icu libressl nls perl python +ssl sasl tcl test +zlib"
@@ -41,12 +42,12 @@ RDEPEND="
 		libressl? ( dev-libs/libressl:0= )
 	)
 	tcl? ( dev-lang/tcl:0= )
-	zlib? ( sys-libs/zlib:0= )
+	zlib? ( sys-libs/zlib )
 "
 DEPEND="
 	${RDEPEND}
-	virtual/pkgconfig
 	nls? ( sys-devel/gettext )
+	virtual/pkgconfig
 	perl? ( >=dev-lang/swig-3.0.0 )
 	python? ( >=dev-lang/swig-3.0.0 )
 "
@@ -65,6 +66,14 @@ pkg_setup() {
 }
 
 src_prepare() {
+	l10n_find_plocales_changes "${S}/src/po" "${PN}." '.po'
+
+	remove_locale() {
+		# Some language/module pairs can be missing
+		rm -f src/po/${PN}.${1}.po modules/po/*.${1}.po || die
+	}
+	l10n_for_each_disabled_locale_do remove_locale
+
 	# Let SWIG rebuild modperl/modpython to make user patching easier.
 	if [[ ${PV} != *9999* ]]; then
 		rm modules/modperl/generated.tar.gz || die
@@ -98,7 +107,9 @@ src_configure() {
 }
 
 src_test() {
-	cmake-utils_src_make unittest
+	pushd "${BUILD_DIR}" > /dev/null || die
+	${CMAKE_MAKEFILE_GENERATOR} unittest || die "Unit test failed"
+	popd > /dev/null || die
 }
 
 src_install() {
@@ -136,7 +147,8 @@ pkg_config() {
 		ewarn "to generate a new configuration, remove the folder"
 		ewarn "and try again."
 	else
-		einfo "Press enter to interactively create a new configuration file for znc."
+		einfo "Press any key to interactively create a new configuration file"
+		einfo "for znc."
 		einfo "To abort, press Control-C"
 		read
 		mkdir -p "${EROOT%/}/var/lib/znc" || die
@@ -146,7 +158,7 @@ pkg_config() {
 			"${EROOT%/}"/usr/bin/znc -- --makeconf --datadir "${EROOT%/}/var/lib/znc" ||
 			die "Config failed"
 		einfo
-		einfo "You can now start the znc service using the init system of your choice."
-		einfo "Don't forget to enable it if you want to use znc at boot."
+		einfo "Now you can start znc service using the init system of your choice."
+		einfo "Don't forget to enable znc service if you want to use znc on boot."
 	fi
 }

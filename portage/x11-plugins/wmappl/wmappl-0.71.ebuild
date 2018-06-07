@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 IUSE=""
 DESCRIPTION="Simple application launcher for the Window Maker dock"
@@ -13,7 +11,7 @@ RDEPEND="x11-libs/libX11
 	x11-libs/libXt
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xextproto"
 
 LICENSE="GPL-2"
 SLOT="0"

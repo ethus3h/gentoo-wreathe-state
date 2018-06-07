@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI="5"
 
 inherit apache-module
 
@@ -9,9 +9,8 @@ MY_P="${PN/h2/http2}-${PV}"
 
 if [[ ${PV} == 9999 ]] ; then
 	EGIT_REPO_URI="https://github.com/icing/mod_h2.git"
-	inherit autotools git-r3
+	inherit git-2
 else
-	S="${WORKDIR}/${MY_P}"
 	SRC_URI="https://github.com/icing/mod_h2/releases/download/v${PV}/${MY_P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 fi
@@ -27,11 +26,14 @@ RDEPEND=">=net-libs/nghttp2-1.0
 	>=www-servers/apache-2.4.20[-apache2_modules_http2,ssl?]"
 DEPEND="${RDEPEND}"
 
+S="${WORKDIR}/${MY_P}"
+
 need_apache2_4
 
-src_prepare() {
-	default
-	[[ ${PV} = 9999 ]] && eautoreconf
+src_configure() {
+	econf \
+		--docdir='$(datarootdir)'/doc/${PF} \
+		--disable-werror
 }
 
 src_compile() {

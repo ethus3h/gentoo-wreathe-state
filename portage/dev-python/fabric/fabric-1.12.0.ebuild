@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -13,14 +13,14 @@ MY_P="${MY_PN}-${PV}"
 COMP_HASH="83d303e9fb352deaf4885b6db0781b3d9115e9c6"
 
 DESCRIPTION="A simple pythonic tool for remote execution and deployment"
-HOMEPAGE="http://fabfile.org https://pypi.org/project/Fabric/"
+HOMEPAGE="http://fabfile.org https://pypi.python.org/pypi/Fabric"
 SRC_URI="
 	mirror://pypi/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz
 	https://raw.githubusercontent.com/kbakulin/fabric-completion/${COMP_HASH}/fabric-completion.bash -> ${P}-completion.bash"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="doc test"
 
 RDEPEND="

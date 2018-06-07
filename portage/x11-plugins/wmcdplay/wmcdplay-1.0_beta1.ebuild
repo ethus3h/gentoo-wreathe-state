@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils
 
@@ -11,14 +9,15 @@ MY_P=${P/_beta/-beta}
 S=${WORKDIR}/${PN}
 
 DESCRIPTION="CD player applet for WindowMaker"
-SRC_URI="https://www.dockapps.net/download/${MY_P}.tgz"
-HOMEPAGE="https://www.dockapps.net/wmcdplay"
+SRC_URI="mirror://gentoo/${MY_P}.tgz"
+HOMEPAGE="https://www.gentoo.org/"
 
 RDEPEND="x11-libs/libX11
 	x11-libs/libXext
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto
+	x11-proto/xproto
+	x11-proto/xextproto
 	x11-misc/imake"
 
 SLOT="0"

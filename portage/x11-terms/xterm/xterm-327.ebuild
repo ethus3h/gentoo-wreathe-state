@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -6,8 +6,8 @@ EAPI=5
 inherit eutils flag-o-matic multilib
 
 DESCRIPTION="Terminal Emulator for X Windows"
-HOMEPAGE="https://invisible-island.net/xterm/"
-SRC_URI="ftp://ftp.invisible-island.net/${PN}/${P}.tgz"
+HOMEPAGE="http://invisible-island.net/xterm/"
+SRC_URI="ftp://invisible-island.net/${PN}/${P}.tgz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -33,7 +33,8 @@ RDEPEND="${COMMON_DEPEND}
 	x11-apps/rgb"
 DEPEND="${COMMON_DEPEND}
 	virtual/pkgconfig
-	x11-base/xorg-proto"
+	x11-proto/kbproto
+	x11-proto/xproto"
 
 DOCS=( README{,.i18n} ctlseqs.txt )
 

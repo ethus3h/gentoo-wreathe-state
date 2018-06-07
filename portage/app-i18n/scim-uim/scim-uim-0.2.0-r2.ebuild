@@ -1,7 +1,8 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="2"
+inherit eutils
 
 DESCRIPTION="An input module for Smart Common Input Method (SCIM) which uses uim as backend"
 HOMEPAGE="http://www.scim-im.org/"
@@ -12,26 +13,20 @@ SLOT="0"
 KEYWORDS="amd64 ppc x86"
 IUSE=""
 
-RDEPEND="
-	>=app-i18n/uim-1.5.0
+RDEPEND=">=app-i18n/uim-1.5.0
 	>=app-i18n/scim-1.4.0"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
-PATCHES=(
-	"${FILESDIR}"/${P}-gcc43.patch
-	"${FILESDIR}"/${P}-uim-1.5.patch
-)
-
-src_configure() {
-	econf --disable-static
+src_prepare() {
+	epatch "${FILESDIR}/${P}-gcc43.patch" \
+		"${FILESDIR}/${P}-uim-1.5.patch"
 }
 
 src_install() {
-	default
+	emake DESTDIR="${D}" install || die "make install failed"
 
-	# plugin module, no point in .la files
-	find "${D}" -name '*.la' -delete || die
+	dodoc AUTHORS ChangeLog README THANKS || die
 }
 
 pkg_postinst() {

@@ -1,9 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=3
 
-inherit autotools
+inherit autotools eutils
 
 DESCRIPTION="Secure file wiping utility based on Peter Gutman's patterns"
 HOMEPAGE="http://wipe.sourceforge.net/"
@@ -17,23 +17,19 @@ IUSE=""
 DEPEND=""
 RDEPEND="${DEPEND}"
 
-PATCHES=( "${FILESDIR}"/${P}-LDFLAGS.patch )
-
 src_prepare() {
-	default
-	mv configure.{in,ac} || die
+	epatch "${FILESDIR}"/${P}-LDFLAGS.patch
 	eautoreconf
 }
 
 src_compile() {
-	emake CFLAGS="${CFLAGS}"
+	emake CFLAGS="${CFLAGS}" || die
 }
 
 src_install() {
-	dobin wipe
-	doman wipe.1
-	einstalldocs
-	dodoc TESTING
+	dobin wipe || die
+	doman wipe.1 || die
+	dodoc CHANGES README TODO TESTING || die
 }
 
 pkg_postinst() {

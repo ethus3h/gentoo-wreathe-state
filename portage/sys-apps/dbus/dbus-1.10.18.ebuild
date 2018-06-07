@@ -12,7 +12,7 @@ SRC_URI="https://dbus.freedesktop.org/releases/dbus/${P}.tar.gz"
 
 LICENSE="|| ( AFL-2.1 GPL-2 )"
 SLOT="0"
-KEYWORDS="alpha amd64 arm arm64 hppa ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm arm64 hppa ~ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE="debug doc elogind selinux static-libs systemd test user-session X"
 
 RESTRICT="test"
@@ -23,12 +23,16 @@ CDEPEND="
 	>=dev-libs/expat-2
 	selinux? (
 		sys-libs/libselinux
-	)
+		)
 	elogind? ( sys-auth/elogind )
 	systemd? ( sys-apps/systemd:0= )
 	X? (
 		x11-libs/libX11
 		x11-libs/libXt
+		)
+	abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-baselibs-20131008-r4
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)]
 	)
 "
 DEPEND="${CDEPEND}
@@ -39,7 +43,7 @@ DEPEND="${CDEPEND}
 	test? (
 		>=dev-libs/glib-2.36:2
 		${PYTHON_DEPS}
-	)
+		)
 "
 RDEPEND="${CDEPEND}
 	selinux? ( sec-policy/selinux-dbus )

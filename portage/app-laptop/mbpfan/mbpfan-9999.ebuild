@@ -13,7 +13,7 @@ RESTRICT="test" # will fail if the hardware is unavailable, not useful
 
 if [[ "${PV}" = 9999 ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/dgraziotin/${PN}.git"
+	EGIT_REPO_URI="git://github.com/dgraziotin/${PN}.git"
 	KEYWORDS=""
 else
 	SRC_URI="https://github.com/dgraziotin/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -27,7 +27,8 @@ src_compile() {
 }
 
 src_install() {
-	emake DESTDIR="${ED}" install
+	# There's a double linking problem in install
+	emake DESTDIR="${ED}" CC="$(tc-getCC)" install
 
 	# Remove the empty systemd unit directory
 	# It doesn't actually install the unit file

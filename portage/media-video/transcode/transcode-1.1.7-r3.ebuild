@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -7,7 +7,7 @@ inherit autotools libtool multilib
 DESCRIPTION="A suite of utilities for transcoding video and audio codecs in different containers"
 HOMEPAGE="http://www.transcoding.org/ https://bitbucket.org/france/transcode-tcforge"
 SRC_URI="https://www.bitbucket.org/france/${PN}-tcforge/downloads/${P}.tar.bz2
-	https://dev.gentoo.org/~mgorny/dist/${P}-patchset.tar.bz2"
+	https://dev.gentoo.org/~polynomial-c/${P}-imagemagick7.patch"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -37,7 +37,7 @@ RDEPEND="
 	v4l? ( media-libs/libv4l )
 	vorbis? ( media-libs/libvorbis )
 	X? ( x11-libs/libXpm x11-libs/libXaw x11-libs/libXv )
-	x264? ( media-libs/x264:= )
+	x264? ( media-libs/x264 )
 	xml? ( dev-libs/libxml2 )
 	xvid? ( media-libs/xvid )
 	"
@@ -56,30 +56,26 @@ REQUIRED_USE="
 	"
 
 PATCHES=(
-	"${WORKDIR}"/${P}-patchset/${P}-ffmpeg.patch
-	"${WORKDIR}"/${P}-patchset/${P}-ffmpeg-0.10.patch
-	"${WORKDIR}"/${P}-patchset/${P}-ffmpeg-0.11.patch
-	"${WORKDIR}"/${P}-patchset/${P}-preset-free.patch
-	"${WORKDIR}"/${P}-patchset/${P}-libav-9.patch
-	"${WORKDIR}"/${P}-patchset/${P}-libav-10.patch
-	"${WORKDIR}"/${P}-patchset/${P}-preset-force.patch
-	"${WORKDIR}"/${P}-patchset/${P}-ffmpeg2.patch
-	"${WORKDIR}"/${P}-patchset/${P}-freetype251.patch
-	"${WORKDIR}"/${P}-patchset/${P}-ffmpeg24.patch
+	"${FILESDIR}"/${P}-ffmpeg.patch
+	"${FILESDIR}"/${P}-ffmpeg-0.10.patch
+	"${FILESDIR}"/${P}-ffmpeg-0.11.patch
+	"${FILESDIR}"/${P}-preset-free.patch
+	"${FILESDIR}"/${P}-libav-9.patch
+	"${FILESDIR}"/${P}-libav-10.patch
+	"${FILESDIR}"/${P}-preset-force.patch
+	"${FILESDIR}"/${P}-ffmpeg2.patch
+	"${FILESDIR}"/${P}-freetype251.patch
+	"${FILESDIR}"/${P}-ffmpeg24.patch
 )
 
 src_prepare() {
 	if has_version '>=media-video/ffmpeg-2.8' ||
 		has_version '>=media-video/libav-12'; then
-		PATCHES+=( "${WORKDIR}"/${P}-patchset/${P}-ffmpeg29.patch )
+		PATCHES+=( "${FILESDIR}"/${P}-ffmpeg29.patch )
 	fi
 
 	if has_version '>=media-gfx/imagemagick-7.0.1.0' ; then
-		PATCHES+=( "${WORKDIR}"/${P}-patchset/${P}-imagemagick7.patch )
-	fi
-
-	if has_version '>=media-video/ffmpeg-4' ;  then
-		PATCHES+=( "${FILESDIR}/ffmpeg4.patch" )
+		PATCHES+=( "${DISTDIR}"/${P}-imagemagick7.patch )
 	fi
 
 	default

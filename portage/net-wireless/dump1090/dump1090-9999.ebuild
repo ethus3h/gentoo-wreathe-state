@@ -13,7 +13,7 @@ HOMEPAGE="https://github.com/mutability/dump1090"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/mutability/${PN}.git"
+	EGIT_REPO_URI="git://github.com/mutability/dump1090.git"
 	KEYWORDS=""
 else
 	KEYWORDS="~amd64 ~x86"

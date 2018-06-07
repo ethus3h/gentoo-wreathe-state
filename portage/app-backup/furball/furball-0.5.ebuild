@@ -1,14 +1,14 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
 
-DESCRIPTION="A small perl script utilizing tar"
-HOMEPAGE="https://wiki.gentoo.org/wiki/No_homepage"
+DESCRIPTION="A handy backup script utilizing tar"
 SRC_URI="http://www.claws-and-paws.com/software/${PN}/${P}.tgz"
+HOMEPAGE="http://www.claws-and-paws.com/software/furball/index.shtml"
 
-LICENSE="GPL-2"
 SLOT="0"
+LICENSE="GPL-2"
 KEYWORDS="amd64 ppc sparc x86"
 IUSE=""
 RDEPEND="dev-lang/perl

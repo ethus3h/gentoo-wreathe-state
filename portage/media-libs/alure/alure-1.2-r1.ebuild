@@ -22,7 +22,7 @@ RDEPEND=">=media-libs/openal-1.1
 	vorbis? ( media-libs/libvorbis )"
 DEPEND="${RDEPEND}"
 
-PATCHES=( "${FILESDIR}/${P}-include-unistd.patch" )
+PATCJES=( "${FILESDIR}/${P}-include-unistd.patch" )
 
 src_prepare() {
 	cmake-utils_src_prepare

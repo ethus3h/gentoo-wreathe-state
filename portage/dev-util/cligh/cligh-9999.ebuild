@@ -8,7 +8,8 @@ inherit distutils-r1 git-2
 
 DESCRIPTION="Command-line interface to GitHub"
 HOMEPAGE="http://the-brannons.com/software/cligh.html"
-EGIT_REPO_URI="https://github.com/CMB/${PN}.git"
+EGIT_REPO_URI="git://github.com/CMB/cligh.git
+	https://github.com/CMB/cligh.git"
 
 LICENSE="BSD"
 SLOT="0"

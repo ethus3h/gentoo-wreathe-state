@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -6,9 +6,10 @@ EAPI=5
 inherit eutils perl-app user git-2
 
 DESCRIPTION="qpsmtpd is a flexible smtpd daemon written in Perl"
-HOMEPAGE="https://smtpd.github.io/qpsmtpd/"
+HOMEPAGE="http://smtpd.develooper.com"
 # This is a spotted development fork with many improvements
-EGIT_REPO_URI="https://github.com/smtpd/${PN}.git"
+EGIT_REPO_URI="git://github.com/qpsmtpd-dev/qpsmtpd-dev.git
+	https://github.com/qpsmtpd-dev/qpsmtpd-dev.git"
 
 LICENSE="MIT"
 SLOT="0"

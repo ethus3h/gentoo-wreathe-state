@@ -1,13 +1,13 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 inherit autotools eutils flag-o-matic toolchain-funcs
 
 DESCRIPTION="A collection of tools for network auditing and penetration testing"
-HOMEPAGE="https://monkey.org/~dugsong/dsniff/"
+HOMEPAGE="http://monkey.org/~dugsong/dsniff/"
 SRC_URI="
-	https://monkey.org/~dugsong/${PN}/beta/${P/_beta/b}.tar.gz
+	http://monkey.org/~dugsong/${PN}/beta/${P/_beta/b}.tar.gz
 	mirror://debian/pool/main/d/${PN}/${PN}_2.4b1+debian-22.1.debian.tar.gz
 "
 LICENSE="BSD"

@@ -4,7 +4,8 @@
 EAPI=5
 inherit eutils
 
-DESCRIPTION="Utilities for the maintainance of the IBM and Apple PowerPC platforms"
+DESCRIPTION="This package provides utilities for the maintainance
+of the IBM and Apple powerpc platforms."
 HOMEPAGE="https://sourceforge.net/projects/powerpc-utils"
 SRC_URI="mirror://sourceforge/powerpc-utils/${P//ibm-}.tar.gz"
 IUSE="+rtas"

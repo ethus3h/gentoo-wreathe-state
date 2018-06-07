@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit cmake-utils git-r3 gnome2-utils nsplugins toolchain-funcs xdg-utils
+inherit cmake-utils git-r3 nsplugins toolchain-funcs
 
 DESCRIPTION="High performance flash player"
 HOMEPAGE="http://lightspark.github.io/"
@@ -14,6 +14,8 @@ SLOT="0"
 KEYWORDS=""
 IUSE="cpu_flags_x86_sse2 curl ffmpeg gles libav nsplugin ppapi profile rtmp"
 
+# Note: code-wise llvm-4.0 is fine but due to CMake bug it can't work:
+# https://gitlab.kitware.com/cmake/cmake/issues/16606
 RDEPEND="app-arch/xz-utils:0=
 	dev-cpp/glibmm:2=
 	>=dev-libs/boost-1.42:0=
@@ -24,9 +26,12 @@ RDEPEND="app-arch/xz-utils:0=
 	media-libs/libpng:0=
 	media-libs/libsdl2:0=
 	media-libs/sdl2-mixer:0=
-	>=sys-devel/llvm-3.4:=
+	>=sys-devel/gcc-4.6.0:*[cxx]
+	<sys-devel/llvm-4:0=
+	>=sys-devel/llvm-3.4:0=
 	sys-libs/zlib:0=
 	x11-libs/cairo:0=
+	x11-libs/gtk+:2=
 	x11-libs/libX11:0=
 	x11-libs/pango:0=
 	virtual/jpeg:0=
@@ -48,6 +53,15 @@ DEPEND="${RDEPEND}
 
 S=${WORKDIR}/${P/_rc*/}
 
+pkg_pretend() {
+	if [[ ${MERGE_TYPE} != binary ]]; then
+		if tc-is-gcc && [[ $(gcc-major-version) == 4 && $(gcc-minor-version) -lt 6 || $(gcc-major-version) -lt 4 ]] ; then
+			eerror "You need at least sys-devel/gcc-4.6.0"
+			die "You need at least sys-devel/gcc-4.6.0"
+		fi
+	fi
+}
+
 src_configure() {
 	local mycmakeargs=(
 		-DENABLE_CURL=$(usex curl)
@@ -59,7 +73,7 @@ src_configure() {
 		-DENABLE_PROFILING=$(usex profile)
 		-DENABLE_SSE2=$(usex cpu_flags_x86_sse2)
 
-		-DCOMPILE_NPAPI_PLUGIN=$(usex nsplugin)
+		-DCOMPILE_PLUGIN=$(usex nsplugin)
 		-DPLUGIN_DIRECTORY="${EPREFIX}"/usr/$(get_libdir)/${PN}/plugins
 		# TODO: install /etc/chromium file? block adobe-flash?
 		-DCOMPILE_PPAPI_PLUGIN=$(usex ppapi)
@@ -76,9 +90,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	gnome2_icon_cache_update
-	xdg_desktop_database_update
-
 	if use nsplugin && ! has_version www-plugins/gnash; then
 		elog "Lightspark now supports gnash fallback for its browser plugin."
 		elog "Install www-plugins/gnash to take advantage of it."
@@ -89,9 +100,4 @@ pkg_postinst() {
 		elog "USE flag for either gnash or lightspark. For details, see"
 		elog "https://bugzilla.mozilla.org/show_bug.cgi?id=581848"
 	fi
-}
-
-pkg_postrm() {
-	gnome2_icon_cache_update
-	xdg_desktop_database_update
 }

@@ -5,8 +5,8 @@ EAPI=6
 inherit fixheadtails toolchain-funcs
 
 DESCRIPTION="A minimalist FIFO and filesystem-based IRC client"
-HOMEPAGE="https://tools.suckless.org/ii/"
-SRC_URI="https://dl.suckless.org/tools/${P}.tar.gz"
+HOMEPAGE="http://tools.suckless.org/ii/"
+SRC_URI="http://dl.suckless.org/tools/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -16,13 +16,13 @@ src_prepare() {
 	default
 
 	sed -i \
-		-e '/^CFLAGS/{s: -Os::g; s:= :+= :g}' \
-		-e '/^CC/d' \
-		-e '/^LDFLAGS/{s:-s::g; s:= :+= :g}' \
+		-e "s/CFLAGS[[:space:]]*= -g -O0/CFLAGS += /" \
+		-e "s/LDFLAGS[[:space:]]*=/LDFLAGS +=/" \
+		-e /^LIBS/d \
 		config.mk || die
-	sed -i \
-		-e 's|@${CC}|$(CC)|g' \
-		Makefile || die
+
+	# enable verbose build
+	sed -i 's/@${CC}/${CC}/' Makefile || die
 
 	ht_fix_file query.sh
 }

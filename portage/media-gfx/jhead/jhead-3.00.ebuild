@@ -1,9 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit toolchain-funcs
+inherit eutils toolchain-funcs
 
 DESCRIPTION="Exif Jpeg camera setting parser and thumbnail remover"
 HOMEPAGE="http://www.sentex.net/~mwandel/jhead"
@@ -14,10 +14,10 @@ SLOT="0"
 KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
 IUSE=""
 
-PATCHES=(
+src_prepare() {
 	# bug 275200 - respect flags and use mktemp instead of mkstemp
-	"${FILESDIR}"/${PN}-2.90-mkstemp_respect_flags.patch
-)
+	epatch "${FILESDIR}"/${PN}-2.90-mkstemp_respect_flags.patch
+}
 
 src_compile() {
 	emake CC="$(tc-getCC)" CFLAGS="${CFLAGS}"
@@ -26,7 +26,6 @@ src_compile() {
 src_install() {
 	dobin ${PN}
 	dodoc *.txt
-	docinto html
-	dodoc *.html
+	dohtml *.html
 	doman ${PN}.1
 }

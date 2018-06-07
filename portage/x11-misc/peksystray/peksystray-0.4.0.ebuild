@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit autotools
+EAPI=2
+inherit autotools eutils
 
 DESCRIPTION="A system tray dockapp for window managers supporting docking"
 HOMEPAGE="http://peksystray.sourceforge.net/"
@@ -16,14 +16,12 @@ IUSE=""
 DEPEND="x11-libs/libX11
 	x11-libs/libXt"
 
-PATCHES=( "${FILESDIR}/${P}-asneeded.patch" )
-
 src_prepare() {
-	default
+	epatch "${FILESDIR}"/${P}-asneeded.patch
 	eautoreconf
 }
 
 src_install() {
 	dobin src/peksystray || die
-	default
+	dodoc AUTHORS ChangeLog NEWS README REFS THANKS TODO
 }

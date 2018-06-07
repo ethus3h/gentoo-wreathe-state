@@ -1,31 +1,31 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI=4
 
-inherit autotools
+AUTOTOOLS_AUTORECONF=1
 
-MY_P="${P/_p/-}"
+inherit autotools-utils multilib
+
+MY_P=${P/_p/-}
 
 DESCRIPTION="Handwriting model files trained with Tomoe data"
-HOMEPAGE="https://taku910.github.io/zinnia/ https://github.com/taku910/zinnia https://sourceforge.net/projects/zinnia/"
+HOMEPAGE="http://zinnia.sourceforge.net/index.html"
 SRC_URI="mirror://sourceforge/zinnia/${MY_P}.tar.bz2"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="amd64 ~ppc64 x86"
+KEYWORDS="amd64 x86"
 IUSE=""
 
 DEPEND="app-i18n/zinnia"
 RDEPEND="${DEPEND}"
 
-S="${WORKDIR}/${MY_P}"
+S="${WORKDIR}"/${MY_P}
 
-DOCS=(AUTHORS)
+AUTOTOOLS_IN_SOURCE_BUILD=1
 
 src_prepare() {
-	default
-	mv configure.in configure.ac || die
-	sed -e "/^modeldir[[:space:]]*=/s/lib/$(get_libdir)/" -i Makefile.am || die
-	eautoreconf
+	sed -i -e "/^modeldir/s/lib/$(get_libdir)/" Makefile.am || die
+	autotools-utils_src_prepare
 }

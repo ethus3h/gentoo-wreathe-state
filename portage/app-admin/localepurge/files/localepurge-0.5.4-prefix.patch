@@ -1,5 +1,5 @@
---- a/localepurge
-+++ b/localepurge
+--- localepurge.orig	2012-12-02 19:56:18.000000000 +0100
++++ localepurge	2012-12-02 20:00:38.000000000 +0100
 @@ -1,14 +1,14 @@
 -#!/bin/bash
 +#!@GENTOO_PORTAGE_EPREFIX@/bin/bash

@@ -6,7 +6,7 @@ EAPI=6
 inherit autotools eutils flag-o-matic pam user systemd
 
 DESCRIPTION="Queues jobs for later execution"
-HOMEPAGE="https://packages.qa.debian.org/a/at.html"
+HOMEPAGE="http://packages.qa.debian.org/a/at.html"
 SRC_URI="mirror://debian/pool/main/a/at/${PN}_${PV}.orig.tar.gz"
 
 LICENSE="GPL-2"

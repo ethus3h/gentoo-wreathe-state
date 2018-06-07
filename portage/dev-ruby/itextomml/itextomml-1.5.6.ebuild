@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-USE_RUBY="ruby23 ruby24 ruby25"
+USE_RUBY="ruby21 ruby22 ruby23 ruby24"
 RUBY_FAKEGEM_TASK_DOC=""
 RUBY_FAKEGEM_EXTRADOC="README"
 
@@ -14,7 +14,7 @@ HOMEPAGE="https://golem.ph.utexas.edu/~distler/blog/itex2MML.html"
 
 LICENSE="|| ( GPL-2+ MPL-1.1 LGPL-2+ )"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
 IUSE=""
 
 #Tests don't fail here

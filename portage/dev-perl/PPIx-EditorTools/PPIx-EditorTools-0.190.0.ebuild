@@ -1,10 +1,10 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-DIST_AUTHOR=SZABGAB
-DIST_VERSION=0.18
+MODULE_AUTHOR=SZABGAB
+MODULE_VERSION=0.18
 inherit perl-module
 
 DESCRIPTION="Utility methods and base class for manipulating Perl via PPI"
@@ -25,11 +25,6 @@ DEPEND="
 		>=dev-perl/Test-Differences-0.480.100
 		dev-perl/Test-NoWarnings
 		dev-perl/CPAN-Changes
-	)
-"
+	)"
 
-src_prepare() {
-	sed -i -e 's/use inc::Module::Install/use lib q[.]; use inc::Module::Install/' Makefile.PL ||
-		die "Can't patch Makefile.PL for 5.26 dot-in-inc"
-	perl-module_src_prepare
-}
+SRC_TEST=do

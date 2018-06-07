@@ -1,24 +1,21 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
 
-inherit autotools
-
 if [[ ${PV} = *9999* ]]; then
+	WANT_AUTOCONF="2.5"
 	WANT_AUTOMAKE="1.10"
-	inherit git-r3
-	EGIT_REPO_URI="https://github.com/rafaelmartins/${PN}"
+	inherit autotools mercurial
+	EHG_REPO_URI="http://hg.rafaelmartins.eng.br/cgisysinfo/"
 	KEYWORDS=""
-	DOCS=( "README.md" "AUTHORS" "NEWS" )
 else
-	SRC_URI="https://github.com/rafaelmartins/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="http://distfiles.rafaelmartins.eng.br/${PN}/${P}.tar.bz2"
 	KEYWORDS="~amd64 ~x86"
-	DOCS=( "README" "AUTHORS" "NEWS" )
 fi
 
 DESCRIPTION="A small cgi utility to show basic system information"
-HOMEPAGE="https://github.com/rafaelmartins/cgisysinfo"
+HOMEPAGE="http://projects.rafaelmartins.eng.br/cgisysinfo"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -27,8 +24,10 @@ IUSE="fastcgi"
 DEPEND="fastcgi? ( dev-libs/fcgi )"
 RDEPEND="${DEPEND}"
 
+DOCS="README AUTHORS NEWS"
+
 src_prepare() {
-	eautoreconf
+	[[ ${PV} = *9999* ]] && eautoreconf
 }
 
 src_configure() {

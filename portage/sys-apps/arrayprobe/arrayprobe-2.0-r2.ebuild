@@ -1,11 +1,11 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="4"
 
-inherit autotools
+inherit eutils autotools
 
-DESCRIPTION="Utility to report status of an HP (Compaq) array controller (both IDA & CCISS)"
+DESCRIPTION="CLI utility that reports the status of a HP (Compaq) array controller (both IDA & CCISS supported)"
 HOMEPAGE="http://www.strocamp.net/opensource/arrayprobe.php"
 SRC_URI="http://www.strocamp.net/opensource/compaq/downloads/${P}.tar.gz"
 
@@ -14,12 +14,8 @@ SLOT="0"
 KEYWORDS="amd64 ~ia64 x86"
 IUSE=""
 
-PATCHES=(
-	"${FILESDIR}/${PV}-malloc-strlen.patch"
-	"${FILESDIR}/${PV}-ida_headers.patch"
-)
-
 src_prepare() {
-	default
+	epatch "${FILESDIR}/${PV}-malloc-strlen.patch"
+	epatch "${FILESDIR}/${PV}-ida_headers.patch"
 	eautoreconf
 }

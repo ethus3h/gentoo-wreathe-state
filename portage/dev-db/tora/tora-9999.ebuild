@@ -1,103 +1,91 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit cmake-utils eutils xdg-utils
+inherit cmake-utils eutils
 
 if [[ ${PV} == 9999 ]]; then
-	EGIT_REPO_URI="https://github.com/tora-tool/tora"
-	inherit git-r3
+	ESVN_REPO_URI="https://svn.code.sf.net/p/tora/code/trunk/tora"
+	inherit subversion
+	SRC_URI=""
 else
-	SRC_URI="https://github.com/tora-tool/tora/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 fi
 
-DESCRIPTION="SQL IDE for Oracle, MySQL and PostgreSQL dbs"
-HOMEPAGE="https://github.com/tora-tool/tora/wiki"
-IUSE="doc mysql oracle pch postgres"
+DESCRIPTION="TOra - Toolkit For Oracle"
+HOMEPAGE="http://torasql.com/"
+IUSE="debug mysql oracle oci8-instant-client postgres"
 
 SLOT="0"
 LICENSE="GPL-2"
+KEYWORDS=""
 
 RDEPEND="
 	dev-libs/ferrisloki
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5
-	dev-qt/qtnetwork:5
-	dev-qt/qtprintsupport:5
-	dev-qt/qtsql:5[mysql?,postgres?]
-	dev-qt/qtwidgets:5
-	>=x11-libs/qscintilla-2.10.1:=[qt5(+)]
-	oracle? ( =dev-db/oracle-instantclient-basic-11* )
+	x11-libs/qscintilla:=[qt4(-)]
+	dev-qt/qtgui:4
+	dev-qt/qtsql:4[mysql?,postgres?]
+	dev-qt/qtxmlpatterns:4
+	oci8-instant-client? ( dev-db/oracle-instantclient-basic )
 	postgres? ( dev-db/postgresql:* )
 "
-DEPEND="${RDEPEND}
-	dev-qt/linguist:5
+DEPEND="
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen )
+	${RDEPEND}
 "
 
 pkg_setup() {
-	if use oracle && [[ -z "$ORACLE_HOME" ]]; then
+	if ( use oracle || use oci8-instant-client ) && [ -z "$ORACLE_HOME" ] ; then
 		eerror "ORACLE_HOME variable is not set."
 		eerror
 		eerror "You must install Oracle >= 8i client for Linux in"
 		eerror "order to compile TOra with Oracle support."
 		eerror
+		eerror "Otherwise specify -oracle in your USE variable."
+		eerror
 		eerror "You can download the Oracle software from"
-		eerror "http://www.oracle.com/technetwork/database/features/instant-client/index.html"
+		eerror "http://otn.oracle.com/software/content.html"
 		die
 	fi
 }
 
 src_prepare() {
-	cmake-utils_src_prepare
-
-	# fixed in master, only care about recent qscintilla lib name:
-	sed -e "/FIND_LIBRARY(QSCINTILLA_LIBRARY/s/qt5scintilla2/qscintilla2_qt5/" \
-		-i cmake/modules/FindQScintilla.cmake || die "Failed to fix FindQScintilla.cmake"
-
-	rm -r extlibs/{loki,qscintilla2} || die # ferrisloki, bug #383109
-
-	sed -e "/COPYING/ d" \
-		-i CMakeLists.txt || die "Removal of COPYING file failed"
-
+	sed -i \
+		-e "/COPYING/ d" \
+		CMakeLists.txt || die "Removal of COPYING file failed"
+	# 'svn info' needs .svn subdirectory
+	[[ ${PV} != 9999 ]] || cp -a "${ESVN_WC_PATH}"/.svn .svn || die
 	# bug 547520
 	grep -rlZ '$$ORIGIN' . | xargs -0 sed -i 's|:$$ORIGIN[^:"]*||' || \
 		die 'Removal of $$ORIGIN failed'
 }
 
 src_configure() {
-	local mycmakeargs=(
-		-DENABLE_DB2=OFF
-		-DQT5_BUILD=ON
-		-DWANT_INTERNAL_LOKI=OFF
-		-DWANT_INTERNAL_QSCINTILLA=OFF
+	local mycmakeargs=()
+	if use oracle || use oci8-instant-client ; then
+		mycmakeargs=(-DENABLE_ORACLE=ON)
+	else
+		mycmakeargs=(-DENABLE_ORACLE=OFF)
+	fi
+	mycmakeargs+=(
 		-DWANT_RPM=OFF
+		-DWANT_BUNDLE=OFF
+		-DWANT_BUNDLE_STANDALONE=OFF
+		-DWANT_INTERNAL_QSCINTILLA=OFF
+		-DWANT_INTERNAL_LOKI=OFF
 		-DLOKI_LIBRARY="$(pkg-config --variable=libdir ferrisloki)/libferrisloki.so"
 		-DLOKI_INCLUDE_DIR="$(pkg-config --variable=includedir ferrisloki)/FerrisLoki"
-		$(cmake-utils_use_find_package doc Doxygen)
-		-DENABLE_ORACLE=$(usex oracle)
-		-DUSE_PCH=$(usex pch)
-		-DENABLE_PGSQL=$(usex postgres)
+		$(cmake-utils_use_enable postgres PGSQL)
+		$(cmake-utils_use_want debug)
+		# path variables
+		-DTORA_DOC_DIR=share/doc/${PF}
 	)
 	cmake-utils_src_configure
 }
 
 src_install() {
 	cmake-utils_src_install
-
-	doicon src/icons/${PN}.xpm || die
-	domenu src/${PN}.desktop || die
-}
-
-pkg_postinst() {
-	xdg_mimeinfo_database_update
-	xdg_desktop_database_update
-}
-
-pkg_postrm() {
-	xdg_mimeinfo_database_update
-	xdg_desktop_database_update
+	doicon src/icons/${PN}.xpm
+	domenu src/${PN}.desktop
 }

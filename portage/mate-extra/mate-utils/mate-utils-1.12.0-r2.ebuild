@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -45,14 +45,11 @@ DEPEND="${RDEPEND}
 	dev-util/gtk-doc
 	dev-util/gtk-doc-am
 	>=dev-util/intltool-0.50.1:*
+	x11-proto/xextproto:0
 	sys-devel/gettext:*
-	virtual/pkgconfig:*
-	x11-base/xorg-proto"
+	virtual/pkgconfig:*"
 
-PATCHES=(
-	"${FILESDIR}/${P}-dict-gtk3.patch"
-	"${FILESDIR}/${P}-include-correct-header-to-fix-occasional-ftbfs.patch"
-)
+PATCHES=( "${FILESDIR}/${P}-dict-gtk3.patch" )
 
 src_prepare() {
 	# Make apps visible in all DEs.

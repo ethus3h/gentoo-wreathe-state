@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
-inherit eutils xdg-utils
+inherit eutils fdo-mime
 
 DESCRIPTION="Open source object-oriented logic programming language"
 HOMEPAGE="http://logtalk.org"
@@ -21,7 +21,7 @@ RDEPEND="
 	${DEPEND}"
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-3.03.0-no-user-docs.patch
+	epatch "${FILESDIR}"/${P}-no-user-docs.patch
 }
 
 src_install() {
@@ -32,7 +32,6 @@ src_install() {
 	cp -r adapters coding contributions core examples integration \
 		library paths scratch tests tools VERSION.txt \
 		loader-sample.lgt settings-sample.lgt tester-sample.lgt \
-		tests-sample.lgt \
 		"${D}/usr/share/${P}" \
 		|| die "Failed to install files"
 
@@ -100,8 +99,11 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 
+	ewarn "Before running logtalk, users should execute"
+	ewarn "logtalk_user_setup *once*"
+	ewarn ""
 	ewarn "The following integration scripts are installed"
 	ewarn "for running logtalk with selected Prolog compilers:"
 	ewarn "B-Prolog: /usr/bin/bplgt"
@@ -126,5 +128,5 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

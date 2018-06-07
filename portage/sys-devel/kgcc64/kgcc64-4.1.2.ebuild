@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI=4
 
 case ${CHOST} in
 	hppa*)    CTARGET=hppa64-${CHOST#*-};;
@@ -16,6 +16,7 @@ TOOLCHAIN_ALLOWED_LANGS="c"
 GCC_TARGET_NO_MULTILIB=true
 
 PATCH_VER="1.0.1"
+GCC_FILESDIR=${FILESDIR/${PN}/gcc}
 
 inherit eutils toolchain
 
@@ -34,7 +35,7 @@ DEPEND="hppa? ( sys-devel/binutils-hppa64 )
 src_prepare() {
 	toolchain_src_prepare
 	# Fix cross-compiling
-	epatch "${FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
+	epatch "${GCC_FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
 }
 
 pkg_postinst() {

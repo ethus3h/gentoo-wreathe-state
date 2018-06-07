@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,7 +9,7 @@ DESCRIPTION="The extensible self-documenting text editor"
 HOMEPAGE="https://www.gnu.org/software/emacs/"
 SRC_URI="ftp://ftp.gnu.org/old-gnu/emacs/${P}.tar.gz
 	ftp://ftp.splode.com/pub/users/friedman/emacs/${P}-linux22x-elf-glibc21.diff.gz
-	https://dev.gentoo.org/~ulm/emacs/${P}-patches-10.tar.xz"
+	https://dev.gentoo.org/~ulm/emacs/${P}-patches-9.tar.xz"
 
 LICENSE="GPL-1+ GPL-2+ BSD" #HPND
 SLOT="18"
@@ -27,14 +27,6 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
 PATCHES="../${P}-linux22x-elf-glibc21.diff ../patch"
-
-src_prepare() {
-	default
-
-	# Do not use the sandbox, or the dumped Emacs will be twice as large
-	sed -i -e 's:\./temacs.*dump:SANDBOX_ON=0 LD_PRELOAD= env &:' \
-		src/ymakefile || die
-}
 
 src_configure() {
 	# autoconf? What's autoconf? We are living in 1992. ;-)
@@ -68,17 +60,16 @@ src_configure() {
 		src/s-linux.h || die
 
 	# -O3 and -finline-functions cause segmentation faults at run time.
-	# -Wno-implicit will quieten GCC 5; feel free to submit a patch
-	# adding all those missing prototypes.
-	strip-flags
-	filter-flags -finline-functions -fpie
-	append-flags -Wno-implicit
-	append-ldflags $(test-flags -no-pie)	#639562
+	filter-flags -finline-functions
 	replace-flags -O[3-9] -O2
+	strip-flags
+	# Quieten GCC 5. Feel free to submit a patch adding all those prototypes.
+	append-flags -Wno-implicit
 }
 
 src_compile() {
-	addpredict /var/lib/emacs/lock
+	# Do not use the sandbox, or the dumped Emacs will be twice as large
+	export SANDBOX_ON=0
 	emake --jobs=1 \
 		CC="$(tc-getCC)" CFLAGS="${CFLAGS} -Demacs" \
 		LD="$(tc-getCC) -nostdlib" LDFLAGS="${LDFLAGS}"

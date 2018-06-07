@@ -1,9 +1,8 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit desktop
+EAPI=2
+inherit eutils
 
 DESCRIPTION="Scriptable DVD copy software"
 HOMEPAGE="http://dvdshrink.sourceforge.net"
@@ -25,15 +24,21 @@ RDEPEND=">=media-video/transcode-1.0.2-r2[dvd]
 DEPEND=""
 
 S=${WORKDIR}/${PN}
-PATCHES=( "${FILESDIR}"/${PN}-2.6.1_p10-fix-paths.patch )
+
+src_prepare() {
+	sed -e 's:applications/::g' -i usr/bin/dvdsfunctions \
+		-i usr/bin/xdvdshrink.pl || die "sed failed."
+}
 
 src_install() {
-	dobin usr/bin/{batchrip.sh,dvds{functions,hrink}}
+	dobin usr/bin/{batchrip.sh,dvds{functions,hrink}} || die "dobin failed."
 
-	use gtk && dobin usr/bin/xdvdshrink.pl
+	if use gtk; then
+		dobin usr/bin/xdvdshrink.pl || die "dobin failed."
+	fi
 
 	insinto /usr/share
-	doins -r usr/share/applications/dvdshrink
+	doins -r usr/share/applications/dvdshrink || die "doins failed."
 
 	dodoc usr/share/doc/dvdshrink/{batchrip.txt,example.xml,README.txt}
 

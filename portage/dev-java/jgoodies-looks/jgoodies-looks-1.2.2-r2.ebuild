@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -16,7 +16,7 @@ SRC_URI="http://www.jgoodies.com/download/libraries/${MY_PN}-${MY_PV}.zip"
 
 LICENSE="BSD"
 SLOT="1.2"
-KEYWORDS="amd64 x86"
+KEYWORDS="amd64 x86 ~x86-fbsd"
 IUSE="doc"
 
 DEPEND="

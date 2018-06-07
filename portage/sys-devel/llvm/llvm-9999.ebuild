@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -8,21 +8,18 @@ EAPI=6
 CMAKE_MIN_VERSION=3.7.0-r1
 PYTHON_COMPAT=( python2_7 )
 
-inherit cmake-utils eapi7-ver flag-o-matic git-r3 multilib-minimal \
-	multiprocessing pax-utils python-any-r1 toolchain-funcs
+inherit cmake-utils flag-o-matic git-r3 multilib-minimal pax-utils \
+	python-any-r1 toolchain-funcs versionator
 
 DESCRIPTION="Low Level Virtual Machine"
-HOMEPAGE="https://llvm.org/"
+HOMEPAGE="http://llvm.org/"
 SRC_URI=""
-EGIT_REPO_URI="https://git.llvm.org/git/llvm.git
+EGIT_REPO_URI="http://llvm.org/git/llvm.git
 	https://github.com/llvm-mirror/llvm.git"
 
-# Those are in lib/Targets, without explicit CMakeLists.txt mention
-ALL_LLVM_EXPERIMENTAL_TARGETS=( AVR Nios2 RISCV WebAssembly )
 # Keep in sync with CMakeLists.txt
 ALL_LLVM_TARGETS=( AArch64 AMDGPU ARM BPF Hexagon Lanai Mips MSP430
-	NVPTX PowerPC Sparc SystemZ X86 XCore
-	"${ALL_LLVM_EXPERIMENTAL_TARGETS[@]}" )
+	NVPTX PowerPC RISCV Sparc SystemZ X86 XCore )
 ALL_LLVM_TARGETS=( "${ALL_LLVM_TARGETS[@]/#/llvm_targets_}" )
 
 # Additional licenses:
@@ -35,41 +32,37 @@ ALL_LLVM_TARGETS=( "${ALL_LLVM_TARGETS[@]/#/llvm_targets_}" )
 
 LICENSE="UoI-NCSA rc BSD public-domain
 	llvm_targets_ARM? ( LLVM-Grant )"
-SLOT="7"
+SLOT="5"
 KEYWORDS=""
-IUSE="debug doc gold libedit +libffi ncurses test xar xml
-	kernel_Darwin ${ALL_LLVM_TARGETS[*]}"
-RESTRICT="!test? ( test )"
+IUSE="debug +doc gold libedit +libffi ncurses test
+	elibc_musl kernel_Darwin ${ALL_LLVM_TARGETS[*]}"
 
 RDEPEND="
 	sys-libs/zlib:0=
 	gold? ( >=sys-devel/binutils-2.22:*[cxx] )
 	libedit? ( dev-libs/libedit:0=[${MULTILIB_USEDEP}] )
 	libffi? ( >=virtual/libffi-3.0.13-r1:0=[${MULTILIB_USEDEP}] )
-	ncurses? ( >=sys-libs/ncurses-5.9-r3:0=[${MULTILIB_USEDEP}] )
-	xar? ( app-arch/xar )
-	xml? ( dev-libs/libxml2:2=[${MULTILIB_USEDEP}] )"
+	ncurses? ( >=sys-libs/ncurses-5.9-r3:0=[${MULTILIB_USEDEP}] )"
 # configparser-3.2 breaks the build (3.3 or none at all are fine)
 DEPEND="${RDEPEND}
 	dev-lang/perl
 	|| ( >=sys-devel/gcc-3.0 >=sys-devel/llvm-3.5
 		( >=sys-freebsd/freebsd-lib-9.1-r10 sys-libs/libcxx )
 	)
-	kernel_Darwin? (
-		<sys-libs/libcxx-$(ver_cut 1-3).9999
-		>=sys-devel/binutils-apple-5.1
-	)
+	|| ( >=sys-devel/binutils-2.18 >=sys-devel/binutils-apple-5.1 )
+	kernel_Darwin? ( <sys-libs/libcxx-$(get_version_component_range 1-3).9999 )
 	doc? ( dev-python/sphinx )
 	gold? ( sys-libs/binutils-libs )
 	libffi? ( virtual/pkgconfig )
+	test? ( $(python_gen_any_dep "~dev-python/lit-${PV}[\${PYTHON_USEDEP}]") )
 	!!<dev-python/configparser-3.3.0.2
 	${PYTHON_DEPS}"
 # There are no file collisions between these versions but having :0
 # installed means llvm-config there will take precedence.
 RDEPEND="${RDEPEND}
 	!sys-devel/llvm:0"
-PDEPEND="sys-devel/llvm-common
-	gold? ( >=sys-devel/llvmgold-${SLOT} )"
+PDEPEND="app-vim/llvm-vim
+	gold? ( sys-devel/llvmgold )"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	|| ( ${ALL_LLVM_TARGETS[*]} )"
@@ -77,16 +70,24 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 # least intrusive of all
 CMAKE_BUILD_TYPE=RelWithDebInfo
 
+python_check_deps() {
+	! use test \
+		|| has_version "dev-python/lit[${PYTHON_USEDEP}]"
+}
+
 src_prepare() {
 	# Fix llvm-config for shared linking and sane flags
 	# https://bugs.gentoo.org/show_bug.cgi?id=565358
 	eapply "${FILESDIR}"/9999/0007-llvm-config-Clean-up-exported-values-update-for-shar.patch
 
+	# support building llvm against musl-libc
+	use elibc_musl && eapply "${FILESDIR}"/9999/musl-fixes.patch
+
 	# disable use of SDK on OSX, bug #568758
 	sed -i -e 's/xcrun/false/' utils/lit/lit/util.py || die
 
-	# User patches + QA
-	cmake-utils_src_prepare
+	# User patches
+	eapply_user
 }
 
 multilib_src_configure() {
@@ -98,23 +99,16 @@ multilib_src_configure() {
 
 	local libdir=$(get_libdir)
 	local mycmakeargs=(
-		# disable appending VCS revision to the version to improve
-		# direct cache hit ratio
-		-DLLVM_APPEND_VC_REV=OFF
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr/lib/llvm/${SLOT}"
 		-DLLVM_LIBDIR_SUFFIX=${libdir#lib}
 
 		-DBUILD_SHARED_LIBS=ON
-		# cheap hack: LLVM combines both anyway, and the only difference
-		# is that the former list is explicitly verified at cmake time
-		-DLLVM_TARGETS_TO_BUILD=""
-		-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="${LLVM_TARGETS// /;}"
+		-DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS// /;}"
 		-DLLVM_BUILD_TESTS=$(usex test)
 
 		-DLLVM_ENABLE_FFI=$(usex libffi)
 		-DLLVM_ENABLE_LIBEDIT=$(usex libedit)
 		-DLLVM_ENABLE_TERMINFO=$(usex ncurses)
-		-DLLVM_ENABLE_LIBXML2=$(usex xml)
 		-DLLVM_ENABLE_ASSERTIONS=$(usex debug)
 		-DLLVM_ENABLE_EH=ON
 		-DLLVM_ENABLE_RTTI=ON
@@ -125,8 +119,6 @@ multilib_src_configure() {
 
 		-DFFI_INCLUDE_DIR="${ffi_cflags#-I}"
 		-DFFI_LIBRARY_DIR="${ffi_ldflags#-L}"
-		# used only for llvm-objdump tool
-		-DHAVE_LIBXAR=$(multilib_native_usex xar 1 0)
 
 		# disable OCaml bindings (now in dev-ml/llvm-ocaml)
 		-DOCAMLFIND=NO
@@ -141,7 +133,7 @@ multilib_src_configure() {
 #	fi
 
 	use test && mycmakeargs+=(
-		-DLLVM_LIT_ARGS="-vv;-j;${LIT_JOBS:-$(makeopts_jobs "${MAKEOPTS}" "$(get_nproc)")}"
+		-DLIT_COMMAND="${EPREFIX}/usr/bin/lit"
 	)
 
 	if multilib_is_native_abi; then
@@ -153,7 +145,6 @@ multilib_src_configure() {
 			-DLLVM_INSTALL_UTILS=ON
 		)
 		use doc && mycmakeargs+=(
-			-DCMAKE_INSTALL_MANDIR="${EPREFIX}/usr/lib/llvm/${SLOT}/share/man"
 			-DLLVM_INSTALL_SPHINX_HTML_DIR="${EPREFIX}/usr/share/doc/${PF}/html"
 			-DSPHINX_WARNINGS_AS_ERRORS=OFF
 		)
@@ -163,23 +154,12 @@ multilib_src_configure() {
 	fi
 
 	if tc-is-cross-compiler; then
-		local tblgen="${EPREFIX}/usr/lib/llvm/${SLOT}/bin/llvm-tblgen"
-		[[ -x "${tblgen}" ]] \
-			|| die "${tblgen} not found or usable"
+		[[ -x "/usr/bin/llvm-tblgen" ]] \
+			|| die "/usr/bin/llvm-tblgen not found or usable"
 		mycmakeargs+=(
 			-DCMAKE_CROSSCOMPILING=ON
-			-DLLVM_TABLEGEN="${tblgen}"
+			-DLLVM_TABLEGEN=/usr/bin/llvm-tblgen
 		)
-	fi
-
-	# workaround BMI bug in gcc-7 (fixed in 7.4)
-	# https://bugs.gentoo.org/649880
-	# apply only to x86, https://bugs.gentoo.org/650506
-	if tc-is-gcc && [[ ${MULTILIB_ABI_FLAG} == abi_x86* ]] &&
-			[[ $(gcc-major-version) -eq 7 && $(gcc-minor-version) -lt 4 ]]
-	then
-		local CFLAGS="${CFLAGS} -mno-bmi"
-		local CXXFLAGS="${CXXFLAGS} -mno-bmi"
 	fi
 
 	# LLVM_ENABLE_ASSERTIONS=NO does not guarantee this for us, #614844
@@ -245,13 +225,4 @@ _EOF_
 	doenvd "${T}/10llvm-${revord}"
 
 	docompress "/usr/lib/llvm/${SLOT}/share/man"
-}
-
-pkg_postinst() {
-	elog "You can find additional opt-viewer utility scripts in:"
-	elog "  ${EROOT}/usr/lib/llvm/${SLOT}/share/opt-viewer"
-	elog "To use these scripts, you will need Python 2.7 along with the following"
-	elog "packages:"
-	elog "  dev-python/pygments (for opt-viewer)"
-	elog "  dev-python/pyyaml (for all of them)"
 }

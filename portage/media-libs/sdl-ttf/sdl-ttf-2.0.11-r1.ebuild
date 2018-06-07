@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit autotools multilib-minimal
+EAPI=5
+inherit autotools eutils multilib-minimal
 
 MY_P="${P/sdl-/SDL_}"
 DESCRIPTION="library that allows you to use TrueType fonts in SDL applications"
@@ -15,37 +15,34 @@ KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd ~amd64-linux ~
 IUSE="static-libs X"
 
 RDEPEND="
+	abi_x86_32? (
+		!app-emulation/emul-linux-x86-sdl[-abi_x86_32(-)]
+		!<=app-emulation/emul-linux-x86-sdl-20140406
+	)
 	X? ( >=x11-libs/libXt-1.1.4[${MULTILIB_USEDEP}] )
 	>=media-libs/libsdl-1.2.15-r4[${MULTILIB_USEDEP}]
 	>=media-libs/freetype-2.5.0.1[${MULTILIB_USEDEP}]"
-DEPEND="${RDEPEND}
-	virtual/pkgconfig"
+DEPEND="${RDEPEND}"
 
 S=${WORKDIR}/${MY_P}
 
-PATCHES=(
-	"${FILESDIR}"/${P}-underlink.patch
-	"${FILESDIR}"/${P}-freetype_pkgconfig.patch
-)
-
 src_prepare() {
-	default
-	mv configure.{in,ac} || die
+	epatch "${FILESDIR}"/${P}-underlink.patch
 	eautoreconf
 }
 
 multilib_src_configure() {
-	local myeconfargs=(
-		--disable-dependency-tracking
-		$(use_enable static-libs static)
+	ECONF_SOURCE="${S}" econf \
+		--disable-dependency-tracking \
+		$(use_enable static-libs static) \
 		$(use_with X x)
-	)
-	ECONF_SOURCE="${S}" econf "${myeconfargs[@]}"
+}
+
+multilib_src_install() {
+	emake DESTDIR="${D}" install
 }
 
 multilib_src_install_all() {
 	dodoc CHANGES README
-	if ! use static-libs ; then
-		find "${ED}" \( -name '*.a' -o -name '*.la' \) -delete || die
-	fi
+	use static-libs || prune_libtool_files --all
 }

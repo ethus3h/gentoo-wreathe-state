@@ -1,8 +1,8 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
-inherit autotools eutils gnome2-utils xdg-utils
+inherit autotools eutils fdo-mime
 
 DESCRIPTION="A RS-274X (Gerber) and NC drill (Excellon) file viewer"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
@@ -57,11 +57,9 @@ src_install () {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
-	gnome2_icon_cache_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
-	gnome2_icon_cache_update
+	fdo-mime_desktop_database_update
 }

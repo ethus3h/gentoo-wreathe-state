@@ -12,7 +12,7 @@ SRC_URI="http://downloads.asterisk.org/pub/telephony/asterisk/releases/${MY_P}.t
 	 mirror://gentoo/gentoo-asterisk-patchset-3.17.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS="amd64 ~ppc ~ppc64 x86"
 
 IUSE_VOICEMAIL_STORAGE="
 	+voicemail_storage_file
@@ -65,7 +65,7 @@ CDEPEND="dev-db/sqlite:3
 	snmp? ( net-analyzer/net-snmp )
 	span? ( media-libs/spandsp )
 	speex? ( media-libs/speex )
-	srtp? ( net-libs/libsrtp:0 )
+	srtp? ( net-libs/libsrtp )
 	vorbis? ( media-libs/libvorbis )"
 
 DEPEND="${CDEPEND}

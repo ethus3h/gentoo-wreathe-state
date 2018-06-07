@@ -75,12 +75,11 @@ add_src_uri() {
 	else
 		a+=".bz2"
 	fi
-	set -- mirror://gentoo https://dev.gentoo.org/~vapier/dist https://dev.gentoo.org/~tamiko/distfiles https://dev.gentoo.org/~dilfridge/distfiles
+	set -- mirror://gentoo https://dev.gentoo.org/~vapier/dist
 	SRC_URI="${SRC_URI} ${@/%//${a}}"
 }
-PATCH_BINUTILS_VER=${PATCH_BINUTILS_VER:-${BVER}}
-add_src_uri binutils-${PATCH_BINUTILS_VER}-patches-${PATCHVER}.tar ${PATCHVER}
-add_src_uri binutils-${PATCH_BINUTILS_VER}-uclibc-patches-${UCLIBC_PATCHVER}.tar ${UCLIBC_PATCHVER}
+add_src_uri binutils-${BVER}-patches-${PATCHVER}.tar ${PATCHVER}
+add_src_uri binutils-${BVER}-uclibc-patches-${UCLIBC_PATCHVER}.tar ${UCLIBC_PATCHVER}
 add_src_uri elf2flt-${ELF2FLT_VER}.tar ${ELF2FLT_VER}
 
 if version_is_at_least 2.18 ; then
@@ -505,7 +504,7 @@ toolchain-binutils_pkg_postrm() {
 		choice=${choice//$'\n'/ }
 		choice=${choice/* }
 		if [[ -z ${choice} ]] ; then
-			binutils-config -u ${CTARGET}
+			env -i ROOT="${ROOT}" binutils-config -u ${CTARGET}
 		else
 			binutils-config ${choice}
 		fi

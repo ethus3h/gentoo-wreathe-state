@@ -1,9 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-
-inherit autotools eutils xdg-utils
+inherit autotools eutils fdo-mime
 
 MY_P=${PN}-${PV/_}
 
@@ -17,8 +16,7 @@ KEYWORDS="amd64 x86"
 IUSE="nls"
 
 RDEPEND=">=dev-libs/glib-2.14
-	>=x11-libs/gtk+-2.10:2
-	x11-misc/xdotool"
+	>=x11-libs/gtk+-2.10:2"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	nls? (
@@ -43,9 +41,9 @@ src_configure() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

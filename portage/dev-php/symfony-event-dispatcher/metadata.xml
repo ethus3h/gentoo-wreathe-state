@@ -13,9 +13,8 @@
     <email>php-bugs@gentoo.org</email>
   </maintainer>
   <longdescription>
-    The EventDispatcher component provides tools that allow your
-    application components to communicate with each other by
-    dispatching events and listening to them.
+	The EventDispatcher component provides tools that allow your application components
+	to communicate with each other by dispatching events and listening to them.
   </longdescription>
   <upstream>
     <remote-id type="github">symfony/event-dispatcher</remote-id>

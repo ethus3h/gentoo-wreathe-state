@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -14,16 +14,16 @@ else
 fi
 
 DESCRIPTION="C library for developing embedded Linux systems"
-HOMEPAGE="https://uclibc-ng.org/"
+HOMEPAGE="http://www.uclibc-ng.org/"
 if [[ ${PV} != "9999" ]] ; then
 	PATCH_VER=""
-	SRC_URI="https://downloads.uclibc-ng.org/releases/${PV}/${MY_P}.tar.bz2"
+	SRC_URI="http://downloads.uclibc-ng.org/releases/${PV}/${MY_P}.tar.bz2"
 	KEYWORDS="-* ~amd64 ~arm ~mips ~ppc ~x86"
 fi
 
 LICENSE="LGPL-2"
 SLOT="0"
-IUSE="debug hardened iconv ipv6 symlink-compat headers-only"
+IUSE="debug hardened iconv ipv6 rpc symlink-compat crosscompile_opts_headers-only"
 RESTRICT="strip"
 
 # 1) We can't upgrade from uclibc to uclibc-ng via a soft blocker since portage
@@ -59,7 +59,7 @@ alt_build_kprefix() {
 }
 
 just_headers() {
-	use headers-only && is_crosscompile
+	use crosscompile_opts_headers-only && is_crosscompile
 }
 
 uclibc_endian() {
@@ -121,19 +121,21 @@ make_config() {
 		SUPPORT_LD_DEBUG_EARLY
 		UCLIBC_HAS_CTYPE_UNSAFE
 		UCLIBC_HAS_LOCALE
-		LDSO_SAFE_RUNPATH
+		UCLIBC_HAS_SSP_COMPAT
 	)
 
 	# These are forced on
 	defs_y=(
+		COMPAT_ATEXIT
 		DO_C99_MATH
 		DO_XSI_MATH
 		FORCE_SHAREABLE_TEXT_SEGMENTS
 		LDSO_GNU_HASH_SUPPORT
+		LDSO_PRELINK_SUPPORT
 		LDSO_PRELOAD_FILE_SUPPORT
-		LDSO_RUNPATH
 		LDSO_RUNPATH_OF_EXECUTABLE
 		LDSO_STANDALONE_SUPPORT
+		MALLOC_GLIBC_COMPAT
 		PROPOLICE_BLOCK_SEGV
 		PTHREADS_DEBUG_SUPPORT
 		UCLIBC_HAS_ARC4RANDOM
@@ -153,9 +155,12 @@ make_config() {
 		UCLIBC_HAS_GLIBC_CUSTOM_STREAMS
 		UCLIBC_HAS_GNU_GLOB
 		UCLIBC_HAS_HEXADECIMAL_FLOATS
+		UCLIBC_HAS_LIBNSL_STUB
+		UCLIBC_HAS_LIBRESOLV_STUB
 		UCLIBC_HAS_LIBUTIL
 		UCLIBC_HAS_NFTW
 		UCLIBC_HAS_OBSOLETE_BSD_SIGNAL
+		UCLIBC_HAS_OBSTACK
 		UCLIBC_HAS_PRINTF_M_SPEC
 		UCLIBC_HAS_PROGRAM_INVOCATION_NAME
 		UCLIBC_HAS_RESOLVER_SUPPORT
@@ -188,6 +193,10 @@ make_config() {
 	kconfig_q_opt debug UCLIBC_HAS_PROFILING
 
 	kconfig_q_opt ipv6 UCLIBC_HAS_IPV6
+
+	kconfig_q_opt rpc UCLIBC_HAS_RPC
+	kconfig_q_opt rpc UCLIBC_HAS_FULL_RPC
+	kconfig_q_opt rpc UCLIBC_HAS_REENTRANT_RPC
 
 	kconfig_q_opt hardened UCLIBC_BUILD_NOEXECSTACK
 	kconfig_q_opt hardened UCLIBC_BUILD_NOW

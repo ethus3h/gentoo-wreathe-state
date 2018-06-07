@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit user systemd
+inherit user
 
 DESCRIPTION="Open source DMARC implementation "
 HOMEPAGE="http://www.trusteddomain.org/opendmarc/"
@@ -11,29 +11,19 @@ SRC_URI="mirror://sourceforge/opendmarc/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 arm ~hppa ~ia64 ~x86 ~x86-fbsd"
-IUSE="spf +reports"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~x86 ~x86-fbsd"
+IUSE="spf"
 
-DEPEND="reports? ( dev-perl/DBI )
+DEPEND="dev-perl/DBI
 	|| ( mail-filter/libmilter mail-mta/sendmail )"
 RDEPEND="${DEPEND}
-	reports? (
-		dev-perl/DBD-mysql
-		dev-perl/HTTP-Message
-		dev-perl/Switch
-	)
+	dev-perl/HTTP-Message
+	dev-perl/Switch
 	spf? ( mail-filter/libspf2 )"
 
 pkg_setup() {
 	enewgroup milter
 	enewuser milter -1 -1 /var/lib/milter milter
-}
-
-src_prepare() {
-	default
-	if use !reports ; then
-		sed -i -e '/^SUBDIRS =/s/reports//' Makefile.in || die
-	fi
 }
 
 src_configure() {
@@ -50,7 +40,6 @@ src_install() {
 
 	newinitd "${FILESDIR}"/opendmarc.initd opendmarc
 	newconfd "${FILESDIR}"/opendmarc.confd opendmarc
-	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	dodir /etc/opendmarc
 

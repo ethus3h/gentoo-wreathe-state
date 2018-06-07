@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit mount-boot toolchain-funcs
+inherit mount-boot
 
 DESCRIPTION="Tools for using the ESRT and UpdateCapsule() to apply firmware updates"
 HOMEPAGE="https://github.com/rhinstaller/fwupdate"
@@ -30,7 +30,6 @@ PATCHES=(
 
 do_make() {
 	emake \
-		CC="$(tc-getCC)" \
 		EFIDIR="gentoo" \
 		GNUEFIDIR="/usr/$(get_libdir)" \
 		"${@}"

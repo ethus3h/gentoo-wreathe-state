@@ -21,11 +21,13 @@ RDEPEND="
 	x11-libs/libX11
 	~x11-libs/qtermwidget-${PV}
 "
-DEPEND="${RDEPEND}
-	dev-util/lxqt-build-tools
-"
+DEPEND="${RDEPEND}"
 
-PATCHES=( "${FILESDIR}/${P}-nofetch.patch" )
+PATCHES=( "${FILESDIR}/${PN}-0.7.1-no-liblxqt.patch" )
+
+pkg_preinst() {
+	gnome2_icon_savelist
+}
 
 pkg_postinst() {
 	gnome2_icon_cache_update

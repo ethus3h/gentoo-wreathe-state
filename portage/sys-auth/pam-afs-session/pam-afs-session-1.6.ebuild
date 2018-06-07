@@ -1,13 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit pam
 
 DESCRIPTION="OpenAFS PAM Module"
-HOMEPAGE="https://www.eyrie.org/~eagle/software/pam-afs-session/"
-SRC_URI="https://archives.eyrie.org/software/ARCHIVE/${PN}/${P}.tar.gz"
+HOMEPAGE="http://www.eyrie.org/~eagle/software/pam-afs-session/"
+SRC_URI="http://archives.eyrie.org/software/afs/${P}.tar.gz"
 
 LICENSE="HPND openafs-krb5-a"
 SLOT="0"

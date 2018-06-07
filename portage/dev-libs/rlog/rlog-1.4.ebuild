@@ -1,9 +1,8 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit autotools
+EAPI=2
+inherit eutils
 
 DESCRIPTION="A C++ logging library"
 HOMEPAGE="http://www.arg0.net/rlog"
@@ -14,19 +13,11 @@ SLOT="0"
 KEYWORDS="amd64 ~arm ~ppc sparc x86"
 IUSE=""
 
-PATCHES=(
-	"${FILESDIR}"/${PN}-1.3.7-gcc-4.3.patch
-	"${FILESDIR}"/${PN}-1.4-fix-build-system.patch
-)
-
 src_prepare() {
-	default
-	eautoreconf
+	epatch "${FILESDIR}"/${PN}-1.3.7-gcc-4.3.patch
 }
 
 src_install() {
-	default
-
-	# package installs .pc files
-	find "${D}" -name '*.la' -delete || die
+	emake DESTDIR="${D}" pkgdocdir="/usr/share/doc/${PF}" install || die
+	dodoc AUTHORS ChangeLog README
 }

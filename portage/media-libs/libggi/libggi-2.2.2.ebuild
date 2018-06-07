@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 DESCRIPTION="Fast and safe graphics and drivers for about any graphics card to the Linux kernel (sometimes)"
 HOMEPAGE="http://www.ggi-project.org"
@@ -9,7 +7,7 @@ SRC_URI="mirror://sourceforge/ggi/${P}.src.tar.bz2"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd"
 IUSE="X aalib svga fbcon directfb 3dfx debug cpu_flags_x86_mmx vis"
 
 RDEPEND=">=media-libs/libgii-1.0.2
@@ -20,7 +18,9 @@ RDEPEND=">=media-libs/libgii-1.0.2
 	svga? ( >=media-libs/svgalib-1.4.2 )
 	aalib? ( >=media-libs/aalib-1.2-r1 )"
 DEPEND="${RDEPEND}
-	X? ( x11-base/xorg-proto )"
+	X? ( x11-proto/xf86dgaproto
+		x11-proto/xf86vidmodeproto
+		x11-proto/xextproto )"
 
 src_compile() {
 	local myconf=""

@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
-USE_RUBY="ruby22 ruby23 ruby24"
+USE_RUBY="ruby22 ruby23"
 
 RUBY_FAKEGEM_TASK_TEST=""
 
@@ -19,18 +19,15 @@ SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> net-ssh-git-${P
 
 LICENSE="GPL-2"
 SLOT="4"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64"
 IUSE="sodium test"
 
-ruby_add_rdepend "virtual/ruby-ssl sodium? ( dev-ruby/rbnacl:4 dev-ruby/bcrypt_pbkdf )"
+ruby_add_rdepend "virtual/ruby-ssl sodium? ( dev-ruby/rbnacl dev-ruby/bcrypt_pbkdf )"
 ruby_add_bdepend "test? ( dev-ruby/test-unit:2 >=dev-ruby/mocha-0.13 )"
 
 all_ruby_prepare() {
 	# Don't use a ruby-bundled version of libsodium
 	sed -i -e '/rbnacl\/libsodium/ s:^:#:' lib/net/ssh/authentication/ed25519.rb || die
-
-	# Avoid bundler dependency
-	sed -i -e '/\(bundler\|:release\)/ s:^:#:' Rakefile || die
 }
 
 each_ruby_test() {

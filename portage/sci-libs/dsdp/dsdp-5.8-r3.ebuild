@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -30,22 +30,11 @@ PATCHES=(
 
 make_shared_lib() {
 	local soname=$(basename "${1%.a}")$(get_libname $(get_major_version))
-	local cflags=()
-
-	if [[ ${CHOST} == *-darwin* ]] ; then
-		cflags+=(
-			"-Wl,-install_name"
-			"-Wl,${EPREFIX}/usr/$(get_libdir)/${soname}"
-		)
-	else
-		cflags+=(
-			"-shared" "-Wl,-soname=${soname}"
-			"-Wl,--whole-archive" "${1}" "-Wl,--no-whole-archive"
-		)
-	fi
 	einfo "Making ${soname}"
 	${2:-$(tc-getCC)} ${LDFLAGS}  \
-		"${cflags[@]}" \
+		-shared -Wl,-soname="${soname}" \
+		$([[ ${CHOST} == *-darwin* ]] && echo "-Wl,-install_name -Wl,${EPREFIX}/usr/$(get_libdir)/${soname}") \
+		-Wl,--whole-archive "${1}" -Wl,--no-whole-archive \
 		-o $(dirname "${1}")/"${soname}" \
 		-lm $($(tc-getPKG_CONFIG) --libs blas lapack) || return 1
 }

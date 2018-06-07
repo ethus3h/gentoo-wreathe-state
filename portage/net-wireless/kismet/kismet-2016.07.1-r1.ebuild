@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -9,11 +9,18 @@ MY_P=${P/\./-}
 MY_P=${MY_P/./-R}
 S=${WORKDIR}/${MY_P}
 
-SRC_URI="https://www.kismetwireless.net/code/${MY_P}.tar.xz"
-KEYWORDS="amd64 arm ~arm64 ~ppc x86"
+if [[ ${PV} == "9999" ]] ; then
+	EGIT_REPO_URI="https://www.kismetwireless.net/${PN}.git"
+	SRC_URI=""
+	inherit git-2
+	KEYWORDS=""
+else
+	SRC_URI="http://www.kismetwireless.net/code/${MY_P}.tar.xz"
+	KEYWORDS="amd64 arm arm64 ~ppc x86"
+fi
 
 DESCRIPTION="IEEE 802.11 wireless LAN sniffer"
-HOMEPAGE="https://www.kismetwireless.net"
+HOMEPAGE="http://www.kismetwireless.net/"
 
 LICENSE="GPL-2"
 SLOT="0/${PV}"

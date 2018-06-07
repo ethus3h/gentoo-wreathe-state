@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -8,7 +8,7 @@ PYTHON_REQ_USE="ncurses,readline"
 
 PLOCALES="bg de_DE fr_FR hu it tr zh_CN"
 
-FIRMWARE_ABI_VERSION="2.11.1-r50"
+FIRMWARE_ABI_VERSION="2.9.0-r52"
 
 inherit eutils flag-o-matic linux-info toolchain-funcs multilib python-r1 \
 	user udev fcaps readme.gentoo-r1 pax-utils l10n
@@ -27,21 +27,20 @@ HOMEPAGE="http://www.qemu.org http://www.linux-kvm.org"
 
 LICENSE="GPL-2 LGPL-2 BSD-2"
 SLOT="0"
-IUSE="accessibility +aio alsa bluetooth bzip2 capstone +caps +curl debug
-	+fdt glusterfs gnutls gtk gtk2 infiniband iscsi +jpeg kernel_linux
+IUSE="accessibility +aio alsa bluetooth bzip2 +caps +curl debug +fdt
+	glusterfs gnutls gtk gtk2 infiniband iscsi +jpeg kernel_linux
 	kernel_FreeBSD lzo ncurses nfs nls numa opengl +pin-upstream-blobs +png
 	pulseaudio python rbd sasl +seccomp sdl sdl2 selinux smartcard snappy
 	spice ssh static static-user systemtap tci test usb usbredir vde
 	+vhost-net virgl virtfs +vnc vte xattr xen xfs"
 
-COMMON_TARGETS="aarch64 alpha arm cris hppa i386 m68k microblaze microblazeel
-	mips mips64 mips64el mipsel nios2 or1k ppc ppc64 riscv32 riscv64 s390x
-	sh4 sh4eb sparc sparc64 x86_64 xtensa xtensaeb"
+COMMON_TARGETS="aarch64 alpha arm cris i386 m68k microblaze microblazeel
+	mips mips64 mips64el mipsel nios2 or1k ppc ppc64 s390x sh4 sh4eb sparc
+	sparc64 x86_64"
 IUSE_SOFTMMU_TARGETS="${COMMON_TARGETS}
-	lm32 moxie ppcemb tricore unicore32"
+	lm32 moxie ppcemb tricore unicore32 xtensa xtensaeb"
 IUSE_USER_TARGETS="${COMMON_TARGETS}
-	aarch64_be armeb mipsn32 mipsn32el ppc64abi32 ppc64le sparc32plus
-	tilegx"
+	armeb hppa mipsn32 mipsn32el ppc64abi32 ppc64le sparc32plus tilegx"
 
 use_softmmu_targets=$(printf ' qemu_softmmu_targets_%s' ${IUSE_SOFTMMU_TARGETS})
 use_user_targets=$(printf ' qemu_user_targets_%s' ${IUSE_USER_TARGETS})
@@ -57,7 +56,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	qemu_softmmu_targets_ppc? ( fdt )
 	qemu_softmmu_targets_ppc64? ( fdt )
 	sdl2? ( sdl )
-	static? ( static-user !alsa !bluetooth !gtk !gtk2 !opengl !pulseaudio !snappy )
+	static? ( static-user !alsa !bluetooth !gtk !gtk2 !opengl !pulseaudio )
 	virtfs? ( xattr )
 	vte? ( gtk )"
 
@@ -68,7 +67,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 #
 # The attr lib isn't always linked in (although the USE flag is always
 # respected).  This is because qemu supports using the C library's API
-# when available rather than always using the external library.
+# when available rather than always using the extranl library.
 ALL_DEPEND="
 	>=dev-libs/glib-2.0[static-libs(+)]
 	sys-libs/zlib[static-libs(+)]
@@ -88,10 +87,9 @@ SOFTMMU_TOOLS_DEPEND="
 	alsa? ( >=media-libs/alsa-lib-1.0.13 )
 	bluetooth? ( net-wireless/bluez )
 	bzip2? ( app-arch/bzip2[static-libs(+)] )
-	capstone? ( dev-libs/capstone )
 	caps? ( sys-libs/libcap-ng[static-libs(+)] )
 	curl? ( >=net-misc/curl-7.15.4[static-libs(+)] )
-	fdt? ( >=sys-apps/dtc-1.4.2[static-libs(+)] )
+	fdt? ( >=sys-apps/dtc-1.4.0[static-libs(+)] )
 	glusterfs? ( >=sys-cluster/glusterfs-3.4.0[static-libs(+)] )
 	gnutls? (
 		dev-libs/nettle:=[static-libs(+)]
@@ -115,7 +113,7 @@ SOFTMMU_TOOLS_DEPEND="
 		sys-libs/ncurses:0=[unicode]
 		sys-libs/ncurses:0=[static-libs(+)]
 	)
-	nfs? ( >=net-fs/libnfs-1.9.3:=[static-libs(+)] )
+	nfs? ( >=net-fs/libnfs-1.9.3[static-libs(+)] )
 	numa? ( sys-process/numactl[static-libs(+)] )
 	opengl? (
 		virtual/opengl
@@ -139,7 +137,7 @@ SOFTMMU_TOOLS_DEPEND="
 	)
 	seccomp? ( >=sys-libs/libseccomp-2.1.0[static-libs(+)] )
 	smartcard? ( >=app-emulation/libcacard-2.5.0[static-libs(+)] )
-	snappy? ( app-arch/snappy )
+	snappy? ( app-arch/snappy[static-libs(+)] )
 	spice? (
 		>=app-emulation/spice-protocol-0.12.3
 		>=app-emulation/spice-0.12.0[static-libs(+)]
@@ -155,10 +153,10 @@ SOFTMMU_TOOLS_DEPEND="
 
 X86_FIRMWARE_DEPEND="
 	pin-upstream-blobs? (
-		~sys-firmware/edk2-ovmf-2017_p20180211[binary]
-		~sys-firmware/ipxe-1.0.0_p20180211[binary]
-		~sys-firmware/seabios-1.11.0[binary,seavgabios]
-		~sys-firmware/sgabios-0.1_pre8[binary]
+		~sys-firmware/edk2-ovmf-2017_pre20170505[binary]
+		~sys-firmware/ipxe-1.0.0_p20160620
+		~sys-firmware/seabios-1.10.2[binary,seavgabios]
+		~sys-firmware/sgabios-0.1_pre8
 	)
 	!pin-upstream-blobs? (
 		sys-firmware/edk2-ovmf
@@ -166,14 +164,6 @@ X86_FIRMWARE_DEPEND="
 		>=sys-firmware/seabios-1.10.2[seavgabios]
 		sys-firmware/sgabios
 	)"
-PPC64_FIRMWARE_DEPEND="
-	pin-upstream-blobs? (
-		~sys-firmware/seabios-1.11.0[binary,seavgabios]
-	)
-	!pin-upstream-blobs? (
-		>=sys-firmware/seabios-1.10.2[seavgabios]
-	)
-"
 
 CDEPEND="
 	!static? (
@@ -181,9 +171,7 @@ CDEPEND="
 		${SOFTMMU_TOOLS_DEPEND//\[static-libs(+)]}
 	)
 	qemu_softmmu_targets_i386? ( ${X86_FIRMWARE_DEPEND} )
-	qemu_softmmu_targets_x86_64? ( ${X86_FIRMWARE_DEPEND} )
-	qemu_softmmu_targets_ppc64? ( ${PPC64_FIRMWARE_DEPEND} )
-"
+	qemu_softmmu_targets_x86_64? ( ${X86_FIRMWARE_DEPEND} )"
 DEPEND="${CDEPEND}
 	dev-lang/perl
 	=dev-lang/python-2*
@@ -206,7 +194,6 @@ RDEPEND="${CDEPEND}
 PATCHES=(
 	"${FILESDIR}"/${PN}-2.5.0-cflags.patch
 	"${FILESDIR}"/${PN}-2.5.0-sysmacros.patch
-	"${FILESDIR}"/${PN}-2.11.1-capstone_include_path.patch
 )
 
 STRIP_MASK="/usr/share/qemu/palcode-clipper"
@@ -217,7 +204,6 @@ QA_PREBUILT="
 	usr/share/qemu/openbios-sparc32
 	usr/share/qemu/palcode-clipper
 	usr/share/qemu/s390-ccw.img
-	usr/share/qemu/s390-netboot.img
 	usr/share/qemu/u-boot.e500"
 
 QA_WX_LOAD="usr/bin/qemu-i386
@@ -287,11 +273,7 @@ pkg_pretend() {
 			ERROR_VHOST_NET+=" support"
 
 			if use amd64 || use x86 || use amd64-linux || use x86-linux; then
-				if grep -q AuthenticAMD /proc/cpuinfo; then
-					CONFIG_CHECK+=" ~KVM_AMD"
-				elif grep -q GenuineIntel /proc/cpuinfo; then
-					CONFIG_CHECK+=" ~KVM_INTEL"
-				fi
+				CONFIG_CHECK+=" ~KVM_AMD ~KVM_INTEL"
 			fi
 
 			use python && CONFIG_CHECK+=" ~DEBUG_FS"
@@ -377,9 +359,6 @@ src_prepare() {
 
 	# Run after we've applied all patches.
 	handle_locales
-
-	# Remove bundled copy of libfdt
-	rm -r dtc || die
 }
 
 ##
@@ -433,7 +412,6 @@ qemu_src_configure() {
 		$(conf_notuser aio linux-aio)
 		$(conf_notuser bzip2)
 		$(conf_notuser bluetooth bluez)
-		$(conf_notuser capstone)
 		$(conf_notuser caps cap-ng)
 		$(conf_notuser curl)
 		$(conf_notuser fdt)
@@ -500,6 +478,7 @@ qemu_src_configure() {
 			--disable-linux-user
 			--enable-system
 			--disable-tools
+			--with-system-pixman
 		)
 		local static_flag="static"
 		;;
@@ -526,7 +505,7 @@ qemu_src_configure() {
 	if use ${static_flag}; then
 		conf_opts+=( --static --disable-pie )
 	else
-		tc-enables-pie && conf_opts+=( --enable-pie )
+		gcc-specs-pie && conf_opts+=( --enable-pie )
 	fi
 
 	echo "../configure ${conf_opts[*]}"
@@ -697,6 +676,7 @@ src_install() {
 	cd "${S}"
 	dodoc Changelog MAINTAINERS docs/specs/pci-ids.txt
 	newdoc pc-bios/README README.pc-bios
+	dodoc docs/qmp-*.txt
 
 	if [[ -n ${softmmu_targets} ]]; then
 		# Remove SeaBIOS since we're using the SeaBIOS packaged one
@@ -714,8 +694,7 @@ src_install() {
 		rm "${ED}/usr/share/qemu/vgabios-stdvga.bin"
 		rm "${ED}/usr/share/qemu/vgabios-virtio.bin"
 		rm "${ED}/usr/share/qemu/vgabios-vmware.bin"
-		# PPC64 loads vgabios-stdvga
-		if use qemu_softmmu_targets_x86_64 || use qemu_softmmu_targets_i386 || use qemu_softmmu_targets_ppc64; then
+		if use qemu_softmmu_targets_x86_64 || use qemu_softmmu_targets_i386; then
 			dosym ../seavgabios/vgabios-isavga.bin /usr/share/qemu/vgabios.bin
 			dosym ../seavgabios/vgabios-cirrus.bin /usr/share/qemu/vgabios-cirrus.bin
 			dosym ../seavgabios/vgabios-qxl.bin /usr/share/qemu/vgabios-qxl.bin
@@ -784,12 +763,6 @@ pkg_postinst() {
 pkg_info() {
 	echo "Using:"
 	echo "  $(best_version app-emulation/spice-protocol)"
-	echo "  $(best_version sys-firmware/edk2-ovmf)"
-	if has_version 'sys-firmware/edk2-ovmf[binary]'; then
-		echo "    USE=binary"
-	else
-		echo "    USE=''"
-	fi
 	echo "  $(best_version sys-firmware/ipxe)"
 	echo "  $(best_version sys-firmware/seabios)"
 	if has_version 'sys-firmware/seabios[binary]'; then
@@ -797,5 +770,10 @@ pkg_info() {
 	else
 		echo "    USE=''"
 	fi
-	echo "  $(best_version sys-firmware/sgabios)"
+	echo "  $(best_version sys-firmware/edk2-ovmf)"
+	if has_version 'sys-firmware/edk2-ovmf[binary]'; then
+		echo "    USE=binary"
+	else
+		echo "    USE=''"
+	fi
 }

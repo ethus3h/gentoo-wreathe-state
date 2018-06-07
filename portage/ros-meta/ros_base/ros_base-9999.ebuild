@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -19,6 +19,7 @@ RDEPEND="
 	ros-meta/bond_core
 	dev-ros/class_loader
 	dev-ros/dynamic_reconfigure
+	ros-meta/common_tutorials
 	ros-meta/nodelet_core
 	dev-ros/pluginlib
 "

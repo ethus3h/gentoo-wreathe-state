@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -23,7 +23,6 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}
 	test? (
-		dev-perl/CGI
 		dev-perl/Test-Exception
 		dev-perl/Test-Pod
 		dev-perl/Test-Pod-Coverage

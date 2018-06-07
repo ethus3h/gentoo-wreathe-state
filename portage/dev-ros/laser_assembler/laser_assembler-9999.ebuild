@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -21,11 +21,9 @@ RDEPEND="
 	dev-ros/tf
 	dev-ros/laser_geometry[${PYTHON_USEDEP}]
 	dev-ros/pluginlib
-	dev-libs/tinyxml2:=
-	dev-libs/console_bridge:=
 	dev-ros/message_filters[${PYTHON_USEDEP}]
 	dev-ros/filters
 "
 DEPEND="${RDEPEND}
-	test? ( dev-ros/rostest[${PYTHON_USEDEP}] dev-cpp/gtest )
+	test? ( dev-ros/rostest[${PYTHON_USEDEP}] )
 "

@@ -1,18 +1,18 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
 # waf fails on python3_5: AttributeError: Can't pickle local object 'Context.__init__.<locals>.node_class'
 PYTHON_COMPAT=( python{2_7,3_4} )
-USE_RUBY="ruby22 ruby23"
+USE_RUBY="ruby20 ruby21 ruby22"
 
 inherit eutils multiprocessing python-single-r1 ruby-single toolchain-funcs
 
 MY_P="${P}DrO_o"
 
 DESCRIPTION="X(cross)platform Music Multiplexing System. Next generation of the XMMS player"
-HOMEPAGE="https://xmms2.org/wiki/Main_Page"
+HOMEPAGE="http://xmms2.org/wiki/Main_Page"
 SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.bz2"
 LICENSE="GPL-2 LGPL-2.1"
 
@@ -284,7 +284,7 @@ src_install() {
 
 pkg_postinst() {
 	elog "This version is built on experimental development code"
-	elog "If you encounter any errors report them at https://bugs.xmms2.org"
+	elog "If you encounter any errors report them at http://bugs.xmms2.org"
 	elog "and visit #xmms2 at irc://irc.freenode.net"
 	if use phonehome ; then
 		einfo ""

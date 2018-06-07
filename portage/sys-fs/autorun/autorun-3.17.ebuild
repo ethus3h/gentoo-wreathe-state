@@ -1,7 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=2
+inherit eutils
 
 DESCRIPTION="auto cdrom mounter for the lazy user"
 HOMEPAGE="http://autorun.sourceforge.net/"
@@ -18,6 +19,17 @@ DEPEND="sys-devel/gettext
 	app-text/xmlto
 	app-text/docbook-xml-dtd:4.1.2"
 
-export KDEDIR=/usr
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-headers.patch
+}
 
-PATCHES=( "${FILESDIR}/${P}-headers.patch" )
+src_configure() {
+	export KDEDIR=/usr
+	econf \
+		--disable-dependency-tracking
+}
+
+src_install() {
+	emake DESTDIR="${D}" install || die
+	dodoc AUTHORS ChangeLog NEWS README
+}

@@ -4,5 +4,7 @@
 <maintainer type="person">
   <email>chainsaw@gentoo.org</email>
     <name>Tony Vroon</name>
+    <description>This LINX engineer favourite is actively maintained.</description>
 </maintainer>
+<longdescription/>
 </pkgmetadata>

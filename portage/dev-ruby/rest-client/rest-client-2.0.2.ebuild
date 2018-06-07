@@ -1,12 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-USE_RUBY="ruby22 ruby23 ruby24"
+USE_RUBY="ruby21 ruby22 ruby23"
 
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 
-RUBY_FAKEGEM_RECIPE_DOC="rdoc"
 RUBY_FAKEGEM_EXTRADOC="history.md README.md"
 
 inherit ruby-fakegem
@@ -31,6 +30,6 @@ all_ruby_prepare() {
 	sed -e '/bundler/I s:^:#:' \
 		-e '/namespace :windows/,/^end/ s:^:#:' -i Rakefile || die
 
-	# Remove specs that requires network access.
-	rm spec/integration/{httpbin,request}_spec.rb || die
+	# Remove spec that requires network access.
+	rm spec/integration/request_spec.rb || die
 }

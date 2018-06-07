@@ -71,10 +71,6 @@ COMMON_DEPEND="
 	)
 "
 RDEPEND="${COMMON_DEPEND}
-	|| (
-		net-misc/iputils[arping(+)]
-		net-analyzer/arping
-	)
 	wifi? ( >=net-wireless/wpa_supplicant-0.7.3-r3[dbus] )
 "
 DEPEND="${COMMON_DEPEND}

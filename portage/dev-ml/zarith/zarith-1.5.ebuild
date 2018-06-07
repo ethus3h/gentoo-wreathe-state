@@ -11,7 +11,7 @@ SRC_URI="https://github.com/ocaml/Zarith/archive/release-${PV}.tar.gz -> ${P}.ta
 
 LICENSE="LGPL-2.1-with-linking-exception"
 SLOT="0/${PV}"
-KEYWORDS="~amd64 ~ppc ~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="doc mpir +ocamlopt"
 
 RDEPEND="
@@ -37,11 +37,7 @@ src_compile() {
 }
 
 src_test() {
-	if use ocamlopt ; then
-		emake HASOCAMLOPT=$(usex ocamlopt yes no) HASDYNLINK=$(usex ocamlopt yes no) tests
-	else
-		ewarn "Tests require USE=ocamlopt. Skipping them."
-	fi
+	emake HASOCAMLOPT=$(usex ocamlopt yes no) HASDYNLINK=$(usex ocamlopt yes no) tests
 }
 
 src_install() {

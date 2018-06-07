@@ -5,6 +5,8 @@
 		<email>monsieurp@gentoo.org</email>
 		<name>Patrice Clement</name>
 	</maintainer>
+	<longdescription lang="en">
+	</longdescription>
 	<upstream>
 		<remote-id type="sourceforge">xmlindent</remote-id>
 	</upstream>

@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: common-lisp-3.eclass
@@ -11,10 +11,9 @@
 
 inherit eutils
 
-# @ECLASS-VARIABLE: CLIMPLEMENTATIONS
-# @DESCRIPTION:
-# Common Lisp implementations
-CLIMPLEMENTATIONS="sbcl clisp clozurecl cmucl ecls gcl abcl"
+# CL packages in the overlay don't have their tarballs on the mirrors
+# so it's useless to mirror them
+RESTRICT="mirror"
 
 # @ECLASS-VARIABLE: CLSOURCEROOT
 # @DESCRIPTION:
@@ -42,9 +41,7 @@ EXPORT_FUNCTIONS src_compile src_install
 # @DESCRIPTION:
 # Since there's nothing to build in most cases, default doesn't do
 # anything.
-common-lisp-3_src_compile() {
-	true;
-}
+common-lisp-3_src_compile() { true; }
 
 # @FUNCTION: absolute-path-p
 # @DESCRIPTION:
@@ -120,7 +117,7 @@ common-lisp-install-sources() {
 		elif [[ -d ${path} ]] ; then
 			common-lisp-install-sources -t ${ftype} $(find "${path}" -type f)
 		else
-			die "${path} is neither a regular file nor a directory"
+			die "${path} it neither a regular file nor a directory"
 		fi
 	done
 }
@@ -166,24 +163,11 @@ common-lisp-3_src_install() {
 	done
 }
 
-# @FUNCTION: common-lisp-find-lisp-impl
-# @USAGE: common-lisp-find-lisp-impl
-# @DESCRIPTION:
-# Outputs an installed Common Lisp implementation. Transverses
-# CLIMPLEMENTATIONS to find it.
-common-lisp-find-lisp-impl() {
-	for lisp in ${CLIMPLEMENTATIONS} ; do
-		[[ "$(best_version dev-lisp/${lisp})" ]] && echo "${lisp}" && return
-	done
-	die "No CommonLisp implementation found"
-}
-
 # @FUNCTION: common-lisp-export-impl-args
 # @USAGE: common-lisp-export-impl-args <lisp-implementation>
 # @DESCRIPTION:
-# Export a few variables containing the switches necessary
-# to make the CL implementation perform basic functions:
-#   * CL_BINARY: Common Lisp implementation
+#   Export a few variables containing the switches necessary
+#   to make the CL implementation perform basic functions:
 #   * CL_NORC: don't load syste-wide or user-specific initfiles
 #   * CL_LOAD: load a certain file
 #   * CL_EVAL: eval a certain expression at startup
@@ -192,20 +176,13 @@ common-lisp-export-impl-args() {
 		eerror "Usage: ${FUNCNAME[0]} lisp-implementation"
 		die "${FUNCNAME[0]}: wrong number of arguments: $#"
 	fi
-	CL_BINARY="${1}"
-	case "${CL_BINARY}" in
-		sbcl)
-			CL_NORC="--sysinit /dev/null --userinit /dev/null"
-			CL_LOAD="--load"
-			CL_EVAL="--eval"
-			;;
+	case ${1} in
 		clisp)
 			CL_NORC="-norc"
 			CL_LOAD="-i"
 			CL_EVAL="-x"
 			;;
-		clozure | clozurecl | ccl | openmcl)
-			CL_BINARY="ccl"
+		clozure | ccl | openmcl)
 			CL_NORC="--no-init"
 			CL_LOAD="--load"
 			CL_EVAL="--eval"
@@ -215,20 +192,19 @@ common-lisp-export-impl-args() {
 			CL_LOAD="-load"
 			CL_EVAL="-eval"
 			;;
-		ecl | ecls)
-			CL_BINARY="ecl"
+		ecl)
 			CL_NORC="-norc"
 			CL_LOAD="-load"
 			CL_EVAL="-eval"
 			;;
-		abcl)
-			CL_NORC="--noinit"
+		sbcl)
+			CL_NORC="--sysinit /dev/null --userinit /dev/null"
 			CL_LOAD="--load"
 			CL_EVAL="--eval"
 			;;
 		*)
-			die "${CL_BINARY} is not supported by ${0}"
+			die ${1} is not supported by ${0}
 			;;
 	esac
-	export CL_BINARY CL_NORC CL_LOAD CL_EVAL
+	export CL_NORC CL_LOAD CL_EVAL
 }

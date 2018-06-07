@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,13 +6,13 @@ EAPI=6
 PLOCALES="ar bg ca cs da de el en en_US eo es fa fi fr he hi hr hu it ja ko lt ml nb_NO nl or pa pl pt_BR pt_PT rm ro ru sk sl sr_RS@cyrillic sr_RS@latin sv te th tr uk wa zh_CN zh_TW"
 PLOCALE_BACKUP="en"
 
-inherit autotools estack eutils flag-o-matic gnome2-utils l10n multilib multilib-minimal pax-utils toolchain-funcs virtualx versionator xdg-utils
+inherit autotools eutils fdo-mime flag-o-matic gnome2-utils l10n multilib multilib-minimal pax-utils toolchain-funcs virtualx versionator
 
 MY_PN="${PN%%-*}"
 MY_P="${MY_PN}-${PV}"
 
 if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://source.winehq.org/git/wine.git"
+	EGIT_REPO_URI="git://source.winehq.org/git/wine.git http://source.winehq.org/git/wine.git"
 	EGIT_BRANCH="master"
 	inherit git-r3
 	SRC_URI=""
@@ -26,25 +26,25 @@ S="${WORKDIR}/${MY_P}"
 
 STAGING_P="wine-staging-${PV}"
 STAGING_DIR="${WORKDIR}/${STAGING_P}"
-GWP_V="20180120"
-PATCHDIR="${WORKDIR}/gentoo-wine-patches"
+WDC_V="20150204"
+WINE_DESKTOP_COMMON_P="wine-desktop-common-${WDC_V}"
 
 DESCRIPTION="Free implementation of Windows(tm) on Unix, with Wine-Staging patchset"
-HOMEPAGE="https://www.winehq.org/"
+HOMEPAGE="http://www.winehq.org/"
 SRC_URI="${SRC_URI}
-	https://dev.gentoo.org/~np-hardass/distfiles/wine/gentoo-wine-patches-${GWP_V}.tar.xz
+	https://github.com/NP-Hardass/wine-desktop-common/archive/${WDC_V}.tar.gz -> ${WINE_DESKTOP_COMMON_P}.tar.gz
 "
 
 if [[ ${PV} == "9999" ]] ; then
-	STAGING_EGIT_REPO_URI="https://github.com/wine-staging/wine-staging.git"
+	STAGING_EGIT_REPO_URI="git://github.com/wine-compholio/wine-staging.git"
 else
 	SRC_URI="${SRC_URI}
-	staging? ( https://github.com/wine-staging/wine-staging/archive/v${PV}.tar.gz -> ${STAGING_P}.tar.gz )"
+	staging? ( https://github.com/wine-compholio/wine-staging/archive/v${PV}.tar.gz -> ${STAGING_P}.tar.gz )"
 fi
 
 LICENSE="LGPL-2.1"
 SLOT="${PV}"
-IUSE="+abi_x86_32 +abi_x86_64 +alsa capi cups custom-cflags dos elibc_glibc +fontconfig +gecko gphoto2 gsm gssapi gstreamer +jpeg kerberos kernel_FreeBSD +lcms ldap +mono mp3 ncurses netapi nls odbc openal opencl +opengl osmesa oss +perl pcap pipelight +png prelink pulseaudio +realtime +run-exes s3tc samba scanner sdl selinux +ssl staging test themes +threads +truetype udev +udisks v4l vaapi vkd3d vulkan +X +xcomposite xinerama +xml"
+IUSE="+abi_x86_32 +abi_x86_64 +alsa capi cups custom-cflags dos elibc_glibc +fontconfig +gecko gphoto2 gsm gstreamer +jpeg kernel_FreeBSD +lcms ldap +mono mp3 ncurses netapi nls odbc openal opencl +opengl osmesa oss +perl pcap pipelight +png prelink pulseaudio +realtime +run-exes s3tc samba scanner selinux +ssl staging test themes +threads +truetype udev +udisks v4l vaapi +X +xcomposite xinerama +xml"
 REQUIRED_USE="|| ( abi_x86_32 abi_x86_64 )
 	X? ( truetype )
 	elibc_glibc? ( threads )
@@ -63,7 +63,6 @@ COMMON_DEPEND="
 	X? (
 		x11-libs/libXcursor[${MULTILIB_USEDEP}]
 		x11-libs/libXext[${MULTILIB_USEDEP}]
-		x11-libs/libXfixes[${MULTILIB_USEDEP}]
 		x11-libs/libXrandr[${MULTILIB_USEDEP}]
 		x11-libs/libXi[${MULTILIB_USEDEP}]
 		x11-libs/libXxf86vm[${MULTILIB_USEDEP}]
@@ -74,13 +73,11 @@ COMMON_DEPEND="
 	fontconfig? ( media-libs/fontconfig:=[${MULTILIB_USEDEP}] )
 	gphoto2? ( media-libs/libgphoto2:=[${MULTILIB_USEDEP}] )
 	gsm? ( media-sound/gsm:=[${MULTILIB_USEDEP}] )
-	gssapi? ( virtual/krb5[${MULTILIB_USEDEP}] )
 	gstreamer? (
 		media-libs/gstreamer:1.0[${MULTILIB_USEDEP}]
 		media-plugins/gst-plugins-meta:1.0[${MULTILIB_USEDEP}]
 	)
 	jpeg? ( virtual/jpeg:0=[${MULTILIB_USEDEP}] )
-	kerberos? ( virtual/krb5:0=[${MULTILIB_USEDEP}] )
 	lcms? ( media-libs/lcms:2=[${MULTILIB_USEDEP}] )
 	ldap? ( net-nds/openldap:=[${MULTILIB_USEDEP}] )
 	mp3? ( >=media-sound/mpg123-1.5.0[${MULTILIB_USEDEP}] )
@@ -99,7 +96,6 @@ COMMON_DEPEND="
 	png? ( media-libs/libpng:0=[${MULTILIB_USEDEP}] )
 	pulseaudio? ( media-sound/pulseaudio[${MULTILIB_USEDEP}] )
 	scanner? ( media-gfx/sane-backends:=[${MULTILIB_USEDEP}] )
-	sdl? ( media-libs/libsdl2:=[haptic,joystick,${MULTILIB_USEDEP}] )
 	ssl? ( net-libs/gnutls:=[${MULTILIB_USEDEP}] )
 	staging? ( sys-apps/attr[${MULTILIB_USEDEP}] )
 	themes? (
@@ -112,13 +108,27 @@ COMMON_DEPEND="
 	udisks? ( sys-apps/dbus[${MULTILIB_USEDEP}] )
 	v4l? ( media-libs/libv4l[${MULTILIB_USEDEP}] )
 	vaapi? ( x11-libs/libva[X,${MULTILIB_USEDEP}] )
-	vkd3d? ( app-emulation/vkd3d[${MULTILIB_USEDEP}] )
-	vulkan? ( media-libs/vulkan-loader[${MULTILIB_USEDEP}] )
 	xcomposite? ( x11-libs/libXcomposite[${MULTILIB_USEDEP}] )
 	xinerama? ( x11-libs/libXinerama[${MULTILIB_USEDEP}] )
 	xml? (
 		dev-libs/libxml2[${MULTILIB_USEDEP}]
 		dev-libs/libxslt[${MULTILIB_USEDEP}]
+	)
+	abi_x86_32? (
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)]
+		!<app-emulation/emul-linux-x86-baselibs-20140508-r14
+		!app-emulation/emul-linux-x86-db[-abi_x86_32(-)]
+		!<app-emulation/emul-linux-x86-db-20140508-r3
+		!app-emulation/emul-linux-x86-medialibs[-abi_x86_32(-)]
+		!<app-emulation/emul-linux-x86-medialibs-20140508-r6
+		!app-emulation/emul-linux-x86-opengl[-abi_x86_32(-)]
+		!<app-emulation/emul-linux-x86-opengl-20140508-r1
+		!app-emulation/emul-linux-x86-sdl[-abi_x86_32(-)]
+		!<app-emulation/emul-linux-x86-sdl-20140508-r1
+		!app-emulation/emul-linux-x86-soundlibs[-abi_x86_32(-)]
+		!<app-emulation/emul-linux-x86-soundlibs-20140508
+		!app-emulation/emul-linux-x86-xlibs[-abi_x86_32(-)]
+		!<app-emulation/emul-linux-x86-xlibs-20140508
 	)"
 
 RDEPEND="${COMMON_DEPEND}
@@ -127,7 +137,7 @@ RDEPEND="${COMMON_DEPEND}
 	!app-emulation/wine:0
 	dos? ( >=games-emulation/dosbox-0.74_p20160629 )
 	gecko? ( app-emulation/wine-gecko:2.47[abi_x86_32?,abi_x86_64?] )
-	mono? ( app-emulation/wine-mono:4.7.1 )
+	mono? ( app-emulation/wine-mono:4.7.0 )
 	perl? (
 		dev-lang/perl
 		dev-perl/XML-Simple
@@ -146,13 +156,17 @@ DEPEND="${COMMON_DEPEND}
 	>=sys-kernel/linux-headers-2.6
 	virtual/pkgconfig
 	virtual/yacc
-	X? ( x11-base/xorg-proto )
+	X? (
+		x11-proto/inputproto
+		x11-proto/xextproto
+		x11-proto/xf86vidmodeproto
+	)
 	prelink? ( sys-devel/prelink )
 	staging? (
 		dev-lang/perl
 		dev-perl/XML-Simple
 	)
-	xinerama? ( x11-base/xorg-proto )"
+	xinerama? ( x11-proto/xineramaproto )"
 
 # These use a non-standard "Wine" category, which is provided by
 # /etc/xdg/applications-merged/wine.menu
@@ -160,19 +174,6 @@ QA_DESKTOP_FILE="usr/share/applications/wine-browsedrive.desktop
 usr/share/applications/wine-notepad.desktop
 usr/share/applications/wine-uninstaller.desktop
 usr/share/applications/wine-winecfg.desktop"
-
-PATCHES=(
-	"${PATCHDIR}/patches/${MY_PN}-1.5.26-winegcc.patch" #260726
-	"${PATCHDIR}/patches/${MY_PN}-1.9.5-multilib-portage.patch" #395615
-	"${PATCHDIR}/patches/${MY_PN}-1.6-memset-O3.patch" #480508
-	"${PATCHDIR}/patches/${MY_PN}-2.0-multislot-apploader.patch" #310611
-)
-PATCHES_BIN=()
-
-# https://bugs.gentoo.org/show_bug.cgi?id=635222
-if [[ ${#PATCHES_BIN[@]} -ge 1 ]] || [[ ${PV} == 9999 ]]; then
-	DEPEND+=" dev-util/patchbin"
-fi
 
 wine_compiler_check() {
 	[[ ${MERGE_TYPE} = "binary" ]] && return 0
@@ -182,7 +183,7 @@ wine_compiler_check() {
 		# bug #549768
 		if use abi_x86_64 && [[ $(gcc-major-version) = 5 && $(gcc-minor-version) -le 2 ]]; then
 			ebegin "Checking for gcc-5 ms_abi compiler bug"
-			$(tc-getCC) -O2 "${PATCHDIR}/files/pr66838.c" -o "${T}"/pr66838 || die
+			$(tc-getCC) -O2 "${FILESDIR}"/pr66838.c -o "${T}"/pr66838 || die
 			# Run in subshell to prevent "Aborted" message
 			( "${T}"/pr66838 || false ) >/dev/null 2>&1
 			if ! eend $?; then
@@ -198,7 +199,7 @@ wine_compiler_check() {
 		if use abi_x86_64 && [[ $(gcc-major-version) = 5 && $(gcc-minor-version) = 3 ]]; then
 			ebegin "Checking for gcc-5-3 stack realignment compiler bug"
 			# Compile in subshell to prevent "Aborted" message
-			( $(tc-getCC) -O2 -mincoming-stack-boundary=3 "${PATCHDIR}/files/pr69140.c" -o "${T}"/pr69140 ) >/dev/null 2>&1
+			( $(tc-getCC) -O2 -mincoming-stack-boundary=3 "${FILESDIR}"/pr69140.c -o "${T}"/pr69140 ) >/dev/null 2>&1
 			if ! eend $?; then
 				eerror "Wine cannot be built with this version of gcc-5.3"
 				eerror "due to compiler bugs; please re-emerge the latest gcc-5.3.x ebuild,"
@@ -214,7 +215,7 @@ wine_compiler_check() {
 	if use abi_x86_64; then
 		ebegin "Checking for 64-bit compiler with builtin_ms_va_list support"
 		# Compile in subshell to prevent "Aborted" message
-		( $(tc-getCC) -O2 "${PATCHDIR}/files/builtin_ms_va_list.c" -o "${T}"/builtin_ms_va_list >/dev/null 2>&1)
+		( $(tc-getCC) -O2 "${FILESDIR}"/builtin_ms_va_list.c -o "${T}"/builtin_ms_va_list >/dev/null 2>&1)
 		if ! eend $?; then
 			eerror "This version of $(tc-getCC) does not support builtin_ms_va_list, can't enable 64-bit wine"
 			eerror
@@ -336,21 +337,19 @@ src_unpack() {
 }
 
 src_prepare() {
-
-	eapply_bin(){
-		local patch
-		for patch in ${PATCHES_BIN[@]}; do
-			patchbin --nogit < "${patch}" || die
-		done
-	}
-
 	local md5="$(md5sum server/protocol.def)"
-
+	local PATCHES=(
+		"${FILESDIR}"/${MY_PN}-1.5.26-winegcc.patch #260726
+		"${FILESDIR}"/${MY_PN}-1.9.5-multilib-portage.patch #395615
+		"${FILESDIR}"/${MY_PN}-1.6-memset-O3.patch #480508
+		"${FILESDIR}"/${MY_PN}-2.0-multislot-apploader.patch
+	)
 	if use staging; then
 		ewarn "Applying the Wine-Staging patchset. Any bug reports to the"
 		ewarn "Wine bugzilla should explicitly state that staging was used."
 
 		local STAGING_EXCLUDE=""
+		STAGING_EXCLUDE="${STAGING_EXCLUDE} -W winhlp32-Flex_Workaround" # Avoid double patching https://bugs.winehq.org/show_bug.cgi?id=42132
 		use pipelight || STAGING_EXCLUDE="${STAGING_EXCLUDE} -W Pipelight"
 
 		# Launch wine-staging patcher in a subshell, using eapply as a backend, and gitapply.sh as a backend for binary patches
@@ -364,7 +363,6 @@ src_prepare() {
 	fi
 
 	default
-	eapply_bin
 	eautoreconf
 
 	# Modification of the server protocol requires regenerating the server requests
@@ -380,35 +378,10 @@ src_prepare() {
 	# Edit wine.desktop to work for specific variant
 	sed -e "/^Exec=/s/wine /wine-${WINE_VARIANT} /" -i loader/wine.desktop || die
 
-	# hi-res default icon, #472990, https://bugs.winehq.org/show_bug.cgi?id=24652
-	cp "${PATCHDIR}/files/oic_winlogo.ico" dlls/user32/resources/ || die
+	# hi-res default icon, #472990, http://bugs.winehq.org/show_bug.cgi?id=24652
+	cp "${WORKDIR}/${WINE_DESKTOP_COMMON_P}/icons/oic_winlogo.ico" dlls/user32/resources/ || die
 
 	l10n_get_locales > po/LINGUAS || die # otherwise wine doesn't respect LINGUAS
-
-	# Fix manpage generation for locales #469418 and abi_x86_64 #617864
-
-	# Duplicate manpages input files for wine64
-	local f
-	for f in loader/*.man.in; do
-		cp ${f} ${f/wine/wine64} || die
-	done
-	# Add wine64 manpages to Makefile
-	if use abi_x86_64; then
-		sed -i "/wine.man.in/i \
-			\\\twine64.man.in \\\\" loader/Makefile.in || die
-		sed -i -E 's/(.*wine)(.*\.UTF-8\.man\.in.*)/&\
-\164\2/' loader/Makefile.in || die
-	fi
-
-	rm_man_file(){
-		local file="${1}"
-		loc=${2}
-		sed -i "/${loc}\.UTF-8\.man\.in/d" "${file}" || die
-	}
-
-	while read f; do
-		l10n_for_each_disabled_locale_do rm_man_file "${f}"
-	done < <(find -name "Makefile.in" -exec grep -q "UTF-8.man.in" "{}" \; -print)
 }
 
 src_configure() {
@@ -443,11 +416,9 @@ multilib_src_configure() {
 		$(use_enable gecko mshtml)
 		$(use_with gphoto2 gphoto)
 		$(use_with gsm)
-		$(use_with gssapi)
 		$(use_with gstreamer)
 		--without-hal
 		$(use_with jpeg)
-		$(use_with kerberos krb5)
 		$(use_with ldap)
 		$(use_enable mono mscoree)
 		$(use_with mp3 mpg123)
@@ -463,15 +434,11 @@ multilib_src_configure() {
 		$(use_with pulseaudio pulse)
 		$(use_with threads pthread)
 		$(use_with scanner sane)
-		$(use_with sdl)
 		$(use_enable test tests)
 		$(use_with truetype freetype)
 		$(use_with udev)
 		$(use_with v4l)
-		$(use_with vkd3d)
-		$(use_with vulkan)
 		$(use_with X x)
-		$(use_with X xfixes)
 		$(use_with xcomposite)
 		$(use_with xinerama)
 		$(use_with xml)
@@ -549,19 +516,28 @@ multilib_src_install_all() {
 	use abi_x86_64 && pax-mark psmr "${D%/}${MY_PREFIX}"/bin/wine64{,-preloader}
 
 	if use abi_x86_64 && ! use abi_x86_32; then
-		dosym wine64 "${MY_PREFIX}"/bin/wine # 404331
-		dosym wine64-preloader "${MY_PREFIX}"/bin/wine-preloader
+		dosym "${MY_PREFIX}"/bin/wine{64,} # 404331
+		dosym "${MY_PREFIX}"/bin/wine{64,}-preloader
 	fi
 
-	# Failglob for binloops, shouldn't be necessary, but including to stay safe
-	eshopts_push -s failglob #615218
+	# Failglob for bin and man loops
+	local glob_state=$(shopt -p failglob)
+	shopt -s failglob
+
 	# Make wrappers for binaries for handling multiple variants
 	# Note: wrappers instead of symlinks because some are shell which use basename
 	local b
 	for b in "${D%/}${MY_PREFIX}"/bin/*; do
 		make_wrapper "${b##*/}-${WINE_VARIANT}" "${MY_PREFIX}/bin/${b##*/}"
 	done
-	eshopts_pop
+
+	# respect LINGUAS when installing man pages, #469418
+	local l
+	for l in de fr pl; do
+		use linguas_${l} || rm -r "${D%/}${MY_MANDIR}"/${l}*
+	done
+
+	eval "${glob_state}"
 }
 
 pkg_postinst() {
@@ -576,7 +552,7 @@ pkg_postinst() {
 
 	eselect wine update --all --if-unset || die
 
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 
 	if ! use gecko; then
 		ewarn "Without Wine Gecko, wine prefixes will not have a default"
@@ -606,5 +582,5 @@ pkg_prerm() {
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

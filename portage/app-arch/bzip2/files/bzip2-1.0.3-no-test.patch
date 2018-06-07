@@ -1,5 +1,5 @@
---- a/Makefile
-+++ b/Makefile
+--- Makefile
++++ Makefile
 @@ -23,5 +23,5 @@
        bzlib.o
  

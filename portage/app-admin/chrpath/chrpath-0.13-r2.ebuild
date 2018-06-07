@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit autotools
+inherit eutils autotools
 
 DESCRIPTION="chrpath can modify the rpath and runpath of ELF executables"
 HOMEPAGE="http://directory.fsf.org/project/chrpath/"
@@ -15,18 +15,15 @@ SLOT="0"
 KEYWORDS="amd64 arm ~mips ppc ppc64 x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 IUSE="static-libs"
 
-PATCHES=(
-	"${FILESDIR}"/${P}-multilib.patch
-	"${FILESDIR}"/${PN}-keepgoing.patch
-	"${FILESDIR}"/${P}-testsuite-1.patch
-)
-
 src_prepare() {
-	default
+	epatch "${FILESDIR}"/${P}-multilib.patch
+	epatch "${FILESDIR}"/${PN}-keepgoing.patch
+	epatch "${FILESDIR}"/${P}-testsuite-1.patch
 	# disable installing redundant docs in the wrong dir
 	sed -i -e '/doc_DATA/d' Makefile.am || die
 	# fix for automake-1.13, #467538
 	sed -i -e 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' configure.ac || die
+	eapply_user
 	eautoreconf
 }
 
@@ -35,8 +32,7 @@ src_configure() {
 }
 
 src_install() {
-	default
-	if ! use static-libs; then
-		find "${D}" -name "*.la" -delete || die
-	fi
+	emake DESTDIR="${D}" install || die
+	dodoc ChangeLog AUTHORS NEWS README
+	use static-libs || find "${D}" -name "*.la" -exec rm '{}' +
 }

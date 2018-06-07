@@ -1,13 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils multilib toolchain-funcs
 
 DESCRIPTION="SMP system monitor dockapp"
-HOMEPAGE="http://www.dockapps.net/wmsmpmon"
-SRC_URI="http://www.dockapps.net/download/${P}.tar.gz"
+HOMEPAGE="http://lancre.ribbrock.org/binabit/wmSMPmon/"
+SRC_URI="http://lancre.ribbrock.org/binabit/wmSMPmon/src/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -18,7 +16,7 @@ RDEPEND="x11-libs/libX11
 	x11-libs/libXext
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xextproto"
 
 S="${WORKDIR}/${P}/${PN}"
 

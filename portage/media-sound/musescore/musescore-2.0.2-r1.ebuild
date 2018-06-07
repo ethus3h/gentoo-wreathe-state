@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,9 +6,8 @@ EAPI=6
 inherit cmake-utils flag-o-matic
 
 DESCRIPTION="WYSIWYG Music Score Typesetter"
-HOMEPAGE="https://musescore.org/"
-SRC_URI="https://github.com/${PN}/MuseScore/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	https://dev.gentoo.org/~mgorny/dist/${P}-fix-buildsystem.patch.bz2"
+HOMEPAGE="http://musescore.org/"
+SRC_URI="https://github.com/musescore/MuseScore/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -43,7 +42,7 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	"
 PATCHES=(
-	"${WORKDIR}/${P}-fix-buildsystem.patch"
+	"${FILESDIR}/${P}-fix-buildsystem.patch"
 )
 S="${WORKDIR}/MuseScore-${PV}"
 

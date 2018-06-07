@@ -9,7 +9,7 @@ SRC_URI="http://www.gamerz.net/c++robots/c++robots.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~x86 ~ppc"
 IUSE="static"
 
 S=${WORKDIR}/${PN}

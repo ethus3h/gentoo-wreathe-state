@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 DESCRIPTION="A utility for solving diff/patch rejects"
 HOMEPAGE="http://ftp.suse.com/pub/people/mason/rej/"

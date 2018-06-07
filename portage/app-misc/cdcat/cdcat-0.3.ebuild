@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 DESCRIPTION="simple yet effective CD indexing program"
 # original src went away: SRC_URI="http://littledragon.home.ro/unix/${P}.tar.gz"

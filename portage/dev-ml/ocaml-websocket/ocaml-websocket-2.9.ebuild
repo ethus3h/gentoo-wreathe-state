@@ -3,8 +3,6 @@
 
 EAPI=6
 
-inherit opam
-
 DESCRIPTION="Websocket library for OCaml"
 HOMEPAGE="https://github.com/vbmithr/ocaml-websocket"
 SRC_URI="https://github.com/vbmithr/ocaml-websocket/archive/${PV}.tar.gz -> ${P}.tar.gz"
@@ -30,6 +28,7 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 DEPEND="${DEPEND}
+	dev-ml/opam
 	dev-ml/ocamlbuild"
 
 src_compile() {
@@ -46,6 +45,10 @@ src_compile() {
 }
 
 src_install() {
-	opam_src_install websocket
+	opam-installer -i \
+		--prefix="${ED}/usr" \
+		--libdir="${D}/$(ocamlc -where)" \
+		--docdir="${ED}/usr/share/doc/${PF}" \
+		websocket.install || die
 	dodoc README CHANGES
 }

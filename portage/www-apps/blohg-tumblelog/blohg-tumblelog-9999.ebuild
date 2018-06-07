@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -15,7 +15,8 @@ KEYWORDS="~amd64 ~x86"
 if [[ ${PV} = *9999* ]]; then
 	SRC_URI=
 	KEYWORDS=
-	EGIT_REPO_URI="https://github.com/rafaelmartins/${PN}.git"
+	EGIT_REPO_URI="git://github.com/rafaelmartins/blohg-tumblelog.git
+		https://github.com/rafaelmartins/blohg-tumblelog.git"
 	inherit git-r3
 fi
 

@@ -1,17 +1,17 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 inherit eutils games
 
 DESCRIPTION="red-blue Quake II !  play quake2 w/3d glasses !"
-HOMEPAGE="https://www.jfedor.org/red-blue-quake2/"
+HOMEPAGE="http://www.jfedor.org/red-blue-quake2/"
 SRC_URI="mirror://idsoftware/source/q2source-3.21.zip
-	https://www.jfedor.org/red-blue-quake2/${P}.tar.gz"
+	http://www.jfedor.org/red-blue-quake2/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="x86"
 IUSE=""
 
 RDEPEND="x11-libs/libX11"

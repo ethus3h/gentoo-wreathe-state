@@ -18,8 +18,3 @@ LICENSE="vim"
 VIM_PLUGIN_HELPFILES="${PN}"
 
 RDEPEND="dev-vcs/git"
-
-src_prepare() {
-	rm _config.yml || die
-	default
-}

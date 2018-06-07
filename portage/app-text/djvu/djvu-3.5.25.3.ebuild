@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
-inherit autotools eutils flag-o-matic xdg-utils
+inherit autotools eutils fdo-mime flag-o-matic
 
 MY_P="${PN}libre-${PV#*_p}"
 
@@ -62,11 +62,11 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_mimeinfo_database_update
+	fdo-mime_mime_database_update
 	has_version app-text/djview || \
 		optfeature "For djviewer or browser plugin" app-text/djview
 }
 
 pkg_postrm() {
-	xdg_mimeinfo_database_update
+	fdo-mime_mime_database_update
 }

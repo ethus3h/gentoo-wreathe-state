@@ -7,7 +7,9 @@ PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
 
 if [[ $PV = *9999* ]]; then
 	scm_eclass=git-2
-	EGIT_REPO_URI="https://github.com/${PN}/${PN}.git"
+	EGIT_REPO_URI="
+		git://github.com/${PN}/${PN}.git
+		https://github.com/${PN}/${PN}.git"
 	SRC_URI=""
 	KEYWORDS=""
 else
@@ -19,7 +21,7 @@ fi
 inherit eutils distutils-r1 ${scm_eclass}
 
 DESCRIPTION="Parameter/topology editor and molecular simulator"
-HOMEPAGE="https://parmed.github.io/ParmEd/html/index.html"
+HOMEPAGE="http://parmed.github.io/ParmEd"
 
 LICENSE="LGPL-2"
 SLOT="0"

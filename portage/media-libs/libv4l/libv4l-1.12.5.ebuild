@@ -3,7 +3,7 @@
 
 EAPI="6"
 
-inherit eutils libtool linux-info multilib-minimal
+inherit eutils linux-info multilib-minimal
 
 MY_P="v4l-utils-${PV}"
 
@@ -31,11 +31,6 @@ S=${WORKDIR}/${MY_P}
 pkg_setup() {
 	CONFIG_CHECK="~SHMEM"
 	linux-info_pkg_setup
-}
-
-src_prepare() {
-	default
-	elibtoolize
 }
 
 multilib_src_configure() {

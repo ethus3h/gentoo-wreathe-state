@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit cmake-utils flag-o-matic versionator
+inherit cmake-utils versionator
 
 DESCRIPTION="Stream based read/write library for COLLADA files"
 HOMEPAGE="http://www.opencollada.org/"
@@ -45,9 +45,6 @@ src_prepare() {
 }
 
 src_configure() {
-	# bug 619670
-	append-cxxflags -std=c++14
-
 	local mycmakeargs=(
 		-DUSE_SHARED=ON
 		-DUSE_STATIC=$(usex static-libs)
@@ -64,5 +61,5 @@ src_install() {
 	echo "LDPATH=/usr/$(get_libdir)/opencollada" > "${T}"/99${PN} || die "echo failed"
 	doenvd "${T}"/99${PN}
 
-	dobin "${BUILD_DIR}/bin/OpenCOLLADAValidator"
+	dobin ${BUILD_DIR}/bin/OpenCOLLADAValidator
 }

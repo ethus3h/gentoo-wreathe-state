@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -24,6 +24,7 @@ RDEPEND="
 
 DEPEND="
 	${CDEPEND}
+	app-arch/unzip
 	>=virtual/jdk-1.6"
 
 # com.sun.mirror.declaration was removed from JDK 7 onwards.
@@ -45,7 +46,7 @@ src_unpack() {
 
 java_prepare() {
 	java-pkg_clean
-	rm -rv examples || die
+	rm -rf examples || die
 }
 
 src_compile() {

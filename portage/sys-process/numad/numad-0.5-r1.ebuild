@@ -1,18 +1,18 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
-inherit linux-info toolchain-funcs eutils
+inherit linux-info toolchain-funcs
 
-if [[ ${PV} == *9999* ]]; then
-	EGIT_REPO_URI="https://pagure.io/numad.git"
-	inherit git-r3
+if [[ ${PV} = *9999* ]]; then
+	inherit git-2
+	EGIT_REPO_URI="git://git.fedorahosted.org/numad.git"
+	KEYWORDS="~amd64 -arm -s390 x86"
 else
-	HASH="334278ff3d774d105939743436d7378a189e8693"
-	SRC_URI="mirror://gentoo/numad-0.5-${HASH:0:7}.tar.bz2"
+	SRC_URI="http://git.fedorahosted.org/git/?p=numad.git;a=snapshot;h=334278ff3d774d105939743436d7378a189e8693;sf=tbz2 -> numad-0.5-334278f.tar.bz2"
 	KEYWORDS="amd64 -arm -s390 x86"
-	S="${WORKDIR}/${PN}-${HASH:0:7}"
+	S="${WORKDIR}/${PN}-334278f"
 fi
 
 DESCRIPTION="The NUMA daemon that manages application locality"
@@ -29,6 +29,10 @@ src_prepare() {
 		epatch
 
 	tc-export CC
+}
+
+src_configure() {
+	:
 }
 
 src_compile() {

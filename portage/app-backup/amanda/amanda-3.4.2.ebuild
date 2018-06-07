@@ -477,8 +477,3 @@ amanda_permissions_fix() {
 		chmod u=srwx,g=rx,o= "${root}"/${i}
 	done
 }
-
-# We do not want the perl-module tests.
-src_test() {
-	default_src_test
-}

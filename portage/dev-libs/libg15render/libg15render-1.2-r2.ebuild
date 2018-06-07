@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=4
 
-inherit autotools
+inherit eutils
 
 DESCRIPTION="Small library for display text and graphics on a Logitech G15 keyboard"
-HOMEPAGE="https://sourceforge.net/projects/g15tools/"
+HOMEPAGE="http://g15tools.sourceforge.net/"
 SRC_URI="mirror://sourceforge/g15tools/${P}.tar.bz2"
 
 LICENSE="GPL-2"
@@ -19,32 +19,22 @@ RDEPEND="
 	dev-libs/libg15
 	truetype? ( media-libs/freetype )
 "
-DEPEND="${RDEPEND}
-	truetype? ( virtual/pkgconfig )"
-
-PATCHES=(
-	"${FILESDIR}/${P}-pixel-c.patch"
-	"${FILESDIR}/${P}-freetype_pkgconfig.patch"
-)
+DEPEND=${RDEPEND}
 
 src_prepare() {
-	default
-	mv configure.{in,ac} || die
-	eautoreconf
+	epatch "${FILESDIR}/${P}-pixel-c.patch"
 }
 
 src_configure() {
-	local myeconfargs=(
-		--disable-static
+	econf \
+		--disable-static \
 		$(use_enable truetype ttf )
-	)
-	econf "${myeconfargs[@]}"
 }
 
 src_install() {
 	emake DESTDIR="${D}" \
-		docdir=/usr/share/doc/${PF} install
-	rm "${ED%/}/usr/share/doc/${PF}/COPYING"
+		docdir=/usr/share/doc/${PF} install || die "make install failed"
+	rm "${ED}/usr/share/doc/${PF}/COPYING"
 
-	find "${ED}" -name '*.la' -delete || die
+	find "${ED}" -name '*.la' -exec rm -f {} +
 }

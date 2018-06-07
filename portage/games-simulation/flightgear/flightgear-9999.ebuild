@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit cmake-utils bash-completion-r1 toolchain-funcs git-r3
+inherit cmake-utils bash-completion-r1 git-r3
 
 DESCRIPTION="Open Source Flight Simulator"
 HOMEPAGE="http://www.flightgear.org/"
@@ -12,15 +12,16 @@ EGIT_REPO_URI="git://git.code.sf.net/p/${PN}/${PN}
 EGIT_BRANCH="next"
 
 LICENSE="GPL-2"
-KEYWORDS=""
 SLOT="0"
+KEYWORDS=""
 IUSE="dbus debug examples gdal openmp qt5 test +udev +utils vim-syntax"
 
 # zlib is some strange auto-dep from simgear
+# TODO openmp
 COMMON_DEPEND="
 	dev-db/sqlite:3
-	>=dev-games/openscenegraph-3.2.0[jpeg,png]
-	~dev-games/simgear-${PV}[gdal=]
+	>=dev-games/openscenegraph-3.2.0[png]
+	~dev-games/simgear-${PV}
 	media-libs/openal
 	>=media-libs/speex-1.2.0:0
 	media-libs/speexdsp:0
@@ -31,11 +32,9 @@ COMMON_DEPEND="
 	dbus? ( >=sys-apps/dbus-1.6.18-r1 )
 	gdal? ( >=sci-libs/gdal-2.0.0:0 )
 	qt5? (
-		>=dev-qt/qtcore-5.7.1:5
-		>=dev-qt/qtdeclarative-5.7.1:5
-		>=dev-qt/qtgui-5.7.1:5
-		>=dev-qt/qtnetwork-5.7.1:5
-		>=dev-qt/qtwidgets-5.7.1:5
+		>=dev-qt/qtcore-5.4.1:5
+		>=dev-qt/qtgui-5.4.1:5
+		>=dev-qt/qtwidgets-5.4.1:5
 	)
 	udev? ( virtual/udev )
 	utils? (
@@ -44,7 +43,7 @@ COMMON_DEPEND="
 		media-libs/glew:0
 		media-libs/libpng:0
 		virtual/opengl
-		qt5? ( >=dev-qt/qtwebsockets-5.7.1:5 )
+		qt5? ( >=dev-qt/qtwebsockets-5.4.1:5 )
 	)
 "
 # libXi and libXmu are build-only-deps according to FindGLUT.cmake
@@ -62,10 +61,6 @@ RDEPEND="${COMMON_DEPEND}
 
 DOCS=(AUTHORS ChangeLog NEWS README Thanks)
 
-pkg_pretend() {
-	use openmp && tc-check-openmp
-}
-
 src_configure() {
 	local mycmakeargs=(
 		-DENABLE_DEMCONVERT=$(usex gdal && usex utils)
@@ -77,10 +72,10 @@ src_configure() {
 		-DENABLE_FLITE=OFF
 		-DENABLE_GDAL=$(usex gdal)
 		-DENABLE_GPSSMOOTH=$(usex utils)
-		-DENABLE_HID_INPUT=$(usex udev)
 		-DENABLE_JS_DEMO=$(usex utils)
 		-DENABLE_JSBSIM=ON
 		-DENABLE_LARCSIM=ON
+		-DENABLE_LOGGING=$(usex test)
 		-DENABLE_METAR=$(usex utils)
 		-DENABLE_OPENMP=$(usex openmp)
 		-DENABLE_PROFILE=OFF
@@ -92,7 +87,7 @@ src_configure() {
 		-DENABLE_UIUC_MODEL=ON
 		-DENABLE_YASIM=ON
 		-DEVENT_INPUT=$(usex udev)
-		-DFG_BUILD_TYPE=Nightly
+		-DFG_BUILD_TYPE=Dev
 		-DFG_DATA_DIR=/usr/share/${PN}
 		-DJSBSIM_TERRAIN=ON
 		-DOSG_FSTREAM_EXPORT_FIXED=OFF # TODO also see simgear
@@ -112,6 +107,17 @@ src_configure() {
 
 src_install() {
 	cmake-utils_src_install
+
+	# Install icons and menu entry
+	local s
+	for s in 16 22 24 32 48 64 128; do
+		doicon -s ${s} icons/${s}x${s}/apps/${PN}.png
+		use utils && doicon -s ${s} icons/${s}x${s}/apps/fgcom.png
+	done
+	doicon -s scalable icons/scalable/${PN}.svg
+	use utils && doicon -s scalable icons/scalable/fgcom.svg
+
+	newmenu package/${PN}.desktop ${PN}.desktop
 
 	# Install bash completion (TODO zsh)
 	# Uncomment below when scripts stops writing files...

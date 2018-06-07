@@ -1,7 +1,7 @@
 https://bugs.gentoo.org/251684
 
---- a/autorun.cc
-+++ b/autorun.cc
+--- autorun.cc
++++ autorun.cc
 @@ -90,6 +90,8 @@ char *strchr (), *strrchr ();
  
  #include <errno.h>

@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -8,15 +8,15 @@ DESCRIPTION="Vim-fork focused on extensibility and agility."
 HOMEPAGE="https://neovim.io"
 if [[ ${PV} == 9999 ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/neovim/neovim.git"
+	EGIT_REPO_URI="git://github.com/neovim/neovim.git"
 else
 	SRC_URI="https://github.com/neovim/neovim/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64"
 fi
 
 LICENSE="Apache-2.0 vim"
 SLOT="0"
-IUSE="+clipboard +luajit +nvimpager python remote ruby +tui +jemalloc"
+IUSE="+clipboard +luajit +nvimpager python ruby +tui +jemalloc"
 
 CDEPEND=">=dev-libs/libuv-1.2.0
 	>=dev-libs/msgpack-1.0.0
@@ -32,22 +32,17 @@ CDEPEND=">=dev-libs/libuv-1.2.0
 	dev-libs/libvterm
 	dev-lua/lpeg[luajit=]
 	dev-lua/mpack[luajit=]
-	jemalloc? ( dev-libs/jemalloc )"
-
-DEPEND="
-	${CDEPEND}
-	dev-util/gperf
+	jemalloc? ( dev-libs/jemalloc )
+"
+DEPEND="${CDEPEND}
 	virtual/libiconv
 	virtual/libintl"
-
-RDEPEND="
-	${CDEPEND}
+RDEPEND="${CDEPEND}
 	python? ( dev-python/neovim-python-client )
 	ruby? ( dev-ruby/neovim-ruby-client )
-	remote? ( dev-python/neovim-remote )
 	clipboard? ( || ( x11-misc/xsel x11-misc/xclip ) )"
 
-CMAKE_BUILD_TYPE=Release
+CMAKE_BUILD_TYPE=RelWithDebInfo
 
 src_prepare() {
 	# use our system vim dir
@@ -64,8 +59,7 @@ src_configure() {
 	local mycmakeargs=(
 		-DFEAT_TUI=$(usex tui)
 		-DENABLE_JEMALLOC=$(usex jemalloc)
-		-DPREFER_LUA=$(usex luajit no yes)
-	)
+		)
 	cmake-utils_src_configure
 }
 
@@ -78,6 +72,6 @@ src_install() {
 
 	# conditionally install a symlink for nvimpager
 	if use nvimpager; then
-		dosym ../share/nvim/runtime/macros/less.sh /usr/bin/nvimpager
+		dosym /usr/share/nvim/runtime/macros/less.sh /usr/bin/nvimpager
 	fi
 }

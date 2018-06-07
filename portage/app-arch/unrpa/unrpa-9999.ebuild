@@ -1,7 +1,7 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
 PYTHON_COMPAT=( python2_7 )
 inherit python-single-r1
@@ -22,9 +22,9 @@ SLOT="0"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="${PYTHON_DEPS}"
-RDEPEND="${DEPEND}"
+RDEPEND=${DEPEND}
 
 src_install() {
-	python_doscript "${PN}"
+	dobin ${PN}
 	dodoc README
 }

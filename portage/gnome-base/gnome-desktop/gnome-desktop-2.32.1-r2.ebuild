@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -37,7 +37,8 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	>=app-text/gnome-doc-utils-0.3.2
 	~app-text/docbook-xml-dtd-4.1.2
-	x11-base/xorg-proto
+	x11-proto/xproto
+	>=x11-proto/randrproto-1.2
 "
 PDEPEND=">=dev-python/pygtk-2.8:2[${PYTHON_USEDEP}]
 	>=dev-python/pygobject-2.14:2[${PYTHON_USEDEP}]

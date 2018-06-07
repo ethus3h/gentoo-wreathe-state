@@ -38,10 +38,6 @@ src_prepare() {
 	# equal to ${PV}.
 	sed -e 's|${PODOFO_VERSION_PATCH}|\0_'${PV##*_}'|' -i CMakeLists.txt || die
 
-	# bug 620934 - Disable linking with cppunit when possible, since it
-	# triggers errors with some older compilers.
-	use test || sed -e 's:^FIND_PACKAGE(CppUnit):#\0:' -i CMakeLists.txt || die
-
 	# bug 556962
 	sed -i -e 's|Decrypt( pEncryptedBuffer, nOutputLen, pDecryptedBuffer, m_lLen );|Decrypt( pEncryptedBuffer, (pdf_long)nOutputLen, pDecryptedBuffer, (pdf_long\&)m_lLen );|' \
 		test/unit/EncryptTest.cpp || die
@@ -113,8 +109,7 @@ src_prepare() {
 			tools/podofocolor/luaconverter.cpp \
 			tools/podofoimpose/planreader_lua.cpp || die
 	fi
-
-	cmake-utils_src_prepare
+	eapply_user
 }
 
 src_configure() {

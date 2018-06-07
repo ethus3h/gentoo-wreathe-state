@@ -21,15 +21,12 @@ RDEPEND="media-sound/jack-audio-connection-kit
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
-PATCHES=(
-	"${FILESDIR}/${P}-gcc41.patch"
-	"${FILESDIR}/${P}-asneeded.patch"
-	"${FILESDIR}/${P}-cflags.patch"
-	"${FILESDIR}/${P}-setrgba.patch"
-)
-
 src_prepare() {
-	default
+	epatch "${FILESDIR}"/${P}-gcc41.patch
+	epatch "${FILESDIR}"/${P}-asneeded.patch
+	epatch "${FILESDIR}"/${P}-cflags.patch
+	epatch "${FILESDIR}"/${P}-setrgba.patch
+	eapply_user
 	eautoreconf
 }
 

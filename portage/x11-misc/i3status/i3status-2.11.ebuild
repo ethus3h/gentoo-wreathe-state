@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,12 +6,12 @@ EAPI=6
 inherit eutils toolchain-funcs fcaps
 
 DESCRIPTION="generates a status bar for dzen2, xmobar or similar"
-HOMEPAGE="https://i3wm.org/i3status/"
-SRC_URI="https://i3wm.org/${PN}/${P}.tar.bz2"
+HOMEPAGE="http://i3wm.org/i3status/"
+SRC_URI="http://i3wm.org/${PN}/${P}.tar.bz2"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="amd64 ~arm x86"
+KEYWORDS="amd64 x86"
 IUSE="pulseaudio"
 
 RDEPEND="dev-libs/confuse:=
@@ -20,6 +20,7 @@ RDEPEND="dev-libs/confuse:=
 	media-libs/alsa-lib
 	pulseaudio? ( media-sound/pulseaudio )"
 DEPEND="${RDEPEND}
+	app-text/asciidoc
 	virtual/pkgconfig"
 
 src_prepare() {

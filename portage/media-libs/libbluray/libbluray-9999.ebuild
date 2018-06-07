@@ -5,16 +5,17 @@ EAPI=6
 
 if [[ "${PV#9999}" != "${PV}" ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="https://git.videolan.org/git/libbluray.git"
+	EGIT_REPO_URI="git://git.videolan.org/libbluray.git"
+	SRC_URI=""
 else
-	KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
-	SRC_URI="https://downloads.videolan.org/pub/videolan/libbluray/${PV}/${P}.tar.bz2"
+	KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
+	SRC_URI="http://ftp.videolan.org/pub/videolan/libbluray/${PV}/${P}.tar.bz2"
 fi
 
 inherit autotools java-pkg-opt-2 flag-o-matic eutils multilib-minimal
 
 DESCRIPTION="Blu-ray playback libraries"
-HOMEPAGE="https://www.videolan.org/developers/libbluray.html"
+HOMEPAGE="http://www.videolan.org/developers/libbluray.html"
 
 LICENSE="LGPL-2.1"
 SLOT="0/2"

@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
-inherit eutils qmake-utils autotools xdg-utils
+inherit eutils qmake-utils autotools fdo-mime
 
 DESCRIPTION="Music audio files viewer and analiser"
-HOMEPAGE="https://www.sonicvisualiser.org/"
+HOMEPAGE="http://www.sonicvisualiser.org/"
 SRC_URI="https://code.soundsoftware.ac.uk/attachments/download/1675/${P}.tar.gz"
 
 LICENSE="GPL-2"
@@ -97,9 +97,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

@@ -20,6 +20,4 @@ RDEPEND="
 	dev-ros/bondpy[${PYTHON_USEDEP}]
 	dev-ros/rostest[${PYTHON_USEDEP}]
 "
-DEPEND="${RDEPEND}
-	test? ( dev-cpp/gtest )
-"
+DEPEND="${RDEPEND}"

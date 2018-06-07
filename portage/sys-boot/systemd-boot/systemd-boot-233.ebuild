@@ -13,7 +13,6 @@ LICENSE="GPL-2 LGPL-2.1 MIT public-domain"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
-RESTRICT="test"
 
 COMMON_DEPEND="
 	>=sys-apps/util-linux-2.27.1

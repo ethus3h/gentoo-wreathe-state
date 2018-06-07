@@ -7,10 +7,10 @@ PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
 inherit autotools fcaps linux-info python-r1 systemd user
 
 if [[ ${PV} == *9999 ]] ; then
-	EGIT_REPO_URI="https://github.com/firehol/${PN}.git"
+	EGIT_REPO_URI="git://github.com/firehol/${PN}.git"
 	inherit git-r3
 else
-	SRC_URI="https://github.com/firehol/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/firehol/netdata/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 fi
 
@@ -90,12 +90,8 @@ src_configure() {
 src_install() {
 	default
 
-	rm -rf "${D}/var/cache/netdata" || die
-
-	# Remove unneeded .keep files
-	find "${ED}" -name ".keep" -delete || die
-
 	fowners -Rc ${NETDATA_USER}:${NETDATA_GROUP} /var/log/netdata
+	fowners -Rc ${NETDATA_USER}:${NETDATA_GROUP} /var/cache/netdata
 	fowners -Rc ${NETDATA_USER}:${NETDATA_GROUP} /var/lib/netdata
 
 	fowners -Rc root:${NETDATA_GROUP} /usr/share/${PN}

@@ -1,19 +1,18 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils toolchain-funcs multilib
 
 DESCRIPTION="WMaker DockApp: Slightly modified version of Jamie Zawinski's xmatrix screenhack"
-HOMEPAGE="http://www.dockapps.net/wmmatrix"
-SRC_URI="http://www.dockapps.net/download/${P}.tar.gz"
+SRC_URI="http://dockapps.windowmaker.org/download.php/id/17/${P}.tar.gz"
+HOMEPAGE="http://dockapps.windowmaker.org/file.php/id/10"
 
 CDEPEND="x11-libs/libX11
 	x11-libs/libXext
 	x11-libs/libXpm"
 DEPEND="${CDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xproto
+	x11-proto/xextproto"
 RDEPEND="${CDEPEND}
 	x11-misc/xscreensaver"
 

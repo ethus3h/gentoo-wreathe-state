@@ -1,7 +1,7 @@
 http://bugs.gentoo.org/336649
 
---- a/src/main.c
-+++ b/src/main.c
+--- src/main.c
++++ src/main.c
 @@ -19,6 +19,7 @@
  
  #include <config.h>

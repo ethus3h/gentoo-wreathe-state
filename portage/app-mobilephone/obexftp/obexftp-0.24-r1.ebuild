@@ -1,12 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
 PYTHON_COMPAT=( python{2_7,3_4,3_5} )
-USE_RUBY="ruby22 ruby23"
-
-inherit cmake-utils python-single-r1 python-utils-r1 ruby-single eutils multilib
+inherit cmake-utils python-single-r1 python-utils-r1 eutils multilib
 
 DESCRIPTION="File transfer over OBEX for mobile phones"
 HOMEPAGE="http://dev.zuckschwerdt.org/openobex/wiki/ObexFtp"
@@ -25,7 +23,7 @@ RDEPEND="
 	net-wireless/bluez
 	perl? ( dev-lang/perl:= )
 	python? ( ${PYTHON_DEPS} )
-	ruby? ( ${RUBY_DEPS} )
+	ruby? ( dev-lang/ruby:2.1 )
 	tcl? ( dev-lang/tcl:0= )
 "
 DEPEND="

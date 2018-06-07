@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit cmake-utils xdg-utils
+inherit cmake-utils
 [[ ${PV} = 9999 ]] && inherit subversion
 
 DESCRIPTION="Qt5-based audio player with winamp/xmms skins support"
@@ -12,22 +12,18 @@ if [[ ${PV} != 9999 ]]; then
 	SRC_URI="http://qmmp.ylsoftware.com/files/${P}.tar.bz2"
 	KEYWORDS="~amd64 ~x86"
 else
-	QMMP_DEV_BRANCH="1.2"
+	QMMP_DEV_BRANCH="1.1"
 	ESVN_REPO_URI="svn://svn.code.sf.net/p/${PN}-dev/code/branches/${PN}-${QMMP_DEV_BRANCH}"
 fi
 
 LICENSE="GPL-2"
 SLOT="0"
 # KEYWORDS further up
-IUSE="aac +alsa analyzer archive bs2b cdda cover crossfade cue curl +dbus enca ffmpeg flac game
-gnome jack ladspa libav lyrics +mad midi mms modplug mplayer musepack notifier opus oss projectm
-pulseaudio qsui qtmedia scrobbler shout sid sndfile soxr stereo tray udisks +vorbis wavpack"
+IUSE="aac +alsa analyzer bs2b cdda cover crossfade cue curl +dbus enca ffmpeg flac game gnome
+jack ladspa libav lyrics +mad midi mms modplug mplayer musepack notifier opus oss projectm
+pulseaudio qsui qtmedia scrobbler sid sndfile soxr stereo tray udisks +vorbis wavpack"
 
-REQUIRED_USE="
-	gnome? ( dbus )
-	shout? ( soxr vorbis )
-	udisks? ( dbus )
-"
+REQUIRED_USE="gnome? ( dbus ) udisks? ( dbus )"
 
 RDEPEND="
 	dev-qt/qtcore:5
@@ -39,10 +35,9 @@ RDEPEND="
 	x11-libs/libX11
 	aac? ( media-libs/faad2 )
 	alsa? ( media-libs/alsa-lib )
-	archive? ( app-arch/libarchive )
 	bs2b? ( media-libs/libbs2b )
 	cdda? (
-		dev-libs/libcdio:=
+		dev-libs/libcdio
 		dev-libs/libcdio-paranoia
 	)
 	cue? ( media-libs/libcue )
@@ -75,9 +70,8 @@ RDEPEND="
 	pulseaudio? ( >=media-sound/pulseaudio-0.9.9 )
 	qtmedia? ( dev-qt/qtmultimedia:5 )
 	scrobbler? ( net-misc/curl )
-	shout? ( media-libs/libshout )
-	sid? ( >=media-libs/libsidplayfp-1.1.0 )
 	sndfile? ( media-libs/libsndfile )
+	sid? ( >=media-libs/libsidplayfp-1.1.0 )
 	soxr? ( media-libs/soxr )
 	udisks? ( sys-fs/udisks:2 )
 	vorbis? (
@@ -107,7 +101,6 @@ src_configure() {
 		-DUSE_AAC="$(usex aac)"
 		-DUSE_ALSA="$(usex alsa)"
 		-DUSE_ANALYZER="$(usex analyzer)"
-		-DUSE_ARCHIVE="$(usex archive)"
 		-DUSE_BS2B="$(usex bs2b)"
 		-DUSE_CDA="$(usex cdda)"
 		-DUSE_COVER="$(usex cover)"
@@ -118,7 +111,6 @@ src_configure() {
 		-DUSE_MPRIS="$(usex dbus)"
 		-DUSE_ENCA="$(usex enca)"
 		-DUSE_FFMPEG="$(usex ffmpeg)"
-		-DUSE_FILEWRITER="$(usex vorbis)"
 		-DUSE_FLAC="$(usex flac)"
 		-DUSE_GME="$(usex game)"
 		-DUSE_GNOMEHOTKEY="$(usex gnome)"
@@ -140,7 +132,6 @@ src_configure() {
 		-DUSE_QSUI="$(usex qsui)"
 		-DUSE_QTMULTIMEDIA="$(usex qtmedia)"
 		-DUSE_SCROBBLER="$(usex scrobbler)"
-		-DUSE_SHOUT="$(usex shout)"
 		-DUSE_SID="$(usex sid)"
 		-DUSE_SNDFILE="$(usex sndfile)"
 		-DUSE_SOXR="$(usex soxr)"
@@ -152,12 +143,4 @@ src_configure() {
 	)
 
 	cmake-utils_src_configure
-}
-
-pkg_postinst() {
-	xdg_desktop_database_update
-}
-
-pkg_postrm() {
-	xdg_desktop_database_update
 }

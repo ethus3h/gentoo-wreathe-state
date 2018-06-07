@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -12,14 +12,13 @@ MY_P="${PN}-${MY_PV}"
 DESCRIPTION="An automated suite of programs for configuring and maintaining
 Unix-like computers"
 HOMEPAGE="http://www.cfengine.org/"
-SRC_URI="http://cfengine.package-repos.s3.amazonaws.com/tarballs/${MY_P}.tar.gz -> ${MY_P}.tar.gz
-	masterfiles? ( http://cfengine.package-repos.s3.amazonaws.com/tarballs/masterfiles-${MY_PV}.tar.gz -> ${PN}-masterfiles-${MY_PV}.tar.gz )"
+SRC_URI="http://cfengine.package-repos.s3.amazonaws.com/tarballs/${MY_P}.tar.gz -> ${MY_P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="3"
 KEYWORDS="~amd64 ~x86"
 
-IUSE="acl examples libvirt mysql masterfiles postgres +qdbm selinux tokyocabinet vim-syntax xml"
+IUSE="acl examples libvirt mysql postgres +qdbm selinux tokyocabinet vim-syntax xml"
 
 DEPEND="acl? ( virtual/acl )
 	mysql? ( virtual/mysql )
@@ -34,22 +33,17 @@ DEPEND="acl? ( virtual/acl )
 RDEPEND="${DEPEND}"
 PDEPEND="vim-syntax? ( app-vim/cfengine-syntax )"
 
-REQUIRED_USE="^^ ( qdbm tokyocabinet )"
+REQUIRED_USE="qdbm? ( !tokyocabinet )
+	tokyocabinet? ( !qdbm )
+	!tokyocabinet? ( qdbm )
+	!qdbm? ( tokyocabinet )"
 
 S="${WORKDIR}/${MY_P}"
 
 src_prepare() {
 	default
 	epatch "${FILESDIR}/${P}-ifconfig.patch"
-	epatch "${FILESDIR}/${P}-sysmacros.patch"
 	eautoreconf
-}
-
-src_unpack() {
-	unpack ${MY_P}.tar.gz
-	if use masterfiles; then
-		unpack ${PN}-masterfiles-${MY_PV}.tar.gz
-	fi
 }
 
 src_configure() {
@@ -105,14 +99,6 @@ src_install() {
 	for bin in promises agent monitord serverd execd runagent key; do
 		dosym /usr/sbin/cf-$bin /var/cfengine/bin/cf-$bin || die
 	done
-
-	if use masterfiles; then
-		insinto /var/cfengine
-		doins -r "${WORKDIR}/masterfiles"
-	fi
-
-	dodir /etc/env.d
-	echo 'CONFIG_PROTECT=/var/cfengine/masterfiles' >"${ED}/etc/env.d/99${PN}" || die
 }
 
 pkg_postinst() {

@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils multilib toolchain-funcs
 
@@ -24,7 +22,7 @@ RDEPEND="${COMMON_DEPEND}
 	X? ( x11-libs/libXt x11-libs/libXaw )"
 
 DEPEND="${COMMON_DEPEND}
-	X? ( x11-base/xorg-proto )"
+	X? ( x11-proto/xproto )"
 
 S="${WORKDIR}/ACE_wrappers"
 

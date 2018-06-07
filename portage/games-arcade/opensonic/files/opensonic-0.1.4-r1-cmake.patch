@@ -8,8 +8,8 @@ make paths modifiable
 add rules for icon, desktop-file and game-wrapper
 fix compilation for as-needed
 
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
+--- CMakeLists.txt
++++ CMakeLists.txt
 @@ -35,16 +35,14 @@
  MESSAGE("Using CFLAGS='${CFLAGS}'")
  

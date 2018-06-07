@@ -14,10 +14,11 @@ SRC_URI="http://www.ladspa.org/download/${MY_P}.tgz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ppc ppc64 sparc x86 ~amd64-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ppc ppc64 sparc x86 ~amd64-fbsd ~x86-fbsd"
 IUSE=""
 
-RDEPEND=""
+RDEPEND="abi_x86_32? ( !<=app-emulation/emul-linux-x86-soundlibs-20130224-r2
+	!app-emulation/emul-linux-x86-soundlibs[-abi_x86_32(-)] )"
 DEPEND=">=sys-apps/sed-4"
 
 S="${WORKDIR}/${MY_PN}"
@@ -62,6 +63,8 @@ multilib_src_install_all() {
 	dohtml doc/*.html
 
 	# Needed for apps like rezound
+	# emul-linux-soundlibs doesnt seem to install this, so keep it only for the
+	# default abi.
 	dodir /etc/env.d
 	echo "LADSPA_PATH=${EPREFIX}/usr/$(get_libdir)/ladspa" > "${ED}/etc/env.d/60ladspa"
 }

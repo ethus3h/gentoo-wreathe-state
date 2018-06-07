@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils
 
@@ -11,14 +9,15 @@ MY_P="${P}"
 S="${WORKDIR}/${MY_P}/src"
 
 DESCRIPTION="Dockapp for laptop users"
-SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
-HOMEPAGE="http://wmlaptop.sourceforge.net"
+SRC_URI="http://dockapps.windowmaker.org/download.php/id/509/${P}.tar.gz"
+HOMEPAGE="http://dockapps.windowmaker.org/file.php/id/227"
 
 RDEPEND="x11-libs/libX11
 	x11-libs/libXext
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xextproto
+	>=sys-apps/sed-4.1.5-r1"
 
 SLOT="0"
 LICENSE="GPL-2"

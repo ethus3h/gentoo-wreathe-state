@@ -26,3 +26,7 @@ And update the status window if showing." t)
 ;; jmaker
 (autoload 'jmaker-generate-makefile "jmaker"
   "Generate and edit a Java Makefile in directory ROOT." t)
+
+;; jsee
+(autoload 'jsee-browse-api-doc "jsee"
+  "Browse the Java API Documentation of the current Java file." t)

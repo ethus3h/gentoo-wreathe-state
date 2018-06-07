@@ -5,4 +5,10 @@
 <email>hwoarang@gentoo.org</email>
 <name>Markos Chandras</name>
 </maintainer>
+<use>
+	<flag name="gnutls">Use GnuTLS library instead of the default OpenSSL</flag>
+	<flag name="polarssl">Use PolarSSL library instead of the default OpenSSL</flag>
+</use>
+<longdescription lang="en">
+</longdescription>
 </pkgmetadata>

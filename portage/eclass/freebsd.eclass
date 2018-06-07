@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 #
 # @MAINTAINER:
@@ -68,7 +68,7 @@ if [[ ${MY_PV} == *9999* ]]; then
 	ESVN_PROJECT="freebsd-${BRANCH}"
 fi
 
-# Use the original source code.
+# use the original source code.
 if [[ ${MY_PV} != *9999* ]] && version_is_at_least 10.0 ${RV} ; then
 	DL_PV=${MY_PV/_rc/-RC}
 	DL_PV=${DL_PV/_beta/-BETA}
@@ -114,7 +114,7 @@ freebsd_get_bmake() {
 	echo "${bmake}"
 }
 
-# Generates SRC_URI or DISTDIR for the upstream patch.
+# Generates a patch SRC_URI or DISTDIR of upstream.
 freebsd_upstream_patches() {
 	local opt=$1
 	[[ ${#UPSTREAM_PATCHES[@]} -eq 0 ]] && return 1
@@ -172,8 +172,8 @@ freebsd_src_unpack() {
 	if [[ ${MY_PV} == *9999* ]]; then
 		S="${WORKDIR}" subversion_src_unpack
 
-		# When share/mk exists in ${WORKDIR}, BSD's make will try to use it on FreeBSD 10.0 or later.
-		# We should remove "${WORKDIR}"/share/mk/*.mk to use /usr/share/mk{,/system}.
+		# When share/mk exists in ${WORKDIR}, it is used on FreeBSD 10.0
+		# Removed "${WORKDIR}"/share/mk/*.mk, use to force /usr/share/mk.
 		if [[ ${PN} != freebsd-mk-defs ]] ; then
 			[[ -e "${WORKDIR}"/share/mk ]] && rm -rf "${WORKDIR}"/share/mk/*.mk
 		fi
@@ -182,7 +182,7 @@ freebsd_src_unpack() {
 			local tarball="freebsd-src-${MY_PV}.tar.xz"
 			local topdir="usr/src/"
 			local extractlist=()
-			for i in ${EXTRACTONLY} tools/ ; do
+			for i in ${EXTRACTONLY} ; do
 				extractlist+=( ${topdir}${i} )
 			done
 			ebegin "Unpacking parts of ${tarball} to ${WORKDIR}"
@@ -210,12 +210,11 @@ freebsd_src_unpack() {
 		export INSTALL_LINK="ln -f"
 		export INSTALL_SYMLINK="ln -fs"
 	fi
-	# An older version of install command doesn't support the -T option.
-	if version_is_at_least 11.0 ${RV} && ! has_version ">=sys-freebsd/freebsd-ubin-${RV}" ; then
-		export INSTALL="sh ${WORKDIR}/tools/install.sh"
+	if version_is_at_least 11.0 ${RV} ; then
+		export RSYMLINK=" -l s"
 	fi
 
-	# If CC=clang, we should use clang-cpp instead of cpp. #478810, #595878
+	# When CC=clang, force use clang-cpp #478810, #595878
 	if [[ $(tc-getCC) == *clang* ]] ; then
 		if type -P clang-cpp > /dev/null ; then
 			export CPP=clang-cpp
@@ -226,7 +225,7 @@ freebsd_src_unpack() {
 		fi
 	fi
 
-	# Add the special CFLAGS required for multilib support.
+	# Add a special CFLAGS required for multilib support.
 	use amd64-fbsd && export CFLAGS_x86_fbsd="${CFLAGS_x86_fbsd} -DCOMPAT_32BIT -B/usr/lib32 -L/usr/lib32"
 }
 
@@ -236,13 +235,13 @@ freebsd_src_compile() {
 		if ! use profile ; then
 			mymakeopts="${mymakeopts} WITHOUT_PROFILE= "
 		fi
-		# Disable the debugging information, use FEATURES=splitdebug instead.
+		# Disable debugging info, use FEATURES=splitdebug instead.
 		mymakeopts="${mymakeopts} WITHOUT_DEBUG_FILES= "
-		# We don't support test yet.
+		# Test does not support yet.
 		mymakeopts="${mymakeopts} WITHOUT_TESTS= "
-		# Set the SRCTOP to detect the source directory.
+		# Force set SRCTOP.
 		mymakeopts="${mymakeopts} SRCTOP=${WORKDIR} "
-		# Set the common settings.
+		# Set common option.
 		mymakeopts="${mymakeopts} WITHOUT_MANCOMPRESS= WITHOUT_INFOCOMPRESS= "
 	else
 		use profile || mymakeopts="${mymakeopts} NO_PROFILE= "
@@ -312,13 +311,13 @@ freebsd_src_install() {
 		if ! use profile ; then
 			mymakeopts="${mymakeopts} WITHOUT_PROFILE= "
 		fi
-		# Disable the debugging information, use FEATURES=splitdebug instead.
+		# Disable debugging info, use FEATURES=splitdebug instead.
 		mymakeopts="${mymakeopts} WITHOUT_DEBUG_FILES= "
-		# We don't support test yet.
+		# Test does not support yet.
 		mymakeopts="${mymakeopts} WITHOUT_TESTS= "
-		# Set the SRCTOP to detect the source directory.
+		# Force set SRCTOP.
 		mymakeopts="${mymakeopts} SRCTOP=${WORKDIR} "
-		# Set the common settings.
+		# Set common option.
 		mymakeopts="${mymakeopts} WITHOUT_MANCOMPRESS= WITHOUT_INFOCOMPRESS= "
 	else
 		use profile || mymakeopts="${mymakeopts} NO_PROFILE= "

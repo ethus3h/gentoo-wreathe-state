@@ -24,7 +24,6 @@ RDEPEND="
 	dev-ros/unique_id
 	dev-ros/uuid_msgs[${CATKIN_MESSAGES_PYTHON_USEDEP}]
 	dev-python/pyproj[${PYTHON_USEDEP}]
-	dev-libs/boost:=
 "
 DEPEND="${RDEPEND}
 	test? (

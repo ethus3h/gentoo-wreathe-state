@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
 PYTHON_COMPAT=( python2_7 )
 DISTUTILS_SINGLE_IMPL=1
@@ -14,7 +14,7 @@ SRC_URI="http://www.codesourcery.com/public/${PN}/${P}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~mips x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ~mips x86"
 IUSE=""
 
 DEPEND=""
@@ -26,8 +26,8 @@ pkg_setup() {
 
 src_install() {
 	distutils-r1_src_install
-	find "${ED}" -name config.py -print0 | xargs -0 sed -i "s:${ED}:${EPREFIX}/usr:"
-	rm -r "${ED}"usr/share/doc/${PN}/{COPYING,LICENSE.OPL} || die
-	mv "${ED}"usr/share/doc/${PN}/* "${ED}"usr/share/doc/${PF} || die
-	rm -r "${ED}"/usr/share/doc/${PN} || die
+	find "${D}" -name config.py -print0 | xargs -0 sed -i "s:${D}:/usr:"
+	rm -r "${D}"usr/share/doc/${PN}/{COPYING,LICENSE.OPL} || die
+	mv "${D}"usr/share/doc/${PN}/* "${D}"usr/share/doc/${PF} || die
+	rm -r "${D}"/usr/share/doc/${PN} || die
 }

@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils
 
@@ -14,7 +12,8 @@ RDEPEND="
 	x11-libs/libXext
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xextproto
+	>=sys-apps/sed-4.1.5-r1"
 
 SLOT="0"
 LICENSE="GPL-2"

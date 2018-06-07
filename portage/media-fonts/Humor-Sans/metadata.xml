@@ -4,6 +4,7 @@
 	<maintainer type="person">
 		<email>bertrand@jacquin.bzh</email>
 		<name>Bertrand Jacquin</name>
+		<description>Proxied maintainer</description>
 	</maintainer>
 	<maintainer type="project">
 		<email>proxy-maint@gentoo.org</email>

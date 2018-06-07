@@ -13,24 +13,29 @@ ${P}.tar.gz"
 LICENSE="BSD GPL-3 LGPL-2.1"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE=""
-
-RDEPEND="
-	dev-db/sqlite:3
+IUSE="qt4"
+DEPEND="dev-db/sqlite:3
 	dev-libs/libgcrypt:0
 	dev-libs/libgpg-error
-	dev-qt/qtconcurrent:5
-	dev-qt/qtcore:5
-	dev-qt/qtdeclarative:5
-	dev-qt/qtgui:5
-	dev-qt/qtprintsupport:5
-	dev-qt/qtsql:5
-	dev-qt/qtwebkit:5
-	dev-qt/qtxml:5
+	qt4? (
+		dev-qt/qtcore:4
+		dev-qt/qtgui:4
+		dev-qt/qtsql:4
+		dev-qt/qtwebkit:4
+	)
+	!qt4? (
+		dev-qt/linguist-tools:5
+		dev-qt/qtconcurrent:5
+		dev-qt/qtcore:5
+		dev-qt/qtdeclarative:5
+		dev-qt/qtgui:5
+		dev-qt/qtprintsupport:5
+		dev-qt/qtsql:5
+		dev-qt/qtwebkit:5
+		dev-qt/qtxml:5
+	)
 "
-DEPEND="${RDEPEND}
-	dev-qt/linguist-tools:5
-"
+RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/dooble.d/Version 1.x/"
 
@@ -58,7 +63,7 @@ src_prepare() {
 }
 
 src_configure() {
-	eqmake5 dooble.qt5.pro
+	use qt4 && eqmake4 dooble.pro || eqmake5 dooble.qt5.pro
 }
 
 src_install() {

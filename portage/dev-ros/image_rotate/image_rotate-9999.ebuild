@@ -21,10 +21,8 @@ RDEPEND="
 	dev-ros/eigen_conversions
 	dev-ros/image_transport
 	dev-ros/nodelet
-	dev-libs/console_bridge:=
 	dev-ros/roscpp
 	dev-ros/tf2
 	dev-ros/tf2_geometry_msgs
-	dev-libs/boost:=
 "
 DEPEND="${RDEPEND}"

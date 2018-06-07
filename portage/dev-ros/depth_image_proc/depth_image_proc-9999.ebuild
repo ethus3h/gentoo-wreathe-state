@@ -25,7 +25,5 @@ RDEPEND="
 	dev-ros/stereo_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-ros/tf2
 	dev-ros/tf2_ros
-	dev-libs/boost:=
-	dev-libs/console_bridge:=
 "
 DEPEND="${RDEPEND}"

@@ -1,11 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=0
-
 DESCRIPTION="WindowMaker DockApp: Battery/Power status monitor for laptops"
-HOMEPAGE="http://www.dockapps.net/wmapm"
-SRC_URI="http://www.dockapps.net/download/${P}.tar.gz"
+SRC_URI="http://dockapps.windowmaker.org/download.php/id/25/${P}.tar.gz"
+HOMEPAGE="http://dockapps.windowmaker.org/file.php/id/18"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -16,7 +14,8 @@ RDEPEND="x11-libs/libX11
 	x11-libs/libXext
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xproto
+	x11-proto/xextproto"
 
 S=${WORKDIR}/${P}/${PN}
 

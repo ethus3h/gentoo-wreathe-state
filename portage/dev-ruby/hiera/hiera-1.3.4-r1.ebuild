@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
-USE_RUBY="ruby22 ruby23"
+USE_RUBY="ruby20 ruby21"
 
 RUBY_FAKEGEM_RECIPE_TEST="rspec"
 
@@ -13,12 +13,12 @@ RUBY_FAKEGEM_EXTRADOC="README.md"
 inherit ruby-fakegem
 
 DESCRIPTION="A simple pluggable Hierarchical Database"
-HOMEPAGE="https://docs.puppet.com/hiera/"
+HOMEPAGE="http://projects.puppetlabs.com/"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 IUSE=""
-KEYWORDS="amd64 ~hppa ppc ~sparc x86"
+KEYWORDS="amd64 hppa ppc sparc x86"
 
 ruby_add_bdepend "test? ( dev-ruby/mocha )"
 

@@ -1,50 +1,41 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI=5
+PERL_EXPORT_PHASE_FUNCTIONS=no
+inherit perl-module eutils flag-o-matic toolchain-funcs autotools-utils
 
-inherit autotools flag-o-matic perl-module toolchain-funcs
-
-DESCRIPTION="Zinnia - Online hand recognition system with machine learning"
-HOMEPAGE="https://taku910.github.io/zinnia/ https://github.com/taku910/zinnia https://sourceforge.net/projects/zinnia/"
+DESCRIPTION="Online hand recognition system with machine learning"
+HOMEPAGE="http://zinnia.sourceforge.net/"
 SRC_URI="mirror://sourceforge/zinnia/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="amd64 ~ppc64 x86"
+KEYWORDS="amd64 x86"
+# Package warrants IUSE doc
 IUSE="perl static-libs"
-
+DOCS=( AUTHORS ChangeLog NEWS README )
 PATCHES=(
-	"${FILESDIR}/${P}-flags.patch"
-	"${FILESDIR}/${P}-perl_build.patch"
-	"${FILESDIR}/${P}-c++-2011.patch"
+	"${FILESDIR}/${P}-ricedown.patch"
+	"${FILESDIR}/${P}-perl.patch"
+	"${FILESDIR}/${P}-gcc6.patch"
 )
-
-DOCS=(AUTHORS)
+AUTOTOOLS_AUTORECONF=yes
 
 src_prepare() {
-	default
-	mv configure.in configure.ac || die
-	sed -e "s/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/" -i configure.ac || die
-	eautoreconf
-
-	if use perl; then
-			pushd perl > /dev/null
+	autotools-utils_src_prepare
+	if use perl ; then
+			pushd "${S}/perl" >/dev/null
 			PATCHES=()
 			perl-module_src_prepare
-			popd > /dev/null
+			popd >/dev/null
 	fi
 }
 
-src_configure() {
-	econf $(use_enable static-libs static)
-}
-
 src_compile() {
-	default
-
-	if use perl; then
-			pushd perl > /dev/null
+	autotools-utils_src_compile
+	if use perl ; then
+			pushd "${S}"/perl >/dev/null
 
 			# We need to run this here as otherwise it won't pick up the
 			# just-built -lzinnia and cause the extension to have
@@ -55,31 +46,23 @@ src_compile() {
 			append-ldflags "-L${S}/.libs"
 
 			emake \
-				CC="$(tc-getCXX)" \
-				LD="$(tc-getCXX)" \
-				OPTIMIZE="${CPPFLAGS} ${CXXFLAGS}" \
 				LDDLFLAGS="-shared" \
-				OTHERLDFLAGS="${LDFLAGS}"
-			popd > /dev/null
+				OTHERLDFLAGS="${LDFLAGS}" \
+				CC="$(tc-getCXX)" LD="$(tc-getCXX)" \
+				OPTIMIZE="${CPPFLAGS} ${CXXFLAGS}"
+			popd >/dev/null
 	fi
-}
-
-src_test() {
-	default
 }
 
 src_install() {
-	default
-	find "${D}" -name "*.la" -delete || die
+	autotools-utils_src_install
 
-	if use perl; then
-			pushd perl > /dev/null
+	if use perl ; then
+			pushd "${S}/perl" >/dev/null
 			perl-module_src_install
-			popd > /dev/null
+			popd >/dev/null
 	fi
 
-	(
-		docinto html
-		dodoc doc/*.css doc/*.html
-	)
+	# Curiously ChangeLog & NEWS are left uncompressed
+	dohtml doc/*.html doc/*.css
 }

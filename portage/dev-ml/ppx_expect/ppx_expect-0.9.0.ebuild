@@ -3,8 +3,6 @@
 
 EAPI=6
 
-inherit opam
-
 DESCRIPTION="Cram like framework for OCaml"
 HOMEPAGE="https://github.com/janestreet/ppx_expect"
 SRC_URI="https://github.com/janestreet/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -15,6 +13,7 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND="
+	dev-lang/ocaml:=
 	dev-ml/base:=
 	dev-ml/ppx_assert:=
 	dev-ml/ppx_compare:=
@@ -33,4 +32,12 @@ DEPEND="
 	dev-ml/ocaml-re:=
 "
 RDEPEND="${DEPEND}"
-DEPEND="${DEPEND} dev-ml/jbuilder"
+DEPEND="${DEPEND} dev-ml/opam dev-ml/jbuilder"
+
+src_install() {
+	opam-installer -i \
+		--prefix="${ED}/usr" \
+		--libdir="${D}/$(ocamlc -where)" \
+		--docdir="${ED}/usr/share/doc/${PF}" \
+		${PN}.install || die
+}

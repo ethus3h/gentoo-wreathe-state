@@ -11,10 +11,8 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 ppc x86"
-IUSE="alsa ncurses pulseaudio suid test qt5"
-
-REQUIRED_USE="test? ( || ( alsa pulseaudio ) )"
+KEYWORDS="alpha amd64 ~ppc x86"
+IUSE="alsa ncurses pulseaudio suid qt5"
 
 RDEPEND="ncurses? ( sys-libs/ncurses:= )
 	qt5? ( dev-qt/qtcore:5

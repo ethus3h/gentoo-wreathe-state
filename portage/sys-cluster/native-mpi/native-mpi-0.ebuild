@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=3
 
 DESCRIPTION="Use native OS MPI in prefix environment"
 HOMEPAGE="https://prefix.gentoo.org"
@@ -15,10 +15,8 @@ IUSE=""
 DEPEND=""
 RDEPEND="${DEPEND}"
 
-S="${WORKDIR}"
-
 src_install() {
-	cat >> "${T}"/99mpi <<- EOF || die
+	cat >> "${T}"/99mpi <<- EOF
 	MPI_CC=gcc
 	MPI_CXX=g++
 	MPI_FC=gfortran

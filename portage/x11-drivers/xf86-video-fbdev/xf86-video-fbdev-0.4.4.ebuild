@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -11,4 +11,8 @@ IUSE=""
 
 RDEPEND="x11-base/xorg-server"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/fontsproto
+	x11-proto/randrproto
+	x11-proto/renderproto
+	x11-proto/videoproto
+	x11-proto/xproto"

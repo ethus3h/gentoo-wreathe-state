@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
 JAVA_PKG_IUSE="source"
 
-inherit eutils java-pkg-2 java-ant-2 versionator xdg-utils
+inherit eutils fdo-mime java-pkg-2 java-ant-2 versionator
 
 MY_PV=$(replace_all_version_separators "")
 
@@ -129,9 +129,15 @@ pkg_postinst() {
 	elog "Using this config file you can start the console UI."
 	elog
 
-	xdg_desktop_database_update
+	if ! has_version dev-java/swt:3.7[webkit]; then
+		elog
+		elog "Your dev-java/swt:3.7 was built without webkit support. Features such as Vuze HD Network will not work."
+		elog "Rebuild swt with USE=webkit (needs net-libs/webkit-gtk:2) to use these features."
+	fi
+
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

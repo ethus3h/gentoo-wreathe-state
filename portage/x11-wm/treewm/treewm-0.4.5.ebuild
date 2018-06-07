@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils
 
@@ -20,8 +18,8 @@ RDEPEND="x11-libs/libXau
 	x11-libs/libXdmcp
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto
-	x11-misc/imake"
+	x11-misc/imake
+	x11-proto/xf86vidmodeproto"
 
 src_unpack() {
 	unpack ${A}

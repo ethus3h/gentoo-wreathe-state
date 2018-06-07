@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 GENQMAIL_PV=20080406
 QMAIL_SPP_PV=0.42
@@ -127,7 +125,7 @@ pkg_postinst() {
 	qmail_supervise_config_notice
 	elog
 	elog "If you are looking for documentation, check those links:"
-	elog "https://wiki.gentoo.org/wiki/Virtual_mail_hosting_with_qmail"
+	elog "https://www.gentoo.org/doc/en/qmail-howto.xml"
 	elog "  -- qmail/vpopmail Virtual Mail Hosting System Guide"
 	elog "http://www.lifewithqmail.com/"
 	elog "  -- Life with qmail"

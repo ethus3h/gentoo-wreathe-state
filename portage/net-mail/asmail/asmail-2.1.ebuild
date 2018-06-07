@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit toolchain-funcs eutils
 
@@ -22,7 +20,7 @@ RDEPEND="dev-libs/openssl
 	x11-libs/libSM
 	jpeg? ( virtual/jpeg )"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xextproto"
 
 src_compile() {
 	epatch "${FILESDIR}"/${P}-ldflags.patch

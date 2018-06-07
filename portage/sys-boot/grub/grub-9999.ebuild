@@ -1,24 +1,19 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 if [[ ${PV} == 9999  ]]; then
 	GRUB_AUTOGEN=1
-	GRUB_AUTORECONF=1
 fi
 
 if [[ -n ${GRUB_AUTOGEN} ]]; then
 	PYTHON_COMPAT=( python{2_7,3_3,3_4,3_5} )
-	inherit python-any-r1
-fi
-
-if [[ -n ${GRUB_AUTORECONF} ]]; then
 	WANT_LIBTOOL=none
-	inherit autotools
+	inherit autotools python-any-r1
 fi
 
-inherit bash-completion-r1 flag-o-matic multibuild pax-utils toolchain-funcs versionator
+inherit autotools bash-completion-r1 flag-o-matic multibuild pax-utils toolchain-funcs versionator
 
 if [[ ${PV} != 9999 ]]; then
 	if [[ ${PV} == *_alpha* || ${PV} == *_beta* || ${PV} == *_rc* ]]; then
@@ -33,7 +28,8 @@ if [[ ${PV} != 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64 ~x86"
 else
 	inherit git-r3
-	EGIT_REPO_URI="https://git.savannah.gnu.org/git/grub.git"
+	EGIT_REPO_URI="git://git.sv.gnu.org/grub.git
+		http://git.savannah.gnu.org/r/grub.git"
 fi
 
 PATCHES=(
@@ -66,7 +62,7 @@ REQUIRED_USE="
 
 # os-prober: Used on runtime to detect other OSes
 # xorriso (dev-libs/libisoburn): Used on runtime for mkrescue
-COMMON_DEPEND="
+RDEPEND="
 	app-arch/xz-utils
 	>=sys-libs/ncurses-5.2-r5:0=
 	debug? (
@@ -79,17 +75,14 @@ COMMON_DEPEND="
 	ppc? ( sys-apps/ibm-powerpc-utils sys-apps/powerpc-utils )
 	ppc64? ( sys-apps/ibm-powerpc-utils sys-apps/powerpc-utils )
 "
-DEPEND="${COMMON_DEPEND}
+DEPEND="${RDEPEND}
 	${PYTHON_DEPS}
 	app-misc/pax-utils
 	sys-devel/flex
 	sys-devel/bison
 	sys-apps/help2man
 	sys-apps/texinfo
-	fonts? (
-		media-libs/freetype:2
-		virtual/pkgconfig
-	)
+	fonts? ( media-libs/freetype:2 )
 	grub_platforms_xen? ( app-emulation/xen-tools:= )
 	grub_platforms_xen-32? ( app-emulation/xen-tools:= )
 	static? (
@@ -98,7 +91,6 @@ DEPEND="${COMMON_DEPEND}
 			app-arch/bzip2[static-libs(+)]
 			media-libs/freetype[static-libs(+)]
 			sys-libs/zlib[static-libs(+)]
-			virtual/pkgconfig
 		)
 	)
 	test? (
@@ -114,11 +106,9 @@ DEPEND="${COMMON_DEPEND}
 	themes? (
 		app-arch/unzip
 		media-libs/freetype:2
-		virtual/pkgconfig
 	)
-	truetype? ( virtual/pkgconfig )
 "
-RDEPEND="${COMMON_DEPEND}
+RDEPEND+="
 	kernel_linux? (
 		grub_platforms_efi-32? ( sys-boot/efibootmgr )
 		grub_platforms_efi-64? ( sys-boot/efibootmgr )
@@ -126,6 +116,8 @@ RDEPEND="${COMMON_DEPEND}
 	!multislot? ( !sys-boot/grub:0 !sys-boot/grub-static )
 	nls? ( sys-devel/gettext )
 "
+
+DEPEND+=" !!=media-libs/freetype-2.5.4"
 
 RESTRICT="strip !test? ( test )"
 
@@ -161,9 +153,6 @@ src_prepare() {
 	if [[ -n ${GRUB_AUTOGEN} ]]; then
 		python_setup
 		bash autogen.sh || die
-	fi
-
-	if [[ -n ${GRUB_AUTORECONF} ]]; then
 		autopoint() { :; }
 		eautoreconf
 	fi

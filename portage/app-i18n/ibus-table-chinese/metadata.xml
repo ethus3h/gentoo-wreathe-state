@@ -5,6 +5,7 @@
     <email>cjk@gentoo.org</email>
   </maintainer>
   <upstream>
+    <remote-id type="google-code">ibus</remote-id>
     <remote-id type="github">definite/ibus-table-chinese</remote-id>
   </upstream>
 </pkgmetadata>

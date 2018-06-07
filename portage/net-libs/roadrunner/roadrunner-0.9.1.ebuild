@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 # EBuild details
 DESCRIPTION="RoadRunner library provides API for using Blocks Extensible Exchange Protocol"

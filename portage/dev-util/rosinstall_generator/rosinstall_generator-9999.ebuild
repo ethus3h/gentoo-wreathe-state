@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} pypy{,3} )
+PYTHON_COMPAT=( python{2_7,3_4} )
 
 SCM=""
 if [ "${PV#9999}" != "${PV}" ] ; then
@@ -12,7 +12,7 @@ fi
 
 inherit ${SCM} distutils-r1
 
-DESCRIPTION="Generates rosinstall metadata about repositories with ROS packages/stacks"
+DESCRIPTION="Generates rosinstall files containing information about repositories with ROS packages/stacks"
 HOMEPAGE="http://wiki.ros.org/rosinstall_generator"
 if [ "${PV#9999}" != "${PV}" ] ; then
 	SRC_URI=""
@@ -24,7 +24,7 @@ fi
 
 LICENSE="BSD"
 SLOT="0"
-IUSE="test"
+IUSE=""
 
 RDEPEND="
 	>=dev-python/catkin_pkg-0.1.28[${PYTHON_USEDEP}]
@@ -32,9 +32,4 @@ RDEPEND="
 	dev-python/rospkg[${PYTHON_USEDEP}]
 	dev-python/pyyaml[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}
-	dev-python/setuptools[${PYTHON_USEDEP}]
-	test? ( dev-python/nose[${PYTHON_USEDEP}] )"
-
-python_test() {
-	nosetests --with-coverage || die
-}
+	dev-python/setuptools[${PYTHON_USEDEP}]"

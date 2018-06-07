@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit multilib udev
+EAPI="2"
+inherit eutils multilib udev
 
 DESCRIPTION="gobi_loader is a firmware loader for Qualcomm Gobi USB chipsets"
-HOMEPAGE="https://www.codon.org.uk/~mjg59/gobi_loader/"
-SRC_URI="https://www.codon.org.uk/~mjg59/${PN}/download/${P}.tar.gz"
+HOMEPAGE="http://www.codon.org.uk/~mjg59/gobi_loader/"
+SRC_URI="http://www.codon.org.uk/~mjg59/${PN}/download/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -16,10 +16,8 @@ IUSE=""
 DEPEND="virtual/libusb:0"
 RDEPEND="${DEPEND}"
 
-PATCHES=( "${FILESDIR}/${P}-makefile.patch" )
-
 src_prepare() {
-	default
+	epatch "${FILESDIR}"/${P}-makefile.patch
 	sed "s:%UDEVDIR%:$(get_udevdir):" -i Makefile || die
 }
 

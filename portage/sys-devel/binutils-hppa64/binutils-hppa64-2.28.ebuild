@@ -5,7 +5,7 @@ EAPI="5"
 
 export CTARGET=hppa64-${CHOST#*-}
 
-PATCHVER="1.1"
+PATCHVER="1.0"
 ELF2FLT_VER=""
 inherit toolchain-binutils
 

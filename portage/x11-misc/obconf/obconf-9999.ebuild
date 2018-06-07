@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit autotools xdg-utils git-r3
+inherit autotools fdo-mime git-r3
 
 DESCRIPTION="ObConf is a tool for configuring the Openbox window manager"
 HOMEPAGE="http://openbox.org/wiki/ObConf:About"
@@ -31,11 +31,11 @@ src_configure() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 }

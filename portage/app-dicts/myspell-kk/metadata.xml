@@ -4,6 +4,7 @@
 	<maintainer type="person">
 		<email>kegalym2@mail.ru</email>
 		<name>Galym Kerimbekov</name>
+		<description>Proxied maintainer, assign bugs to him</description>
 	</maintainer>
 	<maintainer type="project">
 		<email>proxy-maint@gentoo.org</email>

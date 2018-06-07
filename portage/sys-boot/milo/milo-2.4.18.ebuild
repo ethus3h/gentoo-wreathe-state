@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit flag-o-matic eutils
 
@@ -215,7 +213,7 @@ src_install() {
 
 	cd ${S}/Documentation
 
-	dodoc ChangeLog filesystem Nikita.Todo README.milo Todo README.BSD Stuff WhatIsMilo \
+	dodoc ChangeLog filesystem Nikita.Todo README.milo Todo LICENSE README.BSD Stuff WhatIsMilo \
 		${FILESDIR}/README-gentoo ${FILESDIR}/mkserial_no.c ${DISTDIR}/MILO-HOWTO
 
 }

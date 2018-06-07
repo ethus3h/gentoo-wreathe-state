@@ -15,7 +15,7 @@ KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ppc ppc64 sparc x86 ~amd64-fbsd ~x86-
 IUSE="static-libs"
 
 src_prepare() {
-	cmake-utils_src_prepare
+	epatch_user
 
 	multilib_copy_sources
 }

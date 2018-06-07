@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -12,27 +12,29 @@ fi
 inherit eutils flag-o-matic user ${ADDITIONAL_ECLASSES}
 
 DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
-HOMEPAGE="https://dnsdist.org"
+HOMEPAGE="http://dnsdist.org"
 
 if [[ ${PV} == 9999 ]]; then
 	SRC_URI=""
 	S="${WORKDIR}/${P}/pdns/dnsdistdist"
 else
 	SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.bz2"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64"
 fi
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="dnscrypt luajit regex remote-logging snmp +ssl test"
+IUSE="dnscrypt luajit readline regex remote-logging snmp +ssl test"
+RESTRICT="readline? ( bindist )"
 REQUIRED_USE="dnscrypt? ( ssl )"
 
 DEPEND="
 	>=dev-libs/boost-1.35:=
-	dev-libs/libedit:=
 	luajit? ( dev-lang/luajit:= )
 	!luajit? ( >=dev-lang/lua-5.1:= )
 	remote-logging? ( dev-libs/protobuf:= )
+	readline? ( sys-libs/readline:0= )
+	!readline? ( dev-libs/libedit:= )
 	regex? ( dev-libs/re2:= )
 	snmp? ( net-analyzer/net-snmp:= )
 	ssl? ( dev-libs/libsodium:= )
@@ -46,11 +48,19 @@ RDEPEND="${DEPEND}"
 "
 
 src_prepare() {
-	default
+	eapply "${FILESDIR}/${PN}-readline.patch"
+	eapply_user
+
 	[[ ${PV} == 9999 ]] && eautoreconf
 }
 
 src_configure() {
+	if use readline ; then
+		local -x LIBEDIT_CFLAGS="-I/usr/include/readline"
+		local -x LIBEDIT_LIBS="-lreadline -lcurses"
+		append-cxxflags -DREADLINE
+	fi
+
 	econf \
 		--sysconfdir=/etc/dnsdist \
 		$(use_enable ssl libsodium) \
@@ -83,4 +93,9 @@ pkg_postinst() {
 	elog
 	elog "The name must be in the format dnsdist.<suffix> and dnsdist will use the"
 	elog "/etc/dnsdist/dnsdist-<suffix>.conf configuration file instead of the default."
+
+	if use readline ; then
+		ewarn "dnsdist (GPLv2) was linked against readline (GPLv3)."
+		ewarn "A binary distribution should therefore not happen."
+	fi
 }

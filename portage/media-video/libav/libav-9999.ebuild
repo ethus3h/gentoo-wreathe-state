@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -26,8 +26,8 @@ fi
 [[ ${PV%9999} != "" ]] && SRC_URI+=" test? ( https://dev.gentoo.org/~lu_zero/libav/fate-${PV%%.*}.tar.xz )"
 
 LICENSE="LGPL-2.1  gpl? ( GPL-3 )"
-SLOT="0/13"
-[[ ${PV} == *9999 ]] || KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64
+SLOT="0/12"
+[[ ${PV} == *9999 ]] || KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64
 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos
 ~x64-solaris ~x86-solaris"
 IUSE="aac alsa amr bs2b +bzip2 cdio cpudetection custom-cflags debug doc +encode faac fdk
@@ -109,7 +109,7 @@ DEPEND="${RDEPEND}
 	>=sys-devel/make-3.81
 	doc? ( app-text/texi2html )
 	ieee1394? ( >=virtual/pkgconfig-0-r1[${MULTILIB_USEDEP}] )
-	cpu_flags_x86_mmx? ( >=dev-lang/nasm-2.13 )
+	cpu_flags_x86_mmx? ( dev-lang/yasm )
 	rtmp? ( >=virtual/pkgconfig-0-r1[${MULTILIB_USEDEP}] )
 	schroedinger? ( >=virtual/pkgconfig-0-r1[${MULTILIB_USEDEP}] )
 	ssl? ( >=virtual/pkgconfig-0-r1[${MULTILIB_USEDEP}] )
@@ -118,6 +118,10 @@ DEPEND="${RDEPEND}
 	fontconfig? ( >=virtual/pkgconfig-0-r1[${MULTILIB_USEDEP}] )
 	v4l? ( sys-kernel/linux-headers )
 "
+
+RDEPEND="${RDEPEND}
+	abi_x86_32? ( !<=app-emulation/emul-linux-x86-medialibs-20140508-r3
+		!app-emulation/emul-linux-x86-medialibs[-abi_x86_32(-)] )"
 
 # faac can't be binary distributed
 # openssl support marked as nonfree
@@ -216,7 +220,10 @@ multilib_src_configure() {
 		use ${i} || myconf+=( --disable-indev=${i} )
 	done
 	use X && myconf+=( --enable-libxcb )
-
+	# Outdevs
+	for i in alsa oss ; do
+		use ${i} || myconf+=( --disable-outdev=${i} )
+	done
 	# libavfilter options
 	use bs2b && myconf+=( --enable-libbs2b )
 	multilib_is_native_abi && use frei0r && myconf+=( --enable-frei0r )
@@ -241,7 +248,7 @@ multilib_src_configure() {
 	done
 
 	# pass the right -mfpu as extra
-	use neon && use arm && append-cflags -mfpu=neon
+	use neon && append-cflags -mfpu=neon
 
 	# disable mmx accelerated code if PIC is required
 	# as the provided asm decidedly is not PIC for x86.

@@ -22,8 +22,6 @@ DEPEND="
 	dev-python/setuptools[${PYTHON_USEDEP}]
 	>=virtual/jdk-1.6"
 
-PATCHES=( "${FILESDIR}"/${PN}-gcc6-noexcept.patch )
-
 python_compile() {
 	if ! python_is_python3; then
 		local CXXFLAGS="${CXXFLAGS} -fno-strict-aliasing"

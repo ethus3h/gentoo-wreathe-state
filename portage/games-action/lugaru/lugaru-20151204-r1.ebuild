@@ -30,8 +30,7 @@ PATCHES=(
 )
 
 src_prepare() {
-	cmake-utils_src_prepare
-
+	default
 	sed -i \
 		-e "s:@GENTOO_DIR@:/usr/share/${PN}:" \
 		Source/OpenGL_Windows.cpp || die

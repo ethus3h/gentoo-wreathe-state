@@ -4,6 +4,7 @@
   <maintainer type="person">
     <email>wschlich@gentoo.org</email>
     <name>Wolfram Schlich</name>
+    <description>Primary mainainer</description>
   </maintainer>
   <upstream>
     <remote-id type="github">Yubico/ykneo-ccid-tools</remote-id>

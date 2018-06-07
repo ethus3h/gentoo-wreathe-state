@@ -47,8 +47,7 @@ pkg_setup() {
 src_prepare() {
 	eapply \
 		"${FILESDIR}"/${PN}-0.7.5-libpng14.patch \
-		"${FILESDIR}"/${P}-libpng15.patch \
-		"${FILESDIR}"/${P}-gcc6.patch
+		"${FILESDIR}"/${P}-libpng15.patch
 	eapply_user
 
 	# fix python hardcoded path wrt bug #327171

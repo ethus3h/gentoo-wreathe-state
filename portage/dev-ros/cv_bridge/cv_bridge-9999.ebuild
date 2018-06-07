@@ -16,7 +16,7 @@ IUSE=""
 
 RDEPEND="
 	dev-ros/rosconsole
-	>=media-libs/opencv-3:=[contrib(+)]
+	media-libs/opencv:=[contrib(+)]
 	dev-libs/boost:=[threads,python,${PYTHON_USEDEP}]
 	dev-ros/sensor_msgs[${CATKIN_MESSAGES_CXX_USEDEP},${CATKIN_MESSAGES_PYTHON_USEDEP}]
 "

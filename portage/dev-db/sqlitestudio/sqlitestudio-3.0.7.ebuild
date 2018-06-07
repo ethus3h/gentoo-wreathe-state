@@ -31,7 +31,6 @@ RDEPEND="
 	tcl? ( dev-lang/tcl:= )
 "
 DEPEND="${RDEPEND}
-	$(add_qt_dep qtconcurrent)
 	>=sys-devel/gcc-4.8:*
 	test? ( $(add_qt_dep qttest) )
 "

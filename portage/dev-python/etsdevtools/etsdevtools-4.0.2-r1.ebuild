@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -8,9 +8,7 @@ PYTHON_COMPAT=( python2_7 )
 inherit distutils-r1 virtualx
 
 DESCRIPTION="Enthought Tool Suite: Tools to support Python development"
-HOMEPAGE="https://github.com/enthought/etsdevtools
-	http://docs.enthought.com/etsdevtools/
-	https://pypi.org/project/etsdevtools/"
+HOMEPAGE="http://code.enthought.com/projects/dev_tools.php https://pypi.python.org/pypi/etsdevtools"
 SRC_URI="http://www.enthought.com/repo/ets/${P}.tar.gz"
 
 LICENSE="BSD"

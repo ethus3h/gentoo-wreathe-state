@@ -1,17 +1,15 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils multilib toolchain-funcs
 
 DESCRIPTION="a dockapp showing fortune-mod messages"
-HOMEPAGE="http://www.dockapps.net/wmfortune"
-SRC_URI="http://www.dockapps.net/download/${P}.tar.gz"
+HOMEPAGE="http://dockapps.windowmaker.org/file.php/id/90"
+SRC_URI="http://dockapps.windowmaker.org/download.php/id/128/${P}.tar.gz"
 
 LICENSE="GPL-1"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS="amd64 ppc sparc x86"
 IUSE=""
 
 RDEPEND="games-misc/fortune-mod
@@ -19,7 +17,8 @@ RDEPEND="games-misc/fortune-mod
 	x11-libs/libXext
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xproto
+	x11-proto/xextproto"
 
 src_unpack() {
 	unpack ${A}

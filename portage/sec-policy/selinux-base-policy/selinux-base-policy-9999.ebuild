@@ -1,10 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
 EAPI="6"
 
 if [[ ${PV} == 9999* ]]; then
-	EGIT_REPO_URI="${SELINUX_GIT_REPO:-https://anongit.gentoo.org/git/proj/hardened-refpolicy.git}"
+	EGIT_REPO_URI="${SELINUX_GIT_REPO:-git://anongit.gentoo.org/proj/hardened-refpolicy.git https://anongit.gentoo.org/git/proj/hardened-refpolicy.git}"
 	EGIT_BRANCH="${SELINUX_GIT_BRANCH:-master}"
 	EGIT_CHECKOUT_DIR="${WORKDIR}/refpolicy"
 
@@ -12,10 +11,10 @@ if [[ ${PV} == 9999* ]]; then
 else
 	SRC_URI="https://raw.githubusercontent.com/wiki/TresysTechnology/refpolicy/files/refpolicy-${PV}.tar.bz2
 			https://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${PN}-${PVR}.tar.bz2"
-	KEYWORDS="~amd64 -arm ~arm64 ~mips ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~mips ~x86"
 fi
 
-HOMEPAGE="https://wiki.gentoo.org/wiki/Project:SELinux"
+HOMEPAGE="https://www.gentoo.org/proj/en/hardened/selinux/"
 DESCRIPTION="SELinux policy for core modules"
 
 IUSE="systemd +unconfined"
@@ -104,9 +103,9 @@ pkg_postinst() {
 	for i in ${POLICY_TYPES}; do
 		einfo "Inserting the following modules, with base, into the $i module store: ${MODS}"
 
-		cd /usr/share/selinux/${i}
+		cd /usr/share/selinux/${i} || die "Could not enter /usr/share/selinux/${i}"
 
-		semodule -s ${i} ${COMMAND}
+		semodule -s ${i} ${COMMAND} || die "Failed to load in base and modules ${MODS} in the $i policy store"
 	done
 
 	# Relabel depending packages

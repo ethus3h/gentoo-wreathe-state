@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -13,11 +13,7 @@ SRC_URI_BASE="http://www.lsi.com/downloads/Public/SATA/SATA%20Common%20Files/"
 SRC_URI_A_linux="CLI_linux-from_the_${PV}_${ThreeDM2_PV}_codesets.zip"
 SRC_URI_A_fbsd="CLI_freebsd-from_the_${PV}_${ThreeDM2_PV}_codesets.zip"
 SRC_URI="kernel_linux? ( ${SRC_URI_BASE}/${SRC_URI_A_linux} )
-		 kernel_FreeBSD? ( ${SRC_URI_BASE}/${SRC_URI_A_fbsd} )
-		 https://gitweb.gentoo.org/repo/gentoo.git/plain/licenses/LSI-tw_cli"
-# The license is not available easily from upstream (embedded in a textbox),
-# nor in the upstream tarball, but needs to be installed, and can't be
-# referenced via PORTDIR per bug #373349.
+		 kernel_FreeBSD? ( ${SRC_URI_BASE}/${SRC_URI_A_fbsd} )"
 # the minor ver on the end changes...
 RELNOTES="${SRC_URI_BASE}/${PV}_Release_Notes.pdf"
 
@@ -86,9 +82,9 @@ src_install() {
 	dohtml *.html
 	dodoc *.txt
 
-	# to comply with license requirement 3.1.b, per upstream request.
+	# to comply with license requirement 3.1.b
 	insinto /opt/tw_cli
-	newins ${DISTDIR}/${LICENSE} LICENSE
+	newins ${PORTDIR}/licenses/${LICENSE} LICENSE
 }
 
 pkg_postinst() {

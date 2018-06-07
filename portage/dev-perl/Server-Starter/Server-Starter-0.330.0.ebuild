@@ -23,5 +23,3 @@ DEPEND="${RDEPEND}
 		>=dev-perl/Test-TCP-2.130.0
 	)
 "
-
-PATCHES=( "${FILESDIR}/${P}-perl526.patch" )

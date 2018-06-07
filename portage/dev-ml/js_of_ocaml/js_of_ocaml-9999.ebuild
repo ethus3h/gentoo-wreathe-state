@@ -20,56 +20,46 @@ fi
 
 LICENSE="LGPL-2.1-with-linking-exception"
 SLOT="0/${PV}"
-IUSE="+ocamlopt +camlp4 +lwt doc +deriving +ppx +xml test"
+IUSE="+ocamlopt doc +deriving +ppx +react +xml X"
 
 RDEPEND="
-	>=dev-lang/ocaml-3.12:=[ocamlopt?]
-
-	camlp4? ( dev-ml/camlp4:= )
-
+	>=dev-lang/ocaml-3.12:=[ocamlopt?,X?]
+	>=dev-ml/lwt-2.4.4:=[camlp4(+)]
+	react? ( dev-ml/react:=  dev-ml/reactiveData:= )
+	xml? ( >=dev-ml/tyxml-4:= )
+	ppx? ( dev-ml/ppx_tools:= dev-ml/ppx_deriving:= dev-ml/ppx_driver:= )
 	dev-ml/cmdliner:=
+	dev-ml/menhir:=
+	dev-ml/ocaml-base64:=
+	dev-ml/camlp4:=
 	dev-ml/cppo:=
-
-	lwt? ( >=dev-ml/lwt-2.4.4:= )
-
-	dev-ml/ocamlbuild:=
-
-	dev-ml/ocaml-migrate-parsetree:=
-	dev-ml/ppx_tools_versioned:=
 	dev-ml/uchar:=
+	dev-ml/ocamlbuild:=
+	dev-ml/yojson:=
+	deriving? ( >=dev-ml/deriving-0.6:= )"
+DEPEND="${RDEPEND}"
 
-	ppx? ( dev-ml/ppx_tools:= dev-ml/ppx_deriving:= )
-
-	xml? ( >=dev-ml/tyxml-4:= dev-ml/reactiveData:= )
-"
-DEPEND="${RDEPEND}
-	dev-ml/jbuilder
-	dev-ml/opam
-	test? ( dev-util/patdiff )
-"
-REQUIRED_USE="xml? ( ppx )"
+src_configure() {
+	printf "\n\n" >> Makefile.conf
+	use ocamlopt || echo "BEST := byte" >> Makefile.conf
+	use ocamlopt || echo "NATDYNLINK := NO" >> Makefile.conf
+	use deriving || echo "WITH_DERIVING := NO" >> Makefile.conf
+	use X || echo "WITH_GRAPHICS := NO" >> Makefile.conf
+	use react || echo "WITH_REACT := NO" >> Makefile.conf
+	use ppx || echo "WITH_PPX := NO" >> Makefile.conf
+	use ppx || echo "WITH_PPX_DERIVING := NO" >> Makefile.conf
+	use ppx || echo "WITH_PPX_DRIVER := NO" >> Makefile.conf
+	echo "WITH_ASYNC := NO" >> Makefile.conf
+}
 
 src_compile() {
-	emake
+	emake -j1
 	use doc && emake doc
 }
 
-oinstall() {
-	opam-installer -i \
-		--prefix="${ED}/usr" \
-		--libdir="${D}/$(ocamlc -where)" \
-		--docdir="${ED}/usr/share/doc/${PF}" \
-		--mandir="${ED}/usr/share/man" \
-		${1}.install || die
-}
-
 src_install() {
-	use camlp4 && oinstall js_of_ocaml-camlp4
-	oinstall js_of_ocaml-compiler
-	use lwt && oinstall js_of_ocaml-lwt
-	oinstall js_of_ocaml-ocamlbuild
-	oinstall js_of_ocaml
-	use ppx && oinstall js_of_ocaml-ppx
-	use ppx && oinstall js_of_ocaml-toplevel
-	use xml && oinstall js_of_ocaml-tyxml
+	findlib_src_preinst
+	emake BINDIR="${ED}/usr/bin/" install
+	dodoc CHANGES README.md
+	use doc && dohtml -r doc/api/html/
 }

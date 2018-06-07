@@ -1,13 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 JAVA_PKG_IUSE="doc source"
 
 inherit java-pkg-2 java-ant-2
 
-DESCRIPTION="Utility that provides a simple API for the management of properties"
+DESCRIPTION="jConfig is an extremely helpful utility, providing a simple API for the management of properties"
 SRC_URI="mirror://sourceforge/${PN}/${PN}-src-v${PV}.tar.gz"
 HOMEPAGE="http://www.jconfig.org/"
 LICENSE="BSD"

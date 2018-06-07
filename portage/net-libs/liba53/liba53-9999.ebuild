@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
-inherit git-r3
+inherit git-2
 
 DESCRIPTION="A5/3 Call encryption library"
 HOMEPAGE="https://github.com/RangeNetworks/liba53"

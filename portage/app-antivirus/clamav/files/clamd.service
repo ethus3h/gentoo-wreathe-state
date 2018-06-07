@@ -1,12 +1,7 @@
-[Unit]
-Description=clamd scanner daemon
-After=nss-lookup.target network.target
+.include /usr/lib/systemd/system/clamd@.service
 
-[Service]
-Type=forking
-ExecStart=/usr/sbin/clamd
-Restart=on-failure
-PrivateTmp=true
+[Unit]
+Description=Generic ClamAV scanner daemon
 
 [Install]
 WantedBy=multi-user.target

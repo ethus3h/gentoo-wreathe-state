@@ -4,12 +4,14 @@
 EAPI=6
 
 if [[ ${PV} = 9999* ]]; then
-	EGIT_REPO_URI="https://anongit.freedesktop.org/git/wayland/weston.git"
+	EGIT_REPO_URI="git://anongit.freedesktop.org/git/wayland/${PN}"
 	GIT_ECLASS="git-r3"
 	EXPERIMENTAL="true"
 fi
+VIRTUALX_REQUIRED="test"
+RESTRICT="test"
 
-inherit autotools readme.gentoo-r1 toolchain-funcs $GIT_ECLASS
+inherit autotools readme.gentoo-r1 toolchain-funcs virtualx $GIT_ECLASS
 
 DESCRIPTION="Wayland reference compositor"
 HOMEPAGE="https://wayland.freedesktop.org/"
@@ -31,29 +33,29 @@ REQUIRED_USE="
 	drm? ( gles2 )
 	screen-sharing? ( rdp )
 	systemd? ( dbus )
-	test? ( headless xwayland )
+	test? ( X )
 	wayland-compositor? ( gles2 )
 "
 
 RDEPEND="
 	>=dev-libs/libinput-0.8.0
 	>=dev-libs/wayland-1.12.0
-	>=dev-libs/wayland-protocols-1.8
+	>=dev-libs/wayland-protocols-1.2
 	lcms? ( media-libs/lcms:2 )
 	media-libs/libpng:0=
 	webp? ( media-libs/libwebp:0= )
 	jpeg? ( virtual/jpeg:0= )
 	>=x11-libs/cairo-1.11.3
 	>=x11-libs/libdrm-2.4.30
-	>=x11-libs/libxkbcommon-0.5.0
-	>=x11-libs/pixman-0.25.2
+	x11-libs/libxkbcommon
+	x11-libs/pixman
 	x11-misc/xkeyboard-config
 	fbdev? (
 		>=sys-libs/mtdev-1.1.0
 		>=virtual/udev-136
 	)
 	colord? ( >=x11-misc/colord-0.1.27 )
-	dbus? ( >=sys-apps/dbus-1.6 )
+	dbus? ( sys-apps/dbus )
 	drm? (
 		media-libs/mesa[gbm]
 		>=sys-libs/mtdev-1.1.0
@@ -66,18 +68,18 @@ RDEPEND="
 	rdp? ( >=net-misc/freerdp-1.1.0_beta1_p20130710 )
 	systemd? (
 		sys-auth/pambase[systemd]
-		>=sys-apps/systemd-209[pam]
+		sys-apps/systemd[pam]
 	)
 	launch? ( sys-auth/pambase )
 	unwind? ( sys-libs/libunwind )
 	X? (
-		>=x11-libs/libxcb-1.9
+		x11-libs/libxcb
 		x11-libs/libX11
 	)
 	xwayland? (
 		x11-base/xorg-server[wayland]
 		x11-libs/cairo[xcb]
-		>=x11-libs/libxcb-1.9
+		x11-libs/libxcb
 		x11-libs/libXcursor
 	)
 "
@@ -101,6 +103,8 @@ src_configure() {
 	else
 		myconf="--disable-simple-clients"
 	fi
+
+	myconf+=" --with-cairo=image --disable-simple-egl-clients"
 
 	econf \
 		$(use_enable examples demo-clients-install) \
@@ -126,12 +130,8 @@ src_configure() {
 		$(use_enable xwayland xwayland-test) \
 		$(use_with jpeg) \
 		$(use_with webp) \
-		--with-cairo=image \
-		--disable-junit-xml \
-		--disable-simple-dmabuf-drm-client \
+		--disable-simple-dmabuf-intel-client \
 		--disable-simple-dmabuf-v4l-client \
-		--disable-simple-egl-clients \
-		--disable-vaapi-recorder \
 		${myconf}
 }
 
@@ -141,7 +141,7 @@ src_test() {
 	chmod 0700 "${XDG_RUNTIME_DIR}" || die
 
 	cd "${BUILD_DIR}" || die
-	emake check
+	virtx emake check
 }
 
 src_install() {

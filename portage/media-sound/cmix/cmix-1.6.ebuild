@@ -1,9 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+inherit eutils toolchain-funcs
 
-inherit toolchain-funcs
+IUSE=""
 
 DESCRIPTION="command line audio mixer"
 HOMEPAGE="http://cmix.sourceforge.net/"
@@ -14,13 +14,18 @@ SLOT="0"
 #-amd64: 1.6: 'cmix list' gives: MIXER_READ(SOUND_MIXER_OUTSRC): Input/output error
 KEYWORDS="-amd64 ~ppc sparc x86"
 
-PATCHES=( "${FILESDIR}/${P}-ldflags.patch" )
+src_unpack() {
+	unpack ${A}
+	cd "${S}"
+	epatch "${FILESDIR}/${P}-ldflags.patch"
+}
 
-src_configure() {
-	tc-export CC
+src_compile() {
+	emake CC="$(tc-getCC)" || die "emake failed"
 }
 
 src_install() {
+	einstall || die
 	dobin cmix
-	einstalldocs
+	dodoc README || die
 }

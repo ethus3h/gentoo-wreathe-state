@@ -1,20 +1,19 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
+
+EGIT_REPO_URI="git://github.com/vpelcak/kde-scripts.git"
+[[ ${PV} == 9999 ]] && inherit git-2
 
 DESCRIPTION="Set of scripts to manage KDE translation files"
 HOMEPAGE="https://github.com/vpelcak/kde-scripts"
-
-if [[ ${PV} == *9999 ]]; then
-	EGIT_REPO_URI="https://github.com/vpelcak/kde-scripts.git"
-	inherit git-r3
-else
-	KEYWORDS="~amd64 ~x86"
-fi
+[[ ${PV} == 9999 ]] || SRC_URI=""
 
 LICENSE="LGPL-3"
 SLOT="0"
+[[ ${PV} == 9999 ]] || \
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND="
@@ -27,8 +26,7 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 
 src_prepare() {
-	default
 	sed -i \
-		-e "s:/usr/local:${EPREFIX}/usr:" \
+		-e "s:/usr/local:/usr:" \
 		Makefile || die
 }

@@ -21,8 +21,5 @@ DEPEND="${RDEPEND}
 		>=virtual/perl-Test-Simple-0.900.0
 	)
 "
-PATCHES=(
-	"${FILESDIR}/${P}-perl-526.patch"
-)
 
 SRC_TEST=do

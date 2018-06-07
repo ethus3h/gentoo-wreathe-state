@@ -2,8 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-MODULES_OPTIONAL_USE="modules"
-inherit flag-o-matic user linux-mod cmake-utils udev
+inherit user linux-mod cmake-utils udev
 
 MY_P=${P/-/_}
 DESCRIPTION="Emulator driver for tpm"
@@ -14,7 +13,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-IUSE="libressl ssl"
+IUSE="libressl ssl modules"
 RDEPEND="ssl? (
 		!libressl? ( dev-libs/openssl:0= )
 		libressl? ( dev-libs/libressl:0= )
@@ -35,18 +34,16 @@ pkg_setup() {
 }
 
 src_prepare() {
-	cmake-utils_src_prepare
-
+	default
 	# do not build and install the kernel module
 	sed -i 's/COMMAND ${tpmd_dev_BUILD_CMD}//' tpmd_dev/CMakeLists.txt || die
 	sed -i 's/install(CODE.*//' tpmd_dev/CMakeLists.txt || die
 }
 
 src_configure() {
-	local mycmakeargs=(
+	mycmakeargs=(
 		-DUSE_OPENSSL=$(usex ssl)
 	)
-	append-cflags -Wno-implicit-fallthrough
 	cmake-utils_src_configure
 
 	# only here we have BUILD_DIR

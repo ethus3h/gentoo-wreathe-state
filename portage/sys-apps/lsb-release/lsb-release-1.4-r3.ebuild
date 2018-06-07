@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-inherit eutils prefix
+inherit eutils
 
 DESCRIPTION="LSB version query program"
 HOMEPAGE="https://wiki.linuxfoundation.org/lsb/"
@@ -23,18 +23,16 @@ src_prepare() {
 		-e "s:echo -e:printf '%b\\\n':g" \
 		-e 's:--long:-l:g' \
 		lsb_release || die
-
-	hprefixify lsb_release
 }
 
 src_install() {
 	emake \
-		prefix="${ED}/usr" \
-		mandir="${ED}/usr/share/man" \
+		prefix="${D}/usr" \
+		mandir="${D}/usr/share/man" \
 		install
 
 	dodir /etc
-	cat > "${ED}/etc/lsb-release" <<- EOF
+	cat > "${D}/etc/lsb-release" <<- EOF
 		DISTRIB_ID="Gentoo"
 	EOF
 }

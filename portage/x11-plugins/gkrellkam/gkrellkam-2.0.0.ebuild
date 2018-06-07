@@ -1,36 +1,35 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit gkrellm-plugin toolchain-funcs
+EAPI="5"
+inherit eutils gkrellm-plugin toolchain-funcs
 
 MY_P=${P/-/_}
 
 DESCRIPTION="an Image-Watcher-Plugin for GKrellM2"
 SRC_URI="mirror://sourceforge/gkrellkam/${MY_P}.tar.gz"
 HOMEPAGE="http://gkrellkam.sourceforge.net"
-
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="x86 ppc sparc alpha amd64"
 IUSE=""
+KEYWORDS="x86 ppc sparc alpha amd64"
 
-RDEPEND="
-	 app-admin/gkrellm:2[X]
-	 net-misc/wget"
+RDEPEND="net-misc/wget
+	 app-admin/gkrellm[X]"
 DEPEND="${RDEPEND}"
 
-PATCHES=( "${FILESDIR}"/${P}-makefile.patch )
+PLUGIN_SO=gkrellkam2.so
+PLUGIN_DOCS="example.list"
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-makefile.patch
+}
 
 src_compile() {
 	emake CC="$(tc-getCC)" LDFLAGS="${LDFLAGS}"
 }
 
-src_install() {
-	local PLUGIN_SO=( ${PN}2$(get_modname) )
-	local PLUGIN_DOCS=( example.list )
-
+src_install () {
 	gkrellm-plugin_src_install
 	doman gkrellkam-list.5
 }

@@ -158,7 +158,8 @@ egnustep_env() {
 			&& GS_ENV=( "${GS_ENV[@]}" "debug=yes" ) \
 			|| GS_ENV=( "${GS_ENV[@]}" "debug=no" )
 
-		if has_version "gnustep-base/gnustep-make[libobjc2]";
+		# About 20 gnustep packages still use EAPI 0
+		if built_with_use --missing false gnustep-base/gnustep-make libobjc2;
 		then
 			# Set clang for packages that do not respect gnustep-make
 			# settings (gnustep-base's configure for example)

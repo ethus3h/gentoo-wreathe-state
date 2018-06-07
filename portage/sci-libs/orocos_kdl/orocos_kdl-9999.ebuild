@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -15,14 +15,14 @@ if [ "${PV#9999}" != "${PV}" ] ; then
 	KEYWORDS=""
 	SRC_URI=""
 else
-	KEYWORDS="~amd64 ~arm ~x86"
+	KEYWORDS="~amd64 ~arm"
 	SRC_URI="https://github.com/orocos/orocos_kinematics_dynamics/archive/v${PV}.tar.gz -> orocos_kinematics_dynamics-${PV}.tar.gz"
 fi
 
 DESCRIPTION="Kinematics and Dynamics Library (KDL)"
 HOMEPAGE="http://www.orocos.org/kdl"
 LICENSE="LGPL-2.1"
-SLOT="0/14"
+SLOT="0"
 IUSE="doc test examples models"
 
 RDEPEND="dev-cpp/eigen:3"

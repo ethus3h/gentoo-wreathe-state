@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -16,7 +16,7 @@ MY_PV=${MY_PV/_beta/b}
 
 if [[ ${PV} == *9999 ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/apple/cups.git"
+	EGIT_REPO_URI="http://www.cups.org/cups.git"
 	if [[ ${PV} != 9999 ]]; then
 		EGIT_BRANCH=branch-${PV/.9999}
 	fi
@@ -26,12 +26,17 @@ else
 fi
 
 DESCRIPTION="The Common Unix Printing System"
-HOMEPAGE="https://www.cups.org/"
+HOMEPAGE="http://www.cups.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="acl dbus debug java kerberos lprng-compat pam
 	python selinux +ssl static-libs systemd +threads usb X xinetd zeroconf"
+
+LANGS="ca cs de es fr it ja ru"
+for X in ${LANGS} ; do
+	IUSE="${IUSE} +linguas_${X}"
+done
 
 CDEPEND="
 	app-text/libpaper
@@ -57,6 +62,10 @@ CDEPEND="
 	X? ( x11-misc/xdg-utils )
 	xinetd? ( sys-apps/xinetd )
 	zeroconf? ( >=net-dns/avahi-0.6.31-r2[${MULTILIB_USEDEP}] )
+	abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-baselibs-20140508
+		!app-emulation/emul-linux-x86-baselibs[-abi_x86_32(-)]
+	)
 "
 
 DEPEND="${CDEPEND}
@@ -157,6 +166,7 @@ src_prepare() {
 multilib_src_configure() {
 	export DSOFLAGS="${LDFLAGS}"
 
+	einfo LANGS=\"${LANGS}\"
 	einfo LINGUAS=\"${LINGUAS}\"
 
 	local myconf=()
@@ -170,7 +180,7 @@ multilib_src_configure() {
 	# explicitly specify compiler wrt bug 524340
 	#
 	# need to override KRB5CONFIG for proper flags
-	# https://github.com/apple/cups/issues/4423
+	# https://www.cups.org/str.php?L4423
 	econf \
 		CC="$(tc-getCC)" \
 		CXX="$(tc-getCXX)" \

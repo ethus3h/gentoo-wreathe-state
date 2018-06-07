@@ -22,6 +22,5 @@ RDEPEND="
 	>=dev-ros/qt_gui_cpp-0.3
 	dev-qt/qtwidgets:5
 	dev-ros/rviz
-	dev-libs/console_bridge:=
 "
 DEPEND="${RDEPEND}"

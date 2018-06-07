@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="2"
 
 MY_P="Tktable${PV}"
 
@@ -19,11 +19,13 @@ RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/${MY_P}
 
-HTML_DOCS=( doc/tkTable.html )
-DOCS=( ChangeLog README.txt release.txt )
-
 src_prepare() {
-	default
 	sed -e '/^install:/{s: install-doc::}' \
 		-e '/^PKG_EXTRA_FILES/{s:=.*:=:}' -i Makefile.in || die
+}
+
+src_install() {
+	emake DESTDIR="${D}" install || die
+	dohtml doc/tkTable.html || die
+	dodoc ChangeLog README.txt release.txt || die
 }

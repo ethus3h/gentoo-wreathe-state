@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -11,7 +11,7 @@ SRC_URI="mirror://gnu/sed/${P}.tar.xz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
 IUSE="acl nls selinux static"
 
 RDEPEND="acl? ( virtual/acl )
@@ -26,11 +26,13 @@ PATCHES=(
 
 src_bootstrap_sed() {
 	# make sure system-sed works #40786
+	export NO_SYS_SED=""
 	if ! type -p sed > /dev/null ; then
-		mkdir -p "${T}/bootstrap"
-		printf '#!/bin/sh\nexec busybox sed "$@"\n' > "${T}/bootstrap/sed" || die
-		chmod a+rx "${T}/bootstrap/sed"
-		PATH="${T}/bootstrap:${PATH}"
+		NO_SYS_SED="!!!"
+		./bootstrap.sh || die "couldnt bootstrap"
+		cp sed/sed "${T}"/ || die "couldnt copy"
+		export PATH="${PATH}:${T}"
+		make clean || die "couldnt clean"
 	fi
 }
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: db.eclass
@@ -17,8 +17,7 @@ DEPEND="test? ( >=dev-lang/tcl-8.4 )"
 RDEPEND=""
 
 db_fix_so() {
-	has "${EAPI:-0}" 0 1 2 && ! use prefix && EROOT="${ROOT}"
-	LIB="${EROOT}/usr/$(get_libdir)"
+	LIB="${ROOT}/usr/$(get_libdir)"
 
 	cd "${LIB}"
 
@@ -51,7 +50,7 @@ db_fix_so() {
 
 	# do the same for headers now
 	# but since there are only two of them, just overwrite them
-	cd "${EROOT}"/usr/include
+	cd "${ROOT}"/usr/include
 	target=`find . -maxdepth 1 -type d -name 'db[0-9]*' | sort -n |cut -d/ -f2- | tail -n1`
 	if [ -n "${target}" ] && [ -e "${target}/db.h" ] && ( ! [[ -e db.h ]] || [[ -h db.h ]] ); then
 		einfo "Creating db.h symlinks to ${target}"
@@ -68,21 +67,19 @@ db_fix_so() {
 }
 
 db_src_install_doc() {
-	has "${EAPI:-0}" 0 1 2 && ! use prefix && ED="${D}"
 	# not everybody wants this wad of documentation as it is primarily API docs
 	if use doc; then
 		dodir /usr/share/doc/${PF}/html
-		mv "${ED}"/usr/docs/* "${ED}"/usr/share/doc/${PF}/html/
-		rm -rf "${ED}"/usr/docs
+		mv "${D}"/usr/docs/* "${D}"/usr/share/doc/${PF}/html/
+		rm -rf "${D}"/usr/docs
 	else
-		rm -rf "${ED}"/usr/docs
+		rm -rf "${D}"/usr/docs
 	fi
 
 	db_src_install_examples
 }
 
 db_src_install_examples() {
-	has "${EAPI:-0}" 0 1 2 && ! use prefix && ED="${D}"
 	if use examples ; then
 		local langs="c cxx stl"
 		[[ "${IUSE/java}" != "${IUSE}" ]] \
@@ -93,16 +90,15 @@ db_src_install_examples() {
 			src="${S}/../examples_${i}/"
 			if [ -f "${src}" ]; then
 				dodir "${destdir}"
-				cp -ra "${src}" "${ED}${destdir}/"
+				cp -ra "${src}" "${D}${destdir}/"
 			fi
 		done
 	fi
 }
 
 db_src_install_usrbinslot() {
-	has "${EAPI:-0}" 0 1 2 && ! use prefix && ED="${D}"
 	# slot all program names to avoid overwriting
-	for fname in "${ED}"/usr/bin/db*
+	for fname in "${D}"/usr/bin/db*
 	do
 		dn="$(dirname "${fname}")"
 		bn="$(basename "${fname}")"
@@ -113,20 +109,18 @@ db_src_install_usrbinslot() {
 }
 
 db_src_install_headerslot() {
-	has "${EAPI:-0}" 0 1 2 && ! use prefix && ED="${D}"
 	# install all headers in a slotted location
 	dodir /usr/include/db${SLOT}
-	mv "${ED}"/usr/include/*.h "${ED}"/usr/include/db${SLOT}/
+	mv "${D}"/usr/include/*.h "${D}"/usr/include/db${SLOT}/
 }
 
 db_src_install_usrlibcleanup() {
-	has "${EAPI:-0}" 0 1 2 && ! use prefix && ED="${D}"
-	LIB="${ED}/usr/$(get_libdir)"
+	LIB="${D}/usr/$(get_libdir)"
 	# Clean out the symlinks so that they will not be recorded in the
 	# contents (bug #60732)
 
-	if [ "${ED}" = "" ]; then
-		die "Calling clean_links while \$ED not defined"
+	if [ "${D}" = "" ]; then
+		die "Calling clean_links while \$D not defined"
 	fi
 
 	if [ -e "${LIB}"/libdb.a ] && [ ! -e "${LIB}"/libdb-${SLOT}.a ]; then
@@ -145,7 +139,7 @@ db_src_install_usrlibcleanup() {
 	find "${LIB}" -maxdepth 1 -type l -name 'libdb[1._-]*a' -exec rm \{} \;
 
 	rm -f \
-		"${ED}"/usr/include/{db,db_185}.h \
+		"${D}"/usr/include/{db,db_185}.h \
 		"${LIB}"/libdb{,_{cxx,sql,stl,java,tcl}}.a
 }
 

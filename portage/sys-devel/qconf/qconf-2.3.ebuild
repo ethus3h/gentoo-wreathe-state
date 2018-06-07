@@ -11,26 +11,33 @@ SRC_URI="http://psi-im.org/files/qconf/${P}.tar.xz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~hppa ppc ppc64 ~sparc x86 ~x86-fbsd"
-IUSE=""
+KEYWORDS="~amd64 ~arm ~hppa ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
+IUSE="qt4 +qt5"
 
 # There is no one to one match to autotools-based configure
 QA_CONFIGURE_OPTIONS=".*"
 
 RDEPEND="
-	dev-qt/qtcore:5
-	dev-qt/qtxml:5
+	qt4? ( dev-qt/qtcore:4 )
+	qt5? (
+		dev-qt/qtcore:5
+		dev-qt/qtxml:5
+	)
 "
 DEPEND="${RDEPEND}"
 
+REQUIRED_USE="^^ ( qt4 qt5 )"
+
 src_configure() {
+	use qt4 && QTVERSION=4
+	use qt5 && QTVERSION=5
 	econf \
-		--qtdir="$(qt5_get_libdir)/qt5" \
+		--qtselect="${QTVERSION}" \
 		--extraconf=QMAKE_STRIP= \
-		--verbose
+		--verbose || die
 
 	# just to set all the Gentoo toolchain flags
-	eqmake5
+	eqmake${QTVERSION}
 }
 
 src_install() {

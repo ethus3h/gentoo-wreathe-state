@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -7,25 +7,23 @@ inherit eutils
 DESCRIPTION="A freecell game for X"
 HOMEPAGE="http://www2.giganet.net/~nakayama/"
 SRC_URI="http://www2.giganet.net/~nakayama/${P}.tgz
-	http://www2.giganet.net/~nakayama/MSNumbers.gz
-	https://dev.gentoo.org/~dilfridge/distfiles/${P}-gcc6.patch.xz"
+	http://www2.giganet.net/~nakayama/MSNumbers.gz"
 
 LICENSE="HPND"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc64 ~x86"
+KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
 IUSE=""
 
 RDEPEND="media-fonts/font-misc-misc
 	x11-libs/libXext"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xextproto"
 
 S=${WORKDIR}/${PN}
 
 PATCHES=(
 	"${FILESDIR}"/${P}-gentoo.patch
 	"${FILESDIR}"/${P}-gcc43.patch
-	"${WORKDIR}"/${P}-gcc6.patch
 )
 
 src_install() {

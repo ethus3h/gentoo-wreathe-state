@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,11 +6,12 @@ EAPI=6
 PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="tk?"
 CMAKE_MAKEFILE_GENERATOR=ninja
+CMAKE_MIN_VERSION=3.2.0
 
-inherit cmake-utils eutils flag-o-matic gnome2 python-single-r1 subversion xdg-utils
+inherit cmake-utils eutils fdo-mime flag-o-matic gnome2 multilib python-single-r1
 
 DESCRIPTION="Desktop publishing (DTP) and layout program"
-HOMEPAGE="https://www.scribus.net/"
+HOMEPAGE="http://www.scribus.net/"
 SRC_URI=""
 ESVN_REPO_URI="svn://scribus.net/trunk/Scribus"
 ESVN_PROJECT=Scribus-1.5
@@ -21,27 +22,8 @@ KEYWORDS=""
 IUSE="+boost debug examples graphicsmagick hunspell +minimal osg +pdf scripts templates tk"
 
 #a=$((ls resources/translations/scribus.*ts | sed -e 's:\.: :g' | awk '{print $2}'; ls resources/loremipsum/*xml | sed -e 's:\.: :g' -e 's:loremipsum\/: :g'| awk '{print $2}'; ls resources/dicts/hyph*dic | sed -e 's:\.: :g' -e 's:hyph_: :g' | awk '{print $2}'; ls resources/dicts/README_*txt | sed -e 's:_hyph::g' -e 's:\.: :g' -e 's:README_: :g' | awk '{print $2}') | sort | uniq); echo $a
-# Keep this sorted, otherwise eliminating of duplicates below won't work
-IUSE_L10N=" af ar bg br ca ca_ES cs cs_CZ cy cy_GB da da_DK de de_1901 de_CH de_DE el en_AU en_GB en_US eo es es_ES et eu fa_IR fi fi_FI fr gl he he_IL hr hu hu_HU ia id id_ID is is_IS it ja kab kn_IN ko ku la lt lt_LT nb_NO nl nn_NO pl pl_PL pt pt_BR pt_PT ro ro_RO ru ru_RU_0 sa sk sk_SK sl sl_SI so sq sr sv sv_SE te th_TH tr uk uk_UA zh_CN zh_TW"
-
-map_lang() {
-	local lang=${1/_/-}
-	case $1 in
-		# Retain the following, which have a specific subtag
-		de_*|en_*|pt_*|zh_*) ;;
-		# Consider all other xx_XX as duplicates of the generic xx tag
-		*_*) lang=${1%%_*} ;;
-	esac
-	echo ${lang}
-}
-
-prev_l=
-for l in ${IUSE_L10N}; do
-	l=$(map_lang ${l})
-	[[ ${l} != "${prev_l}" ]] && IUSE+=" l10n_${l}"
-	prev_l=${l}
-done
-unset l prev_l
+IUSE_LINGUAS=" af ar bg br ca ca_ES cs cs_CZ cy cy_GB da da_DK de de@1901 de_CH de_DE el en_AU en_GB en_US eo es es_ES et eu fa_IR fi fi_FI fr gl he he_IL hr hu hu_HU ia id id_ID is is_IS it ja kab kn_IN ko ku la lt lt_LT nb_NO nl nn_NO pl pl_PL pt pt_BR pt_PT ro ro_RO ru ru_RU sa sk sk_SK sl sl_SI so sq sr sv sv_SE te th_TH tr uk uk_UA zh_CN zh_TW"
+IUSE+=" ${IUSE_LINGUAS// / linguas_}"
 
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
@@ -54,7 +36,6 @@ COMMON_DEPEND="
 	app-text/libmspub
 	app-text/poppler:=
 	dev-libs/hyphen
-	>=dev-libs/icu-58.2:0=
 	dev-libs/librevenge
 	dev-libs/libxml2
 	dev-qt/qtcore:5
@@ -67,10 +48,8 @@ COMMON_DEPEND="
 	dev-qt/qtxml:5
 	media-libs/fontconfig
 	media-libs/freetype:2
-	>=media-libs/harfbuzz-0.9.42:0=[icu]
 	media-libs/lcms:2
 	media-libs/libcdr
-	media-libs/libfreehand
 	media-libs/libpagemaker
 	media-libs/libpng:0=
 	media-libs/libvisio
@@ -94,8 +73,8 @@ DEPEND="${COMMON_DEPEND}
 	virtual/pkgconfig"
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-1.5.3-docdir.patch
-	"${FILESDIR}"/${PN}-1.5.3-fpic.patch
+	"${FILESDIR}"/${P}-docdir.patch
+	"${FILESDIR}"/${P}-fpic.patch
 )
 
 src_prepare() {
@@ -128,9 +107,9 @@ src_configure() {
 	append-cppflags -DHAVE_MEMRCHR
 
 	local _lang lang langs
-	for _lang in ${IUSE_L10N}; do
-		lang=$(map_lang ${_lang})
-		if use l10n_${lang}; then
+	for lang in ${IUSE_LINGUAS}; do
+		_lang=$(translate_lang ${lang})
+		if use linguas_${lang} || [[ ${lang} == "en" ]]; then
 			# From the CMakeLists.txt
 			# "#Bit of a hack, preprocess all the filenames to generate our language string, needed for -DWANT_GUI_LANG=en_GB;de_DE , etc"
 			langs+=";${_lang}"
@@ -181,9 +160,9 @@ src_install() {
 
 	local lang _lang
 	# en_EN can be deleted always
-	for _lang in ${IUSE_L10N}; do
-		lang=$(map_lang ${_lang})
-		if ! use l10n_${lang}; then
+	for lang in ${IUSE_LINGUAS}; do
+		if ! use linguas_${lang}; then
+			_lang=$(translate_lang ${lang})
 			safe_delete "${ED%/}"/usr/share/man/${_lang}
 		fi
 	done
@@ -220,14 +199,14 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 	gnome2_icon_cache_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
-	xdg_mimeinfo_database_update
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
 	gnome2_icon_cache_update
 }
 
@@ -244,4 +223,11 @@ safe_delete () {
 			eend $?
 		fi
 	done
+}
+
+translate_lang() {
+	_lang=${1}
+	[[ ${1} == "ru_RU" ]] && _lang+=_0
+	[[ ${1} == "de@1901" ]] && _lang=de_1901
+	echo ${_lang}
 }

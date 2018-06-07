@@ -13,11 +13,10 @@ SRC_URI=""
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS=""
-IUSE="test"
+IUSE=""
 
 RDEPEND=">=net-dns/avahi-0.6.31-r2[${MULTILIB_USEDEP}]"
-DEPEND="${RDEPEND}
-	test? ( >=dev-libs/check-0.11[${MULTILIB_USEDEP}] )"
+DEPEND="${RDEPEND}"
 
 src_prepare() {
 	default
@@ -28,8 +27,6 @@ multilib_src_configure() {
 	local myconf=(
 		# $(localstatedir)/run/... is used to locate avahi-daemon socket
 		--localstatedir=/var
-
-		$(use_enable test tests)
 	)
 
 	ECONF_SOURCE=${S} \

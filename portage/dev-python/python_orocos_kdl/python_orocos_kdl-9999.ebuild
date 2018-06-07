@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
+PYTHON_COMPAT=( python{2_7,3_4,3_5} )
 
 SCM=""
 if [ "${PV#9999}" != "${PV}" ] ; then
@@ -29,7 +29,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="
 	${PYTHON_DEPS}
-	>=sci-libs/orocos_kdl-1.4.0:=
+	sci-libs/orocos_kdl
 	dev-python/sip[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}"
 

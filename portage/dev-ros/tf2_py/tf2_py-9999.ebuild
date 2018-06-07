@@ -17,6 +17,5 @@ IUSE=""
 RDEPEND="
 	dev-ros/tf2
 	dev-ros/rospy[${PYTHON_USEDEP}]
-	dev-libs/boost:=
 "
 DEPEND="${RDEPEND}"

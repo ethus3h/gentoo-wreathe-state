@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 DESCRIPTION="A collection of Bootsplash themes"
 HOMEPAGE="https://dev.gentoo.org/~spock/repos/bootsplash/"

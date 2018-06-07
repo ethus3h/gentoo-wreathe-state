@@ -15,7 +15,7 @@ HOMEPAGE="https://projects.gnome.org/gconf/"
 
 LICENSE="LGPL-2+"
 SLOT="2"
-KEYWORDS="alpha amd64 arm ~arm64 ia64 ~mips ppc ppc64 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd ~arm-linux ~x86-linux"
+KEYWORDS="alpha amd64 arm ia64 ~mips ppc ppc64 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd ~arm-linux ~x86-linux"
 IUSE="debug +introspection ldap policykit"
 
 RDEPEND="
@@ -34,6 +34,11 @@ DEPEND="${RDEPEND}
 	>=dev-util/intltool-0.35
 	>=virtual/pkgconfig-0-r1[${MULTILIB_USEDEP}]
 "
+RDEPEND="${RDEPEND}
+	abi_x86_32? (
+		!<=app-emulation/emul-linux-x86-gtklibs-20140508-r1
+		!app-emulation/emul-linux-x86-gtklibs[-abi_x86_32(-)]
+	)"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 

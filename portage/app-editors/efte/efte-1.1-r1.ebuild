@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit cmake-utils xdg-utils
+inherit eutils cmake-utils fdo-mime
 
 DESCRIPTION="A fast text editor supporting folding, syntax highlighting, etc."
-HOMEPAGE="https://github.com/lanurmi/efte"
+HOMEPAGE="http://efte.sourceforge.net"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 
 LICENSE="|| ( GPL-2 Artistic )"
@@ -14,7 +14,7 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE="gpm X"
 
-RDEPEND="sys-libs/ncurses:0=
+RDEPEND="sys-libs/ncurses
 	gpm? ( sys-libs/gpm )
 	X? (
 		x11-libs/libX11
@@ -25,15 +25,15 @@ RDEPEND="sys-libs/ncurses:0=
 	)"
 DEPEND="${RDEPEND}"
 
-PATCHES=(
-	"${FILESDIR}"/${P}-flags.patch
-	"${FILESDIR}"/${P}-desktopfile.patch
-)
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-flags.patch \
+		"${FILESDIR}"/${P}-desktopfile.patch
+}
 
 src_configure() {
 	local mycmakeargs=(
-		-DUSE_GPM=$(usex gpm)
-		-DBUILD_X=$(usex X )
+		$(cmake-utils_use_build gpm)
+		$(cmake-utils_use_build X)
 	)
 	cmake-utils_src_configure
 }
@@ -45,9 +45,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 }

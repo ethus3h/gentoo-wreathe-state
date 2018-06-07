@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -8,11 +8,10 @@ if [[ ${PV} == "99999999" ]] ; then
 	EGIT_REPO_URI="git://git.savannah.gnu.org/config.git
 		http://git.savannah.gnu.org/r/config.git"
 
-	inherit git-r3
+	inherit git-2
 else
 	SRC_URI="mirror://gentoo/${P}.tar.bz2"
-	KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~ppc-aix ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
-	S="${WORKDIR}"
+	KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~ppc-aix ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 fi
 
 DESCRIPTION="Updated config.sub and config.guess file from GNU"
@@ -21,6 +20,8 @@ HOMEPAGE="https://savannah.gnu.org/projects/config"
 LICENSE="GPL-2"
 SLOT="0"
 IUSE=""
+
+S=${WORKDIR}
 
 maint_pkg_create() {
 	cd "${S}"
@@ -38,7 +39,7 @@ maint_pkg_create() {
 
 src_unpack() {
 	if [[ ${PV} == "99999999" ]] ; then
-		git-r3_src_unpack
+		git-2_src_unpack
 		maint_pkg_create
 	else
 		unpack ${A}
@@ -46,7 +47,7 @@ src_unpack() {
 }
 
 src_prepare() {
-	epatch "${S}"/*.patch
+	epatch "${WORKDIR}"/*.patch
 	use elibc_uclibc && sed -i 's:linux-gnu:linux-uclibc:' testsuite/config-guess.data #180637
 }
 

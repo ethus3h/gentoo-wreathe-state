@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=2
 
 DESCRIPTION="libmodplug based module players modplug123 and modplugplay"
 HOMEPAGE="http://modplug-xmms.sourceforge.net/"
@@ -17,3 +17,8 @@ RDEPEND=">=media-libs/libao-0.8.0
 	!media-sound/modplugplay"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
+
+src_install() {
+	emake DESTDIR="${D}" install || die
+	dodoc AUTHORS ChangeLog NEWS README TODO
+}

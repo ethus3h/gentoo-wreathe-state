@@ -6,6 +6,6 @@
 		<name>Maxim Koltsov</name>
 	</maintainer>
 	<upstream>
-		<remote-id type="github">Faster3ck/Converseen</remote-id>
+		<remote-id type="sourceforge">converseen</remote-id>
 	</upstream>
 </pkgmetadata>

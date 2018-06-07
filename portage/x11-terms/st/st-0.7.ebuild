@@ -1,16 +1,16 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 inherit eutils multilib savedconfig toolchain-funcs
 
 DESCRIPTION="simple terminal implementation for X"
-HOMEPAGE="https://st.suckless.org/"
-SRC_URI="https://dl.suckless.org/st/${P}.tar.gz"
+HOMEPAGE="http://st.suckless.org/"
+SRC_URI="http://dl.suckless.org/st/${P}.tar.gz"
 
 LICENSE="MIT-with-advertising"
 SLOT="0"
-KEYWORDS="amd64 ~arm hppa x86"
+KEYWORDS="amd64 hppa x86"
 IUSE="savedconfig"
 
 RDEPEND="
@@ -23,7 +23,8 @@ RDEPEND="
 DEPEND="
 	${RDEPEND}
 	virtual/pkgconfig
-	x11-base/xorg-proto
+	x11-proto/xextproto
+	x11-proto/xproto
 "
 
 src_prepare() {

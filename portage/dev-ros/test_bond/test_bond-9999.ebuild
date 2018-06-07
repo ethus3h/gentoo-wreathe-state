@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -20,6 +20,4 @@ RDEPEND="
 	dev-ros/bondpy[${PYTHON_USEDEP}]
 	dev-ros/rostest[${PYTHON_USEDEP}]
 "
-DEPEND="${RDEPEND}
-	test? ( dev-cpp/gtest )
-"
+DEPEND="${RDEPEND}"

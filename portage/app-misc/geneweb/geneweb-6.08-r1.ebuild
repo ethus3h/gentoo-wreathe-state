@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -7,13 +7,12 @@ inherit eutils user
 DESCRIPTION="Genealogy software program with a Web interface"
 HOMEPAGE="http://opensource.geneanet.org/projects/geneweb"
 SRC_URI="https://github.com/geneweb/geneweb/archive/v6.08.tar.gz -> ${P}.tar.gz
-	https://dev.gentoo.org/~tupone/${P}-ocaml-4.patch.gz"
+	http://dev.gentoo.org/~tupone/${P}-ocaml-4.patch.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="+ocamlopt"
-RESTRICT="strip"
 
 RDEPEND="dev-lang/ocaml[ocamlopt?]
 	dev-ml/camlp5[ocamlopt?]"
@@ -32,13 +31,13 @@ src_compile() {
 		emake OCAMLC=ocamlc OCAMLOPT=ocamlopt out
 		# If using bytecode we dont want to strip the binary as it would remove
 		# the bytecode and only leave ocamlrun...
+		export STRIP_MASK="*/bin/*"
 	fi
 }
 
 src_install() {
 	dodoc ICHANGES
-	emake new_distrib
-	emake wrappers
+	emake distrib
 	# Install doc
 	cd distribution
 	dodoc CHANGES.txt

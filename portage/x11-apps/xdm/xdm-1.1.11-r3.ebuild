@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -28,8 +28,9 @@ RDEPEND="x11-apps/xrdb
 	pam? ( virtual/pam )
 	!<sys-apps/systemd-187"
 DEPEND="${RDEPEND}
-	x11-base/xorg-proto
-	consolekit? ( !=sys-auth/pambase-20101024-r1 )"
+	consolekit? ( !=sys-auth/pambase-20101024-r1 )
+	x11-proto/xineramaproto
+	x11-proto/xproto"
 
 pkg_setup() {
 	PATCHES=(

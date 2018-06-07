@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=4
 
 MYSPELL_DICT=(
 	"it_IT.aff"
@@ -25,11 +25,10 @@ SRC_URI="mirror://sourceforge/linguistico/Dizionari.IT_${PV}.oxt"
 
 LICENSE="AGPL-3 GPL-3 LGPL-3"
 SLOT="0"
-KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ~mips ppc ppc64 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd"
 IUSE=""
 
 src_prepare() {
-	default
 	# remove useless license files.
 	rm -rf agpl3-en.txt gpl3-en.txt it_IT_license.txt \
 		lgpl3-en.txt th_it_IT_copyright_licenza.txt \

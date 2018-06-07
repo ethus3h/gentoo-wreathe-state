@@ -1,5 +1,5 @@
---- a/math.s
-+++ b/math.s
+--- math.s
++++ math.s
 @@ -416,3 +416,6 @@
  	call	C(BOPS_Error)
  
@@ -7,8 +7,8 @@
 +#if defined(__linux__) && defined(__ELF__)
 +.section .note.GNU-stack,"",%progbits
 +#endif
---- a/snd_mixa.s
-+++ b/snd_mixa.s
+--- snd_mixa.s
++++ snd_mixa.s
 @@ -216,3 +216,6 @@
  
  #endif	// id386
@@ -16,8 +16,8 @@
 +#if defined(__linux__) && defined(__ELF__)
 +.section .note.GNU-stack,"",%progbits
 +#endif
---- a/sys_dosa.s
-+++ b/sys_dosa.s
+--- sys_dosa.s
++++ sys_dosa.s
 @@ -93,3 +93,6 @@
  
  	ret
@@ -25,8 +25,8 @@
 +#if defined(__linux__) && defined(__ELF__)
 +.section .note.GNU-stack,"",%progbits
 +#endif
---- a/worlda.s
-+++ b/worlda.s
+--- worlda.s
++++ worlda.s
 @@ -142,3 +142,6 @@
  
  #endif	// id386

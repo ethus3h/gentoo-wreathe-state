@@ -1,14 +1,13 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
 EAPI=6
 
 DESCRIPTION="A really tiny cross-platform proxy servers set"
-HOMEPAGE="https://www.3proxy.ru/"
+HOMEPAGE="http://www.3proxy.ru/"
 SRC_URI="https://github.com/z3APA3A/3proxy/archive/${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ppc ~sparc x86"
+KEYWORDS="~alpha amd64 ~arm ppc x86"
 IUSE=""
 
 PATCHES=(

@@ -1,9 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: sgml-catalog.eclass
 # @MAINTAINER:
-# No maintainer <maintainer-needed@gentoo.org>
+# SGML Herd <sgml@gentoo.org>
 # @AUTHOR:
 # Author Matthew Turk <satai@gentoo.org>
 # @BLURB: Functions for installing SGML catalogs

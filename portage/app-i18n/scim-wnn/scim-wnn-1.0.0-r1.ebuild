@@ -1,7 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI="2"
+
+inherit eutils
 
 DESCRIPTION="Japanese input method Wnn IMEngine for SCIM"
 HOMEPAGE="http://nop.net-p.org/modules/pukiwiki/index.php?%5B%5Bscim-wnn%5D%5D"
@@ -16,15 +18,10 @@ RDEPEND=">=app-i18n/scim-1.4[-gtk3]
 	dev-libs/wnn7sdk
 	freewnn? ( app-i18n/freewnn )"
 DEPEND="${RDEPEND}
-	virtual/pkgconfig"
-
-PATCHES=(
-	# bug #295733
-	"${FILESDIR}/${P}-gcc43.patch"
-)
+	virtual/pkgconfig
+	>=sys-apps/sed-4"
 
 src_prepare() {
-	default
 	# bug #140794
 	sed -i -e 's:$LDFLAGS conftest.$ac_ext $LIBS:conftest.$ac_ext $LIBS $LDFLAGS:g' \
 		configure || die "ldflags sed failed"
@@ -32,6 +29,15 @@ src_prepare() {
 #	sed -i -e "s:/usr/lib/wnn7:/usr/$(get_libdir)/wnn:g" \
 	sed -i -e "s:/usr/lib/wnn7:/usr/lib/wnn:g" \
 		src/scim_wnn_def.h src/wnnconversion.cpp || die "sed failed"
+
+	# bug #295733
+	epatch "${FILESDIR}/${P}-gcc43.patch"
+}
+
+src_install() {
+	emake DESTDIR="${D}" install || die "make install failed"
+
+	dodoc AUTHORS ChangeLog NEWS README || die
 }
 
 pkg_postinst() {

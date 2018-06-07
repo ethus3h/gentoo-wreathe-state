@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # genkernel-9999        -> latest Git branch "master"
@@ -6,16 +6,14 @@
 
 EAPI=5 # approved 2012.09.11, required by all profiles since 2014.03.12
 
-inherit bash-completion-r1 epatch
-
-VERSION_BUSYBOX='1.27.2' # warning, be sure to bump patches
-VERSION_DMRAID='1.0.0.rc16-3' # warning, be sure to bump patches
-VERSION_MDADM='4.0' # warning, be sure to bump patches
-VERSION_FUSE='2.8.6' # warning, be sure to bump patches
-VERSION_ISCSI='2.0-872' # warning, be sure to bump patches
-VERSION_LVM='2.02.173' # warning, be sure to bump patches
+VERSION_BUSYBOX='1.26.0'
+VERSION_DMRAID='1.0.0.rc16-3'
+VERSION_MDADM='3.1.5'
+VERSION_FUSE='2.8.6'
+VERSION_ISCSI='2.0-872'
+VERSION_LVM='2.02.88'
 VERSION_UNIONFS_FUSE='0.24'
-VERSION_GPG='1.4.22'
+VERSION_GPG='1.4.11'
 
 RH_HOME="ftp://sourceware.org/pub"
 DM_HOME="https://people.redhat.com/~heinzm/sw/dmraid/src"
@@ -23,24 +21,24 @@ BB_HOME="https://busybox.net/downloads"
 
 COMMON_URI="${DM_HOME}/dmraid-${VERSION_DMRAID}.tar.bz2
 		${DM_HOME}/old/dmraid-${VERSION_DMRAID}.tar.bz2
-		mirror://kernel/linux/utils/raid/mdadm/mdadm-${VERSION_MDADM}.tar.xz
+		mirror://kernel/linux/utils/raid/mdadm/mdadm-${VERSION_MDADM}.tar.bz2
 		${RH_HOME}/lvm2/LVM2.${VERSION_LVM}.tgz
 		${RH_HOME}/lvm2/old/LVM2.${VERSION_LVM}.tgz
 		${BB_HOME}/busybox-${VERSION_BUSYBOX}.tar.bz2
 		http://www.open-iscsi.org/bits/open-iscsi-${VERSION_ISCSI}.tar.gz
-		mirror://gentoo/open-iscsi-${VERSION_ISCSI}.tar.gz
 		mirror://sourceforge/fuse/fuse-${VERSION_FUSE}.tar.gz
 		http://podgorny.cz/unionfs-fuse/releases/unionfs-fuse-${VERSION_UNIONFS_FUSE}.tar.bz2
-		mirror://gentoo/unionfs-fuse-${VERSION_UNIONFS_FUSE}.tar.bz2
 		mirror://gnupg/gnupg/gnupg-${VERSION_GPG}.tar.bz2"
 
 if [[ ${PV} == 9999* ]]
 then
-	EGIT_REPO_URI="https://anongit.gentoo.org/git/proj/${PN}.git"
-	inherit git-r3
-	S="${WORKDIR}/${P}"
+	EGIT_REPO_URI="git://anongit.gentoo.org/proj/${PN}.git
+		https://anongit.gentoo.org/git/proj/${PN}.git"
+	inherit git-2 bash-completion-r1 eutils
+	S="${WORKDIR}/${PN}"
 	SRC_URI="${COMMON_URI}"
 else
+	inherit bash-completion-r1 eutils
 	SRC_URI="mirror://gentoo/${P}.tar.xz
 		${COMMON_URI}"
 	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
@@ -59,8 +57,7 @@ DEPEND="sys-fs/e2fsprogs
 RDEPEND="${DEPEND}
 	cryptsetup? ( sys-fs/cryptsetup )
 	app-arch/cpio
-	>=app-misc/pax-utils-1.2.2
-	sys-apps/util-linux[static-libs(+)]
+	>=app-misc/pax-utils-0.2.1
 	firmware? ( sys-kernel/linux-firmware )
 	!<sys-apps/openrc-0.9.9"
 # pax-utils is used for lddtree
@@ -76,6 +73,14 @@ pkg_pretend() {
 		ewarn "to have genkernel create an initramfs with LUKS support."
 		ewarn "Sorry for the inconvenience."
 		echo
+	fi
+}
+
+src_unpack() {
+	if [[ ${PV} == 9999* ]] ; then
+		git-2_src_unpack
+	else
+		unpack ${P}.tar.xz
 	fi
 }
 
@@ -146,7 +151,7 @@ pkg_postinst() {
 	elog 'Documentation is available in the genkernel manual page'
 	elog 'as well as the following URL:'
 	echo
-	elog 'https://wiki.gentoo.org/wiki/Genkernel'
+	elog 'https://www.gentoo.org/doc/en/genkernel.xml'
 	echo
 	ewarn "This package is known to not work with reiser4.  If you are running"
 	ewarn "reiser4 and have a problem, do not file a bug.  We know it does not"

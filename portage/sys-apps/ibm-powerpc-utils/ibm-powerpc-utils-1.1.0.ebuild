@@ -1,13 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils
 
 MY_P="powerpc-utils-${PV}"
 
-DESCRIPTION="Utilities for the maintainance of the IBM and Apple PowerPC platforms"
+DESCRIPTION="This package provides utilities for the maintainance
+of the IBM and Apple powerpc platforms."
 SRC_URI="http://powerpc-utils.ozlabs.org/releases/${MY_P}.tar.gz"
 HOMEPAGE="http://powerpc-utils.ozlabs.org/"
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -16,7 +16,7 @@ else
 fi
 
 DESCRIPTION="A sound design and signal processing system for composition and performance"
-HOMEPAGE="https://csound.github.io/"
+HOMEPAGE="http://csound.github.io/"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
@@ -26,6 +26,7 @@ portaudio portmidi pulseaudio python samples score static-libs stk tcl test
 +threads +utils vim-syntax websocket"
 
 LANGS=" de en_US es_CO fr it ro ru"
+IUSE+="${LANGS// / linguas_}"
 
 REQUIRED_USE="
 	csoundac? ( || ( lua python ) )
@@ -111,7 +112,7 @@ src_prepare() {
 
 	local lang
 	for lang in ${LANGS} ; do
-		if ! has ${lang} ${LINGUAS-${lang}} ; then
+		if ! use linguas_${lang} ; then
 			sed -i "/compile_po(${lang}/d" po/CMakeLists.txt || die
 		fi
 	done

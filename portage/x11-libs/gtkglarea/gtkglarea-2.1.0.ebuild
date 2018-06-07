@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -7,11 +7,11 @@ GCONF_DEBUG="no"
 inherit gnome2
 
 DESCRIPTION="OpenGL canvas and context provider for GTK+"
-HOMEPAGE="https://www.mono-project.com/archived/gtkglarea/"
+HOMEPAGE="http://www.mono-project.com/GtkGLArea"
 
 LICENSE="LGPL-2+ GPL-2+" # examples are GPL-2+, library is LGPL-2+
 SLOT="2"
-KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ~mips ppc ppc64 ~sh sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 ~sh sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux"
 IUSE="examples"
 
 RDEPEND="

@@ -1,6 +1,5 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
 EAPI=5
 
 inherit java-pkg-opt-2
@@ -29,27 +28,28 @@ RDEPEND=">=virtual/jdk-1.6
 	|| (
 		dev-lang/scala
 		dev-lang/scala-bin
-	)"
+	)
+"
 
 MY_D="/opt"
 
 src_unpack() {
 	default
 	unpack ${A}
-	mv "${WORKDIR}"/eclipse "${WORKDIR}"/"${P}" || die
+	mv "${WORKDIR}"/eclipse "${WORKDIR}"/"${P}"
 }
 
 src_prepare() {
-	mv "${WORKDIR}"/"${P}"/eclipse "${WORKDIR}"/"${P}"/"${PN}" || die
+	mv "${WORKDIR}"/"${P}"/eclipse "${WORKDIR}"/"${P}"/"${PN}"
 }
 
 src_install() {
 	cd "${D}" || die
-	dodir "${MY_D}"
+	dodir "${MY_D}" || die
 	insinto "${MY_D}"
-	doins -r "${WORKDIR}"/"${P}"
+	doins -r "${WORKDIR}"/"${P}" || die
 	insopts -m 0755
 	insinto "${MY_D}"/"${P}"
-	doins "${WORKDIR}"/"${P}"/"${PN}"
-	dosym ${MY_D}/${P}/${PN} /usr/bin/${PN}
+	doins "${WORKDIR}"/"${P}"/"${PN}" || die
+	dosym ${MY_D}/${P}/${PN} /usr/bin/${PN} || die
 }

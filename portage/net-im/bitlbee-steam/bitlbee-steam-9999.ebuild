@@ -1,37 +1,37 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit ltprune autotools
-
-if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://github.com/bitlbee/bitlbee-steam.git"
-	inherit git-r3
-else
-	SRC_URI="https://github.com/bitlbee/bitlbee-steam/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-fi
+inherit eutils autotools git-2
 
 DESCRIPTION="Steam protocol plugin for BitlBee"
-HOMEPAGE="https://github.com/bitlbee/bitlbee-steam"
+HOMEPAGE="https://github.com/jgeboski/bitlbee-steam"
+EGIT_REPO_URI="https://github.com/jgeboski/bitlbee-steam.git"
 
-LICENSE="GPL-2+"
+LICENSE="GPL-2 LGPL-2.1 BSD-2"
 SLOT="0"
+KEYWORDS=""
+IUSE="debug"
 
 RDEPEND="
 	dev-libs/glib:2
-	dev-libs/libgcrypt:0=
-	>=net-im/bitlbee-3.4[plugins]"
+	dev-libs/libgpg-error
+	>=net-im/bitlbee-3.2.1[plugins]"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
 src_prepare() {
-	default
 	eautoreconf
+}
+
+src_configure() {
+	econf \
+		$(use_enable debug) \
+		--enable-minimal-flags
 }
 
 src_install() {
 	default
-	prune_libtool_files --modules
+	prune_libtool_files
 }

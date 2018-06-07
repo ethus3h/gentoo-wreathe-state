@@ -4,10 +4,9 @@
 # @ECLASS: kde5-meta-pkg.eclass
 # @MAINTAINER:
 # kde@gentoo.org
-# @BLURB: This eclass contains boilerplate for KDE meta packages.
+# @BLURB: This eclass contains boilerplate for KDE 5 meta packages
 # @DESCRIPTION:
-# This eclass should only be used for defining meta packages bundling
-# software produced by the KDE community.
+# This eclass should only be used for defining meta packages for KDE 5.
 
 if [[ -z ${_KDE5_META_PKG_ECLASS} ]]; then
 _KDE5_META_PKG_ECLASS=1
@@ -18,7 +17,7 @@ HOMEPAGE="https://www.kde.org/"
 LICENSE="metapackage"
 SLOT="5"
 
-if [[ ${CATEGORY} = kde-apps ]]; then
+if [[ ${KDE_BLOCK_SLOT4} = true && ${CATEGORY} = kde-apps ]]; then
 	RDEPEND+=" !kde-apps/${PN}:4"
 fi
 

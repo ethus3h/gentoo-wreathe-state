@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -21,7 +21,8 @@ RDEPEND="x11-libs/libX11
 DEPEND="${RDEPEND}
 	sys-devel/flex
 	virtual/yacc
-	x11-base/xorg-proto"
+	x11-proto/xextproto
+	x11-proto/xproto"
 
 pkg_setup() {
 	XORG_CONFIGURE_OPTIONS=(

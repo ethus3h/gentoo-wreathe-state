@@ -17,7 +17,7 @@ KEYWORDS="~amd64"
 IUSE="doc +ocamlopt"
 
 DEPEND=">=dev-lang/ocaml-3.10.2:=[ocamlopt?]
-	media-libs/gd[jpeg,png]
+	media-libs/gd
 	virtual/jpeg:0
 	sys-libs/zlib
 	media-libs/libpng:0=

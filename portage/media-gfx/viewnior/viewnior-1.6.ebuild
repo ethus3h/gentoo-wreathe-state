@@ -2,12 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit xdg-utils gnome2-utils autotools
+inherit fdo-mime gnome2-utils autotools
 
 MY_PN=Viewnior
 DESCRIPTION="Fast and simple image viewer"
-HOMEPAGE="https://siyanpanayotov.com/project/viewnior/ https://github.com/hellosiyan/Viewnior"
-SRC_URI="https://github.com/hellosiyan/${MY_PN}/archive/${P}.tar.gz"
+HOMEPAGE="http://siyanpanayotov.com/project/viewnior/ https://github.com/xsisqox/Viewnior"
+SRC_URI="https://github.com/xsisqox/${MY_PN}/archive/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -23,12 +23,11 @@ RDEPEND="${DEPEND}"
 S=${WORKDIR}/${MY_PN}-${P}
 
 src_prepare() {
-	default
-
 	# fix for bug #454230
 	sed -r -i "s:(PKG_CHECK_MODULES):AC_CHECK_LIB([m],[cos])\n\n\1:" configure.ac
 
 	eautoreconf
+	default
 }
 
 pkg_preinst() {
@@ -36,11 +35,11 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 	gnome2_icon_cache_update
 }
 
 pkg_postrm() {
-	xdg_desktop_database_update
+	fdo-mime_desktop_database_update
 	gnome2_icon_cache_update
 }

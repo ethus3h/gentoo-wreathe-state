@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 DESCRIPTION="This script does the same you would do when you report spam with your browser in Spamcop.net"
 HOMEPAGE="https://sourceforge.net/projects/spamcup/"

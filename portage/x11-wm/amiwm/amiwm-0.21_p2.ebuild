@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -25,7 +25,8 @@ RDEPEND="${COMMON_DEPEND}
 	x11-apps/xsetroot
 	x11-terms/xterm"
 DEPEND="${COMMON_DEPEND}
-	x11-base/xorg-proto"
+	x11-proto/xproto
+	x11-proto/xextproto"
 
 S="${WORKDIR}/${MY_P}"
 

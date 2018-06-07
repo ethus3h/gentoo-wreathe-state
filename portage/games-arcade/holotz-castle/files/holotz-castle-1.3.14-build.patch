@@ -1,5 +1,5 @@
---- a/JLib/Makefile
-+++ b/JLib/Makefile
+--- JLib/Makefile
++++ JLib/Makefile
 @@ -19,7 +19,7 @@
  endif
  
@@ -29,8 +29,8 @@
  
  .PHONY: install
  install:
---- a/src/Makefile
-+++ b/src/Makefile
+--- src/Makefile
++++ src/Makefile
 @@ -30,7 +30,7 @@
  
  DEFINES = -DHC_DATA_DIR=\"$(HC_DATA)\" -DHCED_DATA_DIR=\"$(HCED_DATA)\"

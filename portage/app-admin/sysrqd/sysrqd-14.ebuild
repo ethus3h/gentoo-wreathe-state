@@ -1,27 +1,27 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+inherit eutils toolchain-funcs
 
-inherit toolchain-funcs
-
+IUSE=""
 DESCRIPTION="daemon providing access to the kernel sysrq functions via network"
 HOMEPAGE="http://julien.danjou.info/projects/sysrqd"
 #SRC_URI="http://julien.danjou.info/${PN}/${P}.tar.gz"
 SRC_URI="https://dev.gentoo.org/~wschlich/src/${CATEGORY}/${PN}/${P}.tar.gz"
-
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE=""
+KEYWORDS="~x86 ~amd64"
+DEPEND=""
+RDEPEND="${DEPEND}"
 
-PATCHES=(
-	"${FILESDIR}"/${PN}-config.patch
-	"${FILESDIR}"/${PN}-14-fix-build-system.patch
-)
+src_unpack() {
+	unpack ${A}
+	cd "${S}"
+	epatch "${FILESDIR}/${PN}-config.patch"
+}
 
-src_configure() {
-	tc-export CC
+src_compile() {
+	$(tc-getCC) ${CFLAGS} ${LDFLAGS} -o sysrqd sysrqd.c
 }
 
 src_install() {
@@ -31,8 +31,8 @@ src_install() {
 	local bindip='127.0.0.1' secret
 	declare -i secret
 	let secret=${RANDOM}*${RANDOM}*${RANDOM}*${RANDOM}
-	echo ${bindip} > sysrqd.bind || die
-	echo ${secret} > sysrqd.secret || die
+	echo ${bindip} > sysrqd.bind
+	echo ${secret} > sysrqd.secret
 
 	diropts -m 0700 -o root -g root
 	dodir /etc/sysrqd
@@ -41,7 +41,7 @@ src_install() {
 	doins sysrqd.bind
 	doins sysrqd.secret
 
-	einstalldocs
+	dodoc README ChangeLog
 }
 
 pkg_postinst() {

@@ -1,5 +1,5 @@
---- a/tong.cpp.orig
-+++ b/tong.cpp
+--- tong.cpp.orig
++++ tong.cpp
 @@ -64,6 +64,8 @@
  
  #define DEMO_TIME           8000

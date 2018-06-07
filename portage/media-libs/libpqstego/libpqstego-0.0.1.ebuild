@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=2
 
 DESCRIPTION="Library for Perturbed Quantization Steganography"
 HOMEPAGE="https://sourceforge.net/projects/pqstego/"
@@ -16,10 +16,12 @@ DEPEND="sci-libs/gsl[cblas-external]"
 
 src_configure() {
 	econf \
+		--disable-dependency-tracking \
 		--disable-static
 }
 
 src_install() {
-	default
-	find "${D}" -name '*.la' -delete || die "Pruning failed"
+	emake DESTDIR="${D}" install || die
+	dodoc AUTHORS CHANGES README TODO
+	find "${D}" -name '*.la' -delete
 }

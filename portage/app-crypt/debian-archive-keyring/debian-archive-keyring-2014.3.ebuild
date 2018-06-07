@@ -6,7 +6,7 @@ EAPI=6
 inherit unpacker
 
 DESCRIPTION="GnuPG archive keys of the Debian archive"
-HOMEPAGE="https://packages.debian.org/sid/debian-archive-keyring"
+HOMEPAGE="http://packages.debian.org/sid/debian-archive-keyring"
 SRC_URI="mirror://debian/pool/main/${PN:0:1}/${PN}/${PN}_${PV}_all.deb"
 
 LICENSE="GPL-2+"

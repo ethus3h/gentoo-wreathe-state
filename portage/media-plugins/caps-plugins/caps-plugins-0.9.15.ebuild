@@ -17,7 +17,9 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 
 DEPEND="media-libs/ladspa-sdk"
-RDEPEND=""
+RDEPEND="
+	abi_x86_32? ( !<=app-emulation/emul-linux-x86-soundlibs-20130224-r2
+					!app-emulation/emul-linux-x86-soundlibs[-abi_x86_32(-)] )"
 
 S="${WORKDIR}/${MY_P}"
 DOCS=( README CHANGES )

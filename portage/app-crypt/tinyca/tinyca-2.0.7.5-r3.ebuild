@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -15,6 +15,10 @@ SLOT="0"
 KEYWORDS="amd64 ~ppc ~sparc x86"
 IUSE="libressl"
 LANGS="en de cs es sv"
+
+for X in ${LANGS} ; do
+	IUSE="${IUSE} linguas_${X}"
+done
 
 RDEPEND="
 	!libressl? ( dev-libs/openssl:0= )
@@ -63,7 +67,7 @@ src_install() {
 	local l
 	for l in ${LANGS}; do
 		if [ "$l" != "en" ]; then
-			has ${l} ${LINGUAS-${l}} && locale_install $l
+			use linguas_$l && locale_install $l
 		fi
 	done
 }

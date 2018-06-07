@@ -5,10 +5,10 @@ EAPI="6"
 
 inherit autotools perl-module git-r3
 
-EGIT_REPO_URI="https://github.com/${PN}/${PN}.git"
+EGIT_REPO_URI="git://github.com/irssi/irssi.git"
 
 DESCRIPTION="A modular textUI IRC client with IPv6 support"
-HOMEPAGE="https://irssi.org/"
+HOMEPAGE="http://irssi.org/"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS=""

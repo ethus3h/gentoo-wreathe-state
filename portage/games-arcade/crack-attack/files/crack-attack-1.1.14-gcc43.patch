@@ -1,5 +1,5 @@
---- a/src/Game.h
-+++ b/src/Game.h
+--- src/Game.h
++++ src/Game.h
 @@ -34,6 +34,7 @@
  #include <climits>
  #include <cstdlib>

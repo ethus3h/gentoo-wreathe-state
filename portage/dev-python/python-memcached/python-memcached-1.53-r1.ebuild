@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -8,8 +8,7 @@ PYTHON_COMPAT=( python2_7 pypy )
 inherit distutils-r1
 
 DESCRIPTION="Pure python memcached client"
-HOMEPAGE="https://www.tummy.com/Community/software/python-memcached/
-	https://pypi.org/project/python-memcached/"
+HOMEPAGE="http://www.tummy.com/Community/software/python-memcached/ https://pypi.python.org/pypi/python-memcached"
 SRC_URI="ftp://ftp.tummy.com/pub/python-memcached/old-releases/${P}.tar.gz"
 
 LICENSE="OSL-2.0"

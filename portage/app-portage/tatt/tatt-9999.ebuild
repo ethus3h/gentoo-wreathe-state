@@ -8,8 +8,9 @@ PYTHON_COMPAT=( python2_7 python3_{4,5,6} )
 inherit distutils-r1 git-r3
 
 DESCRIPTION="arch testing tool"
-HOMEPAGE="https://github.com/gentoo/tatt"
-EGIT_REPO_URI="https://github.com/gentoo/tatt.git"
+HOMEPAGE="https://github.com/kensington/tatt"
+EGIT_REPO_URI="https://github.com/kensington/tatt.git \
+	git://github.com/kensington/tatt.git"
 
 LICENSE="GPL-2"
 SLOT="0"

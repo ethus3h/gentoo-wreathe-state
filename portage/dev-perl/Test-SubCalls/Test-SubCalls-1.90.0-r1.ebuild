@@ -1,10 +1,10 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-DIST_AUTHOR=ADAMK
-DIST_VERSION=1.09
+MODULE_AUTHOR=ADAMK
+MODULE_VERSION=1.09
 inherit perl-module
 
 DESCRIPTION="Track the number of times subs are called"
@@ -17,4 +17,4 @@ DEPEND=">=dev-perl/Hook-LexWrap-0.20
 	virtual/perl-File-Spec"
 RDEPEND="${DEPEND}"
 
-PATCHES=( "${FILESDIR}/${P}"-dot.patch )
+SRC_TEST="do"

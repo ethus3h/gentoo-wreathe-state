@@ -1,29 +1,27 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 VIM_VERSION="8.0"
 PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
-PYTHON_REQ_USE="threads"
-USE_RUBY="ruby22 ruby23 ruby24 ruby25"
-
-inherit vim-doc flag-o-matic versionator bash-completion-r1 python-single-r1 ruby-single
+PYTHON_REQ_USE=threads
+inherit eutils vim-doc flag-o-matic fdo-mime versionator bash-completion-r1 python-single-r1
 
 if [[ ${PV} == 9999* ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/vim/vim.git"
 else
 	SRC_URI="https://github.com/vim/vim/archive/v${PV}.tar.gz -> ${P}.tar.gz
-		https://dev.gentoo.org/~radhermit/vim/vim-8.0.0938-gentoo-patches.tar.bz2"
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~x64-cygwin ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
+		https://dev.gentoo.org/~radhermit/vim/vim-8.0.0106-gentoo-patches.tar.bz2"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 fi
 
 DESCRIPTION="Vim, an improved vi-style text editor"
-HOMEPAGE="https://vim.sourceforge.io/ https://github.com/vim/vim"
+HOMEPAGE="http://www.vim.org/ https://github.com/vim/vim"
 
 SLOT="0"
 LICENSE="vim"
-IUSE="X acl cscope debug gpm lua luajit minimal nls perl python racket ruby selinux tcl terminal vim-pager"
+IUSE="X acl cscope debug gpm lua luajit minimal nls perl python racket ruby selinux tcl vim-pager"
 REQUIRED_USE="
 	luajit? ( lua )
 	python? ( ${PYTHON_REQUIRED_USE} )
@@ -47,14 +45,12 @@ RDEPEND="
 	perl? ( dev-lang/perl:= )
 	python? ( ${PYTHON_DEPS} )
 	racket? ( dev-scheme/racket )
-	ruby? ( ${RUBY_DEPS} )
+	ruby? ( || ( dev-lang/ruby:2.4 dev-lang/ruby:2.3 dev-lang/ruby:2.2 dev-lang/ruby:2.1 ) )
 	selinux? ( sys-libs/libselinux )
 	tcl? ( dev-lang/tcl:0= )
 	X? ( x11-libs/libXt )
 "
-
-DEPEND="
-	${RDEPEND}
+DEPEND="${RDEPEND}
 	sys-devel/autoconf
 	nls? ( sys-devel/gettext )
 "
@@ -65,7 +61,7 @@ pkg_setup() {
 	export LC_COLLATE="C"
 
 	# Gnome sandbox silliness. bug #114475.
-	mkdir -p "${T}"/home || die "mkdir failed"
+	mkdir -p "${T}"/home
 	export HOME="${T}"/home
 
 	use python && python-single-r1_pkg_setup
@@ -78,21 +74,17 @@ src_prepare() {
 	fi
 
 	# Fixup a script to use awk instead of nawk
-	sed -i -e \
-		'1s|.*|#!'"${EPREFIX}"'/usr/bin/awk -f|' \
-		"${S}"/runtime/tools/mve.awk || die "mve.awk sed failed"
+	sed -i '1s|.*|#!'"${EPREFIX}"'/usr/bin/awk -f|' "${S}"/runtime/tools/mve.awk \
+		|| die "mve.awk sed failed"
 
 	# Read vimrc and gvimrc from /etc/vim
-	echo '#define SYS_VIMRC_FILE "'${EPREFIX}'/etc/vim/vimrc"' \
-		>> "${S}"/src/feature.h || die "echo failed"
-	echo '#define SYS_GVIMRC_FILE "'${EPREFIX}'/etc/vim/gvimrc"' \
-		>> "${S}"/src/feature.h || die "echo failed"
+	echo '#define SYS_VIMRC_FILE "'${EPREFIX}'/etc/vim/vimrc"' >> "${S}"/src/feature.h
+	echo '#define SYS_GVIMRC_FILE "'${EPREFIX}'/etc/vim/gvimrc"' >> "${S}"/src/feature.h
 
 	# Use exuberant ctags which installs as /usr/bin/exuberant-ctags.
 	# Hopefully this pattern won't break for a while at least.
 	# This fixes bug 29398 (27 Sep 2003 agriffis)
-	sed -i -e \
-		's/\<ctags\("\| [-*.]\)/exuberant-&/g' \
+	sed -i 's/\<ctags\("\| [-*.]\)/exuberant-&/g' \
 		"${S}"/runtime/doc/syntax.txt \
 		"${S}"/runtime/doc/tagsrch.txt \
 		"${S}"/runtime/doc/usr_29.txt \
@@ -102,21 +94,17 @@ src_prepare() {
 	# Don't be fooled by /usr/include/libc.h.  When found, vim thinks
 	# this is NeXT, but it's actually just a file in dev-libs/9libs
 	# This fixes bug 43885 (20 Mar 2004 agriffis)
-	sed -i -e \
-		's/ libc\.h / /' \
-		"${S}"/src/configure.ac || die 'sed failed'
+	sed -i 's/ libc\.h / /' "${S}"/src/configure.ac || die 'sed failed'
 
 	# gcc on sparc32 has this, uhm, interesting problem with detecting EOF
 	# correctly. To avoid some really entertaining error messages about stuff
 	# which isn't even in the source file being invalid, we'll do some trickery
 	# to make the error never occur. bug 66162 (02 October 2004 ciaranm)
-	find "${S}" -name '*.c' | while read c; do
-	    echo >> "$c" || die "echo failed"
-	done
+	find "${S}" -name '*.c' | while read c ; do echo >> "$c" ; done
 
 	# conditionally make the manpager.sh script
-	if use vim-pager; then
-		cat > "${S}"/runtime/macros/manpager.sh <<-_EOF_ || die "cat EOF failed"
+	if use vim-pager ; then
+		cat <<-END > "${S}"/runtime/macros/manpager.sh
 			#!/bin/sh
 			sed -e 's/\x1B\[[[:digit:]]\+m//g' | col -b | \\
 					vim \\
@@ -124,21 +112,24 @@ src_prepare() {
 						-c 'set nolist nomod ft=man ts=8' \\
 						-c 'let g:showmarks_enable=0' \\
 						-c 'runtime! macros/less.vim' -
-			_EOF_
+			END
 	fi
 
 	# Try to avoid sandbox problems. Bug #114475.
-	if [[ -d "${S}"/src/po ]]; then
-		sed -i -e \
-			'/-S check.vim/s,..VIM.,ln -s $(VIM) testvim \; ./testvim -X,' \
-			"${S}"/src/po/Makefile || die "sed failed"
+	if [[ -d "${S}"/src/po ]] ; then
+		sed -i '/-S check.vim/s,..VIM.,ln -s $(VIM) testvim \; ./testvim -X,' \
+			"${S}"/src/po/Makefile
 	fi
 
-	cp -v "${S}"/src/config.mk.dist "${S}"/src/auto/config.mk || die "cp failed"
+	if version_is_at_least 7.3.122 ; then
+		cp "${S}"/src/config.mk.dist "${S}"/src/auto/config.mk
+	fi
 
-	sed -i -e \
-		"s:\\\$(PERLLIB)/ExtUtils/xsubpp:${EPREFIX}/usr/bin/xsubpp:" \
-		"${S}"/src/Makefile || die 'sed for ExtUtils-ParseXS failed'
+	# Bug #378107 - Build properly with >=perl-core/ExtUtils-ParseXS-3.20.0
+	if version_is_at_least 7.3 ; then
+		sed -i "s:\\\$(PERLLIB)/ExtUtils/xsubpp:${EPREFIX}/usr/bin/xsubpp:"	\
+			"${S}"/src/Makefile || die 'sed for ExtUtils-ParseXS failed'
+	fi
 
 	eapply_user
 }
@@ -161,18 +152,16 @@ src_configure() {
 	# (3) Notice auto/configure is newer than auto/config.mk
 	# (4) Run ./configure (with wrong args) to remake auto/config.mk
 	sed -i 's# auto/config\.mk:#:#' src/Makefile || die "Makefile sed failed"
-	rm src/auto/configure || die "rm failed"
+	rm -f src/auto/configure
 	emake -j1 -C src autoconf
 
 	# This should fix a sandbox violation (see bug 24447). The hvc
 	# things are for ppc64, see bug 86433.
-	for file in /dev/pty/s* /dev/console /dev/hvc/* /dev/hvc*; do
-		if [[ -e "${file}" ]]; then
-			addwrite $file
-		fi
+	for file in /dev/pty/s* /dev/console /dev/hvc/* /dev/hvc* ; do
+		[[ -e ${file} ]] && addwrite $file
 	done
 
-	if use minimal; then
+	if use minimal ; then
 		myconf=(
 			--with-features=tiny
 			--disable-nls
@@ -210,14 +199,13 @@ src_configure() {
 			$(use_enable ruby rubyinterp)
 			$(use_enable selinux)
 			$(use_enable tcl tclinterp)
-			$(use_enable terminal)
 		)
 
 		# --with-features=huge forces on cscope even if we --disable it. We need
 		# to sed this out to avoid screwiness. (1 Sep 2004 ciaranm)
-		if ! use cscope; then
-			sed -i -e \
-				'/# define FEAT_CSCOPE/d' src/feature.h || die "sed failed"
+		if ! use cscope ; then
+			sed -i '/# define FEAT_CSCOPE/d' src/feature.h || \
+				die "couldn't disable cscope"
 		fi
 
 		# don't test USE=X here ... see bug #19115
@@ -248,14 +236,14 @@ src_compile() {
 }
 
 src_test() {
-	einfo
+	echo
 	einfo "Starting vim tests. Several error messages will be shown"
 	einfo "while the tests run. This is normal behaviour and does not"
 	einfo "indicate a fault."
-	einfo
+	echo
 	ewarn "If the tests fail, your terminal may be left in a strange"
 	ewarn "state. Usually, running 'reset' will fix this."
-	einfo
+	echo
 
 	# Don't let vim talk to X
 	unset DISPLAY
@@ -263,12 +251,39 @@ src_test() {
 	emake -j1 -C src/testdir nongui
 }
 
-# Call eselect vi update with --if-unset
-# to respect user's choice (bug 187449)
-eselect_vi_update() {
+# Make convenience symlinks, hopefully without stepping on toes.  Some
+# of these links are "owned" by the vim ebuild when it is installed,
+# but they might be good for gvim as well (see bug 45828)
+update_vim_symlinks() {
+	local f syms
+	syms="vimdiff rvim rview"
 	einfo "Calling eselect vi update..."
+	# Call this with --if-unset to respect user's choice (bug 187449)
 	eselect vi update --if-unset
-	eend $?
+
+	# Make or remove convenience symlink, vim -> gvim
+	if [[ -f "${EROOT}"/usr/bin/gvim ]]; then
+		ln -s gvim "${EROOT}"/usr/bin/vim 2>/dev/null
+	elif [[ -L "${EROOT}"/usr/bin/vim && ! -f "${EROOT}"/usr/bin/vim ]]; then
+		rm "${EROOT}"/usr/bin/vim
+	fi
+
+	# Make or remove convenience symlinks to vim
+	if [[ -f "${EROOT}"/usr/bin/vim ]]; then
+		for f in ${syms}; do
+			ln -s vim "${EROOT}"/usr/bin/${f} 2>/dev/null
+		done
+	else
+		for f in ${syms}; do
+			if [[ -L "${EROOT}"/usr/bin/${f} && ! -f "${EROOT}"/usr/bin/${f} ]]; then
+				rm -f "${EROOT}"/usr/bin/${f}
+			fi
+		done
+	fi
+
+	# This will still break if you merge then remove the vi package,
+	# but there's only so much you can do, eh?  Unfortunately we don't
+	# have triggers like are done in rpm-land.
 }
 
 src_install() {
@@ -289,23 +304,26 @@ src_install() {
 	fi
 
 	newbashcomp "${FILESDIR}"/${PN}-completion ${PN}
-
 	# keep in sync with 'complete ... -F' list
 	bashcomp_alias vim ex vi view rvim rview vimdiff
+
+	# We shouldn't be installing the ex or view man page symlinks, as they
+	# are managed by eselect-vi
+	rm -f "${ED}"/usr/share/man/man1/{ex,view}.1
 }
 
 pkg_postinst() {
 	# Update documentation tags (from vim-doc.eclass)
 	update_vim_helptags
 
-	# Call eselect vi update
-	eselect_vi_update
+	# Make convenience symlinks
+	update_vim_symlinks
 }
 
 pkg_postrm() {
 	# Update documentation tags (from vim-doc.eclass)
 	update_vim_helptags
 
-	# Call eselect vi update
-	eselect_vi_update
+	# Make convenience symlinks
+	update_vim_symlinks
 }

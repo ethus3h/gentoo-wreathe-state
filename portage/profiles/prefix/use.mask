@@ -10,9 +10,6 @@ kernel_linux
 # coreutils on darwin.
 acl
 
-# Prefix removed python3_4 from PYTHON_TARGETS and PYTHON_SINGLE_TARGET
+# app-editors/vim does not like multiple python3 targets (bug#575096),
+# but PYTHON_TARGETS=-python3_4 does not work either (is not incremental).
 python_targets_python3_4
-python_single_target_python3_4
-
-# Similar for Ruby 2.3
-ruby_targets_ruby23

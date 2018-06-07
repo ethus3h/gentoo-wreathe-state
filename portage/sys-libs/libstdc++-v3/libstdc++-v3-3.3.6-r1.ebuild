@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils flag-o-matic libtool multilib
 
@@ -103,7 +101,6 @@ do_filter_flags() {
 	filter-flags '-W*'
 
 	filter-flags -frecord-gcc-switches
-	filter-flags '-fdiagnostics-color*'
 
 	# ...sure, why not?
 	strip-unsupported-flags
@@ -113,7 +110,7 @@ do_filter_flags() {
 
 PATCH_VER="1.9"
 
-DESCRIPTION="Compatibility package for binaries linked against a pre gcc 3.4 libstdc++"
+DESCRIPTION="Compatibility package for running binaries linked against a pre gcc 3.4 libstdc++"
 HOMEPAGE="https://gcc.gnu.org/libstdc++/"
 SRC_URI="ftp://gcc.gnu.org/pub/gcc/releases/gcc-${PV}/gcc-${PV}.tar.bz2
 	mirror://gentoo/gcc-${PV}-patches-${PATCH_VER}.tar.bz2"
@@ -132,10 +129,6 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 	EPATCH_SUFFIX="patch" epatch "${WORKDIR}"/patch
-
-	# bug 637608
-	has_version '>=sys-libs/glibc-2.26' && epatch "${FILESDIR}/${P}-glibc226.patch"
-
 	elibtoolize --portage --shallow
 	./contrib/gcc_update --touch
 	mkdir -p "${WORKDIR}"/build

@@ -7,8 +7,7 @@ inherit eutils flag-o-matic autotools toolchain-funcs
 
 DESCRIPTION="The GNU Scientific Library"
 HOMEPAGE="https://www.gnu.org/software/gsl/"
-SRC_URI="mirror://gnu/${PN}/${P}.tar.gz
-	https://dev.gentoo.org/~mgorny/dist/${P}-cblas.patch.bz2"
+SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -46,7 +45,7 @@ src_prepare() {
 		&& filter-mfpmath sse
 	filter-flags -ffast-math
 
-	epatch "${WORKDIR}"/${P}-cblas.patch
+	epatch "${FILESDIR}"/${P}-cblas.patch
 	eautoreconf
 
 	cp "${FILESDIR}"/eselect.cblas.gsl "${T}"/ || die

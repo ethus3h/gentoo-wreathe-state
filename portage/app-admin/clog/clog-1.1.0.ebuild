@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -10,7 +10,7 @@ EGIT_REPO_URI="https://git.tasktools.org/scm/ut/${PN}.git"
 inherit cmake-utils bash-completion-r1
 
 DESCRIPTION="A colorized log tail utility"
-HOMEPAGE="https://taskwarrior.org/docs/clog/"
+HOMEPAGE="http://tasktools.org/projects/clog.html"
 [[ ${PV} == *9999* ]] || \
 	SRC_URI="http://taskwarrior.org/download/${P}.tar.gz"
 
@@ -20,8 +20,6 @@ SLOT="0"
 	KEYWORDS="~amd64 ~x86 ~x64-macos"
 
 src_prepare() {
-	cmake-utils_src_prepare
-
 	# Use the correct directory locations
 	sed -i -e "s:/usr/local/share/doc/clog/rc:${EPREFIX}/usr/share/clog/rc:" \
 		doc/man/clog.1.in || die

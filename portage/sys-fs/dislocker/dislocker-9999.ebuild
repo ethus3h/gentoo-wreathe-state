@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -20,15 +20,13 @@ LICENSE="GPL-2"
 SLOT="0"
 IUSE="ruby"
 
-DEPEND="sys-fs/fuse:*
-	net-libs/mbedtls
-	ruby? ( || ( dev-lang/ruby:2.2 dev-lang/ruby:2.3 ) )"
+DEPEND="sys-fs/fuse
+	|| ( net-libs/polarssl net-libs/mbedtls )
+	ruby? ( dev-lang/ruby:2.1 )"
 
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	cmake-utils_src_prepare
-
 # We either need to change Werror to Wno-error or remove the multiple declarations of FORTIFY_SOURCE
 #    sed 's:Werror:Wno-error:g' -i "${S}/src/CMakeLists.txt" || die
 	sed 's:-D_FORTIFY_SOURCE=2::g' -i "${S}/src/CMakeLists.txt" || die

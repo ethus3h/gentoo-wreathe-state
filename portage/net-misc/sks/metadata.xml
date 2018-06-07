@@ -4,6 +4,7 @@
 	<maintainer type="person">
 		<email>k_f@gentoo.org</email>
 		<name>Kristian Fiskerstrand</name>
+		<description>Maintainer</description>
 	</maintainer>
 	<use>
 		<flag name="optimize">Enables bytecode optimization</flag>

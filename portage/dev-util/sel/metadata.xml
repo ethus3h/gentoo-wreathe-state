@@ -4,6 +4,7 @@
 <maintainer type="person">
 	<email>wschlich@gentoo.org</email>
 	<name>Wolfram Schlich</name>
+	<description>Primary maintainer</description>
 </maintainer>
 <longdescription>
 sel is a file selection utility for use on the shell and in shell scripts

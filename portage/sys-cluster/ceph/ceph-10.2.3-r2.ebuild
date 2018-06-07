@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,15 +9,17 @@ inherit check-reqs autotools eutils python-r1 udev user \
 
 if [[ ${PV} == *9999* ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/ceph/ceph.git"
+	EGIT_REPO_URI="
+		git://github.com/ceph/ceph.git
+		https://github.com/ceph/ceph.git"
 	SRC_URI=""
 else
-	SRC_URI="https://download.ceph.com/tarballs/${P}.tar.gz"
+	SRC_URI="http://ceph.com/download/${P}.tar.gz"
 	KEYWORDS="amd64 ~arm ~ppc ~ppc64 x86"
 fi
 
 DESCRIPTION="Ceph distributed filesystem"
-HOMEPAGE="https://ceph.com/"
+HOMEPAGE="http://ceph.com/"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
@@ -44,7 +46,7 @@ COMMON_DEPEND="
 	radosgw? ( dev-libs/fcgi )
 	ldap? ( net-nds/openldap )
 	babeltrace? ( dev-util/babeltrace )
-	fuse? ( sys-fs/fuse:0 )
+	fuse? ( sys-fs/fuse )
 	xfs? ( sys-fs/xfsprogs )
 	zfs? ( sys-fs/zfs )
 	gtk? (
@@ -246,6 +248,7 @@ src_install() {
 
 	systemd_install_serviced "${FILESDIR}/ceph-mds_at.service.conf" "ceph-mds@.service"
 	systemd_install_serviced "${FILESDIR}/ceph-osd_at.service.conf" "ceph-osd@.service"
+	systemd_install_serviced "${FILESDIR}/ceph-mon_at.service.conf" "ceph-mon@.service"
 
 	udev_dorules udev/*.rules
 

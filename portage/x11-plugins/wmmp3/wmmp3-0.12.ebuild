@@ -1,25 +1,24 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=0
 
 inherit eutils
 
+IUSE=""
+
 DESCRIPTION="Mp3 player dock app for WindowMaker; frontend to mpg123"
-HOMEPAGE="http://www.dockapps.net/wmmp3"
-SRC_URI="http://www.dockapps.net/download/${P}.tar.gz"
+HOMEPAGE="http://dockapps.windowmaker.org/file.php/id/60"
+SRC_URI="http://dockapps.windowmaker.org/download.php/id/91/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ppc sparc x86"
-IUSE=""
 
 RDEPEND="x11-libs/libX11
 	x11-libs/libXext
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
-	media-sound/mpg123
-	x11-base/xorg-proto"
+	x11-proto/xextproto
+	media-sound/mpg123"
 
 src_unpack() {
 	unpack ${A}

@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: toolchain-funcs.eclass
@@ -40,13 +40,7 @@ _tc-getPROG() {
 	export ${var}="${prog[*]}"
 	echo "${!var}"
 }
-tc-getBUILD_PROG() {
-	local vars="BUILD_$1 $1_FOR_BUILD HOST$1"
-	# respect host vars if not cross-compiling
-	# https://bugs.gentoo.org/630282
-	tc-is-cross-compiler || vars+=" $1"
-	_tc-getPROG CBUILD "${vars}" "${@:2}"
-}
+tc-getBUILD_PROG() { _tc-getPROG CBUILD "BUILD_$1 $1_FOR_BUILD HOST$1" "${@:2}"; }
 tc-getPROG() { _tc-getPROG CHOST "$@"; }
 
 # @FUNCTION: tc-getAR
@@ -247,21 +241,13 @@ tc-stack-grows-down() {
 # Export common build related compiler settings.
 tc-export_build_env() {
 	tc-export "$@"
-	if tc-is-cross-compiler; then
-		# Some build envs will initialize vars like:
-		# : ${BUILD_LDFLAGS:-${LDFLAGS}}
-		# So make sure all variables are non-empty. #526734
-		: ${BUILD_CFLAGS:=-O1 -pipe}
-		: ${BUILD_CXXFLAGS:=-O1 -pipe}
-		: ${BUILD_CPPFLAGS:= }
-		: ${BUILD_LDFLAGS:= }
-	else
-		# https://bugs.gentoo.org/654424
-		: ${BUILD_CFLAGS:=${CFLAGS}}
-		: ${BUILD_CXXFLAGS:=${CXXFLAGS}}
-		: ${BUILD_CPPFLAGS:=${CPPFLAGS}}
-		: ${BUILD_LDFLAGS:=${LDFLAGS}}
-	fi
+	# Some build envs will initialize vars like:
+	# : ${BUILD_LDFLAGS:-${LDFLAGS}}
+	# So make sure all variables are non-empty. #526734
+	: ${BUILD_CFLAGS:=-O1 -pipe}
+	: ${BUILD_CXXFLAGS:=-O1 -pipe}
+	: ${BUILD_CPPFLAGS:= }
+	: ${BUILD_LDFLAGS:= }
 	export BUILD_{C,CXX,CPP,LD}FLAGS
 
 	# Some packages use XXX_FOR_BUILD.
@@ -391,28 +377,11 @@ tc-ld-disable-gold() {
 	local path_ld=$(which "${bfd_ld}" 2>/dev/null)
 	[[ -e ${path_ld} ]] && export LD=${bfd_ld}
 
-	# Set up LDFLAGS to select gold based on the gcc / clang version.
-	local fallback="true"
-	if tc-is-gcc; then
-		local major=$(gcc-major-version "$@")
-		local minor=$(gcc-minor-version "$@")
-		if [[ ${major} -gt 4 ]] || [[ ${major} -eq 4 && ${minor} -ge 8 ]]; then
-			# gcc-4.8+ supports -fuse-ld directly.
-			export LDFLAGS="${LDFLAGS} -fuse-ld=bfd"
-			fallback="false"
-		fi
-	elif tc-is-clang; then
-		local major=$(clang-major-version "$@")
-		local minor=$(clang-minor-version "$@")
-		if [[ ${major} -gt 3 ]] || [[ ${major} -eq 3 && ${minor} -ge 5 ]]; then
-			# clang-3.5+ supports -fuse-ld directly.
-			export LDFLAGS="${LDFLAGS} -fuse-ld=bfd"
-			fallback="false"
-		fi
-	fi
-	if [[ ${fallback} == "true" ]] ; then
-		# <=gcc-4.7 and <=clang-3.4 require some coercion.
-		# Only works if bfd exists.
+	# Set up LDFLAGS to select gold based on the gcc version.
+	local major=$(gcc-major-version "$@")
+	local minor=$(gcc-minor-version "$@")
+	if [[ ${major} -lt 4 ]] || [[ ${major} -eq 4 && ${minor} -lt 8 ]] ; then
+		# <=gcc-4.7 requires some coercion.  Only works if bfd exists.
 		if [[ -e ${path_ld} ]] ; then
 			local d="${T}/bfd-linker"
 			mkdir -p "${d}"
@@ -421,6 +390,9 @@ tc-ld-disable-gold() {
 		else
 			die "unable to locate a BFD linker to bypass gold"
 		fi
+	else
+		# gcc-4.8+ supports -fuse-ld directly.
+		export LDFLAGS="${LDFLAGS} -fuse-ld=bfd"
 	fi
 }
 
@@ -600,7 +572,7 @@ tc-endian() {
 	case ${host} in
 		aarch64*be)	echo big;;
 		aarch64)	echo little;;
-		alpha*)		echo little;;
+		alpha*)		echo big;;
 		arm*b*)		echo big;;
 		arm*)		echo little;;
 		cris*)		echo little;;
@@ -817,73 +789,6 @@ gcc-specs-stack-check() {
 	local directive
 	directive=$(gcc-specs-directive cc1)
 	[[ "${directive/\{!fno-stack-check:}" != "${directive}" ]]
-}
-
-
-# @FUNCTION: tc-enables-pie
-# @RETURN: Truth if the current compiler generates position-independent code (PIC) which can be linked into executables
-# @DESCRIPTION:
-# Return truth if the current compiler generates position-independent code (PIC)
-# which can be linked into executables.
-tc-enables-pie() {
-	local ret="$($(tc-getCC) ${CPPFLAGS} ${CFLAGS} -E -P - <<-EOF 2> /dev/null | grep '^true$'
-		#if defined(__PIE__)
-		true
-		#endif
-		EOF
-	)"
-	[[ ${ret} == true ]]
-}
-
-# @FUNCTION: tc-enables-ssp
-# @RETURN: Truth if the current compiler enables stack smashing protection (SSP) on at least minimal level
-# @DESCRIPTION:
-# Return truth if the current compiler enables stack smashing protection (SSP)
-# on level corresponding to any of the following options:
-#  -fstack-protector
-#  -fstack-protector-strong
-#  -fstack-protector-all
-tc-enables-ssp() {
-	local ret="$($(tc-getCC) ${CPPFLAGS} ${CFLAGS} -E -P - <<-EOF 2> /dev/null | grep '^true$'
-		#if defined(__SSP__) || defined(__SSP_STRONG__) || defined(__SSP_ALL__)
-		true
-		#endif
-		EOF
-	)"
-	[[ ${ret} == true ]]
-}
-
-# @FUNCTION: tc-enables-ssp-strong
-# @RETURN: Truth if the current compiler enables stack smashing protection (SSP) on at least middle level
-# @DESCRIPTION:
-# Return truth if the current compiler enables stack smashing protection (SSP)
-# on level corresponding to any of the following options:
-#  -fstack-protector-strong
-#  -fstack-protector-all
-tc-enables-ssp-strong() {
-	local ret="$($(tc-getCC) ${CPPFLAGS} ${CFLAGS} -E -P - <<-EOF 2> /dev/null | grep '^true$'
-		#if defined(__SSP_STRONG__) || defined(__SSP_ALL__)
-		true
-		#endif
-		EOF
-	)"
-	[[ ${ret} == true ]]
-}
-
-# @FUNCTION: tc-enables-ssp-all
-# @RETURN: Truth if the current compiler enables stack smashing protection (SSP) on maximal level
-# @DESCRIPTION:
-# Return truth if the current compiler enables stack smashing protection (SSP)
-# on level corresponding to any of the following options:
-#  -fstack-protector-all
-tc-enables-ssp-all() {
-	local ret="$($(tc-getCC) ${CPPFLAGS} ${CFLAGS} -E -P - <<-EOF 2> /dev/null | grep '^true$'
-		#if defined(__SSP_ALL__)
-		true
-		#endif
-		EOF
-	)"
-	[[ ${ret} == true ]]
 }
 
 

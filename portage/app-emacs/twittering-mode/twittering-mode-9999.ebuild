@@ -1,13 +1,15 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=4
 
 inherit elisp elisp-common eutils
 
-if [[ ${PV} == *9999 ]]; then
-	EGIT_REPO_URI="https://github.com/hayamiz/twittering-mode.git"
-	inherit git-r3
+if [ "${PV}" = "9999" ]; then
+	EGIT_REPO_URI="git://github.com/hayamiz/twittering-mode.git"
+	inherit git-2
+	SRC_URI=""
+	KEYWORDS=""
 	IUSE="doc"
 else
 	SRC_URI="mirror://sourceforge/twmode/${P}.tar.gz"
@@ -27,7 +29,7 @@ RDEPEND="app-crypt/gnupg"
 
 src_compile() {
 	elisp-compile twittering-mode.el || die
-	[[ ${PV} == *9999 ]] && use doc && emake -C doc/manual
+	[ "${PV}" = "9999" ] && use doc && emake -C doc/manual
 }
 
 src_test() {
@@ -35,6 +37,6 @@ src_test() {
 }
 
 src_install() {
-	[[ ${PV} == *9999 ]] && use doc && dodoc doc/manual/twmode/twmode.html
+	[ "${PV}" = "9999" ] && use doc && dodoc doc/manual/twmode/twmode.html
 	elisp-install ${PN} twittering-mode.el *.elc || die
 }

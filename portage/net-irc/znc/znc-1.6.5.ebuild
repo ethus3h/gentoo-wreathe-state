@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -15,9 +15,9 @@ SRC_URI="
 	http://znc.in/releases/archive/${PN}-${MY_PV}.tar.gz
 	test? ( ${GTEST_URL} )
 "
-KEYWORDS="amd64 arm x86"
+KEYWORDS="~amd64 ~arm ~x86"
 
-HOMEPAGE="https://znc.in"
+HOMEPAGE="http://znc.in"
 LICENSE="Apache-2.0"
 SLOT="0"
 IUSE="daemon debug +ipv6 +icu libressl perl python +ssl sasl tcl test +zlib"

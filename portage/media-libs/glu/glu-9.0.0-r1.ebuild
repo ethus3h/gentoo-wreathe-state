@@ -3,7 +3,7 @@
 
 EAPI=5
 
-EGIT_REPO_URI="https://anongit.freedesktop.org/git/mesa/glu.git"
+EGIT_REPO_URI="git://anongit.freedesktop.org/mesa/glu"
 
 if [[ ${PV} = 9999* ]]; then
 	AUTOTOOLS_AUTORECONF=1
@@ -19,7 +19,7 @@ HOMEPAGE="https://cgit.freedesktop.org/mesa/glu/"
 if [[ ${PV} = 9999* ]]; then
 	SRC_URI=""
 else
-	SRC_URI="https://mesa.freedesktop.org/archive/glu/${P}.tar.bz2"
+	SRC_URI="ftp://ftp.freedesktop.org/pub/mesa/${PN}/${P}.tar.bz2"
 fi
 
 LICENSE="SGI-B-2.0"
@@ -29,7 +29,8 @@ IUSE="static-libs"
 
 DEPEND=">=virtual/opengl-7.0-r1[${MULTILIB_USEDEP}]"
 RDEPEND="${DEPEND}
-	!<media-libs/mesa-9"
+	!<media-libs/mesa-9
+	abi_x86_32? ( !app-emulation/emul-linux-x86-opengl[-abi_x86_32(-)] )"
 
 src_unpack() {
 	default

@@ -10,10 +10,9 @@ inherit java-pkg-2 java-pkg-simple
 DESCRIPTION="Look'n'feel Java library"
 HOMEPAGE="http://laf-plugin.dev.java.net/"
 SRC_URI="mirror://gentoo/${P}-src.tar.bz2 -> ${P}.tar.bz2"
-
-KEYWORDS="amd64 x86"
-SLOT="0"
 LICENSE="BSD"
+SLOT="0"
+KEYWORDS="~amd64 ~x86"
 
 DEPEND=">=virtual/jdk-1.6"
 RDEPEND=">=virtual/jre-1.6"

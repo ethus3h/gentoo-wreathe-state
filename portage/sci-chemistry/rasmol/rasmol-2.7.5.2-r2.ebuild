@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -16,7 +16,7 @@ SRC_URI="mirror://sourceforge/open${PN}/RasMol/RasMol_2.7.5/${P}-${VERS}.tar.gz"
 
 LICENSE="|| ( GPL-2 RASLIC )"
 SLOT="0"
-KEYWORDS="amd64 x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ppc x86 ~amd64-linux ~x86-linux"
 IUSE=""
 
 RDEPEND="
@@ -32,8 +32,9 @@ RDEPEND="
 	x11-libs/vte:0"
 DEPEND="${RDEPEND}
 	app-text/rman
-	x11-base/xorg-proto
-	x11-misc/imake"
+	x11-misc/imake
+	x11-proto/inputproto
+	x11-proto/xextproto"
 
 #S="${WORKDIR}/${PN}-2.7.5-${VERS}"
 S="${WORKDIR}/RasMol-${PV}"

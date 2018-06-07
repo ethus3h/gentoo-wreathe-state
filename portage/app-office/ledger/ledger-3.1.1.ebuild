@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -8,7 +8,7 @@ PYTHON_COMPAT=( python2_7 )
 inherit check-reqs cmake-utils elisp-common python-single-r1
 
 DESCRIPTION="A double-entry accounting system with a command-line reporting interface"
-HOMEPAGE="https://www.ledger-cli.org/"
+HOMEPAGE="http://ledger-cli.org/"
 SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="BSD"
@@ -37,12 +37,13 @@ DEPEND="
 	dev-libs/utfcpp
 	doc? (
 		sys-apps/texinfo
-		virtual/texi2dvi
+		|| (
+			>=dev-texlive/texlive-plainextra-2013
+			dev-texlive/texlive-texinfo
+		)
 		dev-texlive/texlive-fontsrecommended
 	)
 "
-
-PATCHES=( "${FILESDIR}/${P}-boost.patch" ) # bug 609108
 
 # Building with python integration seems to fail without 8G available
 # RAM(!)  Since the memory check in check-reqs doesn't count swap, it

@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit autotools ltprune
+inherit eutils
 
 DESCRIPTION="IBM AS/400 telnet client which emulates 5250 terminals/printers"
 HOMEPAGE="http://tn5250.sourceforge.net/"
@@ -11,7 +11,7 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~sparc ~x86"
-IUSE="libressl ssl static-libs"
+IUSE="X libressl ssl"
 
 RDEPEND="
 	sys-libs/ncurses:=
@@ -21,27 +21,32 @@ RDEPEND="
 	)
 "
 
-DEPEND="
-	${RDEPEND}
+DEPEND="${RDEPEND}
+	X? ( x11-libs/libXt )
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-0.17.4-disable-sslv2-and-sslv3.patch
-	"${FILESDIR}"/${PN}-0.17.4-fix-Wformat-security-warnings.patch
-	"${FILESDIR}"/${PN}-0.17.4-tinfo.patch
-	"${FILESDIR}"/${PN}-0.17.4-whoami.patch
+	"${FILESDIR}/disable-sslv2-and-sslv3.patch"
+	"${FILESDIR}/fix-Wformat-security-warnings.patch"
 )
 
 src_prepare() {
 	default
-	eautoreconf
+
+	# Next, the Makefile for the terminfo settings tries to remove
+	# some files it doesn't have access to.	 We can just remove those
+	# lines.
+	sed -i \
+		-e "/rm -f \/usr\/.*\/terminfo.*5250/d" linux/Makefile.in \
+		|| die "sed Makefile.in failed"
 }
 
 src_configure() {
 	econf \
-		$(use_enable static-libs static) \
-		$(use_with ssl) \
-		--without-python
+		--disable-static \
+		--without-python \
+		$(use_with X x) \
+		$(use_with ssl)
 }
 
 src_install() {

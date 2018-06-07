@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 inherit cmake-utils
 
-DESCRIPTION="C++ libraries for building network-based applications"
-HOMEPAGE="https://pocoproject.org/"
+DESCRIPTION="C++ class libraries for building network- and internet-based applications"
+HOMEPAGE="http://pocoproject.org/"
 SRC_URI="https://github.com/pocoproject/${PN}/archive/${P}-release.tar.gz -> ${P}.tar.gz"
 LICENSE="Boost-1.0"
 SLOT="0"

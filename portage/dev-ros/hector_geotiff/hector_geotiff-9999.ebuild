@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -18,16 +18,10 @@ RDEPEND="
 	dev-ros/hector_nav_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-ros/nav_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
 	dev-ros/pluginlib
-		dev-libs/tinyxml2:=
-	dev-libs/console_bridge:=
 	dev-ros/roscpp
 	dev-ros/std_msgs[${CATKIN_MESSAGES_CXX_USEDEP}]
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5
-	dev-qt/qtwidgets:5
-	dev-libs/boost:=
+	dev-qt/qtcore:4
+	dev-qt/qtgui:4
 "
 DEPEND="${RDEPEND}
 	dev-cpp/eigen:3"
-
-PATCHES=( "${FILESDIR}/qt5.patch" )

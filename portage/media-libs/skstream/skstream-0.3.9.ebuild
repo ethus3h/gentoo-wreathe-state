@@ -1,12 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit flag-o-matic
+EAPI=2
+inherit base eutils
 
 DESCRIPTION="FreeSockets - Portable C++ classes for IP (sockets) applications"
-HOMEPAGE="https://www.worldforge.org/"
+HOMEPAGE="http://www.worldforge.org/"
 SRC_URI="mirror://sourceforge/worldforge/${P}.tar.bz2"
 
 LICENSE="GPL-2"
@@ -18,10 +17,4 @@ DEPEND="test? ( dev-util/cppunit )"
 RDEPEND=""
 
 PATCHES=( "${FILESDIR}"/${P}-test.patch )
-
-src_configure() {
-	# bug 651840
-	append-cxxflags -std=c++11
-
-	default
-}
+DOCS=( AUTHORS ChangeLog NEWS README README.FreeSockets TODO )

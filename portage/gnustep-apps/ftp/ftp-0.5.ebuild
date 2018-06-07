@@ -8,7 +8,7 @@ MY_P="FTP-${PV}"
 
 DESCRIPTION="FTP client for GNUstep"
 HOMEPAGE="http://gap.nongnu.org/ftp/"
-SRC_URI="https://savannah.nongnu.org/download/gap/${MY_P}.tar.gz"
+SRC_URI="http://savannah.nongnu.org/download/gap/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"

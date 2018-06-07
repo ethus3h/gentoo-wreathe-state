@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
 inherit toolchain-funcs
 
@@ -14,24 +14,20 @@ SLOT="0"
 KEYWORDS="amd64"
 IUSE=""
 
-RDEPEND="
-	app-arch/bzip2:=
+RDEPEND="gnustep-base/gnustep-base
 	dev-libs/icu:=
-	gnustep-base/gnustep-base
-	sys-libs/zlib:=
-"
+	sys-libs/zlib
+	app-arch/bzip2"
 DEPEND="${RDEPEND}
 	>=gnustep-base/gnustep-make-2.6.0[native-exceptions]
-	sys-devel/gcc[objc]
-"
+	sys-devel/gcc[objc]"
 
 S="${WORKDIR}/The Unarchiver/XADMaster"
 
 src_prepare() {
-	default
 	# avoid jobserver warning, upstream bug:
 	# https://bitbucket.org/WAHa_06x36/theunarchiver/issues/918/dont-call-make-from-makefile
-	sed -i -e 's:make:$(MAKE):g' Makefile.linux || die
+	sed -i -e 's:make:$(MAKE):g' Makefile.linux
 }
 
 src_compile() {

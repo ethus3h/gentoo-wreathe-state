@@ -1,9 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit toolchain-funcs
+inherit eutils toolchain-funcs
 
 DESCRIPTION="Sends messages to an alphanumeric pager via TAP protocol"
 HOMEPAGE="http://www.qpage.org/"
@@ -18,26 +16,30 @@ DEPEND="tcpd? ( sys-apps/tcp-wrappers )"
 RDEPEND="${DEPEND}
 	virtual/mta"
 
-PATCHES=(
-	"${FILESDIR}"/${P}-gentoo.patch
-	"${FILESDIR}"/${P}-fix-warning.patch
-	"${FILESDIR}"/${P}-fix-build-system.patch
-)
+src_unpack() {
+	unpack ${A}
+	cd "${S}"
 
-src_configure() {
+	epatch "${FILESDIR}"/${P}-gentoo.patch
+	epatch "${FILESDIR}"/${P}-fix-warning.patch
+}
+
+src_compile() {
 	tc-export CC
-	default
+	econf || die "econf failed"
 
 	# There doesn't seem to be a clean way to disable tcp wrappers in
 	# this package if you have it installed, but don't want to use it.
 	if ! use tcpd ; then
-		sed -i 's/-lwrap//g; s/-DTCP_WRAPPERS//g' Makefile || die
-		echo '#undef TCP_WRAPPERS' >> config.h || die
+		sed -i 's/-lwrap//g; s/-DTCP_WRAPPERS//g' Makefile
+		echo '#undef TCP_WRAPPERS' >> config.h
 	fi
+
+	emake || die "emake failed"
 }
 
 src_install() {
-	default
+	einstall || die "einstall failed"
 
 	dodir /var/spool/qpage
 	fowners daemon:daemon /var/spool/qpage
@@ -48,7 +50,7 @@ src_install() {
 	fperms 770 /var/lock/subsys/qpage
 
 	insinto /etc/qpage
-	doins example.cf
+	doins example.cf || die "doins example.cf failed"
 
 	doinitd "${FILESDIR}"/qpage
 }

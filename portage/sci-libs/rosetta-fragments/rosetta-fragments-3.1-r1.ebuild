@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
 inherit eutils flag-o-matic prefix toolchain-funcs
 
@@ -17,17 +17,12 @@ IUSE=""
 DEPEND=""
 RDEPEND="
 	sci-biology/ncbi-tools
-	sci-biology/update-blastdb
+	|| ( sci-biology/update-blastdb sci-biology/ncbi-tools++ )
 	sci-biology/psipred"
 
 RESTRICT="fetch"
 
 S="${WORKDIR}"/${PN/-/_}
-
-PATCHES=(
-	"${FILESDIR}"/${P}-nnmake.patch
-	"${FILESDIR}"/${P}-chemshift.patch
-)
 
 pkg_nofetch() {
 	einfo "Go to ${HOMEPAGE} and get ${PN}.tgz and rename it to ${A}"
@@ -35,7 +30,9 @@ pkg_nofetch() {
 }
 
 src_prepare() {
-	default
+	epatch \
+		"${FILESDIR}"/${P}-nnmake.patch \
+		"${FILESDIR}"/${P}-chemshift.patch
 	tc-export F77
 	eprefixify nnmake/*.pl
 }
@@ -55,8 +52,5 @@ src_install() {
 
 	insinto /usr/share/${PN}
 	doins -r *_database
-	dodoc \
-		fragments.README \
-		nnmake/{nnmake.README,vall/*.pl} \
-		chemshift/chemshift.README
+	dodoc fragments.README nnmake/{nnmake.README,vall/*.pl} chemshift/chemshift.README
 }

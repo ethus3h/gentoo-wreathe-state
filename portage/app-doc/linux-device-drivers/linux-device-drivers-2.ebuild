@@ -1,7 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-EAPI=6
 
 DESCRIPTION="howto write linux device drivers (updated for Linux 2.4)"
 HOMEPAGE="http://www.oreilly.com/catalog/linuxdrive2/"
@@ -20,7 +18,7 @@ S=${WORKDIR}
 
 src_install() {
 	insinto /usr/share/doc/${PF}
-	doins *.pdf
+	doins *.pdf || die "pdfs"
 	insinto /usr/share/doc/${PF}/samples
-	doins -r ldd2-samples-*/*
+	doins -r ldd2-samples-*/* || die "samples"
 }

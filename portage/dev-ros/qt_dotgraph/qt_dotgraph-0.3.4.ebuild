@@ -16,7 +16,7 @@ SLOT="0"
 IUSE=""
 
 RDEPEND="
-	dev-python/pydot[${PYTHON_USEDEP}]
+	media-gfx/pydot[${PYTHON_USEDEP}]
 	>=dev-ros/python_qt_binding-0.3.0[${PYTHON_USEDEP}]
 "
 DEPEND="${RDEPEND}

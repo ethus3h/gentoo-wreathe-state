@@ -4,5 +4,6 @@
 	<maintainer type="person">
 		<email>dlan@gentoo.org</email>
 		<name>Yixun Lan</name>
+		<description>Co Maintainer</description>
 	</maintainer>
 </pkgmetadata>

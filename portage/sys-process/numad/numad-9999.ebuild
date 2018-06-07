@@ -1,13 +1,13 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit linux-info toolchain-funcs
+inherit linux-info toolchain-funcs eutils
 
 if [[ ${PV} == "9999" ]]; then
-	EGIT_REPO_URI="https://pagure.io/numad.git"
-	inherit git-r3
+	EGIT_REPO_URI="git://git.fedorahosted.org/numad.git"
+	inherit git-2
 else
 	SRC_URI=""
 	KEYWORDS="~amd64 ~x86 -arm -s390"
@@ -23,8 +23,12 @@ IUSE=""
 CONFIG_CHECK="~NUMA ~CPUSETS"
 
 src_prepare() {
-	default
+	epatch "${FILESDIR}"/0001-Fix-man-page-directory-creation.patch
 	tc-export CC
+}
+
+src_configure() {
+	:
 }
 
 src_compile() {

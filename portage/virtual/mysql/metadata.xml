@@ -7,6 +7,5 @@
   </maintainer>
   <use>
     <flag name="embedded">Build embedded server (libmysqld)</flag>
-    <flag name="server">Build server (mysqld)</flag>
   </use>
 </pkgmetadata>

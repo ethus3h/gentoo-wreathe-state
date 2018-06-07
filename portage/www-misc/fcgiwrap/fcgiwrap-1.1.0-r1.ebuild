@@ -1,20 +1,22 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
 
-[[ ${PV} = *9999* ]] && VCS_ECLASS="git-r3" || VCS_ECLASS=""
+[[ ${PV} = *9999* ]] && VCS_ECLASS="git" || VCS_ECLASS=""
 inherit autotools systemd toolchain-funcs ${VCS_ECLASS}
 
 DESCRIPTION="Simple FastCGI wrapper for CGI scripts (CGI support for nginx)"
-HOMEPAGE="https://github.com/gnosek/fcgiwrap"
+HOMEPAGE="http://nginx.localdomain.pl/wiki/FcgiWrap"
 
 LICENSE="BSD"
 SLOT="0"
 IUSE="systemd"
 
 if [[ ${PV} == *9999* ]]; then
-	EGIT_REPO_URI="https://github.com/gnosek/${PN}.git"
+	EGIT_REPO_URI="git://github.com/gnosek/${PN}.git"
+
+	KEYWORDS=""
 else
 	SRC_URI="https://github.com/gnosek/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="amd64 ~arm x86"
@@ -35,9 +37,6 @@ src_prepare() {
 
 	sed -e '/man8dir = $(DESTDIR)/s/@prefix@//' \
 		-i Makefile.in || die "sed failed"
-
-	sed -e "s/libsystemd-daemon/libsystemd/" \
-		-i configure.ac || die "sed failed"
 	tc-export CC
 
 	# Fix systemd units for Gentoo

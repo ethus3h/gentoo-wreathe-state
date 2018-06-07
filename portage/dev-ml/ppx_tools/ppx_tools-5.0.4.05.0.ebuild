@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -12,15 +12,15 @@ SRC_URI="https://github.com/alainfrisch/ppx_tools/archive/${MY_PV}.tar.gz -> ${P
 
 LICENSE="MIT"
 SLOT="0/${PV}"
-KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~x86"
-IUSE="+ocamlopt"
+KEYWORDS="~amd64 ~ppc"
+IUSE=""
 
-DEPEND=">=dev-lang/ocaml-4.05_beta:=[ocamlopt?]"
+DEPEND=">=dev-lang/ocaml-4.05_beta:="
 RDEPEND="${DEPEND}"
 S="${WORKDIR}/${PN}-$(replace_version_separator 2 '-')"
 
 src_compile() {
-	emake -j1 $(usex ocamlopt "" "ARCH=none")
+	emake -j1
 }
 
 src_install() {

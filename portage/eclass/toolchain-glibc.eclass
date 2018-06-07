@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: toolchain-glibc.eclass
@@ -19,10 +19,9 @@ case ${EAPI:-0} in
 		src_install pkg_preinst pkg_postinst;;
 	2|3) EXPORT_FUNCTIONS pkg_setup src_unpack src_prepare src_configure \
 		src_compile src_test src_install pkg_preinst pkg_postinst;;
-	4|5) EXPORT_FUNCTIONS pkg_pretend pkg_setup src_unpack src_prepare \
+	4|5|6) EXPORT_FUNCTIONS pkg_pretend pkg_setup src_unpack src_prepare \
 		src_configure src_compile src_test src_install \
 		pkg_preinst pkg_postinst;;
-	6) EXPORT_FUNCTIONS pkg_pretend;;
 	*) die "Unsupported EAPI=${EAPI}";;
 esac
 
@@ -120,6 +119,9 @@ setup_target_flags() {
 		mips)
 			# The mips abi cannot support the GNU style hashes. #233233
 			filter-ldflags -Wl,--hash-style=gnu -Wl,--hash-style=both
+		;;
+		ppc)
+			append-flags "-freorder-blocks"
 		;;
 		sparc)
 			# Both sparc and sparc64 can use -fcall-used-g6.  -g7 is bad, though.
@@ -227,7 +229,6 @@ setup_flags() {
 	strip-flags
 	strip-unsupported-flags
 	filter-flags -m32 -m64 -mabi=*
-	filter-ldflags -Wl,-rpath=*
 
 	# Bug 492892.
 	filter-flags -frecord-gcc-switches
@@ -253,7 +254,7 @@ setup_flags() {
 	# this flag for us, so no need to do it manually.
 	version_is_at_least 2.16 ${PV} || append-cppflags -U_FORTIFY_SOURCE
 
-	# building glibc <2.25 with SSP is fraught with difficulty, especially
+	# building glibc with SSP is fraught with difficulty, especially
 	# due to __stack_chk_fail_local which would mean significant changes
 	# to the glibc build process. See bug #94325 #293721
 	# Note we have to handle both user-given CFLAGS and gcc defaults via
@@ -261,24 +262,16 @@ setup_flags() {
 	# added before user flags, and we can't just filter-flags because
 	# _filter_hardened doesn't support globs.
 	filter-flags -fstack-protector*
-	if ! version_is_at_least 2.25 ; then
-		tc-enables-ssp && append-flags $(test-flags -fno-stack-protector)
-	fi
+	gcc-specs-ssp && append-flags $(test-flags -fno-stack-protector)
 
-	if [[ $(gcc-major-version) -lt 6 ]]; then
-		# Starting with gcc-6 (and fully upstreamed pie patches) we control
-		# default enabled/disabled pie via use flags. So nothing to do
-		# here. #618160
-
-		if use hardened && tc-enables-pie ; then
-			# Force PIC macro definition for all compilations since they're all
-			# either -fPIC or -fPIE with the default-PIE compiler.
-			append-cppflags -DPIC
-		else
-			# Don't build -fPIE without the default-PIE compiler and the
-			# hardened-pie patch
-			filter-flags -fPIE
-		fi
+	if use hardened && gcc-specs-pie ; then
+		# Force PIC macro definition for all compilations since they're all
+		# either -fPIC or -fPIE with the default-PIE compiler.
+		append-cppflags -DPIC
+	else
+		# Don't build -fPIE without the default-PIE compiler and the
+		# hardened-pie patch
+		filter-flags -fPIE
 	fi
 }
 
@@ -363,20 +356,11 @@ setup_env() {
 		# and fall back on CFLAGS.
 		local VAR=CFLAGS_${CTARGET//[-.]/_}
 		CFLAGS=${!VAR-${CFLAGS}}
-		einfo " $(printf '%15s' 'Manual CFLAGS:')   ${CFLAGS}"
 	fi
 
 	setup_flags
 
 	export ABI=${ABI:-${DEFAULT_ABI:-default}}
-
-	if use headers-only ; then
-		# Avoid mixing host's CC and target's CFLAGS_${ABI}:
-		# At this bootstrap stage we have only binutils for
-		# target but not compiler yet.
-		einfo "Skip CC ABI injection. We can't use (cross-)compiler yet."
-		return 0
-	fi
 
 	local VAR=CFLAGS_${ABI}
 	# We need to export CFLAGS with abi information in them because glibc's
@@ -385,7 +369,6 @@ setup_env() {
 	# top of each other.
 	: ${__GLIBC_CC:=$(tc-getCC ${CTARGET_OPT:-${CTARGET}})}
 	export __GLIBC_CC CC="${__GLIBC_CC} ${!VAR}"
-	einfo " $(printf '%15s' 'Manual CC:')   ${CC}"
 }
 
 foreach_abi() {
@@ -409,7 +392,7 @@ foreach_abi() {
 }
 
 just_headers() {
-	is_crosscompile && use headers-only
+	is_crosscompile && use crosscompile_opts_headers-only
 }
 
 glibc_banner() {
@@ -493,12 +476,6 @@ check_devpts() {
 }
 
 toolchain-glibc_pkg_pretend() {
-	if [[ ${EAPI:-0} == 6 ]]; then
-		eerror "We're moving code back to the ebuilds to get away from the ancient EAPI cruft."
-		eerror "From EAPI=6 on you'll have to define the phases in the glibc ebuilds."
-		die "Silly overlay authors..."
-	fi
-
 	# For older EAPIs, this is run in pkg_preinst.
 	if [[ ${EAPI:-0} != [0123] ]] ; then
 		check_devpts
@@ -556,7 +533,7 @@ toolchain-glibc_pkg_pretend() {
 		ewarn "hypervisor, which is probably not what you want."
 	fi
 
-	use hardened && ! tc-enables-pie && \
+	use hardened && ! gcc-specs-pie && \
 		ewarn "PIE hardening not applied, as your compiler doesn't default to PIE"
 
 	# Make sure host system is up to date #394453
@@ -603,7 +580,7 @@ eend_KV() {
 
 get_kheader_version() {
 	printf '#include <linux/version.h>\nLINUX_VERSION_CODE\n' | \
-	$(tc-getCPP ${CTARGET}) -I "$(alt_build_headers)" - | \
+	$(tc-getCPP ${CTARGET}) -I "${EPREFIX}/$(alt_build_headers)" - | \
 	tail -n 1
 }
 
@@ -801,46 +778,9 @@ glibc_do_configure() {
 	[[ -d ports ]] && addons+=",ports"
 	popd > /dev/null
 
+	myconf+=( $(use_enable hardened stackguard-randomization) )
 	if has_version '<sys-libs/glibc-2.13' ; then
 		myconf+=( --enable-old-ssp-compat )
-	fi
-
-	if version_is_at_least 2.25 ; then
-		case ${CTARGET} in
-			mips*)
-				# dlopen() detects stack smash on mips n32 ABI.
-				# Cause is unknown: https://bugs.gentoo.org/640130
-				myconf+=( --enable-stack-protector=no )
-				;;
-			powerpc-*)
-				# Currently gcc on powerpc32 generates invalid code for
-				# __builtin_return_address(0) calls. Normally programs
-				# don't do that but malloc hooks in glibc do:
-				# https://gcc.gnu.org/PR81996
-				# https://bugs.gentoo.org/629054
-				myconf+=( --enable-stack-protector=no )
-				;;
-			*)
-				myconf+=( --enable-stack-protector=all )
-				;;
-		esac
-	fi
-
-	# Keep a whitelist of targets supporing IFUNC. glibc's ./configure
-	# is not robust enough to detect proper support:
-	#    https://bugs.gentoo.org/641216
-	#    https://sourceware.org/PR22634#c0
-	case $(tc-arch ${CTARGET}) in
-		# Keep whitelist of targets where autodetection mostly works.
-		amd64|x86|sparc|ppc|ppc64|arm|arm64|s390) ;;
-		# Blacklist everywhere else
-		*) myconf+=( libc_cv_ld_gnu_indirect_function=no ) ;;
-	esac
-
-	if version_is_at_least 2.25 ; then
-		myconf+=( --enable-stackguard-randomization )
-	else
-		myconf+=( $(use_enable hardened stackguard-randomization) )
 	fi
 
 	[[ $(tc-is-softfloat) == "yes" ]] && myconf+=( --without-fp )
@@ -1001,7 +941,7 @@ toolchain-glibc_headers_configure() {
 		libc_cv_mlong_double_128ibm=yes
 		libc_cv_ppc_machine=yes
 		libc_cv_ppc_rel16=yes
-		libc_cv_predef_fortify_source=no
+		libc_cv_predef_{fortify_source,stack_protector}=no
 		libc_cv_visibility_attribute=yes
 		libc_cv_z_combreloc=yes
 		libc_cv_z_execstack=yes
@@ -1015,11 +955,6 @@ toolchain-glibc_headers_configure() {
 		ac_cv_lib_audit_audit_log_user_avc_message=no
 		ac_cv_lib_cap_cap_init=no
 	)
-	if ! version_is_at_least 2.25 ; then
-		vars+=(
-			libc_cv_predef_stack_protector=no
-		)
-	fi
 	einfo "Forcing cached settings:"
 	for v in "${vars[@]}" ; do
 		einfo " ${v}"
@@ -1181,14 +1116,10 @@ toolchain-glibc_do_src_install() {
 		cp -a elf/ld.so "${ED}"$(alt_libdir)/$(scanelf -qSF'%S#F' elf/ld.so) || die "copying nptl interp"
 	fi
 
-	# Normally real_pv is ${PV}. Live ebuilds are exception, there we need
-	# to infer upstream version:
-	# '#define VERSION "2.26.90"' -> '2.26.90'
-	local upstream_pv=$(sed -n -r 's/#define VERSION "(.*)"/\1/p' "${S}"/version.h)
 	# Newer versions get fancy with libm linkage to include vectorized support.
 	# While we don't really need a ldscript here, portage QA checks get upset.
-	if [[ -e ${ED}$(alt_usrlibdir)/libm-${upstream_pv}.a ]] ; then
-		dosym ../../$(get_libdir)/libm-${upstream_pv}.so $(alt_usrlibdir)/libm-${upstream_pv}.so
+	if [[ -e ${ED}$(alt_usrlibdir)/libm-${PV}.a ]] ; then
+		dosym ../../$(get_libdir)/libm-${PV}.so $(alt_usrlibdir)/libm-${PV}.so
 	fi
 
 	# We'll take care of the cache ourselves
@@ -1305,7 +1236,7 @@ toolchain-glibc_do_src_install() {
 	doins "${WORKDIR}"/extra/etc/*.conf || die
 
 	if ! in_iuse nscd || use nscd ; then
-		doinitd "$(prefixify_ro "${WORKDIR}"/extra/etc/nscd)" || die
+		doinitd "${WORKDIR}"/extra/etc/nscd || die
 
 		local nscd_args=(
 			-e "s:@PIDFILE@:$(strings "${ED}"/usr/sbin/nscd | grep nscd.pid):"
