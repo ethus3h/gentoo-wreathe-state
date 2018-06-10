@@ -204,7 +204,6 @@ app-cdr/brasero:packagekit - Enable support for the distro-neutral package manag
 app-cdr/brasero:playlist - Enable support for playlists through dev-libs/totem-pl-parser
 app-cdr/brasero:tracker - Enable audio playlist search using the app-misc/tracker indexer
 app-cdr/cdemu:cdemu-daemon - Pull app-cdr/cdemu-daemon dependency, useful in chroot environment (bug #315491). Do not disable until you know what you are doing.
-app-cdr/cuetools:extras - Install additional script that tag files based on cue/toc file information
 app-cdr/dvdisaster:debug - Enable memory debugging.
 app-cdr/gaffitter:scripts - Install additional gaffitter scripts for external programs
 app-cdr/mirage2iso:pinentry - Support app-crypt/pinentry password input backend.
@@ -890,6 +889,7 @@ dev-ada/aws:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/aws:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
 dev-ada/gnat_util:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/gnat_util:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
+dev-ada/gnat_util:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
 dev-ada/gnat_util:shared - Build gnat_util shared library
 dev-ada/gnat_util:static-pic - Build gnat_util static library with pic code
 dev-ada/gnatcoll:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
@@ -902,6 +902,7 @@ dev-ada/gnatmem:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/gnatmem:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
 dev-ada/gprbuild:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/gprbuild:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
+dev-ada/gprbuild:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
 dev-ada/gtkada:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/gtkada:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
 dev-ada/gtkada:shared - Build gtkada as shared library
@@ -913,6 +914,7 @@ dev-ada/libgpr:shared - Build shared library
 dev-ada/libgpr:static-pic - Build static library with pic code
 dev-ada/xmlada:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/xmlada:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
+dev-ada/xmlada:gnat_2018 - Compile with dev-lang/gnat-gpl-2017
 dev-ada/xmlada:shared - Build shared library
 dev-ada/xmlada:static-pic - Build static library with pic code
 dev-cpp/eigen:c++11 - Build using the C++11 standard
@@ -2335,6 +2337,7 @@ kde-misc/kdeconnect:app - Enable experimental kcapp frontend
 kde-misc/kdeconnect:mousepad - Enable remote mousepad plugin using x11-libs/libfakekey
 kde-misc/kdeconnect:wayland - Enable kwin_wayland support for mousepad plugin using kde-frameworks/kwayland
 kde-misc/kio-gdrive:kaccounts - Use kde-apps/kaccounts-integration backend (default) instead of dev-libs/qtkeychain
+kde-misc/kmarkdownwebview:webkit - Use dev-qt/qtwebkit instead of dev-qt/qtwebengine
 kde-misc/tellico:discid - Add support for reading disc IDs from audio CDs
 kde-plasma/kde-cli-tools:kdesu - Build graphical frontend for kde-frameworks/kdesu
 kde-plasma/kdeplasma-addons:dictionary - Enable dictionary applet using dev-qt/qtwebengine
@@ -3209,6 +3212,7 @@ media-sound/pulseaudio:equalizer - Enable the equalizer module (requires sci-lib
 media-sound/pulseaudio:gdbm - Use sys-libs/gdbm to store PulseAudio databases. Recommended for desktop usage. This flag causes the whole package to be licensed under GPL-2 or later.
 media-sound/pulseaudio:glib - Add support to dev-libs/glib-based mainloop for the libpulse client library, to allow using libpulse on glib-based programs.
 media-sound/pulseaudio:gnome - Use GConf to store user preferences on streams and so on. Don't enable this flag if you want to use a system wide instance. If unsure, enable this flag.
+media-sound/pulseaudio:gsettings - Use GSettings instead of GConf to store user preferences.
 media-sound/pulseaudio:native-headset - Build with native HSP backend for bluez 5.
 media-sound/pulseaudio:ofono-headset - Build with oFono HFP backend for bluez 5, requires net-misc/ofono.
 media-sound/pulseaudio:oss - Enable OSS sink/source (output/input). Deprecated, upstream does not support this on systems where other sink/source systems are available (i.e.: Linux). The padsp wrapper is now always build if the system supports OSS at all.
@@ -4637,10 +4641,14 @@ net-p2p/mldonkey:guionly - enable client build only
 net-p2p/mldonkey:magic - enable use of libmagic
 net-p2p/qbittorrent:webui - Enable the Web UI
 net-p2p/retroshare:cli - Enables the CLI version of RetroShare
+net-p2p/retroshare:control-socket - Enables API via Unix socket support
 net-p2p/retroshare:feedreader - Enables the Feedreader plugin
 net-p2p/retroshare:gnome-keyring - Enables potentially insecure autologin capability via Gnome Keyring
 net-p2p/retroshare:gui - Enables the GUI version of RetroShare
+net-p2p/retroshare:settings-api - Enables settings control via API
+net-p2p/retroshare:sqlcipher - Enables GXS database encryption via SQLCipher
 net-p2p/retroshare:voip - Enables VOIP plugin
+net-p2p/retroshare:webui - Enables Web interface and API support
 net-p2p/rtorrent:daemon - Uses app-misc/screen to daemonize this application
 net-p2p/syncthing:tools - Install stdiscosrv, strelaysrv and other tools to /usr/libexec/syncthing/.
 net-p2p/transmission:lightweight - Optimize transmission for low-resource systems (smaller cache size, prefer unencrypted peer connections, etc.)
@@ -4778,6 +4786,7 @@ net-wireless/aircrack-ng:airgraph-ng - Build airgraph-ng
 net-wireless/aircrack-ng:experimental - Build the "experimental" tools which may randomly fail to run properly
 net-wireless/aircrack-ng:netlink - Use netlink for channel control instead of WEXT
 net-wireless/aircrack-ng:unstable - Build the "unstable" tools which may randomly fail to run properly
+net-wireless/bluez:btpclient - Enable BTP client
 net-wireless/bluez:deprecated - Build deprecated plugins
 net-wireless/bluez:experimental - Build experimental plugins
 net-wireless/bluez:extra-tools - Install tools that upstream doesn't install on purpose by default. All this tools shouldn't be used. Then, please notify upstream about you still need them to let them know the situation.
