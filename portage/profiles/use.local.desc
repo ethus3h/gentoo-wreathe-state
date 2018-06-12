@@ -910,6 +910,7 @@ dev-ada/libadalang:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/libadalang:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
 dev-ada/libgpr:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/libgpr:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
+dev-ada/libgpr:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
 dev-ada/libgpr:shared - Build shared library
 dev-ada/libgpr:static-pic - Build static library with pic code
 dev-ada/xmlada:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
@@ -1465,6 +1466,7 @@ dev-libs/gmime:smime - Enable experimental S/MIME support
 dev-libs/gmp:asm - Enable use of hand optimized assembly routines (faster execution)
 dev-libs/gmp:pgo - After building gmp, run some tests against to produce faster libraries -- this option will double the compile time
 dev-libs/gobject-introspection:doctool - Install g-ir-doc-tool for generating documentation from introspected data
+dev-libs/granite:demo - Build the Granite demo application (to present all available UI features provided by the library)
 dev-libs/hidapi:fox - Build a x11-libs/fox GUI
 dev-libs/jemalloc:hugepages - Enable transparent huge page support
 dev-libs/jemalloc:lazy-lock - Enable lazy locking (only lock when multi-threaded)
@@ -3857,6 +3859,7 @@ net-firewall/iptables:conntrack - Build against net-libs/libnetfilter_conntrack 
 net-firewall/iptables:netlink - Build against libnfnetlink which enables the nfnl_osf util
 net-firewall/iptables:nftables - Support nftables kernel interface
 net-firewall/iptables:pcap - Build against net-libs/libpcap which enables the nfbpf_compile util
+net-firewall/nftables:json - Enable JSON support via dev-libs/jansson
 net-firewall/shorewall:init - Adds the capability to place the firewall in a safe state prior to bringing up the network interfaces
 net-firewall/shorewall:ipv4 - Installs everything needed to create a full IPv4 firewall
 net-firewall/shorewall:ipv6 - Adds the capability to create a full IPv6 firewall (requires net-firewall/shorewall ipv4 USE flag)
