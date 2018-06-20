@@ -889,6 +889,7 @@ dev-ada/asis:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
 dev-ada/asis:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
 dev-ada/aunit:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/aunit:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
+dev-ada/aunit:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
 dev-ada/aws:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/aws:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
 dev-ada/gnat_util:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
@@ -1370,24 +1371,6 @@ dev-lang/swi-prolog:archive - Use libarchive for extension packs
 dev-lang/swi-prolog:uuid - Use ossp-uuid for UUID pack
 dev-lang/swig:ccache - build ccache-swig(a fast compiler cache)
 dev-lang/yap:R - Enable support for connecting R to Prolog
-dev-libs/DirectFB:bmp - build BMP image provider
-dev-libs/DirectFB:divine - enable DiVine
-dev-libs/DirectFB:drmkms - build with DRM/KMS support
-dev-libs/DirectFB:dynload - enable dynload support
-dev-libs/DirectFB:egl - build with EGL support
-dev-libs/DirectFB:fusiondale - enable FusionDale
-dev-libs/DirectFB:fusionsound - enable FusionSound
-dev-libs/DirectFB:gles2 - build gles2 gfxdriver
-dev-libs/DirectFB:imlib2 - build Imlib2 image provider
-dev-libs/DirectFB:input_hub - provides an asynchronous interface to the input devices available and those being added/removed
-dev-libs/DirectFB:mpeg2 - build MPEG2 image provider
-dev-libs/DirectFB:mpeg3 - build Libmpeg3 video provider
-dev-libs/DirectFB:multicore - enable multicore support
-dev-libs/DirectFB:pnm - build PNM (PBM/PGM/PPM) image provider
-dev-libs/DirectFB:sawman - enable SaWMan (window manager and application manager)
-dev-libs/DirectFB:swfdec - build Swfdec (Flash decoder) video provider
-dev-libs/DirectFB:tremor - build Ogg/Vorbis music provider using Tremor
-dev-libs/DirectFB:webp - build WebP image provider
 dev-libs/ace:ciao - Include Component Intergraced Ace ORB into the build of ace
 dev-libs/ace:tao - Include the ACE ORB (CORBA stuff) (called tao) into the build of ace
 dev-libs/appstream:apt - Enables Debians APT support
@@ -1771,9 +1754,6 @@ dev-python/cgkit:3ds - Enable support for importing 3D Studio models
 dev-python/dap:server - Enable OpenDAP server support
 dev-python/dask:distributed - Add support for distributed computing with dev-python/distributed
 dev-python/django-tastypie:bip - An optional serialiser dev-python/biplist
-dev-python/django-tastypie:digest - Library to aid in implementing HTTP Digest Authentication
-dev-python/django-tastypie:lxml - An optional serialiser dev-python/lxml
-dev-python/django-tastypie:yaml - An optional serialiser dev-python/yaml
 dev-python/flask-restful:paging - Enable resource paging support
 dev-python/geopy:timezone - Enables localized date support
 dev-python/geopy:yahoo - Enables use of YahooPlaceFinder
@@ -2092,6 +2072,7 @@ dev-util/schroot:btrfs - Enable support for chroots using btrfs snapshots.
 dev-util/schroot:dchroot - Enables the building of a wrapper named "dchroot", replacing sys-apps/dchroot.
 dev-util/schroot:lvm - Enable support for chroots using LVM snapshots.
 dev-util/strace:aio - Enable dev-libs/libaio support for tracing Asynchronous I/O operations
+dev-util/strace:elfutils - Enable stack backtraces (-k flag) via dev-libs/elfutils
 dev-util/strace:unwind - Enable stack backtraces (-k flag) via sys-libs/libunwind
 dev-util/suse-build:symlink - Provide compatibility symlinks with original openSUSE package (might clash with other packages)
 dev-util/sysprof:systemd - Build the sysprofd daemon service, required to run the UI without root permissions. Relies on sys-apps/systemd running as the init system.
@@ -2818,8 +2799,14 @@ media-libs/grilo:playlist - Enable support for playlists through dev-libs/totem-
 media-libs/gst-plugins-bad:bzip2 - Enable bzip2 encoder/decoder plugin
 media-libs/gst-plugins-bad:egl - Enable EGL support
 media-libs/gst-plugins-bad:gles2 - Enable GLES2 support
+media-libs/gst-plugins-base:X - Enable ximagesink and xvimagesink plugins; build GLX platform support if USE=opengl is enabled; build x11 windowing system support if USE=egl is enabled
+media-libs/gst-plugins-base:egl - Enable EGL platform support
+media-libs/gst-plugins-base:gbm - Enable Graphics Buffer Manager based EGL windowing system support (requires egl and at least one of gles or opengl)
+media-libs/gst-plugins-base:gles2 - Enable OpenGL library and plugin via GLESv2 API (requires egl)
 media-libs/gst-plugins-base:ivorbis - Enable integer based vorbis decoder
+media-libs/gst-plugins-base:opengl - Enable OpenGL library and plugin via desktop OpenGL API
 media-libs/gst-plugins-base:pango - Enable pango GStreamer plugin
+media-libs/gst-plugins-base:wayland - Enable Wayland EGL windowing system support (requires egl and at least one of gles2 or opengl)
 media-libs/gstreamer:orc - Disable some PaX memory protections to allow plugins that use dev-lang/orc for runtime optimization to be used on hardened PaX systems
 media-libs/gstreamer:unwind - Enable sys-libs/libunwind usage for better backtrace support in leaks tracer module
 media-libs/harfbuzz:glib - Compile with GLib Unicode support
@@ -3047,6 +3034,7 @@ media-plugins/gst-plugins-meta:opus - Enable Opus audio codec support
 media-plugins/gst-plugins-meta:vpx - Enables vp8 codec support using libvpx, required to play some HTML5 videos
 media-plugins/gst-plugins-vaapi:drm - Enable DRM renderer
 media-plugins/gst-plugins-vaapi:egl - Enable EGL support
+media-plugins/gst-plugins-vaapi:gles2 - Enable GLESv2 and GLESv3 support
 media-plugins/hexter:gtk2 - Enable x11-libs/gtk+:2 based GUI
 media-plugins/kipi-plugins:flashexport - Build the flash export plugin
 media-plugins/kipi-plugins:mediawiki - Build the mediawiki export plugin
@@ -3769,7 +3757,9 @@ net-analyzer/zabbix:proxy - Enable proxy support
 net-analyzer/zabbix:server - Enable zabbix server
 net-analyzer/zabbix:ssh - SSH v2 based checks
 net-analyzer/zabbix:static - Build statically linked binaries
+net-dialup/freeradius:memcached - Include dev-libs/libmemcached in caching drivers
 net-dialup/freeradius:pcap - Build the RADIUS sniffer which requires net-libs/libpcap.
+net-dialup/freeradius:rest - Include support for sending and receiving HTTP requests
 net-dialup/freeradius-client:scp - Add service type hints derived from username prefix
 net-dialup/freeradius-client:shadow - Enable shadow password support
 net-dialup/mgetty:fax - Enables fax support
@@ -4599,9 +4589,6 @@ net-nntp/slrn:uudeview - Add support for yEnc coding and more using dev-libs/uul
 net-nntp/tin:cancel-locks - Enable Cancel-Lock header functionality (also enables USE=evil)
 net-nntp/tin:etiquette - Enable the display off posting etiquettes
 net-nntp/tin:gpg - Enable app-crypt/gnupg support
-net-p2p/amule:daemon - Enable amule daemon
-net-p2p/amule:remote - Enable remote controlling of the client
-net-p2p/amule:stats - Enable statistic reporting
 net-p2p/bitcoin-cli:knots - Build enhanced Bitcoin Knots version, rather than Bitcoin Core
 net-p2p/bitcoin-qt:asm - Enable assembly for optimization
 net-p2p/bitcoin-qt:bip70 - Enable support for the BIP70 payment protocol
@@ -5162,6 +5149,7 @@ sys-apps/lm_sensors:sensord - Enable sensord - a daemon that can be used to peri
 sys-apps/man-db:manpager - Enable manpager wrapper for colorizing output
 sys-apps/mawk:forced-sandbox - Always enable -W sandbox mode for simpler/secure runtime
 sys-apps/memtest86:serial - Compile with serial console support
+sys-apps/memtest86+:boot - Also install to /boot instead of just /usr/share/memtest86+/
 sys-apps/memtest86+:floppy - Install a script to create floppy disks containing memtest86+ binaries.
 sys-apps/memtest86+:iso - Compile an ISO image
 sys-apps/memtest86+:serial - Compile with serial console support
