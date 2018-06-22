@@ -3202,6 +3202,7 @@ media-sound/pulseaudio:alsa-plugin - Request installing media-plugins/alsa-plugi
 media-sound/pulseaudio:asyncns - Use libasyncns for asynchronous name resolution.
 media-sound/pulseaudio:doc - Build the doxygen-described API documentation.
 media-sound/pulseaudio:equalizer - Enable the equalizer module (requires sci-libs/fftw).
+media-sound/pulseaudio:gconf - Ensure gnome-base/gconf is present for pulseaudio GConf to GSettings module automatic migration (keeping the user configuration)
 media-sound/pulseaudio:gdbm - Use sys-libs/gdbm to store PulseAudio databases. Recommended for desktop usage. This flag causes the whole package to be licensed under GPL-2 or later.
 media-sound/pulseaudio:glib - Add support to dev-libs/glib-based mainloop for the libpulse client library, to allow using libpulse on glib-based programs.
 media-sound/pulseaudio:gnome - Use GConf to store user preferences on streams and so on. Don't enable this flag if you want to use a system wide instance. If unsure, enable this flag.
@@ -3484,12 +3485,13 @@ media-video/mpv:jpeg - Enable support for saving screenshots in JPEG format
 media-video/mpv:libass - Enable OSD (On Screen Display) and subtitles support via media-libs/libass
 media-video/mpv:libmpv - Build mpv shared library
 media-video/mpv:lua - Enable Lua scripting, OSC (On Screen Controller) GUI and net-misc/youtube-dl hook-script
-media-video/mpv:opengl - Enable the recommended 'opengl' video output
+media-video/mpv:opengl - Enable support for various OpenGL-based video backends
 media-video/mpv:raspberry-pi - Enable support for the Raspberry Pi
 media-video/mpv:rubberband - Enable high quality pitch correction via media-libs/rubberband
 media-video/mpv:sdl - Enable media-libs/libsdl2 based video and audio outputs (Note: these outputs exist for compatibility reasons only, avoid if possible)
 media-video/mpv:tools - Install extra tools: mpv_identify.sh, mpv_idet.sh, and umpv
 media-video/mpv:uchardet - Enable subtitles charset discovery via app-i18n/uchardet
+media-video/mpv:vulkan - Enable support for various Vulkan-based video backends
 media-video/noad:libmpeg2 - Support for libmpeg2 library
 media-video/nvidia_video_sdk:tools - Build and install example tools.
 media-video/parole:clutter - Compile in Clutter GTK+ support
@@ -4103,7 +4105,6 @@ net-libs/ldns:ecdsa - Enable ECDSA support
 net-libs/ldns:gost - Enable GOST support
 net-libs/libbitcoinconsensus:asm - Enable assembly for optimization
 net-libs/libbitcoinconsensus:knots - Build enhanced Bitcoin Knots version, rather than Bitcoin Core
-net-libs/libeXosip:srv - enable support for SRV records DNS queries
 net-libs/libesmtp:ntlm - Enable support for NTLM authentication
 net-libs/libetpan:liblockfile - Enable support for liblockfile library
 net-libs/libgsasl:gcrypt - Use dev-libs/libgcrypt for low-level crypto
@@ -4713,11 +4714,6 @@ net-proxy/tsocks:dns - Force DNS queries to use SOCKS server via tcp
 net-proxy/tsocks:envconf - Allow TSOCKS_CONF_FILE to specify configuration file
 net-proxy/tsocks:server-lookups - Allow hostname resolution _for_ SOCKS servers
 net-proxy/tsocks:tordns - Apply tordns patch which allows transparent TORification of the DNS queries
-net-voip/linphone:assistant - Turn on assistant compiling (needs gtk enabled)
-net-voip/linphone:gsm-nonstandard - Support non-standard GSM frequencies
-net-voip/linphone:sqlite - Turn on compilation of message storage
-net-voip/linphone:tools - Compile tools
-net-voip/linphone:video - Enable video support (display/capture)
 net-voip/telepathy-gabble:plugins - Enable plugin loader
 net-vpn/badvpn:client - Build the badvpn-client program, a daemon that runs on endpoints of the VPN.
 net-vpn/badvpn:ncd - Build NCD, a lightweight scripting language especially suited for network configurations.
@@ -5160,10 +5156,6 @@ sys-apps/net-tools:plipconfig - build the plipconfig tool (for working with old 
 sys-apps/net-tools:slattach - build the slattach tool (for working with old serial ports)
 sys-apps/openrc:netifrc - enable Gentoo's network stack (net.* scripts)
 sys-apps/openrc:newnet - enable the new network stack (experimental)
-sys-apps/paludis:pbins - Enable binary package support. Adds dependency upon app-arch/libarchive
-sys-apps/paludis:pink - Use a less boring colourscheme than the default
-sys-apps/paludis:search-index - Enable cave search --index. Requires dev-db/sqlite.
-sys-apps/paludis:xml - Build xml things for metadata.xml and GLSA support (needs dev-libs/libxml2).
 sys-apps/pciutils:dns - Enable support for querying the central database of PCI IDs using DNS
 sys-apps/pciutils:kmod - Enable sys-apps/kmod support for the -k switch in lspci command
 sys-apps/pciutils:zlib - Support compressed pci.ids database
