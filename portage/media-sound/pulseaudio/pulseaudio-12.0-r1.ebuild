@@ -258,11 +258,6 @@ multilib_src_install() {
 }
 
 multilib_src_install_all() {
-	# Drop the script entirely if X is disabled
-	if ! use X ; then
-		rm "${ED%/}"/usr/bin/start-pulseaudio-x11 || die
-	fi
-
 	if use system-wide; then
 		newconfd "${FILESDIR}/pulseaudio.conf.d" pulseaudio
 
@@ -282,6 +277,12 @@ multilib_src_install_all() {
 		doinitd "${T}/pulseaudio"
 
 		systemd_dounit "${FILESDIR}/${PN}.service"
+
+		# We need /var/run/pulse, bug #442852
+		systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfiles" "${PN}.conf"
+	else
+		# Prevent warnings when system-wide is not used, bug #447694
+		rm "${ED%/}"/etc/dbus-1/system.d/pulseaudio-system.conf || die
 	fi
 
 	if use zeroconf ; then
@@ -293,14 +294,6 @@ multilib_src_install_all() {
 
 	# Create the state directory
 	use prefix || diropts -o pulse -g pulse -m0755
-
-	# We need /var/run/pulse, bug #442852
-	use system-wide && systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfiles" "${PN}.conf"
-
-	# Prevent warnings when system-wide is not used, bug #447694
-	if ! use system-wide ; then
-		rm "${ED}"/etc/dbus-1/system.d/pulseaudio-system.conf || die
-	fi
 
 	find "${ED}" \( -name '*.a' -o -name '*.la' \) -delete || die
 }
