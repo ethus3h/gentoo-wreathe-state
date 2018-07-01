@@ -376,8 +376,6 @@ app-emulation/libvirt:xen - Support management of Xen virtualisation (app-emulat
 app-emulation/libvirt:zfs - Enable ZFS backend storage sys-fs/zfs
 app-emulation/lxc:cgmanager - Enable support for cgroup management using app-admin/cgmanager
 app-emulation/lxc:templates - Install old style templates through app-emulation/lxc-templates
-app-emulation/lxd:daemon - Build the system daemon, not just the client tool
-app-emulation/lxd:dnsmasq - Depend on dnsmasq to provide DHCP and DNS.
 app-emulation/nemu:ovf - Adds support for OVA/OVF import
 app-emulation/nemu:savevm - Adds support for QEMU savevm snapshots (experimental, QEMU must be patched)
 app-emulation/nemu:vnc-client - Adds support for external VNC client
@@ -942,6 +940,7 @@ dev-ada/gnatcoll:shared - Build shared library
 dev-ada/gnatcoll:tools - Build associated tools
 dev-ada/gnatmem:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/gnatmem:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
+dev-ada/gnatmem:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
 dev-ada/gprbuild:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/gprbuild:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
 dev-ada/gprbuild:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
@@ -5103,6 +5102,7 @@ sys-apps/flashrom:bitbang_spi - Bitbanging SPI infrastructure
 sys-apps/flashrom:buspirate_spi - Enable Bus Pirate SPI programmer
 sys-apps/flashrom:ch341a_spi - Enable WCH CH341A SPI programmer
 sys-apps/flashrom:dediprog - Dediprog SF100 support
+sys-apps/flashrom:digilent_spi - Enable support for Digilent iCEblink40 development board
 sys-apps/flashrom:drkaiser - Enable Dr. Kaiser programmer
 sys-apps/flashrom:dummy - Enable dummy tracing
 sys-apps/flashrom:ft2232_spi - Enable ftdi programmer, flashing through FTDI/SPI USB interface
