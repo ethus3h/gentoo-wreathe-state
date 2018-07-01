@@ -13,7 +13,7 @@ SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~s390 ~sh ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris"
+KEYWORDS="~amd64 ~arm ~hppa ia64 ~m68k ~mips ~ppc64 ~s390 ~sh ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris"
 IUSE="doc examples ssl test"
 
 RDEPEND="
@@ -31,6 +31,7 @@ DEPEND="
 		dev-python/psutil[${PYTHON_USEDEP}]
 		dev-python/pyopenssl[${PYTHON_USEDEP}]
 		dev-python/pysendfile[${PYTHON_USEDEP}]
+		dev-python/pytest[${PYTHON_USEDEP}]
 	)
 "
 
@@ -47,7 +48,15 @@ python_compile_all() {
 }
 
 python_test() {
-	"${EPYTHON}" ${PN}/test/runner.py || die "Tests failed with ${EPYTHON}"
+	# Skip tests which sometimes fail:
+	# https://github.com/giampaolo/pyftpdlib/issues/470
+	# https://github.com/giampaolo/pyftpdlib/issues/471
+	py.test --ignore ${PN}/test/test_misc.py -k \
+		"not (test_idle_data_timeout2 or test_on_incomplete_file_received)" \
+		|| die "Tests failed with ${EPYTHON}"
+	# These tests fail when passing additional options to py.test
+	# so we need to run them separately
+	py.test ${PN}/test/test_misc.py || die "Tests failed with ${EPYTHON}"
 }
 
 python_install_all() {
