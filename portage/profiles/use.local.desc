@@ -87,18 +87,20 @@ app-admin/rsyslog:curl - Enable http_request() function in RainerScript (require
 app-admin/rsyslog:dbi - Build the general database output module (requires dev-db/libdbi)
 app-admin/rsyslog:elasticsearch - Build the Elasticsearch output module (requires net-misc/curl)
 app-admin/rsyslog:gcrypt - Add support for encrypted log files using dev-libs/libgcrypt
+app-admin/rsyslog:gnutls - Build the GnuTLS network stream driver (requires net-libs/gnutls)
 app-admin/rsyslog:grok - Build the grok modify module (requires dev-libs/grok)
 app-admin/rsyslog:jemalloc - Use dev-libs/jemalloc for allocations.
 app-admin/rsyslog:kafka - Build the Apache Kafka input/output module (requires dev-libs/librdkafka)
 app-admin/rsyslog:kerberos - Build the GSSAPI input and output module (requires virtual/krb5)
 app-admin/rsyslog:kubernetes - Build the kubernetes modify plugin (requires net-misc/curl)
-app-admin/rsyslog:libressl - Use dev-libs/libressl for building the rfc5424hmac modify module (requires rfc5424hmac USE flag)
+app-admin/rsyslog:libressl - Use dev-libs/libressl instead of dev-libs/openssl (you still need to enable functionality which requires OpenSSL)
 app-admin/rsyslog:mdblookup - Build the MaxMind DB lookup message modify plugin using dev-libs/libmaxminddb
 app-admin/rsyslog:mongodb - Build the MongoDB output module (requires dev-libs/libmongo-client)
 app-admin/rsyslog:mysql - Build the MySQL database output module (requires virtual/mysql)
 app-admin/rsyslog:normalize - Build the normalize modify module (requires dev-libs/libee and dev-libs/liblognorm)
 app-admin/rsyslog:omhttpfs - Build the httpfs output module (requires net-misc/curl)
 app-admin/rsyslog:omudpspoof - Build the udpspoof output module (requires net-libs/libnet)
+app-admin/rsyslog:openssl - Build the OpenSSL network stream driver (requires dev-libs/openssl)
 app-admin/rsyslog:postgres - Build the PostgreSQL database output module (requires dev-db/postgresql)
 app-admin/rsyslog:rabbitmq - Build the RabbitMQ output module (requires net-libs/rabbitmq-c)
 app-admin/rsyslog:redis - Build the Redis output module using (requires dev-libs/hiredis)
@@ -110,6 +112,7 @@ app-admin/rsyslog:ssl - Add support for encrypted client/server communication (r
 app-admin/rsyslog:systemd - Build the journal input and output module (requires sys-apps/systemd)
 app-admin/rsyslog:usertools - Installs the user tools (rsgtutil, rscryutil...) corresponding to the set USE flags
 app-admin/rsyslog:uuid - Include UUIDs in messages (requires sys-apps/util-linux)
+app-admin/rsyslog:xxhash - Enable xxHash support in fmhash module (requires dev-libs/xxhash)
 app-admin/rsyslog:zeromq - Build the ZeroMQ input and output modules (requires net-libs/czmq)
 app-admin/sagan:libdnet - Add support for dev-libs/libdnet
 app-admin/sagan:lognorm - Add support for log/rules normalizations via dev-libs/liblognorm
@@ -162,7 +165,6 @@ app-arch/engrampa:packagekit - Enable support for installing via app-admin/packa
 app-arch/file-roller:nautilus - Build contextual menu extension for gnome-base/nautilus.
 app-arch/file-roller:packagekit - Enable support for the distro-neutral package manager GUI app-admin/packagekit
 app-arch/gzip:pic - disable optimized assembly code that is not PIC friendly
-app-arch/innoextract:c++0x - Compile innoextract using the C++11 standard
 app-arch/innoextract:debug - Enable debug logging and the --debug command-line option
 app-arch/innoextract:lzma - Enable support for extracting lzma-compressed installers using app-arch/xz-utils
 app-arch/libarchive:bzip2 - Allow accessing bzip2-compressed archives through libbz2 (which comes with app-arch/bzip2). This only affects libarchive's native support: bsdtar will keep using bunzip2 as a filter if that's not built-in.
@@ -178,6 +180,7 @@ app-arch/tar:minimal - just install `tar`
 app-arch/unzip:natspec - Use dev-libs/libnatspec to correctly decode non-ascii file names archived in Windows.
 app-arch/xz-utils:extra-filters - Build additional filters that are not used in any of the default xz presets. This includes delta and BCJ coders, additional match finders and SHA256 checks.
 app-arch/zip:natspec - Use dev-libs/libnatspec to correctly decode non-ascii file names archived in Windows.
+app-arch/zstd:lz4 - Enable support for LZ4 compression using app-arch/lz4
 app-backup/amanda:ndmp - Support for the NDMP protocol
 app-backup/amanda:s3 - Support for backing up to the Amazon S3 system
 app-backup/amanda:xfs - Support for backing up raw XFS filesystems using xfsdump
@@ -254,10 +257,6 @@ app-doc/linuxfromscratch:htmlsingle - Install all-on-one-page HTML version.
 app-doc/pms:binary - Download pre-built files instead of building from sources
 app-doc/pms:html - Generate PMS as .html as well
 app-doc/pms:twoside - Enable two-sided layout suitable for printing
-app-doc/root-docs:api - Generate html API documentation
-app-doc/root-docs:http - Build HttpServer documentation
-app-doc/root-docs:math - Provide all math related documentation
-app-doc/root-docs:metric - Default to A4 paper size and metric measurement. Letter will be used otherwise
 app-doc/tldp-howto:html - Install multi-chapter HTML docs
 app-doc/tldp-howto:htmlsingle - Install all-on-one-page HTML docs
 app-doc/tldp-howto:pdf - Install pdf docs
@@ -953,6 +952,7 @@ dev-ada/gtkada:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
 dev-ada/gtkada:shared - Build gtkada as shared library
 dev-ada/libadalang:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/libadalang:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
+dev-ada/libadalang:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
 dev-ada/libgpr:gnat_2016 - Compile with dev-lang/gnat-gpl-2016
 dev-ada/libgpr:gnat_2017 - Compile with dev-lang/gnat-gpl-2017
 dev-ada/libgpr:gnat_2018 - Compile with dev-lang/gnat-gpl-2018
@@ -1888,10 +1888,19 @@ dev-qt/qt-creator:systemd - Add support for retrieving application output from j
 dev-qt/qt-creator:valgrind - Add support for memory debugging using dev-util/valgrind
 dev-qt/qt-creator:webengine - Use dev-qt/qtwebengine to view documentation
 dev-qt/qt-creator:winrt - Build plugin for WinRT devices
+dev-qt/qt-docs:3d - Install documentation for dev-qt/qt3d
+dev-qt/qt-docs:bluetooth - Install documentation for dev-qt/qtbluetooth
 dev-qt/qt-docs:charts - Install documentation for dev-qt/qtcharts
 dev-qt/qt-docs:datavis - Install documentation for dev-qt/qtdatavis3d
+dev-qt/qt-docs:declarative - Install documentation for dev-qt/qtdeclarative, dev-qt/qtquickcontrols, and dev-qt/qtquickcontrols2
+dev-qt/qt-docs:graphicaleffects - Install documentation for dev-qt/qtgraphicaleffects
+dev-qt/qt-docs:html - Install documentation in HTML format
+dev-qt/qt-docs:location - Install documentation for dev-qt/qtlocation
+dev-qt/qt-docs:multimedia - Install documentation for dev-qt/qtmultimedia
 dev-qt/qt-docs:networkauth - Install documentation for dev-qt/qtnetworkauth
+dev-qt/qt-docs:qch - Install documentation in QCH format
 dev-qt/qt-docs:script - Install documentation for dev-qt/qtscript
+dev-qt/qt-docs:sensors - Install documentation for dev-qt/qtsensors
 dev-qt/qt-docs:speech - Install documentation for dev-qt/qtspeech
 dev-qt/qt-docs:virtualkeyboard - Install documentation for dev-qt/qtvirtualkeyboard
 dev-qt/qt-docs:webengine - Install documentation for dev-qt/qtwebengine
@@ -3883,6 +3892,7 @@ net-fs/cifs-utils:ads - Enable Active Directory support and create cifs.idmap bi
 net-fs/cifs-utils:caps - libcap support
 net-fs/cifs-utils:caps-ng - libcap-ng support
 net-fs/cifs-utils:creds - cifs credentials support
+net-fs/libnfs:utils - Build/install nfs-{cat,ls,cp} utils
 net-fs/netatalk:pgp - Add support pgp authentication module
 net-fs/netatalk:quota - Add support for user quota on various filesystems
 net-fs/netatalk:shadow - Add shadow support
@@ -5029,32 +5039,6 @@ sci-physics/pythia:fastjet - Build jets using the sci-physics/fastjet package
 sci-physics/pythia:hepmc - Adds support for High Energy Physics Monte Carlo Generators sci-physics/hepmc
 sci-physics/pythia:lhapdf - Support the use of external PDF sets via sci-physics/lhapdf
 sci-physics/pythia:root - Use sci-physics/root trees and histograms (in examples only)
-sci-physics/root:R - Enable support for dev-lang/R
-sci-physics/root:asimage - Enable support for media-libs/libafterimage
-sci-physics/root:c++11 - Build ROOT using the C++11 standard
-sci-physics/root:c++14 - Build ROOT using the C++14 standard
-sci-physics/root:davix - Enable support for DAVIX Data Management Client (https://cern.ch/davix)
-sci-physics/root:fits - Enable support for images and data from FITS files with sci-libs/cfitsio
-sci-physics/root:fortran - Compile included Fortran programs
-sci-physics/root:gdml - Enable GDML writer and reader
-sci-physics/root:http - Enable http server support including but not limited to fastcgi support
-sci-physics/root:jemalloc - Enable support for dev-libs/jemalloc
-sci-physics/root:libcxx - Build ROOT against sys-libs/libcxx
-sci-physics/root:math - Build all math related libraries plugins, needs sci-libs/gsl
-sci-physics/root:memstat - Build memory statistics library, helps to detect memory leaks
-sci-physics/root:minuit - Build ROOT's internal versions of minuit (fortran) and minuit2 (C++)
-sci-physics/root:pythia6 - Build the interface for sci-physics/pythia version 6.x
-sci-physics/root:pythia8 - Build the interface for sci-physics/pythia version 8.x
-sci-physics/root:reflex - Build the reflection database for the C++ interpreter
-sci-physics/root:roofit - Build RooFit function fitting package
-sci-physics/root:root7 - Build experimental features to be released with ROOT 7
-sci-physics/root:shadow - Enable shadow authentication in rootd and proofd
-sci-physics/root:table - Build libTable contrib library
-sci-physics/root:tbb - Enable implicit multi-threading (IMT) with dev-cpp/tbb
-sci-physics/root:tmva - Built TMVA (ROOT's multi-variate analysis toolkit for machine learning)
-sci-physics/root:unuran - Enable support for sci-mathematics/unuran
-sci-physics/root:vc - Enable support for dev-libs/vc with VecCore
-sci-physics/root:xrootd - Build the interface for net-libs/xrootd
 sci-visualization/gnuplot:bitmap - Enable dot-matrix printers and pbm terminal
 sci-visualization/gnuplot:compat - Enable backwards compatibility with version 4 syntax
 sci-visualization/gnuplot:gd - Add support for media-libs/gd. Needed for GIF, JPEG, and PNG image output.
@@ -5197,6 +5181,7 @@ sys-apps/portage:xattr - Preserve extended attributes (filesystem-stored metadat
 sys-apps/proot:care - Build dynamic CARE binary (more info - http://reproducible.io/)
 sys-apps/qingy:consolekit - Enable native consolekit support
 sys-apps/qingy:opensslcrypt - Encrypt communications between qingy and its GUI using dev-libs/openssl
+sys-apps/rng-tools:jitterentropy - Enable Jitter RNG entropy support
 sys-apps/rng-tools:nistbeacon - Enable NIST beacon entropy support
 sys-apps/sed:forced-sandbox - Always enable --sandbox mode for simpler/secure runtime (disables e/r/w commands). Note: This may break many configure scripts, so it should be avoided on dev systems (and generally used on binpkg/final systems only).
 sys-apps/selinux-python:audit - Enable support for sys-process/audit and use the audit_* functions (like audit_getuid instead of getuid())
