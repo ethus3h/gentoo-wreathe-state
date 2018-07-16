@@ -29,6 +29,29 @@
 
 #--- END OF EXAMPLES ---
 
+# Mart Raudsepp <leio@gentoo.org> (16 Jul 2018)
+# Parallel-installable old versions with no remaining consumers
+# in main tree. Use applications ported to wxGTK:3.0 and
+# wxpython:3.0 instead. Bug #661284
+x11-libs/wxGTK:2.8
+dev-python/wxpython:2.8
+
+# Corentin Pazdera <nado@troglodyte.be> (12 Jul 2018)
+# Pulseeffects depends on atoms only found in gnome overlay
+>=media-sound/pulseeffects-4.0.0
+
+# Michał Górny <mgorny@gentoo.org> (12 Jul 2018)
+# Abandoned upstream, no reverse dependencies.  Collides with
+# dev-python/promises (that has revdeps).
+# Removal in 30 days.  Bug #651156.
+dev-python/promise
+
+# Jonas Stein <jstein@gentoo.org> (10 Jul 2018)
+# Package is not maintained, has a broken SRC_URI and 
+# we may not mirror the files.
+# Removal on (10 Aug 2018) Bug #660750
+media-sound/neroaac
+
 # Kent Fredric <kentnl@gentoo.org> (10 Jul 2018)
 # Perl 5.28 Staging block
 =dev-lang/perl-5.28.0
@@ -273,10 +296,6 @@ games-strategy/gorky17-demo
 # Dead since 2013, not compatible with latest profiles (#642568). Removal in
 # a month
 net-vpn/miredo
-
-# Pacho Ramos <pacho@gentoo.org> (17 Jun 2018)
-# Fails to build (#642996). Removal in a month.
-games-engines/gargoyle
 
 # Pacho Ramos <pacho@gentoo.org> (17 Jun 2018)
 # Fails to compile (#648430), crashes from time to time (#222065). Removal
@@ -744,6 +763,7 @@ net-wireless/cpyrit-cuda
 =net-ftp/filezilla-3.33.0-r300
 =net-ftp/filezilla-3.34.0-r300
 =dev-util/codeblocks-17.12-r300
+=dev-util/codeblocks-17.12-r301
 
 # Mart Raudsepp <leio@gentoo.org> (16 Feb 2017)
 # Old gstreamer 0.10 version, which is security vulnerable.

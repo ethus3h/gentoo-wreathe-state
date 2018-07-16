@@ -731,7 +731,6 @@ app-office/kmymoney:weboob - Enable import of online banking transactions extrac
 app-office/libreoffice:coinmp - Use sci-libs/coinor-mp as alternative solver
 app-office/libreoffice:googledrive - Enable support for remote files on Google Drive
 app-office/libreoffice:gtk2 - Enable legacy gtk2 frontend
-app-office/libreoffice:gtk3 - Enable experimental gtk3 frontend
 app-office/libreoffice:jemalloc - Use dev-libs/jemalloc for allocations
 app-office/libreoffice:odk - Build the Office Development Kit
 app-office/libreoffice:pdfimport - Enable PDF import via the Poppler library
@@ -1399,9 +1398,14 @@ dev-lang/ruby:jemalloc - Use dev-libs/jemalloc for memory allocation.
 dev-lang/ruby:rdoc - Install dev-ruby/rdoc after installing Ruby.
 dev-lang/ruby:readline - Use the sys-libs/readline library to provide the readline extension, used for instance by the irb tool. This flag is meaningful only if the libedit USE flag is disabled. If neither libedit nor readline USE flags are enabled, the readline extension will not be built (and irb will lose line editing functionality).
 dev-lang/ruby:rubytests - Install ruby tests that can only be run after ruby is installed
+dev-lang/rust:cargo - Install cargo component
 dev-lang/rust:extended - Build and install rls, rustfmt and cargo alongside the compiler and stdlib
 dev-lang/rust:jemalloc - Use dev-libs/jemalloc as the standard memory allocator
+dev-lang/rust:rls - Install rls component
+dev-lang/rust:rustfmt - Install rustfmt component
 dev-lang/rust:wasm - Build support for the wasm32-unknown-unknown target
+dev-lang/rust-bin:cargo - Install cargo component
+dev-lang/rust-bin:rustfmt - Install rustfmt component
 dev-lang/scala:binary - Install from (Gentoo-compiled) binary instead of building from sources. Set this when you run out of memory during build.
 dev-lang/spidermonkey:custom-optimization - Build with user-specified compiler optimizations (-Os, -O0, -O1, -O2, -O3) from CFLAGS (unsupported)
 dev-lang/spidermonkey:debug - Enable assertions to allow for easier debugging of programs that link to spidermonkey -- note this will often crash software on regular end-user systems
@@ -1409,6 +1413,7 @@ dev-lang/spidermonkey:system-icu - Use the system-wide dev-libs/icu instead of b
 dev-lang/spidermonkey:threadsafe - Build a threadsafe version of spidermonkey
 dev-lang/swi-prolog:archive - Use libarchive for extension packs
 dev-lang/swi-prolog:uuid - Use ossp-uuid for UUID pack
+dev-lang/swi-prolog:yaml - Use libyaml for YAML pack
 dev-lang/swig:ccache - build ccache-swig(a fast compiler cache)
 dev-lang/yap:R - Enable support for connecting R to Prolog
 dev-libs/ace:ciao - Include Component Intergraced Ace ORB into the build of ace
@@ -1712,7 +1717,6 @@ dev-perl/Mail-IMAPClient:md5 - Install support for DIGEST-MD5 and CRAM-MD5 Authe
 dev-perl/Mail-IMAPClient:ntlm - Install support for NTLM Authentication
 dev-perl/Mail-IMAPClient:ssl - Install support for SSL Connections
 dev-perl/Mail-IMAPClient:zlib - Install support for COMPRESS DEFLATE connections
-dev-perl/Net-OpenSSH:sftp - Enable SFTP protocol support.
 dev-perl/PDL:badval - Enable bad values support
 dev-perl/PDL:hdf - Enable HDF (version 4) format support
 dev-perl/PDL:netpbm - Enable NETPBM and MPEG support
@@ -1989,6 +1993,8 @@ dev-ruby/ruby-sdl:image - Enable media-libs/sdl-image support
 dev-ruby/ruby-sdl:mixer - Enable media-libs/sdl-mixer support
 dev-ruby/ruby-sdl:sge - Enable sdl-sge support
 dev-ruby/rubygems:server - Install support for the rubygems server
+dev-scheme/gauche:mbedtls - Enable support for net-libs/mbedtls
+dev-scheme/gauche-gl:cg - Enable NVidia Cg binding
 dev-scheme/guile:debug-freelist - Include garbage collector freelist debugging code
 dev-scheme/guile:debug-malloc - Include malloc debugging code
 dev-scheme/guile:deprecated - Enable deprecated features
@@ -2414,8 +2420,6 @@ mail-client/alpine:onlyalpine - installs only the alpine binary, so it does not 
 mail-client/alpine:passfile - Adds support for caching passwords into a file between sessions
 mail-client/alpine:smime - Enable support for S/MIME
 mail-client/balsa:crypt - Adds support for GnuPG encryption
-mail-client/balsa:gtkhtml - Use gtkhtml for HTML rendering
-mail-client/balsa:gtkspell - Use gtkspell for dictionary support
 mail-client/balsa:rubrica - Adds support for rubrica addressbook
 mail-client/claws-mail:archive - Enable archiving plugin
 mail-client/claws-mail:bogofilter - Build mail-filter/bogofilter plugin
@@ -2720,6 +2724,7 @@ media-gfx/graphviz:gdk-pixbuf - Enables gdk-pixbuf2 plugin
 media-gfx/graphviz:gtk - Enables gtk+ output plugin -Tgtk (needs cairo)
 media-gfx/graphviz:gts - Enables support for gts
 media-gfx/graphviz:lasi - Enables PostScript output via media-libs/lasi, for plugin -Tlasi (needs cairo)
+media-gfx/gthumb:colord - Use x11-misc/colord for color management
 media-gfx/gthumb:http - Enable webservice integration through net-libs/libsoup
 media-gfx/gthumb:json - Compile code that uses the libjson-glib library
 media-gfx/gthumb:slideshow - Enable slideshow plugin
@@ -3240,6 +3245,10 @@ media-sound/pulseaudio:ssl - Use dev-libs/openssl to provide support for RAOP (A
 media-sound/pulseaudio:system-wide - Allow preparation and installation of the system-wide init script for PulseAudio. Since this support is only supported for embedded situations, do not enable without reading the upstream instructions at https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/WhatIsWrongWithSystemWide/ .
 media-sound/pulseaudio:systemd - Build with sys-apps/systemd support to replace standalone ConsoleKit.
 media-sound/pulseaudio:webrtc-aec - Uses the webrtc.org AudioProcessing library for enhancing VoIP calls greatly in applications that support it by performing acoustic echo cancellation, analog gain control, noise suppression and other processing.
+media-sound/pulseeffects:bs2b - Enable use of media-libs/libbs2b
+media-sound/pulseeffects:calf - Enable use of media-plugins/calf for adding various FX
+media-sound/pulseeffects:mda-lv2 - Enable use of media-plugins/mda-lv2 for the loudness FX
+media-sound/pulseeffects:rubberband - Enable usse of media-libs/rubberband for the pitch shifting FX
 media-sound/qmmp:analyzer - Enable visual analyzer
 media-sound/qmmp:archive - Enable archiving plugin via app-arch/libarchive.
 media-sound/qmmp:bs2b - Enable Bauer stereophonic-to-binaural headphone filter
@@ -3517,7 +3526,7 @@ media-video/mpv:sdl - Enable media-libs/libsdl2 based video and audio outputs (N
 media-video/mpv:tools - Install extra tools: mpv_identify.sh, mpv_idet.sh, and umpv
 media-video/mpv:uchardet - Enable subtitles charset discovery via app-i18n/uchardet
 media-video/mpv:vulkan - Enable support for various Vulkan-based video backends
-media-video/noad:libmpeg2 - Support for libmpeg2 library
+media-video/noad:libmpeg2 - Build support for mpeg2 over media-libs/libmpeg2 rather than using ffmpeg
 media-video/nvidia_video_sdk:tools - Build and install example tools.
 media-video/parole:clutter - Compile in Clutter GTK+ support
 media-video/smplayer:autoshutdown - Enable the option to shutdown your computer after finishing the playlist. This requires dev-qt/qtdbus as dependency.
@@ -3588,7 +3597,6 @@ media-video/vlc:macosx-notifications - Enable Mac OS X notifications module (for
 media-video/vlc:macosx-qtkit - Enable Mac OS X qtkit module: qtcapture (video) and qtsound (audio) module
 media-video/vlc:macosx-quartztext - Enable Mac OS X quartz text module
 media-video/vlc:matroska - Enable matroska support using reference libraries (fallback on other existing matroska support if disabled, i.e., matroska enabled FFmpeg)
-media-video/vlc:microdns - Enable Chromecast auto-detection using net-libs/libmicrodns
 media-video/vlc:mpeg - Add libmpeg2 support for mpeg-1 and mpeg-2 video streams
 media-video/vlc:nfs - Enable support for nfs protocol via net-fs/libnfs
 media-video/vlc:omxil - Enable OpenMAX Integration Layer codec module
@@ -3925,6 +3933,7 @@ net-fs/samba:cluster - Enable support for clustering
 net-fs/samba:dmapi - Enable support for DMAPI. This currently works only in combination with XFS.
 net-fs/samba:gpg - Use app-crypt/gpgme for AD DC
 net-fs/samba:iprint - Enabling iPrint technology by Novell
+net-fs/samba:json - Enable json audit support through dev-libs/jansson
 net-fs/samba:quota - Enables support for user quotas
 net-fs/samba:system-heimdal - Use app-crypt/heimdal instead of bundled heimdal.
 net-fs/samba:system-mitkrb5 - Use app-crypt/mit-krb5 instead of app-crypt/heimdal.
@@ -5726,9 +5735,6 @@ www-apache/mod_security:mlogc - Build and install the ModSecurity Audit Log Coll
 www-apps/ampache:transcode - Install optional dependencies for transcoding support
 www-apps/bugzilla:extras - Optional Perl modules
 www-apps/bugzilla:modperl - Enable www-apache/mod_perl support
-www-apps/cgit:highlight - Enable source code highlighting
-www-apps/cgit:jit - If the lua flag is enabled, jit uses LuaJIT instead of vanilla Lua
-www-apps/cgit:lua - Enable support for Lua scripting
 www-apps/icingaweb2:nginx - Adds support for nginx
 www-apps/ikiwiki:extras - Installs additional modules used by ikiwiki plugins
 www-apps/nikola:assets - Support web asset management through dev-python/assets
@@ -5740,6 +5746,21 @@ www-apps/nikola:jinja - Add support for dev-python/jinja as alternative templati
 www-apps/nikola:watchdog - Use dev-python/watchdog to monitor file system events
 www-apps/nikola:webmedia - Use dev-python/micawber to extract metadata from web media links
 www-apps/nikola:websocket - Add websocket support thru dev-python/ws4py
+www-apps/phpsysinfo:apcupsd - Install sys-power/apcupsd to display those stats.
+www-apps/phpsysinfo:dmraid - Install sys-fs/dmraid to display those stats.
+www-apps/phpsysinfo:freeipmi - Install sys-libs/freeipmi to display those stats.
+www-apps/phpsysinfo:hddtemp - Install app-admin/hddtemp to display those stats.
+www-apps/phpsysinfo:ipmitool - Install sys-apps/ipmitool to display those stats.
+www-apps/phpsysinfo:ipmiutil - Install sys-apps/ipmiutil to display those stats.
+www-apps/phpsysinfo:iptables - Install net-firewall/iptables to display those stats.
+www-apps/phpsysinfo:lm_sensors - Install sys-apps/lm_sensors to display those stats.
+www-apps/phpsysinfo:mdadm - Install sys-fs/mdadm to display those stats.
+www-apps/phpsysinfo:megactl - Install sys-block/megactl to display those stats.
+www-apps/phpsysinfo:nut - Install sys-power/nut to display those stats.
+www-apps/phpsysinfo:quota - Install sys-fs/quota to display those stats.
+www-apps/phpsysinfo:smart - Install sys-apps/smartmontools to display those stats.
+www-apps/phpsysinfo:snmp - Install net-analyzer/net-snmp to display those stats.
+www-apps/phpsysinfo:uptime - Install app-misc/uptimed to display those stats.
 www-apps/postfixadmin:vacation - Install vacation.pl script and dependencies
 www-apps/sitebar:plugins - Install optional plugins
 www-apps/trac:highlight - Enable syntax highlighting
