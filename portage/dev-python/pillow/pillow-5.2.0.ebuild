@@ -3,10 +3,10 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python2_7 python3_{5,6} )
+PYTHON_COMPAT=( python2_7 python3_{5,6,7} )
 PYTHON_REQ_USE='tk?,threads(+)'
 
-inherit distutils-r1 eutils virtualx
+inherit distutils-r1 virtualx
 
 MY_PN=Pillow
 MY_P=${MY_PN}-${PV}
@@ -46,8 +46,15 @@ DEPEND="${RDEPEND}
 
 S="${WORKDIR}/${MY_P}"
 
-python_compile() {
-	local args=(
+PATCHES=(
+	"${FILESDIR}/${PN}-5.2.0-no-usr-lib.patch"
+)
+
+python_configure_all() {
+	# It's important that these flags are also passed during the install phase
+	# as well. Make sure of that if you change the lines below. See bug 661308.
+	mydistutilsargs=(
+		build_ext
 		--disable-platform-guessing
 		$(use_enable truetype freetype)
 		$(use_enable jpeg)
@@ -59,7 +66,15 @@ python_compile() {
 		$(use_enable webp webpmux)
 		$(use_enable zlib)
 	)
-	distutils-r1_python_compile build_ext "${args[@]}"
+}
+
+python_compile() {
+	# Pillow monkeypatches distutils to achieve parallel compilation. This
+	# conflicts with distutils' builtin parallel computation (since py35)
+	# and make builds hang. To avoid that, we set MAX_CONCURRENCY=1 to
+	# disable monkeypatching. Can be removed when/if
+	# https://github.com/python-pillow/Pillow/pull/3272 is merged.
+	MAX_CONCURRENCY=1 distutils-r1_python_compile
 }
 
 python_compile_all() {

@@ -38,7 +38,6 @@ dev-embedded/libftd2xx
 dev-embedded/openocd
 dev-util/android-ndk
 dev-util/android-sdk-update-manager
-dev-util/android-studio
 dev-util/biew
 games-action/beathazardultra
 games-action/brutal-legend
@@ -108,7 +107,6 @@ games-fps/sauerbraten
 games-fps/serious-sam-tfe
 games-fps/serious-sam-tse
 games-fps/soldieroffortune
-games-fps/soldieroffortune-demo
 games-fps/unreal-tournament
 games-fps/ut2003
 games-fps/ut2003-demo
@@ -133,7 +131,6 @@ games-strategy/darwinia-demo
 games-strategy/defcon-demo
 games-strategy/dominions2
 games-strategy/heroes3
-games-strategy/heroes3-demo
 games-strategy/knights-demo
 games-strategy/majesty-demo
 games-strategy/smac

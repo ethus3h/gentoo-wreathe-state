@@ -1,6 +1,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+# Matthew Thode <prometheanfire@gentoo.org> (18 Jul 2018)
+# dev-python/pandas not keyworded and test uses pandas
+dev-python/networkx pandas test
+
 # Michał Górny <mgorny@gentoo.org> (07 Jul 2018)
 # Unkeyworded dependencies.
 dev-python/matplotlib doc
@@ -355,10 +359,6 @@ dev-libs/efl physics
 # Roy Bamford <neddyseagoon@gentoo.org> (26 Jan 2017)
 # gcj-6.3 won't bootstrap icedtea 7
 >=sys-devel/gcc-6 gcj
-
-# Julian Ospald <hasufell@gentoo.org> (04 Jan 2014)
-# no keyword for media-libs/swfdec and media-libs/libtimidity
->=dev-libs/DirectFB-1.7.1 timidity swfdec
 
 # Markus Meier <maekke@gentoo.org> (26 Dec 2013)
 # Unkeyworded deps, bug #488724
